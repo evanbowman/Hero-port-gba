@@ -42,14 +42,18 @@ void Hero::step()
         }
     }
 
-    if (position_.x not_eq x_prev or position_.y not_eq y_prev) {
+    if ((position_.x not_eq x_prev or position_.y not_eq y_prev) and
+        engine().hero_jetpack_flames_) {
+
         jetpack_counter_ += 1;
         if (jetpack_counter_ == 6) {
             jetpack_counter_ = 0;
             if (hflip_ == false) {
-                engine().add_object<Flame>(Vec2<Fixnum>{position_.x + 4, position_.y + 4});
+                engine().add_object<Flame>(Vec2<Fixnum>{position_.x + 4,
+                                                        position_.y + 4});
             } else {
-                engine().add_object<Flame>(Vec2<Fixnum>{position_.x, position_.y + 4});
+                engine().add_object<Flame>(Vec2<Fixnum>{position_.x,
+                                                        position_.y + 4});
             }
         }
     }
