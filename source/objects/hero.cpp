@@ -1,5 +1,6 @@
 #include "hero.hpp"
 #include "engine.hpp"
+#include "objects/particles/flame.hpp"
 
 
 
@@ -18,6 +19,9 @@ void Hero::step()
         hflip_ = true;
     }
 
+    auto x_prev = position_.x;
+    auto y_prev = position_.y;
+
     if (key_pressed<Key::left>()) {
         if (place_free({position_.x - flyspeed_, position_.y})) {
             position_.x -= flyspeed_;
@@ -35,6 +39,18 @@ void Hero::step()
     } else if (key_pressed<Key::down>()) {
         if (place_free({position_.x, position_.y + flyspeed_})) {
             position_.y += flyspeed_;
+        }
+    }
+
+    if (position_.x not_eq x_prev or position_.y not_eq y_prev) {
+        jetpack_counter_ += 1;
+        if (jetpack_counter_ == 6) {
+            jetpack_counter_ = 0;
+            if (hflip_ == false) {
+                engine().add_object<Flame>(Vec2<Fixnum>{position_.x + 4, position_.y + 4});
+            } else {
+                engine().add_object<Flame>(Vec2<Fixnum>{position_.x, position_.y + 4});
+            }
         }
     }
 

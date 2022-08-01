@@ -38,6 +38,7 @@ public:
 
     Difficulty difficulty_ = Difficulty::hard;
     bool autofire_ = false;
+    bool hero_jetpack_flames_ = false;
     int hp_ = 10;
 
 
