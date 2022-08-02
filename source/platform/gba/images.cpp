@@ -21,6 +21,8 @@
 //;
 #include "data/charset1.h"
 //;
+#include "data/tile0.h"
+//;
 #include "data/spritesheet.h"
 //
 
@@ -49,6 +51,8 @@ static const TextureData sprite_textures[] = {
 
 static const TextureData tile_textures[] = {
 
+    TEXTURE_INFO(tile0),
+//
 };
 
 

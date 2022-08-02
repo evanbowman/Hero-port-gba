@@ -22,12 +22,14 @@ private:
 
 public:
 
-    Bolt(const Vec2<Fixnum>& pos) : Enemy(Tag::bolt, Health{1})
+    Bolt(const Vec2<Fixnum>& pos) :
+        Enemy(TaggedObject::Tag::bolt, Health{1})
     {
         position_ = pos;
 
         sprite_index_ = 21;
         sprite_subimage_ = 0;
+        hitbox_.dimension_.size_ = {7, 7};
     }
 
 

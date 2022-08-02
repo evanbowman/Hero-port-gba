@@ -1,7 +1,6 @@
 #pragma once
 
 #include "object.hpp"
-#include "engine.hpp"
 
 
 
@@ -21,27 +20,18 @@ public:
         position_ = pos;
 
         sprite_index_ = 7;
-        engine().shot_count_++;
         speed_.x = speed;
     }
 
 
     void step() override
     {
+        if (not place_free({position_.x + speed_.x, position_.y})) {
+            kill();
+            return;
+        }
+
         Object::step();
-
-        if (position_.x < 38) {
-            kill();
-        }
-        if (position_.x > 202) {
-            kill();
-        }
-    }
-
-
-    ~Shot()
-    {
-        engine().shot_count_--;
     }
 
 

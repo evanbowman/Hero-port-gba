@@ -29,6 +29,7 @@ public:
         crusher,
         spew,
         bolt,
+        enemy_bullet,
         count
     };
 
@@ -63,6 +64,12 @@ public:
                 next_->prev_ = prev_;
             }
         }
+    }
+
+
+    TaggedObject* next() const
+    {
+        return next_;
     }
 
 

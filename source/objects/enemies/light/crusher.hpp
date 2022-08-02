@@ -23,18 +23,21 @@ private:
 
 public:
 
-    Crusher(const Vec2<Fixnum>& pos) : Enemy(Tag::crusher, Health{8})
+    Crusher(const Vec2<Fixnum>& pos) :
+        Enemy(TaggedObject::Tag::crusher, Health{8})
     {
         position_ = pos;
 
         sprite_index_ = 9;
         sprite_subimage_ = 0;
+
+        hitbox_.dimension_.size_ = {8, 8};
     }
 
 
     void step() override
     {
-        position_ = position_ + direction_ * speed_;
+        move(position_ + direction_ * speed_);
 
         switch (timeline_++) {
         case 0:
@@ -54,11 +57,11 @@ public:
             break;
 
         case 40:
-            if (engine().hp_ > 0) {
+            if (engine().g_.hp_ > 0) {
                 auto dir = direction(fvec(position_),
                                      fvec(engine().hero()->position()));
 
-                if (engine().difficulty_ == Difficulty::hard) {
+                if (engine().g_.difficulty_ == Difficulty::hard) {
                     speed_ = 0;
                     max_speed_ = 2.8;
 
@@ -78,7 +81,7 @@ public:
             break;
         }
 
-        if (engine().difficulty_ == Difficulty::hard) {
+        if (engine().g_.difficulty_ == Difficulty::hard) {
             if (speed_ < max_speed_) {
                 speed_ += Fixnum(0.1f);
             }

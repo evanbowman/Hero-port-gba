@@ -21,18 +21,21 @@ private:
 
 public:
 
-    Reaver(const Vec2<Fixnum>& pos) : Enemy(Tag::reaver, Health{4})
+    Reaver(const Vec2<Fixnum>& pos) :
+        Enemy(TaggedObject::Tag::reaver, Health{4})
     {
         position_ = pos;
 
         sprite_index_ = 4;
         sprite_subimage_ = 0;
+
+        hitbox_.dimension_.size_ = {8, 8};
     }
 
 
     void step() override
     {
-        position_ = position_ + direction_ * speed_;
+        move(position_ + direction_ * speed_);
 
         switch (timeline_++) {
         case 0:
@@ -52,7 +55,7 @@ public:
             break;
 
         case 40:
-            if (engine().hp_ > 0) {
+            if (engine().g_.hp_ > 0) {
                 auto dir = direction(fvec(position_),
                                      fvec(engine().hero()->position()));
 
@@ -65,7 +68,7 @@ public:
                     hflip_ = true;
                 }
 
-                if (engine().difficulty_ == Difficulty::hard) {
+                if (engine().g_.difficulty_ == Difficulty::hard) {
                     dir = rotate(dir, -20 + rng::choice<40>(rng::utility_state));
                     if (max_speed_ == Fixnum(1.2f)) {
                         max_speed_ = Fixnum(0.4f);
@@ -83,7 +86,7 @@ public:
             break;
 
         case 49:
-            if (engine().difficulty_ == Difficulty::hard) {
+            if (engine().g_.difficulty_ == Difficulty::hard) {
                 timeline_ = 40;
             }
             break;
@@ -93,7 +96,7 @@ public:
             break;
         }
 
-        if (engine().difficulty_ == Difficulty::hard) {
+        if (engine().g_.difficulty_ == Difficulty::hard) {
             if (speed_ < max_speed_) {
                 speed_ = speed_ + Fixnum(0.2f);
             }
@@ -104,8 +107,14 @@ public:
 
         if (not place_free({position_.x + (direction_ * speed_).x,
                             position_.y + (direction_ * speed_).y})) {
-            direction_.x = direction_.x * -1;
-            direction_.y = direction_.y * -1;
+            auto x = position_.x;
+            auto y = position_.y;
+            if (not place_free({x + 2, y}) or not place_free({x - 2, y})) {
+                direction_.x = direction_.x * -1;
+            }
+            if (not place_free({x, y + 2}) or not place_free({x, y - 2})) {
+                direction_.y = direction_.y * -1;
+            }
         }
     }
 

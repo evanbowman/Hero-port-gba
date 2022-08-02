@@ -28,6 +28,16 @@ public:
     }
 
 
+    void move(const Vec2<Fixnum>& pos)
+    {
+        // auto prev = position_;
+        position_ = pos;
+        // if (not place_free(position_)) {
+        //     position_ = prev;
+        // }
+    }
+
+
 private:
     Health health_;
 };

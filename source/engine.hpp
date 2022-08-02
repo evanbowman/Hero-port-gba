@@ -5,6 +5,9 @@
 #include "platform/platform.hpp"
 #include "object.hpp"
 #include "list.hpp"
+#include "objects/enemies/enemy.hpp"
+#include "objects/projectile/enemyProjectile.hpp"
+#include "objects/projectile/shot.hpp"
 
 
 
@@ -29,18 +32,49 @@ public:
     {
         if (auto obj = alloc_object<T>(std::forward<Args>(args)...)) {
             auto result = obj.get();
-            objects_.push(std::move(obj));
+            if constexpr (std::is_base_of<Enemy, T>()) {
+                enemies_.push(std::move(obj));
+            } else if constexpr(std::is_base_of<EnemyProjectile, T>()) {
+                enemy_projectiles_.push(std::move(obj));
+            } else if constexpr (std::is_base_of<Shot, T>()) {
+                player_projectiles_.push(std::move(obj));
+                ++g_.shot_count_;
+            } else {
+                generic_objects_.push(std::move(obj));
+            }
+
             return result;
         }
         return nullptr;
     }
 
 
-    Difficulty difficulty_ = Difficulty::hard;
-    bool autofire_ = false;
-    bool hero_jetpack_flames_ = true;
-    int hp_ = 10;
-    int shot_count_ = 0;
+    struct Room
+    {
+        bool walls_[20][20];
+
+        void clear()
+        {
+            for (auto& row : walls_) {
+                for (auto& w : row) {
+                    w = false;
+                }
+            }
+        }
+
+        void load(int chunk_x, int chunk_y);
+
+    } room_;
+
+
+    struct Globalstate
+    {
+        Difficulty difficulty_ = Difficulty::hard;
+        bool autofire_ = false;
+        bool hero_jetpack_flames_ = true;
+        int hp_ = 10;
+        int shot_count_ = 0;
+    } g_;
 
 
     Object* hero() const
@@ -52,8 +86,15 @@ public:
     void draw_hud();
 
 
+    void collision_check();
+
+
 private:
-    ObjectList<Object> objects_;
+    ObjectList<Enemy> enemies_;
+    ObjectList<EnemyProjectile> enemy_projectiles_;
+    ObjectList<Shot> player_projectiles_;
+    ObjectList<Object> generic_objects_;
+
     ObjectRef<Object> hero_;
 
     // The original game processed updates at framerate of 40 fps. Our platform

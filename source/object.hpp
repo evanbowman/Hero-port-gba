@@ -57,18 +57,18 @@ public:
     }
 
 
-    bool place_free(Vec2<Fixnum> pos)
-    {
-        if (pos.x > 200 or pos.x < 40 or pos.y < 0 or pos.y > 160) {
-            return false;
-        }
-        return true; // TODO...
-    }
+    bool place_free(Vec2<Fixnum> pos);
 
 
     const Vec2<Fixnum>& position() const
     {
         return position_;
+    }
+
+
+    const Hitbox& hitbox() const
+    {
+        return hitbox_;
     }
 
 

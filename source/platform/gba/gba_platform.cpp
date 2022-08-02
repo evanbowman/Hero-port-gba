@@ -1973,6 +1973,7 @@ static const u32 null_music[null_music_len] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 
 #include "gba_platform_soundcontext.hpp"
+#include "data/zone5.hpp"
 
 
 SoundContext snd_ctx;
@@ -1983,7 +1984,9 @@ static const struct AudioTrack {
     const AudioSample* data_;
     int length_; // NOTE: For music, this is the track length in 32 bit words,
                  // but for sounds, length_ reprepresents bytes.
-} music_tracks[] = {};
+} music_tracks[] = {
+                    DEF_MUSIC(zone5, zone5)
+};
 
 
 static const AudioTrack* find_music(const char* name)
@@ -2150,10 +2153,12 @@ void Platform::Speaker::stop_music()
 }
 
 
+
 static void play_music(const char* name, Microseconds offset)
 {
-    auto music_file = platform->fs().get_file(name);
-    if (music_file.data_ == nullptr) {
+
+    auto music_file = find_music(name);
+    if (music_file == nullptr) {
         warning(*::platform, "failed to find music file!");
         return;
     }
@@ -2161,9 +2166,9 @@ static void play_music(const char* name, Microseconds offset)
     const Microseconds sample_offset = offset * 0.016f; // NOTE: because 16kHz
 
     modify_audio([&] {
-        snd_ctx.music_track_length = music_file.size_;
-        snd_ctx.music_track = reinterpret_cast<const s8*>(music_file.data_);
-        snd_ctx.music_track_pos = sample_offset % music_file.size_;
+        snd_ctx.music_track_length = music_file->length_;
+        snd_ctx.music_track = reinterpret_cast<const s8*>(music_file->data_);
+        snd_ctx.music_track_pos = sample_offset % music_file->length_;
     });
 }
 
@@ -2435,7 +2440,7 @@ Platform::Platform()
 
     fill_overlay(0);
 
-    // audio_start();
+    audio_start();
 
     // enable_watchdog();
 

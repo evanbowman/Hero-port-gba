@@ -17,17 +17,19 @@ class Drone : public Enemy
 public:
 
     Drone(const Vec2<Fixnum>& pos) :
-        Enemy(Tag::drone, Health{2})
+        Enemy(TaggedObject::Tag::drone, Health{2})
     {
         position_ = pos;
 
         sprite_index_ = 2;
+
+        hitbox_.dimension_.size_ = {8, 8};
     }
 
 
     void step() override
     {
-        Object::step();
+        move(position_ + speed_);
 
         switch (timeline_++) {
         case 0:
@@ -47,11 +49,11 @@ public:
             break;
 
         case 40:
-            if (engine().hp_ > 0) {
+            if (engine().g_.hp_ > 0) {
                 auto dir = direction(fvec(position_),
                                      fvec(engine().hero()->position()));
 
-                if (engine().difficulty_ == Difficulty::hard) {
+                if (engine().g_.difficulty_ == Difficulty::hard) {
                     dir = rotate(dir, -20 + rng::choice<40>(rng::utility_state));
                     dir = dir * (1.7f / 2.f);
                 } else {
@@ -64,7 +66,7 @@ public:
             break;
 
         case 75:
-            if (engine().difficulty_ == Difficulty::hard) {
+            if (engine().g_.difficulty_ == Difficulty::hard) {
                 speed_ = {0, 0};
             }
             break;
@@ -76,8 +78,14 @@ public:
 
         if (not place_free({position_.x + speed_.x,
                             position_.y + speed_.y})) {
-            speed_.x = speed_.x * -1;
-            speed_.y = speed_.y * -1;
+            auto x = position_.x;
+            auto y = position_.y;
+            if (not place_free({x + 2, y}) or not place_free({x - 2, y})) {
+                speed_.x = speed_.x * -1;
+            }
+            if (not place_free({x, y + 2}) or not place_free({x, y - 2})) {
+                speed_.y = speed_.y * -1;
+            }
         }
     }
 

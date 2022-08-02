@@ -24,18 +24,21 @@ private:
 
 public:
 
-    Spew(const Vec2<Fixnum>& pos) : Enemy(Tag::spew, Health{1})
+    Spew(const Vec2<Fixnum>& pos) :
+        Enemy(TaggedObject::Tag::spew, Health{1})
     {
         position_ = pos;
 
         sprite_index_ = 11;
         sprite_subimage_ = 0;
+
+        hitbox_.dimension_.size_ = {8, 8};
     }
 
 
     void step() override
     {
-        position_ = position_ + direction_ * speed_;
+        move(position_ + direction_ * speed_);
 
         switch (timeline_++) {
         case 0:
@@ -64,13 +67,13 @@ public:
             sprite_subimage_ = 2;
             origin_.x = 4;
 
-            if (engine().hp_ > 0) {
+            if (engine().g_.hp_ > 0) {
                 auto dir = direction(fvec(position_),
                                      fvec(engine().hero()->position()));
 
                 speed_ = Fixnum(1.2f / 2);
 
-                if (engine().difficulty_ == Difficulty::hard) {
+                if (engine().g_.difficulty_ == Difficulty::hard) {
 
                     // auto xd = position_.x - engine().hero()->position().x;
                     // auto yd = position_.y - engine().hero()->position().y;
@@ -110,7 +113,7 @@ public:
                                 }
                             }
 
-                            if (engine().difficulty_ == Difficulty::hard) {
+                            if (engine().g_.difficulty_ == Difficulty::hard) {
                                 dir = dir * (2.5f / 2);
                             }
 

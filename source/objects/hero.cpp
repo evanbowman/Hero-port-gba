@@ -17,7 +17,7 @@ void Hero::step()
     } else if (key_down<Key::action_1>()) {
         hflip_ = false;
 
-        if (engine().shot_count_ < 6) {
+        if (engine().g_.shot_count_ < 6) {
             engine().add_object<Shot>(Vec2<Fixnum>{position_.x, position_.y + 3},
                                       Fixnum(-2));
         }
@@ -25,7 +25,7 @@ void Hero::step()
     } else if (key_down<Key::action_2>()) {
         hflip_ = true;
 
-        if (engine().shot_count_ < 6) {
+        if (engine().g_.shot_count_ < 6) {
             engine().add_object<Shot>(Vec2<Fixnum>{position_.x + 3, position_.y + 3},
                                       Fixnum(2));
         }
@@ -36,27 +36,43 @@ void Hero::step()
     auto y_prev = position_.y;
 
     if (key_pressed<Key::left>()) {
-        if (place_free({position_.x - flyspeed_, position_.y})) {
+        if (place_free({position_.x - (flyspeed_ + Fixnum(1.25f)), position_.y})) {
             position_.x -= flyspeed_;
+
+            if (not place_free(position_)) {
+                position_.x = x_prev;
+            }
         }
     } else if (key_pressed<Key::right>()) {
-        if (place_free({position_.x + flyspeed_, position_.y})) {
+        if (place_free({position_.x + flyspeed_ + Fixnum(1.25f), position_.y})) {
             position_.x += flyspeed_;
+
+            if (not place_free(position_)) {
+                position_.x = x_prev;
+            }
         }
     }
     if (key_pressed<Key::up>()) {
-        if (place_free({position_.x, position_.y - flyspeed_})) {
+        if (place_free({position_.x, position_.y - (flyspeed_ + Fixnum(1.25f))})) {
             position_.y -= flyspeed_;
+
+            if (not place_free(position_)) {
+                position_.y = y_prev;
+            }
         }
 
     } else if (key_pressed<Key::down>()) {
-        if (place_free({position_.x, position_.y + flyspeed_})) {
+        if (place_free({position_.x, position_.y + flyspeed_ + Fixnum(1.25f)})) {
             position_.y += flyspeed_;
+
+            if (not place_free(position_)) {
+                position_.y = y_prev;
+            }
         }
     }
 
     if ((position_.x not_eq x_prev or position_.y not_eq y_prev) and
-        engine().hero_jetpack_flames_) {
+        engine().g_.hero_jetpack_flames_) {
 
         jetpack_counter_ += 1;
         if (jetpack_counter_ == 6) {
@@ -71,7 +87,7 @@ void Hero::step()
         }
     }
 
-    if (engine().autofire_) {
+    if (engine().g_.autofire_) {
         autofire_index_ += 1;
         if (autofire_index_ >= 4) {
             autofire_index_ = 0;

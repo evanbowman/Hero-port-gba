@@ -18,7 +18,12 @@ public:
         position_ = position;
         sprite_index_ = 1;
         origin_ = {5, 0};
+
+        hitbox_.dimension_.size_ = {6, 8};
     }
+
+
+    void damage() {}
 
 
     void step() override;

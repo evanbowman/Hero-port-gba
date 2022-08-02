@@ -1,6 +1,7 @@
 #pragma once
 
-#include "object.hpp"
+#include "taggedObject.hpp"
+#include "enemyProjectile.hpp"
 #include "engine.hpp"
 
 
@@ -10,7 +11,7 @@ namespace herocore
 
 
 
-class EnemyShot : public Object
+class EnemyShot : public EnemyProjectile
 {
 private:
 
@@ -19,22 +20,21 @@ private:
 
 public:
 
-    EnemyShot(const Vec2<Fixnum>& pos)
+    EnemyShot(const Vec2<Fixnum>& pos) : EnemyProjectile(pos)
     {
-        position_ = pos;
-
         sprite_index_ = 17;
-    }
 
-
-    void set_speed(const Vec2<Fixnum>& speed)
-    {
-        speed_ = speed;
+        hitbox_.dimension_.size_ = {5, 5};
     }
 
 
     void step() override
     {
+        if (not place_free({position_.x + speed_.x, position_.y + speed_.y})) {
+            kill();
+            return;
+        }
+
         Object::step();
 
         anim_ += 1;

@@ -107,7 +107,9 @@ if(GAMEBOY_ADVANCE)
 
     # Data files below. Because the gameboy advance does not have a filesystem,
     # all of the sounds and images need to be compiled into the ROM.
+    ${DATA_DIR}/zone5.s
     ${DATA_DIR}/overlay.s
+    ${DATA_DIR}/tile0.s
     ${DATA_DIR}/spritesheet.s
     ${DATA_DIR}/overlay_text_key.s
     ${DATA_DIR}/charset0.s
@@ -224,7 +226,7 @@ if(APPLE OR UNIX OR GAMEBOY_ADVANCE)
 
   set(SHARED_COMPILE_OPTIONS
     -g3
-    -Os
+    -O2
     -Wall
     -Werror
     # Lua seems not to compile with the pedantic option, looks like the
@@ -320,6 +322,7 @@ if(GAMEBOY_ADVANCE)
     add_overlay(overlay_text_key 0 0 NO)
     add_overlay(charset0 0 0 NO)
     add_overlay(charset1 0 0 NO)
+    add_tilesheet(tile0 0 0 NO)
     add_spritesheet(spritesheet 2 2 NO)
 
     configure_file(images.cpp.in ${SOURCE_DIR}/platform/gba/images.cpp)
@@ -342,7 +345,7 @@ if(GAMEBOY_ADVANCE)
   add_custom_command(TARGET HerocoreEngine POST_BUILD
     COMMENT "building cartridge"
     COMMAND ${DEVKITARM}/bin/arm-none-eabi-objcopy -O binary HerocoreEngine HerocoreEngine.gba
-    COMMAND ${DEVKITPRO}/tools/bin/gbafix -tHerocoreEngine -cCBJE -r0 -mEB HerocoreEngine.gba)
+    COMMAND ${DEVKITPRO}/tools/bin/gbafix -therocore -cCBJE -r0 -mEB HerocoreEngine.gba)
 
   target_compile_options(HerocoreEngine PRIVATE
     -D__GBA__)
