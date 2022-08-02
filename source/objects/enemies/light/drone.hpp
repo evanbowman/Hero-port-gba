@@ -4,6 +4,7 @@
 #include "engine.hpp"
 #include "fmt.hpp"
 #include "number/random.hpp"
+#include "objects/particles/explo.hpp"
 
 
 
@@ -29,6 +30,12 @@ public:
 
     void step() override
     {
+        if (health_ == 0) {
+            kill();
+            engine().add_object<Explo>(position_);
+            return;
+        }
+
         move(position_ + speed_);
 
         switch (timeline_++) {

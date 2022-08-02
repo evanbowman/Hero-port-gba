@@ -20,7 +20,7 @@ private:
 
 public:
 
-    EnemyShot(const Vec2<Fixnum>& pos) : EnemyProjectile(pos)
+    EnemyShot(const Vec2<Fixnum>& pos) : EnemyProjectile(pos, 1, 0)
     {
         sprite_index_ = 17;
 

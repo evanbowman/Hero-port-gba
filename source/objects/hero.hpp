@@ -27,6 +27,7 @@ public:
 
 
     void step() override;
+    void draw(Platform::Screen& screen) const override;
 
 
     void fireleft();

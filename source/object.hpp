@@ -40,7 +40,7 @@ public:
         spr_.set_origin({origin_.x, origin_.y});
         spr_.set_texture_index(sprite_index_ + sprite_subimage_);
         spr_.set_position(position_);
-        spr_.set_flip({hflip_, false});
+        spr_.set_flip({hflip_, vflip_});
         screen.draw(spr_);
     }
 
@@ -51,7 +51,7 @@ public:
     }
 
 
-    void kill()
+    virtual void kill()
     {
         dead_ = true;
     }
@@ -81,6 +81,7 @@ protected:
     int sprite_index_ = 0;
     int sprite_subimage_ = 0;
     bool hflip_ = false;
+    bool vflip_ = false;
     Vec2<u8> origin_;
 
     Vec2<Fixnum> speed_;

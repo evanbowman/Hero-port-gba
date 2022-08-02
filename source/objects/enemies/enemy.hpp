@@ -13,12 +13,24 @@ class Enemy : public TaggedObject
 {
 public:
 
-    using Health = u16;
+    using Health = s16;
 
     Enemy(Tag tag, Health health) :
         TaggedObject(tag),
         health_(health)
     {
+    }
+
+
+    virtual void damage(Health dmg)
+    {
+        health_ = std::max(0, health_ - dmg);
+    }
+
+
+    virtual int collision_damage() const
+    {
+        return 2;
     }
 
 
@@ -38,7 +50,7 @@ public:
     }
 
 
-private:
+protected:
     Health health_;
 };
 

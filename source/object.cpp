@@ -75,6 +75,9 @@ bool Object::place_free(Vec2<Fixnum> pos)
     wall_hb.dimension_.size_ = {8, 8};
     wall_hb.position_ = &wall_pos;
 
+    auto cached_pos = hitbox_.position_;
+    hitbox_.position_ = &pos;
+
     for (int x = -1; x < 2; ++x) {
         for (int y = -1; y < 2; ++y) {
             auto cx = tile_x + x;
@@ -85,12 +88,15 @@ bool Object::place_free(Vec2<Fixnum> pos)
                     wall_pos.y = cy * 8;
 
                     if (wall_hb.overlapping(hitbox_)) {
+                        hitbox_.position_ = cached_pos;
                         return false;
                     }
                 }
             }
         }
     }
+
+    hitbox_.position_ = cached_pos;
 
     if (pos.x > 200 or pos.x < 40 or pos.y < 0 or pos.y > 160) {
         return false;

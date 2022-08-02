@@ -12,31 +12,29 @@ namespace herocore
 
 void Hero::step()
 {
-    if (key_pressed<Key::action_1>() and key_pressed<Key::action_2>()) {
-
-    } else if (key_down<Key::action_1>()) {
+    if (key_down<Key::action_1>()) {
         hflip_ = false;
 
-        if (engine().g_.shot_count_ < 6) {
-            engine().add_object<Shot>(Vec2<Fixnum>{position_.x, position_.y + 3},
-                                      Fixnum(-2));
-        }
-
-    } else if (key_down<Key::action_2>()) {
-        hflip_ = true;
-
-        if (engine().g_.shot_count_ < 6) {
-            engine().add_object<Shot>(Vec2<Fixnum>{position_.x + 3, position_.y + 3},
-                                      Fixnum(2));
-        }
+        fireleft();
 
     }
+    if (key_down<Key::action_2>()) {
+        hflip_ = true;
+
+        fireright();
+
+    }
+
+    if (engine().g_.invulnerable_ > 0) {
+        engine().g_.invulnerable_ -= 1;
+    }
+
 
     auto x_prev = position_.x;
     auto y_prev = position_.y;
 
     if (key_pressed<Key::left>()) {
-        if (place_free({position_.x - (flyspeed_ + Fixnum(1.25f)), position_.y})) {
+        if (place_free({position_.x - flyspeed_, position_.y})) {
             position_.x -= flyspeed_;
 
             if (not place_free(position_)) {
@@ -44,7 +42,7 @@ void Hero::step()
             }
         }
     } else if (key_pressed<Key::right>()) {
-        if (place_free({position_.x + flyspeed_ + Fixnum(1.25f), position_.y})) {
+        if (place_free({position_.x + flyspeed_, position_.y})) {
             position_.x += flyspeed_;
 
             if (not place_free(position_)) {
@@ -53,7 +51,7 @@ void Hero::step()
         }
     }
     if (key_pressed<Key::up>()) {
-        if (place_free({position_.x, position_.y - (flyspeed_ + Fixnum(1.25f))})) {
+        if (place_free({position_.x, position_.y - flyspeed_})) {
             position_.y -= flyspeed_;
 
             if (not place_free(position_)) {
@@ -62,7 +60,7 @@ void Hero::step()
         }
 
     } else if (key_pressed<Key::down>()) {
-        if (place_free({position_.x, position_.y + flyspeed_ + Fixnum(1.25f)})) {
+        if (place_free({position_.x, position_.y + flyspeed_})) {
             position_.y += flyspeed_;
 
             if (not place_free(position_)) {
@@ -103,16 +101,34 @@ void Hero::step()
 
 
 
+void Hero::draw(Platform::Screen& screen) const
+{
+    if (engine().g_.invulnerable_ > 0 and
+        engine().g_.invulnerable_ % 4 < 2) {
+        Object::draw(screen);
+    } if (not engine().g_.invulnerable_) {
+        Object::draw(screen);
+    }
+}
+
+
+
 void Hero::fireleft()
 {
-
+    if (engine().g_.shot_count_ < 6) {
+        engine().add_object<Shot>(Vec2<Fixnum>{position_.x, position_.y + 3},
+                                  Fixnum(-2));
+    }
 }
 
 
 
 void Hero::fireright()
 {
-
+    if (engine().g_.shot_count_ < 6) {
+        engine().add_object<Shot>(Vec2<Fixnum>{position_.x + 3, position_.y + 3},
+                                  Fixnum(2));
+    }
 }
 
 

@@ -12,6 +12,7 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 - [ ] burst
 - [ ] warp
 - [ ] overheat
+- [ ] damage animation
 
 
 ### Enemies:
@@ -20,8 +21,8 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 - [x] Reaver
 - [x] Crusher
 - [x] Spew
-- [ ] Turret
-- [ ] Blomb
+- [x] Turret
+- [x] Blomb
 - [x] Bolt
 - [ ] Lurk
 
@@ -38,18 +39,47 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 
 
 #### Elite
-TODO...
+- [ ] Barrier
+- [ ] Generator
+- [ ] Mode
+- [ ] Hunter
+- [ ] Dire Viper
+- [ ] Mother
+- [ ] Warp Eidolon
+- [ ] Annihilator
 
 
 #### Bosses
-TODO...
+- [ ] Rock Smasher
+- [ ] Silencer
+- [ ] Plasma Hydra
+- [ ] Reaper Drone
+- [ ] Liquid Metal Processor
+- [ ] Grand Mother
+- [ ] Guardian
+- [ ] Star Splitter
+- [ ] Elite
+- [ ] Eliminator
+- [ ] Cruiser Tetron
+
+
+### Enemy Projectiles
+- [x] EShot
+- [x] ESupershot
+- [x] EMegashot
+- [x] EBomb
+- [ ] Eliteshot
+- [ ] Missile
+- [ ] Gigashot
+- [ ] Laser
+- [ ] Tetron Laser
+- [ ] Massacre
 
 
 ### Walls
 - [x] Basic Walls
 - [ ] Moving walls
 - [ ] Elevators
-- [ ]
 
 
 ### Fluids

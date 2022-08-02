@@ -8,6 +8,11 @@
 #include "objects/enemies/enemy.hpp"
 #include "objects/projectile/enemyProjectile.hpp"
 #include "objects/projectile/shot.hpp"
+#include "objects/hero.hpp"
+
+
+
+Platform& platform();
 
 
 
@@ -73,7 +78,23 @@ public:
         bool autofire_ = false;
         bool hero_jetpack_flames_ = true;
         int hp_ = 10;
+        int max_hp_ = hp_;
+        int invulnerable_ = 0;
         int shot_count_ = 0;
+        int maxheat_ = 10;
+        u8 flicker_ = 0;
+
+        void damage(int amount)
+        {
+            if (invulnerable_) {
+                return;
+            }
+
+            flicker_ = 1;
+
+            hp_ = std::max(0, (int)(hp_ - amount));
+            invulnerable_ = 30;
+        }
     } g_;
 
 
@@ -95,7 +116,7 @@ private:
     ObjectList<Shot> player_projectiles_;
     ObjectList<Object> generic_objects_;
 
-    ObjectRef<Object> hero_;
+    ObjectRef<Hero> hero_;
 
     // The original game processed updates at framerate of 40 fps. Our platform
     // hardware implementation targets screens with 60fps, so we need to drop
@@ -110,10 +131,6 @@ Engine& engine();
 
 
 }
-
-
-
-Platform& platform();
 
 
 

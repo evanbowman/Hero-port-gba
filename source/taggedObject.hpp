@@ -30,6 +30,7 @@ public:
         spew,
         bolt,
         enemy_bullet,
+        blomb,
         count
     };
 

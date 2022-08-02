@@ -18,7 +18,7 @@ private:
 
 public:
 
-    Supershot(const Vec2<Fixnum>& pos) : EnemyProjectile(pos)
+    Supershot(const Vec2<Fixnum>& pos) : EnemyProjectile(pos, 2, 0)
     {
         sprite_index_ = 14;
         hitbox_.dimension_.size_ = {7, 7};

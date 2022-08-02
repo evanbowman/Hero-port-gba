@@ -3,6 +3,7 @@
 #include "objects/enemies/enemy.hpp"
 #include "objects/projectile/enemyShot.hpp"
 #include "objects/projectile/supershot.hpp"
+#include "objects/particles/bigExplo.hpp"
 #include "engine.hpp"
 #include "fmt.hpp"
 #include "number/random.hpp"
@@ -30,6 +31,52 @@ public:
         sprite_index_ = 21;
         sprite_subimage_ = 0;
         hitbox_.dimension_.size_ = {7, 7};
+    }
+
+
+    void damage(Health dmg) override
+    {
+        // TODO: screenshake
+
+        kill();
+
+        if (engine().g_.difficulty_ == Difficulty::hard) {
+            auto c = position_;
+            c.x += 1;
+            c.y += 1;
+            for (int i = 0; i < 16; ++i) {
+                if (auto p = engine().add_object<Supershot>(c)) {
+                    float speed = (i % 2) * 2 + 1;
+                    speed *= 0.5f;
+                    // if (i % 2) {
+                    //     speed = (2 + 1) * 0.5f;
+                    // } else {
+                    //     speed = 0.5f;
+                    // }
+                    auto dir = rotate({1, 0}, i * (360 / 16));
+                    Vec2<Fixnum> spd;
+                    spd.x = Fixnum(speed * dir.x);
+                    spd.y = Fixnum(speed * dir.y);
+                    p->set_speed(spd);
+                }
+            }
+        } else {
+            for (int i = 0; i < 16; ++i) {
+                auto c = position_;
+                c.x += 2;
+                c.y += 2;
+                if (auto p = engine().add_object<EnemyShot>(c)) {
+                    auto speed = 1.f;
+                    auto dir = rotate({1, 0}, i * (360 / 8) + 22.5f);
+                    Vec2<Fixnum> spd;
+                    spd.x = Fixnum(speed * dir.x);
+                    spd.y = Fixnum(speed * dir.y);
+                    p->set_speed(spd);
+                }
+            }
+        }
+
+        engine().add_object<BigExplo>(Vec2<Fixnum>{position_.x + 4, position_.y + 4});
     }
 
 
