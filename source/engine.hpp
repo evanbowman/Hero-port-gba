@@ -40,7 +40,7 @@ public:
     bool autofire_ = false;
     bool hero_jetpack_flames_ = true;
     int hp_ = 10;
-
+    int shot_count_ = 0;
 
 
     Object* hero() const

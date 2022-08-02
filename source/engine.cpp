@@ -7,6 +7,9 @@
 #include "objects/hero.hpp"
 #include "objects/enemies/light/drone.hpp"
 #include "objects/enemies/light/reaver.hpp"
+#include "objects/enemies/light/crusher.hpp"
+#include "objects/enemies/light/spew.hpp"
+#include "objects/enemies/light/bolt.hpp"
 
 
 
@@ -56,7 +59,9 @@ Engine::Engine(Platform& pf) : hero_(null_object())
     hero_ = alloc_object<Hero>(Vec2<Fixnum>{80, 80});
     add_object<Drone>(Vec2<Fixnum>{70, 50});
     add_object<Reaver>(Vec2<Fixnum>{70, 80});
-
+    add_object<Crusher>(Vec2<Fixnum>{100, 80});
+    add_object<Spew>(Vec2<Fixnum>{200, 80});
+    add_object<Bolt>(Vec2<Fixnum>{40, 40});
 
     draw_hud();
 }
@@ -107,6 +112,10 @@ void Engine::run()
 void Engine::draw_hud()
 {
     auto& pf = platform();
+
+    // TODO: actually draw the hud correctly.
+    // NOTE: technically, what I'm drawing is too wide, the health and heat bars
+    // are actually 20 pixels wide, not 24.
 
     for (int y = 1; y < 19; ++y) {
         pf.set_tile(Layer::overlay, 2, y, 83);

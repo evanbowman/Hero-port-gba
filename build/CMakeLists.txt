@@ -53,6 +53,7 @@ set(SOURCES
   ${SOURCE_DIR}/graphics/view.cpp
   ${SOURCE_DIR}/engine.cpp
   ${SOURCE_DIR}/object.cpp
+  ${SOURCE_DIR}/taggedObject.cpp
   ${SOURCE_DIR}/objects/hero.cpp
   ${SOURCE_DIR}/localization.cpp
   ${SOURCE_DIR}/memory/pool.cpp

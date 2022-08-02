@@ -59,6 +59,9 @@ public:
 
     bool place_free(Vec2<Fixnum> pos)
     {
+        if (pos.x > 200 or pos.x < 40 or pos.y < 0 or pos.y > 160) {
+            return false;
+        }
         return true; // TODO...
     }
 

@@ -1,6 +1,7 @@
 #include "hero.hpp"
 #include "engine.hpp"
 #include "objects/particles/flame.hpp"
+#include "objects/projectile/shot.hpp"
 
 
 
@@ -15,8 +16,20 @@ void Hero::step()
 
     } else if (key_down<Key::action_1>()) {
         hflip_ = false;
+
+        if (engine().shot_count_ < 6) {
+            engine().add_object<Shot>(Vec2<Fixnum>{position_.x, position_.y + 3},
+                                      Fixnum(-2));
+        }
+
     } else if (key_down<Key::action_2>()) {
         hflip_ = true;
+
+        if (engine().shot_count_ < 6) {
+            engine().add_object<Shot>(Vec2<Fixnum>{position_.x + 3, position_.y + 3},
+                                      Fixnum(2));
+        }
+
     }
 
     auto x_prev = position_.x;
@@ -49,11 +62,11 @@ void Hero::step()
         if (jetpack_counter_ == 6) {
             jetpack_counter_ = 0;
             if (hflip_ == false) {
-                engine().add_object<Flame>(Vec2<Fixnum>{position_.x + 4,
-                                                        position_.y + 4});
+                engine().add_object<Flame>(Vec2<Fixnum>{position_.x + 5,
+                                                        position_.y + 5});
             } else {
-                engine().add_object<Flame>(Vec2<Fixnum>{position_.x,
-                                                        position_.y + 4});
+                engine().add_object<Flame>(Vec2<Fixnum>{position_.x + 1,
+                                                        position_.y + 5});
             }
         }
     }

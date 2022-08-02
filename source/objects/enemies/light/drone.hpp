@@ -1,6 +1,6 @@
 #pragma once
 
-#include "object.hpp"
+#include "objects/enemies/enemy.hpp"
 #include "engine.hpp"
 #include "fmt.hpp"
 #include "number/random.hpp"
@@ -12,11 +12,12 @@ namespace herocore
 
 
 
-class Drone : public Object
+class Drone : public Enemy
 {
 public:
 
-    Drone(const Vec2<Fixnum>& pos)
+    Drone(const Vec2<Fixnum>& pos) :
+        Enemy(Tag::drone, Health{2})
     {
         position_ = pos;
 

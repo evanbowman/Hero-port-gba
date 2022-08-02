@@ -47,6 +47,46 @@ Platform::DeviceName Platform::device_name() const
 }
 
 
+
+extern char __iwram_overlay_end;
+
+
+static const char* stack_canary_value = "（・θ・）";
+
+
+
+static void canary_init()
+{
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+#pragma GCC diagnostic ignored "-Wstringop-overflow"
+
+    __builtin_memcpy(&__iwram_overlay_end, stack_canary_value, 16);
+
+#pragma GCC diagnostic pop
+}
+
+
+
+void* stack_end()
+{
+    return &__iwram_overlay_end;
+}
+
+
+static inline bool canary_check()
+{
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+#pragma GCC diagnostic ignored "-Wstringop-overflow"
+
+    return __builtin_memcmp(&__iwram_overlay_end, stack_canary_value, 16) == 0;
+
+#pragma GCC diagnostic pop
+}
+
+
+
 void Platform::enable_feature(const char* feature_name, bool enabled)
 {
     // ...
@@ -124,6 +164,9 @@ static Platform* platform;
 
 int main(int argc, char** argv)
 {
+
+    canary_init();
+
     Platform pf;
     ::platform = &pf;
 
@@ -728,6 +771,11 @@ void Platform::push_task(Task* task)
 
 void Platform::Screen::clear()
 {
+    if (not canary_check()) {
+        platform->fatal("stack overflow!");
+    }
+
+
     // On the GBA, we don't have real threads, so run tasks prior to the vsync,
     // so any updates are least likely to cause tearing.
     for (auto it = task_queue_.begin(); it not_eq task_queue_.end();) {

@@ -1,9 +1,11 @@
 #pragma once
 
 #include "objects/enemies/enemy.hpp"
+#include "object.hpp"
 #include "engine.hpp"
 #include "fmt.hpp"
 #include "number/random.hpp"
+#include "objects/projectile/supershot.hpp"
 
 
 
@@ -12,7 +14,7 @@ namespace herocore
 
 
 
-class Reaver : public Enemy
+class Crusher : public Enemy
 {
 private:
     Vec2<Fixnum> direction_;
@@ -21,11 +23,11 @@ private:
 
 public:
 
-    Reaver(const Vec2<Fixnum>& pos) : Enemy(Tag::reaver, Health{4})
+    Crusher(const Vec2<Fixnum>& pos) : Enemy(Tag::crusher, Health{8})
     {
         position_ = pos;
 
-        sprite_index_ = 4;
+        sprite_index_ = 9;
         sprite_subimage_ = 0;
     }
 
@@ -56,25 +58,14 @@ public:
                 auto dir = direction(fvec(position_),
                                      fvec(engine().hero()->position()));
 
-                sprite_subimage_ = 2;
-                origin_.x = 4;
-
-                if (position_.x > engine().hero()->position().x) {
-                    hflip_ = false;
-                } else {
-                    hflip_ = true;
-                }
-
                 if (engine().difficulty_ == Difficulty::hard) {
-                    dir = rotate(dir, -20 + rng::choice<40>(rng::utility_state));
-                    if (max_speed_ == Fixnum(1.2f)) {
-                        max_speed_ = Fixnum(0.4f);
-                    } else {
-                        max_speed_ = Fixnum(1.2f);
-                    }
+                    speed_ = 0;
+                    max_speed_ = 2.8;
+
+                    engine().add_object<Supershot>(position_);
+
                 } else {
-                    speed_ = Fixnum(1.f);
-                    dir = dir * (1.4f / 2);
+                    speed_ = Fixnum(1.8f / 2);
                 }
 
                 direction_.x = Fixnum(dir.x);
@@ -82,23 +73,14 @@ public:
             }
             break;
 
-        case 49:
-            if (engine().difficulty_ == Difficulty::hard) {
-                timeline_ = 40;
-            }
-            break;
-
-        case 59:
+        case 79:
             timeline_ = 40;
             break;
         }
 
         if (engine().difficulty_ == Difficulty::hard) {
             if (speed_ < max_speed_) {
-                speed_ = speed_ + Fixnum(0.2f);
-            }
-            if (speed_ > max_speed_) {
-                speed_ = speed_ - Fixnum(0.125f);
+                speed_ += Fixnum(0.1f);
             }
         }
 
