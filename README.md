@@ -5,36 +5,36 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 ## Progress:
 
 ### Flip Hero:
-[x] Movement
-[x] Jetpack trail
-[x] weapon
-[ ] blade
-[ ] burst
-[ ] warp
-[ ] overheat
+-[x] Movement
+-[x] Jetpack trail
+-[x] weapon
+-[ ] blade
+-[ ] burst
+-[ ] warp
+-[ ] overheat
 
 
 ### Enemies:
 #### Light
-[x] Drone
-[x] Reaver
-[x] Crusher
-[x] Spew
-[ ] Turret
-[ ] Blomb
-[x] Bolt
-[ ] Lurk
+-[x] Drone
+-[x] Reaver
+-[x] Crusher
+-[x] Spew
+-[ ] Turret
+-[ ] Blomb
+-[x] Bolt
+-[ ] Lurk
 
 
 #### Heavy
-[ ] Spawner
-[ ] Power Turret
-[ ] Boltaray
-[ ] Battle Door
-[ ] Chain Snake
-[ ] Phase
-[ ] Soldier
-[ ] Eyespy
+-[ ] Spawner
+-[ ] Power Turret
+-[ ] Boltaray
+-[ ] Battle Door
+-[ ] Chain Snake
+-[ ] Phase
+-[ ] Soldier
+-[ ] Eyespy
 
 
 #### Elite
@@ -46,11 +46,11 @@ TODO...
 
 
 ### Walls
-[ ] Basic Walls
-[ ] Moving walls
-[ ] Elevators
-[ ]
+-[x] Basic Walls
+-[ ] Moving walls
+-[ ] Elevators
+-[ ]
 
 
 ### Fluids
-[ ] Liquid Metal
+-[ ] Liquid Metal
