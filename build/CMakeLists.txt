@@ -53,6 +53,7 @@ set(SOURCES
   ${SOURCE_DIR}/graphics/view.cpp
   ${SOURCE_DIR}/engine.cpp
   ${SOURCE_DIR}/object.cpp
+  ${SOURCE_DIR}/maps.cpp
   ${SOURCE_DIR}/taggedObject.cpp
   ${SOURCE_DIR}/objects/hero.cpp
   ${SOURCE_DIR}/localization.cpp
@@ -108,6 +109,7 @@ if(GAMEBOY_ADVANCE)
     # Data files below. Because the gameboy advance does not have a filesystem,
     # all of the sounds and images need to be compiled into the ROM.
     ${DATA_DIR}/zone5.s
+    ${DATA_DIR}/zone1.s
     ${DATA_DIR}/overlay.s
     ${DATA_DIR}/tile0.s
     ${DATA_DIR}/spritesheet.s

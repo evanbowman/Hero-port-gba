@@ -1974,6 +1974,7 @@ static const u32 null_music[null_music_len] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 #include "gba_platform_soundcontext.hpp"
 #include "data/zone5.hpp"
+#include "data/zone1.hpp"
 
 
 SoundContext snd_ctx;
@@ -1985,7 +1986,8 @@ static const struct AudioTrack {
     int length_; // NOTE: For music, this is the track length in 32 bit words,
                  // but for sounds, length_ reprepresents bytes.
 } music_tracks[] = {
-                    DEF_MUSIC(zone5, zone5)
+      DEF_MUSIC(zone5, zone5),
+      DEF_MUSIC(zone1, zone1)
 };
 
 
@@ -2166,9 +2168,9 @@ static void play_music(const char* name, Microseconds offset)
     const Microseconds sample_offset = offset * 0.016f; // NOTE: because 16kHz
 
     modify_audio([&] {
-        snd_ctx.music_track_length = music_file->length_;
+        snd_ctx.music_track_length = music_file->length_ * 4;
         snd_ctx.music_track = reinterpret_cast<const s8*>(music_file->data_);
-        snd_ctx.music_track_pos = sample_offset % music_file->length_;
+        snd_ctx.music_track_pos = (sample_offset / 4) % music_file->length_;
     });
 }
 

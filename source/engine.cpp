@@ -12,6 +12,7 @@
 #include "objects/enemies/light/bolt.hpp"
 #include "objects/enemies/light/blomb.hpp"
 #include "objects/enemies/light/turret.hpp"
+#include "maps.hpp"
 
 
 
@@ -59,20 +60,18 @@ Engine::Engine(Platform& pf) : hero_(alloc_object<Hero>(Vec2<Fixnum>{80, 80}))
     _platform->screen().fade(0.f);
     _platform->screen().display();
 
-    add_object<Drone>(Vec2<Fixnum>{70, 50});
-    add_object<Reaver>(Vec2<Fixnum>{70, 80});
-    add_object<Crusher>(Vec2<Fixnum>{100, 80});
-    add_object<Spew>(Vec2<Fixnum>{170, 80});
-    add_object<Bolt>(Vec2<Fixnum>{80, 40});
-    add_object<Blomb>(Vec2<Fixnum>{64, 8});
-    if (auto t = add_object<Turret>(Vec2<Fixnum>{192, 48})) {
-        t->set_left();
-    }
+    // add_object<Drone>(Vec2<Fixnum>{70, 50});
+    // add_object<Reaver>(Vec2<Fixnum>{70, 80});
+    // add_object<Crusher>(Vec2<Fixnum>{100, 80});
+    // add_object<Spew>(Vec2<Fixnum>{170, 80});
+    // add_object<Bolt>(Vec2<Fixnum>{80, 40});
+    // add_object<Blomb>(Vec2<Fixnum>{64, 8});
+    // if (auto t = add_object<Turret>(Vec2<Fixnum>{192, 48})) {
+    //     t->set_left();
+    // }
 
     room_.clear();
-    room_.load(11, 0); // easy mode start position
-
-    pf.speaker().play_music("zone5", 0);
+    room_.load(6, 0); // easy mode start position
 
     draw_hud();
 }
@@ -89,7 +88,7 @@ void Engine::begin_game(Difficulty d)
     //     room_.load(11, 14);
     // }
 
-    room_.load(11, 14);
+    room_.load(7, 0);
 }
 
 
@@ -126,6 +125,8 @@ void Engine::collision_check()
 
 void Engine::run()
 {
+    platform().speaker().play_music("zone5", 0);
+
     while (true) {
 
         if (frame_count_ == 2) {
@@ -256,11 +257,13 @@ void Engine::draw_hud()
 
 void Engine::Room::load(int chunk_x, int chunk_y)
 {
-    for (int x = 0; x < 20; ++x) {
+    if (auto rd = load_room(chunk_x, chunk_y)) {
         for (int y = 0; y < 20; ++y) {
-            if ((x == 0 or y == 0 or x == 19 or y == 19) and x not_eq 15 and x not_eq 16 and x not_eq 14) {
-                walls_[x][y] = true;
-                platform().set_tile(Layer::map_0, x + 5, y, 1);
+            for (int x = 0; x < 20; ++x) {
+                walls_[x][y] = rd->walls_[y][x];
+                if (walls_[x][y]) {
+                    platform().set_tile(Layer::map_0, x + 5, y, 1);
+                }
             }
         }
     }
