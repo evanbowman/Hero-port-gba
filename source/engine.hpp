@@ -9,6 +9,7 @@
 #include "objects/projectile/enemyProjectile.hpp"
 #include "objects/projectile/shot.hpp"
 #include "objects/hero.hpp"
+#include "scene.hpp"
 
 
 
@@ -118,13 +119,18 @@ public:
     void load(int chunk_x, int chunk_y);
 
 
-private:
     ObjectList<Enemy> enemies_;
     ObjectList<EnemyProjectile> enemy_projectiles_;
     ObjectList<Shot> player_projectiles_;
     ObjectList<Object> generic_objects_;
 
     ObjectRef<Hero> hero_;
+
+
+private:
+
+    ScenePtr<Scene> current_scene_;
+    ScenePtr<Scene> next_scene_;
 
     // The original game processed updates at framerate of 40 fps. Our platform
     // hardware implementation targets screens with 60fps, so we need to drop

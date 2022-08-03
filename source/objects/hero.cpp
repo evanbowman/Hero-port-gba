@@ -12,13 +12,13 @@ namespace herocore
 
 void Hero::step()
 {
-    if (key_down<Key::action_1>()) {
+    if (key_down<Key::action_2>()) {
         hflip_ = false;
 
         fireleft();
 
     }
-    if (key_down<Key::action_2>()) {
+    if (key_down<Key::action_1>()) {
         hflip_ = true;
 
         fireright();

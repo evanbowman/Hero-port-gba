@@ -13,6 +13,24 @@
 #include "objects/enemies/light/blomb.hpp"
 #include "objects/enemies/light/turret.hpp"
 #include "maps.hpp"
+#include "scene.hpp"
+#include "scenes.hpp"
+
+
+
+namespace herocore::scene_pool
+{
+    _Pool pool_("scene-pool");
+}
+
+
+
+
+herocore::ScenePtr<herocore::Scene> herocore::null_scene()
+{
+    return {nullptr, scene_pool::deleter};
+}
+
 
 
 
@@ -43,12 +61,18 @@ Engine& engine()
 
 
 
-Engine::Engine(Platform& pf) : hero_(alloc_object<Hero>(Vec2<Fixnum>{80, 80}))
+Engine::Engine(Platform& pf) :
+    hero_(alloc_object<Hero>(Vec2<Fixnum>{80, 80})),
+    current_scene_(scene_pool::alloc<OverworldScene>()),
+    next_scene_(null_scene())
 {
     pf.load_overlay_texture("overlay");
     pf.load_sprite_texture("spritesheet");
     pf.load_tile0_texture("tile0");
+    pf.enable_glyph_mode(true);
     bound_engine = this;
+
+    current_scene_->enter(*current_scene_);
 
     _platform = &pf;
     {
@@ -70,8 +94,7 @@ Engine::Engine(Platform& pf) : hero_(alloc_object<Hero>(Vec2<Fixnum>{80, 80}))
     //     t->set_left();
     // }
 
-    room_.clear();
-    room_.load(6, 0); // easy mode start position
+    begin_game(g_.difficulty_);
 
     draw_hud();
 }
@@ -82,13 +105,11 @@ void Engine::begin_game(Difficulty d)
 {
     room_.clear();
 
-    // if (d == Difficulty::hard) {
-    //     room_.load(7, 0);
-    // } else {
-    //     room_.load(11, 14);
-    // }
-
-    room_.load(7, 0);
+    if (d == Difficulty::hard) {
+        room_.load(6, 0);
+    } else {
+        room_.load(11, 14);
+    }
 }
 
 
@@ -138,6 +159,11 @@ void Engine::run()
 
             _platform->keyboard().poll();
 
+            if (next_scene_) {
+                next_scene_->enter(*current_scene_);
+                current_scene_ = std::move(next_scene_);
+            }
+
             if (key_down<Key::alt_1>()) {
                 g_.autofire_ = not g_.autofire_;
             }
@@ -159,32 +185,20 @@ void Engine::run()
                 continue;
             } else if (hpos.y < 2) {
                 load(room_.coord_.x, room_.coord_.y - 1);
-                hero_->set_position({hero_->position().x, 142});
+                hero_->set_position({hero_->position().x, 148});
                 continue;
             }
 
-            auto step_list =
-                [&](auto& objects, auto on_destroy) {
-                    for (auto it = objects.begin(); it not_eq objects.end();) {
-                        if ((*it)->dead()) {
-                            on_destroy(*it);
-                            it = objects.erase(it);
-                        } else {
-                            (*it)->step();
-                            ++it;
-                        }
-                    }
-                };
+            next_scene_ = current_scene_->step();
 
-            step_list(enemies_, [](auto&) {});
-            step_list(enemy_projectiles_, [](auto&) {});
-            step_list(generic_objects_, [](auto&) {});
-            step_list(player_projectiles_, [&](auto&) {--g_.shot_count_;});
+            if (next_scene_) {
+                current_scene_->exit(*next_scene_);
+            }
 
             ++frame_count_;
-        }
 
-        collision_check();
+            collision_check();
+        }
 
         _platform->screen().clear();
 
@@ -196,22 +210,7 @@ void Engine::run()
             g_.flicker_ = 0;
         }
 
-        auto draw_list =
-            [&](auto& objects) {
-                for (auto& obj : objects) {
-
-                    if (not obj->dead()) {
-                        obj->draw(_platform->screen());
-                    }
-                }
-            };
-
-        hero_->draw(_platform->screen());
-
-        draw_list(enemy_projectiles_);
-        draw_list(player_projectiles_);
-        draw_list(enemies_);
-        draw_list(generic_objects_);
+        current_scene_->display();
 
         _platform->screen().display();
     }
@@ -222,13 +221,14 @@ void Engine::run()
 
 void Engine::load(int chunk_x, int chunk_y)
 {
-    room_.load(chunk_x, chunk_y);
     enemies_.clear();
     enemy_projectiles_.clear();
     generic_objects_.clear();
     player_projectiles_.clear();
 
     g_.shot_count_ = 0;
+
+    room_.load(chunk_x, chunk_y);
 }
 
 
@@ -291,13 +291,27 @@ void Engine::Room::load(int chunk_x, int chunk_y)
 {
     clear();
 
-    if (auto rd = load_room(chunk_x, chunk_y)) {
+    const RoomData* rd;
+    if (engine().g_.difficulty_ == Difficulty::hard) {
+        rd = load_room_hard(chunk_x, chunk_y);
+    } else {
+        rd = load_room_normal(chunk_x, chunk_y);
+    }
+
+    if (rd) {
         for (int y = 0; y < 20; ++y) {
             for (int x = 0; x < 20; ++x) {
-                walls_[x][y] = rd->tiles_[y][x] == 1;
-                if (walls_[x][y]) {
-                    platform().set_tile(Layer::map_0, x + 5, y,
+                walls_[x][y] =
+                    rd->tiles_[y][x] == 1 or
+                    rd->tiles_[y][x] == 6 or
+                    rd->tiles_[y][x] == 7 or
+                    rd->tiles_[y][x] == 8;
+
+                platform().set_tile(Layer::map_0, x + 5, y,
                                         rd->tiles_[y][x]);
+
+                if (walls_[x][y]) {
+
                 } else if (x == 19) {
                     platform().set_tile(Layer::map_0, x + 5, y, 2);
                 } else if (x == 0) {
@@ -306,9 +320,41 @@ void Engine::Room::load(int chunk_x, int chunk_y)
                     platform().set_tile(Layer::map_0, x + 5, y, 4);
                 } else if (y == 0) {
                     platform().set_tile(Layer::map_0, x + 5, y, 5);
-                } else {
-                    platform().set_tile(Layer::map_0, x + 5, y, 0);
                 }
+            }
+        }
+
+        for (auto& obj : rd->objects_) {
+            switch (obj.type_) {
+            case 0: // null
+                break;
+
+            case 1:
+                engine().add_object<Drone>(Vec2<Fixnum>{40 + obj.x_ * 8 - 4, obj.y_ * 8 - 4});
+                break;
+
+            case 2:
+                engine().add_object<Reaver>(Vec2<Fixnum>{40 + obj.x_ * 8 - 4, obj.y_ * 8 - 4});
+                break;
+
+            case 3:
+                engine().add_object<Spew>(Vec2<Fixnum>{40 + obj.x_ * 8 - 4, obj.y_ * 8 - 4});
+                break;
+
+            case 4:
+                engine().add_object<Crusher>(Vec2<Fixnum>{40 + obj.x_ * 8 - 4, obj.y_ * 8 - 4});
+                break;
+
+            case 5:
+                engine().add_object<Blomb>(Vec2<Fixnum>{40 + obj.x_ * 8 - 4, obj.y_ * 8});
+                break;
+
+            case 6:
+                engine().add_object<Bolt>(Vec2<Fixnum>{40 + obj.x_ * 8 - 4, obj.y_ * 8 - 4});
+                break;
+
+            default:
+                break;
             }
         }
     }
