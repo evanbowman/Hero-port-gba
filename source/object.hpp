@@ -66,6 +66,12 @@ public:
     }
 
 
+    void set_position(const Vec2<Fixnum>& pos)
+    {
+        position_ = pos;
+    }
+
+
     const Hitbox& hitbox() const
     {
         return hitbox_;

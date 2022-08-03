@@ -125,7 +125,7 @@ void Engine::collision_check()
 
 void Engine::run()
 {
-    platform().speaker().play_music("zone5", 0);
+    platform().speaker().play_music("zone1", 0);
 
     while (true) {
 
@@ -143,6 +143,25 @@ void Engine::run()
             }
 
             hero_->step();
+
+            const auto hpos = hero_->position();
+            if (hpos.x > Fixnum(196)) {
+                load(room_.coord_.x + 1, room_.coord_.y);
+                hero_->set_position({50, hero_->position().y});
+                continue;
+            } else if (hpos.x < Fixnum(41)) {
+                load(room_.coord_.x - 1, room_.coord_.y);
+                hero_->set_position({182, hero_->position().y});
+                continue;
+            } else if (hpos.y > Fixnum(154)) {
+                load(room_.coord_.x, room_.coord_.y + 1);
+                hero_->set_position({hero_->position().x, 10});
+                continue;
+            } else if (hpos.y < 2) {
+                load(room_.coord_.x, room_.coord_.y - 1);
+                hero_->set_position({hero_->position().x, 142});
+                continue;
+            }
 
             auto step_list =
                 [&](auto& objects, auto on_destroy) {
@@ -197,6 +216,19 @@ void Engine::run()
         _platform->screen().display();
     }
 
+}
+
+
+
+void Engine::load(int chunk_x, int chunk_y)
+{
+    room_.load(chunk_x, chunk_y);
+    enemies_.clear();
+    enemy_projectiles_.clear();
+    generic_objects_.clear();
+    player_projectiles_.clear();
+
+    g_.shot_count_ = 0;
 }
 
 
@@ -257,16 +289,31 @@ void Engine::draw_hud()
 
 void Engine::Room::load(int chunk_x, int chunk_y)
 {
+    clear();
+
     if (auto rd = load_room(chunk_x, chunk_y)) {
         for (int y = 0; y < 20; ++y) {
             for (int x = 0; x < 20; ++x) {
-                walls_[x][y] = rd->walls_[y][x];
+                walls_[x][y] = rd->tiles_[y][x] == 1;
                 if (walls_[x][y]) {
-                    platform().set_tile(Layer::map_0, x + 5, y, 1);
+                    platform().set_tile(Layer::map_0, x + 5, y,
+                                        rd->tiles_[y][x]);
+                } else if (x == 19) {
+                    platform().set_tile(Layer::map_0, x + 5, y, 2);
+                } else if (x == 0) {
+                    platform().set_tile(Layer::map_0, x + 5, y, 3);
+                } else if (y == 19) {
+                    platform().set_tile(Layer::map_0, x + 5, y, 4);
+                } else if (y == 0) {
+                    platform().set_tile(Layer::map_0, x + 5, y, 5);
+                } else {
+                    platform().set_tile(Layer::map_0, x + 5, y, 0);
                 }
             }
         }
     }
+
+    coord_ = {chunk_x, chunk_y};
 }
 
 

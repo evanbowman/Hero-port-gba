@@ -72,6 +72,8 @@ public:
 
         void load(int chunk_x, int chunk_y);
 
+        Vec2<int> coord_;
+
     } room_;
 
 
@@ -111,6 +113,9 @@ public:
 
 
     void collision_check();
+
+
+    void load(int chunk_x, int chunk_y);
 
 
 private:

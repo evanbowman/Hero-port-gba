@@ -79,6 +79,8 @@ def parse_instances(xml_list):
         elif objname == "obj_blocktall3":
             for y in range(0, 10):
                 set_wall(tx, ty + y)
+        elif objname == "obj_dirt":
+            tilemap[tx][ty] = 6
 
 
 

@@ -1,10 +1,12 @@
 #pragma once
 
+#include "number/int.h"
+
 
 
 struct RoomData
 {
-    bool walls_[20][20];
+    u8 tiles_[20][20];
 };
 
 
