@@ -84,16 +84,6 @@ Engine::Engine(Platform& pf) :
     _platform->screen().fade(0.f);
     _platform->screen().display();
 
-    // add_object<Drone>(Vec2<Fixnum>{70, 50});
-    // add_object<Reaver>(Vec2<Fixnum>{70, 80});
-    // add_object<Crusher>(Vec2<Fixnum>{100, 80});
-    // add_object<Spew>(Vec2<Fixnum>{170, 80});
-    // add_object<Bolt>(Vec2<Fixnum>{80, 40});
-    // add_object<Blomb>(Vec2<Fixnum>{64, 8});
-    // if (auto t = add_object<Turret>(Vec2<Fixnum>{192, 48})) {
-    //     t->set_left();
-    // }
-
     begin_game(g_.difficulty_);
 
     draw_hud();
@@ -106,7 +96,7 @@ void Engine::begin_game(Difficulty d)
     room_.clear();
 
     if (d == Difficulty::hard) {
-        room_.load(6, 0);
+        room_.load(4, 0);
     } else {
         room_.load(11, 14);
     }
@@ -351,6 +341,16 @@ void Engine::Room::load(int chunk_x, int chunk_y)
 
             case 6:
                 engine().add_object<Bolt>(Vec2<Fixnum>{40 + obj.x_ * 8 - 4, obj.y_ * 8 - 4});
+                break;
+
+            case 8:
+                if (auto t = engine().add_object<Turret>(Vec2<Fixnum>{40 + obj.x_ * 8 + 8, obj.y_ * 8})) {
+                    t->set_left();
+                }
+                break;
+
+            case 7:
+                engine().add_object<Turret>(Vec2<Fixnum>{40 + obj.x_ * 8, obj.y_ * 8});
                 break;
 
             default:
