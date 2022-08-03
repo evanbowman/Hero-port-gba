@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<timeline>
+  <moment stepNo="0">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_sabot.tetronblackcover=1;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="160">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_sabot.text1=scr_omnitext(565);
+obj_sabot.text2="";
+obj_sabot.text3="";
+blockfall=1;
+blockmax=160;
+blockplus=random(20);
+obj_hero.depth=100;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="320">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_sabot.text1=scr_omnitext(566);
+obj_sabot.text2="";
+obj_sabot.text3="";
+</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="480">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_sabot.text1=scr_omnitext(567);
+obj_sabot.text2="";
+obj_sabot.text3="";
+</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="640">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_sabot.text1=scr_omnitext(568);
+obj_sabot.text2="";
+obj_sabot.text3="";
+</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="800">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_sabot.text1=scr_omnitext(569);
+obj_sabot.text2="";
+obj_sabot.text3="";
+</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="960">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_sabot.text1=scr_omnitext(570);
+obj_sabot.text2="";
+obj_sabot.text3="";
+</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="1120">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_sabot.text1=scr_omnitext(571);
+obj_sabot.text2="";
+obj_sabot.text3="";
+</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="1280">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_sabot.text1=scr_omnitext(572);
+obj_sabot.text2="";
+obj_sabot.text3="";
+obj_tetronneck.x=obj_tetronneck.xhold;
+obj_tetronneck.y=obj_tetronneck.yhold;
+obj_tetronneck.shift=0;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="1440">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_tetronneck.shift=2;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="1560">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_sabot.cannotpause=1;
+scr_sound("tetronexplo");</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="1598">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">scr_compat(4);
+shaking=0;
+</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="1600">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">with (obj_tetronneck)
+    instance_destroy()
+with (obj_door1)
+    instance_destroy()
+with (obj_hero)
+    instance_destroy();
+repeat(80){
+    tempid=instance_create(x,y,obj_flame);
+    tempid.speed=1+random(2);
+    tempid.direction=random(360);
+    tempid.alarm[0]=1000;
+    }
+repeat(160){
+    tempid=instance_create(x,y,obj_flame);
+    tempid.sprite_index=spr_explo;
+    tempid.image_single=1;
+    tempid.speed=0.2+random(1);
+    tempid.direction=random(360);
+    tempid.alarm[0]=1000;
+    }
+y+=320;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="1640">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_sabot.drawtetroncircle=1;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="1680">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (global.gmversion==5){
+    repeat(200){
+        tempid=instance_create(x,y-320,obj_flame);
+        tempid.sprite_index=spr_bigexplo;
+        tempid.image_single=1;
+        tempid.speed=1+random(2);
+        tempid.direction=random(360);
+        tempid.alarm[0]=1000;
+        }
+    }
+obj_sabot.mdk=1;
+obj_sabot.skipdraw=1;
+</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="1720">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (global.gmversion==5){
+    for (i=0;i&lt;360;i+=10){
+        tempid=instance_create(x-32,y-352,obj_flame);
+        tempid.sprite_index=spr_blockbig;
+        tempid.speed=1.5;
+        tempid.direction=i;
+        tempid.alarm[0]=1000;
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="2020">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_sabot.alarm[1]=2;</argument>
+      </arguments>
+    </action>
+  </moment>
+</timeline>

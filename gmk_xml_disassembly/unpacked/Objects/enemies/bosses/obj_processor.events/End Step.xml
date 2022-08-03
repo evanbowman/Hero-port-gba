@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="2">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (shaking &amp;&amp; obj_sabot.shakescreen==0)
+    obj_sabot.shakescreen=2;
+if (shaking &amp;&amp; hp&gt;0){
+    soundcyc+=1;
+    if (soundcyc&gt;=10){
+        soundcyc=0;
+        obj_sabot.fire[8]=1;
+        }
+    }
+
+if (move&gt;0){
+    if (move==5)
+        movecyc+=1;
+    else
+        movecyc+=2;
+    }
+if (movecyc&gt;=4){
+    movecyc=0;
+    if (move==1 || move==5){
+        x+=2;
+        if (place_meeting(x,y,obj_hero))
+            obj_hero.x+=2;
+        }
+    else if (move==2){
+        y-=2;
+        if (place_meeting(x,y,obj_hero))
+            obj_hero.y-=2;
+        }
+    else if (move==3){
+        x-=2;
+        if (place_meeting(x,y,obj_hero))
+            obj_hero.x-=2;
+        }
+    else if (move==4){
+        y+=2;
+        if (place_meeting(x,y,obj_hero))
+            obj_hero.y+=2;
+        }
+    }
+
+//DEAD
+if (hp&lt;=0 &amp;&amp; !dead){
+    with (obj_sabot){
+        if (!global.bossmode &amp;&amp; !global.reallyplay)
+            scr_wantsong(0);
+        }
+    obj_hero.cannotwarp=1;
+    dead=1;
+    move=0;
+    solid=0;
+    eoffx=x-24+random(48);
+    eoffy=y-24+random(48);
+    timeline_index=-1;
+    speed=0;
+    direction=0;
+    with (obj_lurk2)
+        hp=0;
+    with (obj_processorneck){
+        hp=0;
+        fastanim=1;
+        }
+    with (obj_esupershot){
+        instance_destroy();
+        instance_create(x,y,obj_explo);
+        }
+    with (obj_emegashot){
+        instance_destroy();
+        instance_create(x,y,obj_explo);
+        }
+    with (obj_egigashot){
+        instance_destroy();
+        instance_create(x,y,obj_explo);
+        }
+    with (obj_eshot)
+        instance_destroy();
+    obj_sabot.shakescreen=6;
+    }
+
+if (dead){
+    if (global.bossmode || global.reallyplay){
+        deadcyc2=20;
+        scr_bossmodereward(4);
+        }
+    deadcyc+=1;
+    if ((deadcyc mod 2==0) &amp;&amp; deadcyc&lt;8){
+        obj_sabot.shakescreen=6;
+        instance_create(eoffx-deadcyc+random(deadcyc*2),eoffy-deadcyc*6,obj_bigexplo);
+        }
+    if (deadcyc==8){
+        obj_sabot.explo[2]=1;
+        deadcyc=0;
+        deadcyc2+=1;
+        eoffx=x-24+random(48);
+        eoffy=y-24+random(48);
+        }
+    if (deadcyc2&gt;=20){
+        obj_sabot.boss=0;
+        obj_sabot.explo[4]=1;
+        obj_sabot.pickuppresent=1;
+        instance_destroy();
+        with (obj_processorneck)
+            instance_destroy();
+//        with (obj_lurk2_s)
+//            instance_destroy();
+        obj_sabot.shakescreen=12;
+        obj_bgdraw.alpha=0.015;
+        for (i=0;i&lt;6;i+=1){
+            for (j=0;j&lt;8;j+=1){
+                tempid=instance_create(x,y,obj_bigexplo);
+                tempid.speed=(i+1)*4;
+                tempid.direction=j*45;
+                }
+            }
+        for (i=1;i&lt;361;i+=4){
+            sp+=4;
+            if (sp&gt;=16) sp=0;
+            tempid=instance_create(x,y,obj_firework);
+            tempid.sprite_index=spr_flame;
+            tempid.direction=i;
+            tempid.speed=(sp+4)/3+1;
+            tempid.i=1;
+            }
+        if (global.difficulty&lt;2){
+            if (global.difficulty==0)
+                (instance_create(x,y,obj_pickup)).image_single=1;
+            else
+                (instance_create(x,y,obj_pickup)).image_single=0;
+            }
+        else
+            obj_sabot.mitemclear[obj_sabot.roomx,obj_sabot.roomy]=1;
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

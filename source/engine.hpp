@@ -54,6 +54,9 @@ public:
     }
 
 
+    void begin_game(Difficulty d);
+
+
     struct Room
     {
         bool walls_[20][20];

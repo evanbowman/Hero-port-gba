@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="COLLISION" with="obj_enemy">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (!dud &amp;&amp; other.hp&gt;0 &amp;&amp; !other.bladed){
+other.bladed=1;
+
+//Lurk
+if (other.type==8){
+    if ((sprite_index==spr_blade &amp;&amp; y&lt;other.y+16) || (sprite_index==spr_blade2 &amp;&amp; y&lt;other.y+24)){
+        other.hp-=2+global.blade*2;
+        if (obj_sabot.shakescreen&lt;2)
+            obj_sabot.shakescreen=2;
+        obj_sabot.hit[1]=1;
+        }
+    else
+        obj_sabot.explo[0]=1;
+    }
+//Battledoor
+else if (other.type==14){
+    other.hp-=2+global.blade*2;
+    if (obj_sabot.shakescreen&lt;2)
+        obj_sabot.shakescreen=2;
+    obj_sabot.hit[2]=1;
+    }
+//Chain snake
+else if (other.type==15){
+    if (other.sprite_index==spr_chainsnake){
+        other.hp-=2+global.blade*2;
+        if (obj_sabot.shakescreen&lt;2)
+            obj_sabot.shakescreen=2;
+        obj_sabot.hit[2]=1;
+        }
+    else
+        obj_sabot.explo[0]=1;
+    }
+//Eyespy
+else if (other.type==18){
+    other.hp-=2+global.blade*2;
+    if (obj_sabot.shakescreen&lt;2)
+        obj_sabot.shakescreen=2;
+    obj_sabot.hit[2]=1;
+    with (other){
+        if (!wake){
+            scr_sound("spot");
+            wake=1;
+            timeline_position=40;
+            gigacyc=floor(point_direction(x,y,obj_hero.x,obj_hero.y)-90+360);
+            global.tempid=id;
+            with (obj_eyespyradius){
+                if (owner==global.tempid)
+                    instance_destroy();
+                }
+            }
+        }
+    }
+//Generator
+else if (other.type==22){
+    other.hp-=2+global.blade*2;
+    obj_sabot.shakescreen=4;
+    if (other.sprite_index==spr_generator){
+        obj_sabot.hit[3]=1;
+        obj_sabot.shakescreen=4;
+        }
+    else{
+        obj_sabot.hit[2]=1;
+        if (obj_sabot.shakescreen&lt;2)
+            obj_sabot.shakescreen=2;
+        }
+    }
+//Mode
+else if (other.type==23){
+    if (other.sprite_index==spr_mode){
+        other.hp-=2+global.blade*2;
+        if (obj_sabot.shakescreen&lt;2)
+            obj_sabot.shakescreen=2;
+        obj_sabot.hit[3]=1;
+        }
+    else{ //Lighter sound
+        other.hp-=2+global.blade*2;
+        if (obj_sabot.shakescreen&lt;2)
+            obj_sabot.shakescreen=2;
+        obj_sabot.hit[2]=1;
+        }
+    }
+//Dire viper
+else if (other.type==25){
+    if (other.sprite_index==spr_direviper){
+        other.hp-=2+global.blade*2;
+        if (obj_sabot.shakescreen&lt;2)
+            obj_sabot.shakescreen=2;
+        obj_sabot.hit[3]=1;
+        }
+    else
+        obj_sabot.explo[0]=1;
+    }
+//Mother
+else if (other.type==26){
+    if ((sprite_index==spr_blade &amp;&amp; y&gt;other.y-10 &amp;&amp; y&lt;other.y+14) || (sprite_index==spr_blade2 &amp;&amp; y&gt;other.y-18 &amp;&amp; y&lt;other.y+24)){
+        other.hp-=2+global.blade*2;
+        if (obj_sabot.shakescreen&lt;2)
+            obj_sabot.shakescreen=2;
+        obj_sabot.hit[3]=1;
+        }
+    else
+        obj_sabot.explo[0]=1;
+    }
+//Annihilator
+else if (other.type==28){
+    if (sprite_index==spr_blade &amp;&amp; y&lt;other.y &amp;&amp; ((x&lt;other.x &amp;&amp; other.image_single==2) || (x&gt;other.x &amp;&amp; other.image_single==3))){
+        other.hp-=2+global.blade*2;
+        if (obj_sabot.shakescreen&lt;2)
+            obj_sabot.shakescreen=2;
+        obj_sabot.hit[3]=1;
+        }
+    else if (sprite_index==spr_blade2 &amp;&amp; y&lt;other.y+8 &amp;&amp; ((x&lt;other.x &amp;&amp; other.image_single==2) || (x&gt;other.x &amp;&amp; other.image_single==3))){
+        other.hp-=2+global.blade*2;
+        if (obj_sabot.shakescreen&lt;2)
+            obj_sabot.shakescreen=2;
+        obj_sabot.hit[3]=1;
+        }
+    else if (sprite_index==spr_blade &amp;&amp; y&gt;other.y+10 &amp;&amp; ((x&lt;other.x &amp;&amp; other.image_single==3) || (x&gt;other.x &amp;&amp; other.image_single==2))){
+        other.hp-=2+global.blade*2;
+        if (obj_sabot.shakescreen&lt;2)
+            obj_sabot.shakescreen=2;
+        obj_sabot.hit[3]=1;
+        }
+    else if (sprite_index==spr_blade2 &amp;&amp; y&gt;other.y+4 &amp;&amp; ((x&lt;other.x &amp;&amp; other.image_single==3) || (x&gt;other.x &amp;&amp; other.image_single==2))){
+        other.hp-=2+global.blade*2;
+        if (obj_sabot.shakescreen&lt;2)
+            obj_sabot.shakescreen=2;
+        obj_sabot.hit[3]=1;
+        }
+    else
+        obj_sabot.explo[0]=1;
+    }
+//Terror
+else if (other.type==29){
+    obj_sabot.explo[0]=1;
+    }
+//Rock Smasher
+else if (other.type==31){
+    if (other.sprite_index==spr_silencercore){
+        other.hp-=2+global.blade*2;
+        if (obj_sabot.shakescreen&lt;2)
+            obj_sabot.shakescreen=2;
+        obj_sabot.hit[4]=1;
+        }
+    else
+        obj_sabot.explo[0]=1;
+    }
+//Silencer
+else if (other.type==32){
+    if (other.sprite_index==spr_silencercore || other.sprite_index==spr_silencerwall){
+        other.hp-=2+global.blade*2;
+        if (obj_sabot.shakescreen&lt;2)
+            obj_sabot.shakescreen=2;
+        if (other.sprite_index=spr_silencerwall)
+            obj_sabot.hit[1]=1;
+        else
+            obj_sabot.hit[4]=1;
+        }
+    else
+        obj_sabot.explo[0]=1;
+    }
+//Hydlas
+else if (other.type==33){
+    if (other.sprite_index==spr_hydlashead){
+        if (other.image_single==2 || other.image_single==5 || other.image_single==8){
+            other.hp-=2+global.blade*2;
+            if (obj_sabot.shakescreen&lt;2)
+                obj_sabot.shakescreen=2;
+            if (image_single==0)
+                other.x-=6;
+            else
+                other.x+=6;
+            obj_sabot.hit[4]=1;
+            }
+        }
+    else
+        obj_sabot.explo[0]=1;
+    }
+//Reaper Drone
+else if (other.type==34){
+    other.hp-=2+global.blade*2;
+    if (obj_sabot.shakescreen&lt;2)
+        obj_sabot.shakescreen=2;
+    if (other.isneck)
+        obj_sabot.hit[1]=1;
+    else
+        obj_sabot.hit[4]=1;
+    }
+//Liquid Metal Processor
+else if (other.type==35){
+    if (other.sprite_index==spr_silencercore || other.sprite_index==spr_processorwall){
+        other.hp-=2+global.blade*2;
+        if (obj_sabot.shakescreen&lt;2)
+            obj_sabot.shakescreen=2;
+        if (other.sprite_index=spr_processorwall)
+            obj_sabot.hit[1]=1;
+        else
+            obj_sabot.hit[4]=1;
+        }
+    else
+        obj_sabot.explo[0]=1;
+    }
+//Grand Mother
+else if (other.type==36){
+    obj_sabot.explo[0]=1;
+    }
+//Guardian
+else if (other.type==37){
+    if (other.mode==11){
+        obj_guardian.hp2-=2+global.blade*2;
+        if (obj_sabot.shakescreen&lt;2)
+            obj_sabot.shakescreen=2;
+        obj_sabot.hit[4]=1;
+        }
+    else if (sprite_index==spr_blade){
+        if (other.mode==2 &amp;&amp; y&gt;other.y+8){
+            obj_guardian.hp-=2+global.blade*2;
+            if (obj_sabot.shakescreen&lt;2)
+                obj_sabot.shakescreen=2;
+            dud=1;
+            obj_sabot.hit[4]=1;
+            }
+        else if (other.mode==3 &amp;&amp; y&lt;other.y-8){
+            obj_guardian.hp-=2+global.blade*2;
+            if (obj_sabot.shakescreen&lt;2)
+                obj_sabot.shakescreen=2;
+            dud=1;
+            obj_sabot.hit[4]=1;
+            }
+        else
+            obj_sabot.explo[0]=1;
+        }
+    else if (sprite_index==spr_blade2){
+        if (other.mode==2 &amp;&amp; y&gt;other.y+2){
+            obj_guardian.hp-=2+global.blade*2;
+            if (obj_sabot.shakescreen&lt;2)
+                obj_sabot.shakescreen=2;
+            dud=1;
+            obj_sabot.hit[4]=1;
+            }
+        else if (other.mode==3 &amp;&amp; y&lt;other.y){
+            obj_guardian.hp-=2+global.blade*2;
+            if (obj_sabot.shakescreen&lt;2)
+                obj_sabot.shakescreen=2;
+            dud=1;
+            obj_sabot.hit[4]=1;
+            }
+        else
+            obj_sabot.explo[0]=1;
+        }
+    }
+//Dread
+else if (other.type==38){
+    if (other.sprite_index==spr_silencercore || other.bouncing){
+        other.hp-=2+global.blade*2;
+        if (obj_sabot.shakescreen&lt;2)
+            obj_sabot.shakescreen=2;
+        obj_sabot.hit[4]=1;
+        }
+    else
+        obj_sabot.explo[0]=1;
+    }
+//Tetron
+else if (other.type==40){
+    if (((sprite_index==spr_blade &amp;&amp; y&lt;other.y-18) || (sprite_index==spr_blade2 &amp;&amp; y&lt;other.y-10)) &amp;&amp; other.sprite_index!=spr_tetronneck){
+        if ((other.image_single==0 &amp;&amp; x&lt;other.x+8) || (other.image_single==1 &amp;&amp; x&gt;other.x-8) || other.sprite_index==spr_tetronhead){
+            obj_tetron.hp-=2+global.blade*2;
+            if (obj_sabot.shakescreen&lt;2)
+                obj_sabot.shakescreen=2;
+            dud=1;
+            obj_sabot.hit[4]=1;
+            }
+        else
+            obj_sabot.explo[0]=1;
+        }
+    else
+        obj_sabot.explo[0]=1;
+    }
+//Warmachine
+else if (other.type==51){
+    }
+//Moving wall
+else if (other.type==61){
+    }
+//Else
+else{
+    other.hp-=2+global.blade*2;
+    if (obj_sabot.shakescreen&lt;2)
+        obj_sabot.shakescreen=2;
+    if (other.type&lt;10)
+        obj_sabot.hit[1]=1;
+    else if (other.type&lt;20)
+        obj_sabot.hit[2]=1;
+    else if (other.type&lt;30)
+        obj_sabot.hit[3]=1;
+    else
+        obj_sabot.hit[4]=1;
+    }
+}</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

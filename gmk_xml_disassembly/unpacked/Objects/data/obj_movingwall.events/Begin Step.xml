@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="1">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (neck){
+    x=owner.x;
+    y=owner.y;
+    }
+else{
+    if (global.difficulty==2)
+        movecyc+=2;
+    else
+        movecyc+=1;
+    if (movecyc==2){
+        movecyc=0;
+        if (dir==1){
+            x+=2;
+            if (place_meeting(x,y,obj_hero))
+                obj_hero.x+=2;
+            }
+        else if (dir==2){
+            y-=2;
+            if (place_meeting(x,y,obj_hero))
+                obj_hero.y-=2;
+            }
+        else if (dir==3){
+            x-=2;
+            if (place_meeting(x,y,obj_hero))
+                obj_hero.x-=2;
+            }
+        else if (dir==4){
+            y+=2;
+            if (place_meeting(x,y,obj_hero))
+                obj_hero.y+=2;
+            }
+        }
+    }
+scr_outside();</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

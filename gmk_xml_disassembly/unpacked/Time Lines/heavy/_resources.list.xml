@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="tim_sharte" type="RESOURCE"/>
+  <resource name="tim_sharte_hard" type="RESOURCE"/>
+  <resource name="tim_powerturret" type="RESOURCE"/>
+  <resource name="tim_powerturret_hard" type="RESOURCE"/>
+  <resource name="tim_boltaray" type="RESOURCE"/>
+  <resource name="tim_boltaray_hard" type="RESOURCE"/>
+  <resource name="tim_battledoor" type="RESOURCE"/>
+  <resource name="tim_battledoor_hard" type="RESOURCE"/>
+  <resource name="tim_chainsnake" type="RESOURCE"/>
+  <resource name="tim_chainsnake_hard" type="RESOURCE"/>
+  <resource name="tim_phaze" type="RESOURCE"/>
+  <resource name="tim_soldier" type="RESOURCE"/>
+  <resource name="tim_soldier_hard" type="RESOURCE"/>
+  <resource name="tim_eyespy" type="RESOURCE"/>
+  <resource name="tim_eyespy_hard" type="RESOURCE"/>
+  <resource name="tim_eyespyradius" type="RESOURCE"/>
+</resources>

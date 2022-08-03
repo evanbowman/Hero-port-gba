@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="CREATE" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">drawhp=1;
+obj_sabot.alarm[2]=200;
+obj_sabot.text1="--- "+scr_omnitext(108)+" ---";
+obj_sabot.text2=scr_omnitext(533);
+obj_sabot.text3="";
+if (global.difficulty==2)
+    obj_sabot.text2="";
+obj_sabot.boss=1;
+
+xsize=8;
+ysize=8;
+type=34;
+hp=64;
+isneck=0;
+if (global.hardmode)
+    timeline_index=tim_reaperdrone_hard;
+else
+    timeline_index=tim_reaperdrone;
+timeline_speed=1;</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

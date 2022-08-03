@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="spr_shot" type="RESOURCE"/>
+  <resource name="spr_shot2" type="RESOURCE"/>
+  <resource name="spr_blade" type="RESOURCE"/>
+  <resource name="spr_blade2" type="RESOURCE"/>
+  <resource name="spr_eshot" type="RESOURCE"/>
+  <resource name="spr_esupershot" type="RESOURCE"/>
+  <resource name="spr_ebomb" type="RESOURCE"/>
+  <resource name="spr_emegashot" type="RESOURCE"/>
+  <resource name="spr_egigashot" type="RESOURCE"/>
+  <resource name="spr_gigaexplo" type="RESOURCE"/>
+  <resource name="spr_evortex" type="RESOURCE"/>
+  <resource name="spr_vortexflash" type="RESOURCE"/>
+  <resource name="spr_emissile" type="RESOURCE"/>
+  <resource name="spr_elaser" type="RESOURCE"/>
+  <resource name="spr_fire" type="RESOURCE"/>
+  <resource name="spr_firedown" type="RESOURCE"/>
+  <resource name="spr_blockdebris" type="RESOURCE"/>
+</resources>

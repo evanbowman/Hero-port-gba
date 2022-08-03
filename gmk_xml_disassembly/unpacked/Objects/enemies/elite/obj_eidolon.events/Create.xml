@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="CREATE" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">drawhp=1;
+xsize=24;
+ysize=16;
+type=27;
+hp=32;
+if (global.hardmode)
+    timeline_index=tim_eidolon_hard;
+else
+    timeline_index=tim_eidolon;
+
+timeline_speed=1;
+heroup=7;
+for (i=0;i&lt;80;i+=1){
+    posx[i]=x;
+    posy[i]=y;
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

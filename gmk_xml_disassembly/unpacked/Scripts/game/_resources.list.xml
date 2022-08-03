@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="scr_scroll" type="RESOURCE"/>
+  <resource name="scr_scrollprepare" type="RESOURCE"/>
+  <resource name="scr_outside" type="RESOURCE"/>
+  <resource name="scr_timestring" type="RESOURCE"/>
+  <resource name="scr_drawme" type="RESOURCE"/>
+  <resource name="scr_volume" type="RESOURCE"/>
+  <resource name="scr_sound" type="RESOURCE"/>
+  <resource name="scr_backtotitle" type="RESOURCE"/>
+  <resource name="scr_endgame" type="RESOURCE"/>
+  <resource name="scr_endsaveenter" type="RESOURCE"/>
+  <resource name="scr_endsavedraw" type="RESOURCE"/>
+  <resource name="scr_drawtext" type="RESOURCE"/>
+</resources>

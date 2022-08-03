@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (!shooting)
+    cyc+=1;
+if (cyc==2){
+    img+=1;
+    cyc=0;
+    }
+if (img==1)
+    image_single=1;
+if (img==2)
+    image_single=2;
+if (img==3)
+    image_single=3;
+if (img==6)
+    image_single=2;
+if (img==7)
+    image_single=1;
+if (img==8)
+    image_single=0;
+if (img==9)
+    instance_destroy();
+if (x&lt;-20)
+    instance_destroy();</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

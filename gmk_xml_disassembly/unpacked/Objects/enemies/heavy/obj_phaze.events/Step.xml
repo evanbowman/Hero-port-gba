@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (hp&lt;=0){
+    obj_sabot.explo[2]=1;
+    instance_destroy();
+    instance_create(x,y,obj_bigexplo);
+    }
+if (move){
+    if (place_meeting(x,y,obj_phaze)){
+        hspeed+=-0.2+random(0.4);
+        vspeed+=-0.1+random(0.2);
+        }
+    image_single+=1;
+    if (x&lt;obj_hero.x-8)
+        hspeed+=0.05;
+    if (x&gt;obj_hero.x+8)
+        hspeed-=0.05;
+    if (y&lt;obj_hero.y-8)
+        vspeed+=0.05;
+    if (y&gt;obj_hero.y+8)
+        vspeed-=0.05;
+    if (global.hardmode){
+        shoot=0;
+        if (hspeed&gt;3.2){
+            hspeed=0;
+            shoot=1;
+            }
+        if (hspeed&lt;-3.2){
+            hspeed=0;
+            shoot=1;
+            }
+        if (vspeed&gt;2.2){
+            vspeed=0;
+            shoot=1;
+            }
+        if (vspeed&lt;-2.2){
+            vspeed=0;
+            shoot=1;
+            }
+        if (shoot){
+            tempid=instance_create(x,y,obj_eshot);
+            tempid.speed=1.3;
+            tempid.direction=random(360);
+            }
+        }
+    else{
+        if (hspeed&gt;2.8) hspeed=-1.5;
+        if (hspeed&lt;-2.8) hspeed=1.5;
+        if (vspeed&gt;1.8) vspeed=-1;
+        if (vspeed&lt;-1.8) vspeed=1;
+        }
+    if (x&lt;obj_sabot.x)
+        x+=320;
+    else if (x&gt;obj_sabot.x+320)
+        x-=320;
+    if (y&lt;obj_sabot.y)
+        y+=320;
+    else if (y&gt;obj_sabot.y+320)
+        y-=320;
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

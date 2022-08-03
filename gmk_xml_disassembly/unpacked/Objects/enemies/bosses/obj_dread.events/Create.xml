@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="CREATE" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">drawhp=1;
+obj_sabot.alarm[2]=200;
+obj_sabot.text1="--- "+scr_omnitext(112)+" ---";
+obj_sabot.text2=scr_omnitext(538);
+obj_sabot.text3="";
+if (global.difficulty==2)
+    obj_sabot.text2="";
+obj_sabot.boss=1;
+
+type=38;
+hp=132+global.hardmode*4;
+bwait=40;
+if (global.hardmode)
+    timeline_index=tim_dread_hard;
+else
+    timeline_index=tim_dread;
+timeline_speed=1;
+x1=x;
+x2=x;
+y1=y;
+y2=y;
+for (i=0;i&lt;4;i+=1){
+    neckx[i]=0;
+    necky[i]=0;
+    }
+tempid=instance_create(x,y,obj_dreadneck);
+tempid.owner=id;
+tempid.xoffset=-10;
+tempid.yoffset=-10;
+tempid.drawhp=1;
+tempid=instance_create(x,y,obj_dreadneck);
+tempid.owner=id;
+tempid.xoffset=10;
+tempid.yoffset=-10;
+tempid.drawhp=1;
+tempid=instance_create(x,y,obj_dreadneck);
+tempid.owner=id;
+tempid.xoffset=-10;
+tempid.yoffset=10;
+tempid.drawhp=1;
+tempid=instance_create(x,y,obj_dreadneck);
+tempid.owner=id;
+tempid.xoffset=10;
+tempid.yoffset=10;
+tempid.drawhp=1;
+if (global.hardmode){
+    tempid=instance_create(x,y,obj_dreadneck);
+    tempid.owner=id;
+    tempid.xoffset=0;
+    tempid.yoffset=-32;
+    tempid.drawhp=1;
+    tempid=instance_create(x,y,obj_dreadneck);
+    tempid.owner=id;
+    tempid.xoffset=0;
+    tempid.yoffset=32;
+    tempid.drawhp=1;
+    tempid=instance_create(x,y,obj_dreadneck);
+    tempid.owner=id;
+    tempid.xoffset=-32;
+    tempid.yoffset=0;
+    tempid.drawhp=1;
+    tempid=instance_create(x,y,obj_dreadneck);
+    tempid.owner=id;
+    tempid.xoffset=32;
+    tempid.yoffset=0;
+    tempid.drawhp=1;
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

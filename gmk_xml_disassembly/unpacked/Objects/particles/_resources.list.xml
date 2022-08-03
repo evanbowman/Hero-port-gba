@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="obj_flame" type="RESOURCE"/>
+  <resource name="obj_explo" type="RESOURCE"/>
+  <resource name="obj_bigexplo" type="RESOURCE"/>
+  <resource name="obj_explospewer" type="RESOURCE"/>
+  <resource name="obj_explospewer2" type="RESOURCE"/>
+  <resource name="obj_explospewer3" type="RESOURCE"/>
+  <resource name="obj_firework" type="RESOURCE"/>
+  <resource name="obj_levelup" type="RESOURCE"/>
+  <resource name="obj_sheen" type="RESOURCE"/>
+  <resource name="obj_weed" type="RESOURCE"/>
+  <resource name="obj_weed2" type="RESOURCE"/>
+  <resource name="obj_antenna" type="RESOURCE"/>
+  <resource name="obj_antenna2" type="RESOURCE"/>
+  <resource name="obj_dripspawner" type="RESOURCE"/>
+  <resource name="obj_drip" type="RESOURCE"/>
+  <resource name="obj_crawlpart_s" type="RESOURCE"/>
+  <resource name="obj_flutter_s" type="RESOURCE"/>
+  <resource name="obj_crawlpart" type="RESOURCE"/>
+  <resource name="obj_flutter" type="RESOURCE"/>
+  <resource name="obj_corpse" type="RESOURCE"/>
+  <resource name="obj_quessie" type="RESOURCE"/>
+  <resource name="obj_blur" type="RESOURCE"/>
+  <resource name="obj_blur2" type="RESOURCE"/>
+</resources>

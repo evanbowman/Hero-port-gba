@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="CREATE" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">drawhp=1;
+obj_sabot.alarm[2]=200;
+obj_sabot.text1="--- "+scr_omnitext(115)+" ---";
+obj_sabot.text2=scr_omnitext(540);
+obj_sabot.text3="";
+if (global.bossmode)
+    obj_sabot.text2="";
+if (global.reallyplay){
+    obj_sabot.text1="";
+    obj_sabot.text2="";
+    obj_sabot.text3="";
+    }
+obj_sabot.boss=1;
+
+type=40;
+hp=256;
+if (global.hardmode){
+    timeline_index=tim_tetron_hard;
+    image_single=1;
+    }
+else{
+    timeline_index=tim_tetron;
+    image_single=0;
+    }
+if (global.normalrush){
+    timeline_index=tim_tetron;
+    image_single=1;
+    }
+timeline_speed=1;
+tempid=instance_create(x,y,obj_tetronneck);
+tempid.owner=id;
+tempid.xoffset=0;
+tempid.yoffset=-36;
+tempid.sprite_index=spr_tetronhead;
+tempid.visible=0;
+tempid.depth=9;</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

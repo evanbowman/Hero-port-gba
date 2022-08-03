@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="tim_drone" type="RESOURCE"/>
+  <resource name="tim_drone_hard" type="RESOURCE"/>
+  <resource name="tim_reaver" type="RESOURCE"/>
+  <resource name="tim_reaver_hard" type="RESOURCE"/>
+  <resource name="tim_crusher" type="RESOURCE"/>
+  <resource name="tim_crusher_hard" type="RESOURCE"/>
+  <resource name="tim_spew" type="RESOURCE"/>
+  <resource name="tim_spew_hard" type="RESOURCE"/>
+  <resource name="tim_turret" type="RESOURCE"/>
+  <resource name="tim_turret_hard" type="RESOURCE"/>
+  <resource name="tim_blomb" type="RESOURCE"/>
+  <resource name="tim_blomb_hard" type="RESOURCE"/>
+  <resource name="tim_bolt" type="RESOURCE"/>
+  <resource name="tim_lurk" type="RESOURCE"/>
+  <resource name="tim_lurk_hard" type="RESOURCE"/>
+</resources>

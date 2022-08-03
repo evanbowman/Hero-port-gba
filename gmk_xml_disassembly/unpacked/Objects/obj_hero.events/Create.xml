@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="CREATE" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">scr_joycreate();
+flyspeed=2;
+image_single=1;
+enterx=x;
+entery=y;
+scr_sound("herospawn")
+if (x&gt;=obj_sabot.x+160)
+    image_single=0;
+else
+    image_single=1;
+ignoreall=20;
+alarm[0]=20;
+if (global.handstand==0)
+    sprite_index=spr_hero;
+else if (global.handstand==1)
+    sprite_index=spr_handstand1;
+else if (global.handstand==2)
+    sprite_index=spr_handstand2;
+else if (global.handstand==3)
+    sprite_index=spr_handstand3;
+else if (global.handstand==4)
+    sprite_index=spr_handstand4;
+else if (global.handstand==5)
+    sprite_index=spr_handstand5;
+else if (global.handstand==6)
+    sprite_index=spr_handstand6;
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

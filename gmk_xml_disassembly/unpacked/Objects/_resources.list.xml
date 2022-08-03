@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="BUILD" type="GROUP"/>
+  <resource name="SPAWN" type="GROUP"/>
+  <resource name="ITEM" type="GROUP"/>
+  <resource name="projectile" type="GROUP"/>
+  <resource name="particles" type="GROUP"/>
+  <resource name="enemies" type="GROUP"/>
+  <resource name="blocks" type="GROUP"/>
+  <resource name="data" type="GROUP"/>
+  <resource name="obj_hero" type="RESOURCE"/>
+  <resource name="obj_sabot" type="RESOURCE"/>
+  <resource name="obj_mainsabot" type="RESOURCE"/>
+  <resource name="obj_cutsabot" type="RESOURCE"/>
+  <resource name="obj_loc" type="RESOURCE"/>
+  <resource name="obj_endsavesabot" type="RESOURCE"/>
+</resources>

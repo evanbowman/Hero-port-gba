@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="scr_mainsabotcreate" type="RESOURCE"/>
+  <resource name="scr_mainsabotstep" type="RESOURCE"/>
+  <resource name="scr_mainsabotdraw" type="RESOURCE"/>
+  <resource name="scr_maintexts" type="RESOURCE"/>
+  <resource name="scr_maindesc" type="RESOURCE"/>
+  <resource name="scr_mainselect" type="RESOURCE"/>
+  <resource name="scr_mainreadfile" type="RESOURCE"/>
+  <resource name="scr_setmaps" type="RESOURCE"/>
+  <resource name="scr_startgame" type="RESOURCE"/>
+  <resource name="scr_mainmenuescape" type="RESOURCE"/>
+  <resource name="scr_maincode" type="RESOURCE"/>
+</resources>

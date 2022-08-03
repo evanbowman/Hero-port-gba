@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="ALARM" id="1">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (order==1){
+    with (obj_cuthelper)
+        speed=0;
+    }
+else if (order==2){
+    scr_sound("explo4");
+    with (obj_cuthelper)
+        instance_destroy();
+    for (i=0;i&lt;360;i+=2){
+        tempid=instance_create(200+cos(degtorad(i))*60,200+sin(degtorad(i))*30,obj_cuthelper);
+        tempid.sprite_index=spr_flame;
+        tempid.type=2;
+        if (i mod 3 == 2){
+            tempid.hspeed=cos(degtorad(i))*1.2;
+            tempid.vspeed=sin(degtorad(i))*0.6;
+            }
+        else if (i mod 3 == 1){
+            tempid.hspeed=cos(degtorad(i))*0.3;
+            tempid.vspeed=sin(degtorad(i))*0.15;
+            }
+        else{
+            tempid.hspeed=cos(degtorad(i))*0.15;
+            tempid.vspeed=sin(degtorad(i))*0.075;
+            }
+        tempid=instance_create(200+cos(degtorad(i))*60,200+sin(degtorad(i))*30,obj_cuthelper);
+        tempid.sprite_index=spr_flame;
+        tempid.type=2;
+        if (i mod 4 == 0){
+            tempid.hspeed=cos(degtorad(i))*(random(1));
+            tempid.vspeed=sin(degtorad(i))*(random(0.5));
+            }
+        else{
+            tempid.hspeed=cos(degtorad(i))*(random(0.1));
+            tempid.vspeed=sin(degtorad(i))*(random(0.05));
+            }
+        }
+    tempid=instance_create(200,200,obj_cuthelper);
+    tempid.sprite_index=spr_cut5;
+    tempid=instance_create(0,100,obj_cuthelper);
+    tempid.sprite_index=spr_block;
+    tempid.type=3;
+    }
+else if (order==3){
+    with (obj_cuthelper)
+        visible=1;
+    with (obj_star)
+        visible=1;
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

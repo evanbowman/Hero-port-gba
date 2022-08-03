@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="tim_generator" type="RESOURCE"/>
+  <resource name="tim_generator_hard" type="RESOURCE"/>
+  <resource name="tim_mode" type="RESOURCE"/>
+  <resource name="tim_mode_hard" type="RESOURCE"/>
+  <resource name="tim_hunter" type="RESOURCE"/>
+  <resource name="tim_hunter_hard" type="RESOURCE"/>
+  <resource name="tim_direviper" type="RESOURCE"/>
+  <resource name="tim_direviper_hard" type="RESOURCE"/>
+  <resource name="tim_mother" type="RESOURCE"/>
+  <resource name="tim_mother_hard" type="RESOURCE"/>
+  <resource name="tim_eidolon" type="RESOURCE"/>
+  <resource name="tim_eidolon_hard" type="RESOURCE"/>
+  <resource name="tim_annihilator" type="RESOURCE"/>
+  <resource name="tim_annihilator_hard" type="RESOURCE"/>
+</resources>

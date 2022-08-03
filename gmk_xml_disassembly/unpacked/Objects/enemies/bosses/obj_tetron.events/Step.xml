@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">//BLOCKFALL
+if (blockfall){
+    blockcyc+=1;
+    if (blockmax&gt;5)
+        blockmax-=0.2;
+    if (blockcyc&gt;blockmax+blockplus){
+        blockcyc=0;
+        blockplus=random(20);
+        fac=random(272);
+        tempid=instance_create(obj_sabot.x+fac,obj_sabot.y-16,obj_flame);
+        tempid.vspeed=1+random(1);
+        tempid.gravity=0.1+random(0.1);
+        tempid.alarm[0]=120;
+        temprand=random(1);
+        if (temprand&gt;0.5){
+            tempid.sprite_index=spr_block;
+            repeat(5)
+                (instance_create(obj_sabot.x+fac+random(16),obj_sabot.y,obj_flame)).vspeed=tempid.vspeed+random(4);
+            }
+        else{
+            tempid.sprite_index=spr_blockmed;
+            repeat(5)
+                (instance_create(obj_sabot.x+fac+random(32),obj_sabot.y,obj_flame)).vspeed=tempid.vspeed+random(4);
+            }
+        }
+    }
+//DEAD
+if (dead &amp;&amp; global.computers!=10){
+    deadcyc+=1;
+    if (deadcyc&gt;120){
+        if (obj_bgdraw.alpha&gt;0.02)
+            obj_bgdraw.alpha=0.02;
+        }
+    if (deadcyc&gt;=200 &amp;&amp; deadcyc&lt;240)
+        obj_bgdraw.alpha=0;
+    if (deadcyc==120){
+        shaking=0;
+        instance_create(x,y,obj_explospewer);
+        with (obj_liquid1)
+            instance_destroy();
+        for (i=1;i&lt;361;i+=4){
+            obj_sabot.explo[3]=1;
+            sp+=4;
+            if (sp&gt;=16) sp=0;
+            tempid=instance_create(x,y,obj_firework);
+            tempid.sprite_index=spr_flame;
+            tempid.direction=i;
+            tempid.speed=(sp+4)/3+1;
+            tempid.i=1;
+            }
+        }
+    if (deadcyc==200){
+        obj_sabot.cannotpause=1;
+        obj_sabot.explo[4]=1;
+        obj_bgdraw.alpha=0;
+        for (i=0;i&lt;360;i+=20){
+            for (j=0;j&lt;20;j+=2){
+                tempid=instance_create(x,y,obj_bigexplo);
+                tempid.direction=i+j*5;
+                tempid.speed=j;
+                }
+            }
+        for (i=0;i&lt;300;i+=1){
+            tempid=instance_create(x,y,obj_flame);
+            tempid.speed=random(1.5);
+            tempid.direction=random(360);
+            tempid.alarm[0]=120+random(160);
+            }
+        with (obj_tetronneck)
+            instance_destroy();
+        with (obj_door1){
+            instance_destroy();
+            instance_create(x+8,y+8,obj_explo);
+            instance_create(x+8,y+24,obj_explo);
+            }
+        with (obj_tetron)
+            y+=320;
+        }
+    if (deadcyc==640)
+        obj_sabot.alarm[1]=2;
+    }
+//DEATH
+if (hp&lt;=0 &amp;&amp; !dead &amp;&amp; global.hp&gt;0 &amp;&amp; phase4){
+    if (global.bossmode || global.reallyplay){
+        with (obj_sabot){
+            if (!global.reallyplay)
+                scr_wantsong(0);
+            if (!global.reallyplay)
+                mitemclear[roomx,roomy]=1;
+            boss=0;
+            }
+        obj_sabot.explo[4]=1;
+        with (obj_esupershot){
+            instance_destroy();
+            instance_create(x,y,obj_explo);
+            }
+        with (obj_emegashot){
+            instance_destroy();
+            instance_create(x,y,obj_explo);
+            }
+        with (obj_egigashot){
+            instance_destroy();
+            instance_create(x,y,obj_explo);
+            }
+        with (obj_eshot)
+            instance_destroy();
+        with (obj_ebbomb)
+            instance_destroy();
+        obj_bgdraw.alpha=0.015;
+        for (i=0;i&lt;360;i+=20){
+            for (j=0;j&lt;20;j+=2){
+                tempid=instance_create(x,y,obj_bigexplo);
+                tempid.direction=i+j*5;
+                tempid.speed=j;
+                }
+            }
+        for (i=1;i&lt;361;i+=4){
+            sp+=4;
+            if (sp&gt;=16) sp=0;
+            tempid=instance_create(x,y,obj_firework);
+            tempid.sprite_index=spr_flame;
+            tempid.direction=i;
+            tempid.speed=(sp+4)/3+1;
+            tempid.i=1;
+            }
+        with (obj_tetronneck)
+            instance_destroy();
+        instance_destroy();
+        }
+    else{
+        scr_save(1);
+        with (obj_sabot)
+            scr_wantsong(0);
+        dead=1;
+        sound_stop_all();
+        obj_sabot.explo[3]=1;
+        with (obj_explo)
+            instance_destroy();
+        with (obj_bigexplo)
+            instance_destroy();
+        with (obj_flame)
+            instance_destroy();
+        with (obj_shot)
+            instance_destroy();
+        with (obj_eshot)
+            instance_destroy();
+        obj_hero.ignoreall=1;
+        timeline_index=-1;
+        obj_tetronneck.shift=0;
+        obj_tetronneck.speed=0;
+        if (image_single==0)
+            obj_tetronneck.x=obj_tetron.x-32;
+        else
+            obj_tetronneck.x=obj_tetron.x-22;
+        obj_tetronneck.y=obj_tetron.y-16;
+        shaking=1;
+        alarm[1]=40;
+        obj_sabot.fullflash=1;
+        obj_hero.y=obj_sabot.y+210;
+        obj_hero.x=obj_sabot.x+160;
+        if (image_single==0)
+            obj_hero.image_single=1;
+        else
+            obj_hero.image_single=0;
+        if (global.computers==10){
+            timeline_index=tim_finale;
+            timeline_position=0;
+            tempid=instance_create(x,y,obj_tetronneck);
+            if (image_single==0){
+                tempid.xoffset=-16;
+                tempid.image_single=0;
+                }
+            else{
+                tempid.xoffset=-6;
+                tempid.image_single=1;
+                }
+            tempid.static=1;
+            tempid.yoffset=-48;
+            tempid.sprite_index=spr_tetronhead2;
+            tempid.owner=id;
+            tempid.depth=8;
+            with (obj_tetronneck){
+                if (arm){
+                    if (image_single==0)
+                        x=owner.x-64;
+                    else
+                        x=owner.x+12;
+                    y=owner.y-48;
+                    shift=3;
+                    }
+                }
+            }
+        }
+    }
+//SHAKE
+if (shaking &amp;&amp; obj_sabot.shakescreen==0)
+    obj_sabot.shakescreen=2;
+//ROOM BLINK
+if (blink&gt;0){
+    blinkcyc+=1;
+    if (blinkcyc&gt;=blinkmax){
+        blinkcyc=0;
+        if (blinkmax&gt;6)
+            blinkmax-=1;
+        if (blink==1){
+            blink=2;
+            with (obj_fblock)
+                visible=0;
+            }
+        else{
+            blink=1;
+            with (obj_fblock)
+                visible=1;
+            }
+        }
+    }
+//PHASE 2
+if (hp&lt;=128 &amp;&amp; !phase2){
+    phase2=1;
+    timeline_position=1000;
+    instance_create(x,y,obj_explospewer);
+    obj_sabot.explo[3]=1;
+    scr_sound("bossroar");
+    obj_sabot.shakescreen=12;
+    }
+//PHASE 3
+if (hp&lt;=64 &amp;&amp; !phase3){
+    phase3=1;
+    speed=0;
+    if (x&gt;obj_hero.x){
+        image_single=0;
+        hspeed2=4;
+        }
+    else{
+        image_single=1;
+        hspeed2=-4;
+        }
+    gravity=0.1;
+    timeline_index=-1;
+    instance_create(x,y,obj_explospewer);
+    obj_sabot.explo[3]=1;
+    scr_sound("bossroar");
+    obj_sabot.shakescreen=12;
+    with (obj_liquid1)
+        vspeed=4;
+    alarm[0]=100;
+    }
+//HITWALL
+if (phase3 &amp;&amp; !hitwall){
+    if (!place_free(x+hspeed2,y)){
+        x=xprevious;
+        if (hspeed2&lt;0){
+            move_contact_solid(180,32);
+            tempid=instance_create(x-32,y-32,obj_ebbomb);
+            tempid.speed=2;
+            tempid.direction=50;
+            tempid=instance_create(x-32,y+32,obj_ebbomb);
+            tempid.speed=2;
+            tempid.direction=-50;
+            tempid=instance_create(x-32,y-32,obj_ebbomb);
+            tempid.speed=3;
+            tempid.direction=70;
+            tempid=instance_create(x-32,y+32,obj_ebbomb);
+            tempid.speed=3;
+            tempid.direction=-70;
+            }
+        else{
+            move_contact_solid(0,32);
+            tempid=instance_create(x+32,y-32,obj_ebbomb);
+            tempid.speed=2;
+            tempid.direction=130;
+            tempid=instance_create(x+32,y+32,obj_ebbomb);
+            tempid.speed=2;
+            tempid.direction=-130;
+            tempid=instance_create(x+32,y-32,obj_ebbomb);
+            tempid.speed=3;
+            tempid.direction=110;
+            tempid=instance_create(x+32,y+32,obj_ebbomb);
+            tempid.speed=3;
+            tempid.direction=-110;
+            }
+        hspeed2=0;
+        obj_sabot.explo[2]=1;
+        obj_sabot.shakescreen=12;
+        hitwall=1;
+        }
+    else
+        x+=hspeed2;
+    }
+//PHASE 4
+if (phase3 &amp;&amp; !phase4 &amp;&amp; hspeed2==0 &amp;&amp; landed){
+    phase4=1;
+    if (global.hardmode)
+        timeline_index=tim_tetron_hard;
+    else
+        timeline_index=tim_tetron;
+    if (global.normalrush)
+        timeline_index=tim_tetron;
+    timeline_position=2000;
+    with (obj_tetronneck){
+        if (sprite_index==spr_tetronneck)
+            instance_destroy();
+        else{
+            visible=1;
+            sprite_index=spr_tetronarm;
+            image_single=owner.image_single;
+            depth=10;
+            arm=1;
+            if (image_single==0)
+                x=owner.x-32;
+            else
+                x=owner.x-22;
+            y=owner.y-16;
+            }
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

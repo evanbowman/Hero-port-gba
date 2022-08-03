@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (place_meeting(x+hspeed,y+vspeed,obj_movingwall) || place_meeting(x+hspeed,y+vspeed,obj_cage)){
+if (vspeed==0){
+    if (sprite_index==spr_shot){
+        if (hspeed&gt;0)
+            tempid=instance_create(x+4,y,obj_flame);
+        else
+            tempid=instance_create(x+2,y,obj_flame);   
+        }
+    else{
+        if (hspeed&gt;0)
+            tempid=instance_create(x+4,y,obj_flame);
+        else
+            tempid=instance_create(x,y,obj_flame);   
+        }
+    tempid.sprite_index=spr_plink;
+    tempid.alarm[0]=1;
+    if (hspeed&gt;0)
+        tempid.image_single=0;
+    else
+        tempid.image_single=1;
+    }
+    instance_destroy();
+}</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

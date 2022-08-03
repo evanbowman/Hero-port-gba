@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<timeline>
+  <moment stepNo="0">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_smasherneck.image_single=0;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="2">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (!(obj_hero.y&gt;y-56 &amp;&amp; obj_hero.y&lt;y+56 &amp;&amp; obj_hero.x&gt;x-56 &amp;&amp; obj_hero.x&lt;x+56))
+    timeline_position=0;
+else{
+    with (obj_sabot)
+        scr_wantsong(13);
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="10">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_smasherneck.image_single=2;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="20">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_smasherneck.image_single=0;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="30">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_smasherneck.image_single=2;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="40">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">with (obj_smasherneck){
+    if (sprite_index==spr_silencercore)
+        anim=1;
+    }
+
+for (i=0;i&lt;8;i+=1){
+    tempid=instance_create(x-320,y,obj_smasherneck);
+    tempid.sprite_index=spr_neck2;
+    tempid.move=1;
+    tempid.rotspeed=-1;
+    tempid.offset=i*45;
+    tempid.dmax=128;
+    tempid.owner=id;
+    tempid.mode=1;
+    tempid.d=256+32*i;
+    }
+for (i=0;i&lt;8;i+=1){
+    tempid=instance_create(x-320,y,obj_smasherneck);
+    tempid.sprite_index=spr_neck2;
+    tempid.move=1;
+    tempid.rotspeed=2;
+    tempid.offset=i*45;
+    tempid.dmax=112;
+    tempid.owner=id;
+    tempid.mode=2;
+    tempid.d=256+32*i;
+    }
+</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="80">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">move=ceil(random(5));
+shotcyc+=1;
+shotcyc3+=1;
+//Cores
+if (shotcyc3==1){
+    shotcyc3=0;
+    shotcyc4+=1;
+    with (obj_smasherneck){
+        if (mode&gt;10 &amp;&amp; owner.shotcyc4+10==mode){
+            rfire=1;
+            if (x&lt;owner.x)
+                dir=0;
+            else
+                dir=180;
+            }
+        }
+    if (shotcyc4==8)
+        shotcyc4=0;
+    }
+//Necks
+if (shotcyc==2 || shotcyc==6){
+    with (obj_smasherneck){
+        if (mode==1){
+            tempid=instance_create(x,y,obj_eshot);
+            tempid.speed=1.5;
+            tempid.direction=point_direction(x,y,owner.x,owner.y)+32;
+            }
+        }
+    }
+if (shotcyc==4 || shotcyc==8){
+    with (obj_smasherneck){
+        if (mode==2){
+            tempid=instance_create(x,y,obj_esupershot);
+            tempid.speed=1.5;
+            tempid.direction=point_direction(x,y,owner.x,owner.y)-26;
+            }
+        }
+    }
+if (shotcyc==10){
+    shotcyc=0;
+    shotcyc2+=1;
+    if (shotcyc2==1){
+        with (obj_smasherneck){
+            if (mode==2){
+                tempid=instance_create(x,y,obj_esupershot);
+                if (x&gt;owner.x)
+                    tempid.hspeed=-2;
+                else
+                    tempid.hspeed=+2;
+                }
+            }
+        }
+    if (shotcyc2==2){
+        shotcyc2=0;
+        with (obj_smasherneck){
+            if (mode==2){
+                tempid=instance_create(x,y,obj_esupershot);
+                if (y&gt;owner.y)
+                    tempid.vspeed=-2;
+                else
+                    tempid.vspeed=+2;
+                }
+            }
+        }
+    }
+</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="119">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">timeline_position=80;</argument>
+      </arguments>
+    </action>
+  </moment>
+</timeline>

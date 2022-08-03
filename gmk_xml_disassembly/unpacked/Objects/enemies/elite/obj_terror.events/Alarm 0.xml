@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="ALARM" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">instance_destroy();
+scr_foreverdestroy();
+
+with (obj_sabot){
+    foreverlevel+=1;
+    newforeverlevel=1;
+    if (foreverlevel&gt;=999)
+        foreverlevel=999;
+    if (flags&gt;global.bestflags)
+        global.bestflags=flags;
+    if (foreverlevel&gt;global.besttime5)
+        global.besttime5=foreverlevel;
+    scr_checkfile();
+    if (wrongsum==0)
+        scr_savekeys();
+    }
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

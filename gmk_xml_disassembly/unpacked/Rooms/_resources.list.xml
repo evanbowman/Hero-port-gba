@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="rom_title" type="RESOURCE"/>
+  <resource name="rom_quest1" type="RESOURCE"/>
+  <resource name="rom_quest2" type="RESOURCE"/>
+  <resource name="rom_quest3" type="RESOURCE"/>
+  <resource name="rom_quest4" type="RESOURCE"/>
+  <resource name="rom_quest5" type="RESOURCE"/>
+  <resource name="rom_cut" type="RESOURCE"/>
+  <resource name="rom_endsave" type="RESOURCE"/>
+</resources>

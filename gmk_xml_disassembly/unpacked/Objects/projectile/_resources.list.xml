@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="obj_shot" type="RESOURCE"/>
+  <resource name="obj_blade" type="RESOURCE"/>
+  <resource name="obj_eshot" type="RESOURCE"/>
+  <resource name="obj_esupershot" type="RESOURCE"/>
+  <resource name="obj_emegashot" type="RESOURCE"/>
+  <resource name="obj_egigashot" type="RESOURCE"/>
+  <resource name="obj_gigaexplo" type="RESOURCE"/>
+  <resource name="obj_ebomb" type="RESOURCE"/>
+  <resource name="obj_ebbomb" type="RESOURCE"/>
+  <resource name="obj_emissile" type="RESOURCE"/>
+  <resource name="obj_evortex" type="RESOURCE"/>
+  <resource name="obj_evortex2" type="RESOURCE"/>
+  <resource name="obj_emimicshot" type="RESOURCE"/>
+  <resource name="obj_elaser" type="RESOURCE"/>
+  <resource name="obj_fire" type="RESOURCE"/>
+</resources>

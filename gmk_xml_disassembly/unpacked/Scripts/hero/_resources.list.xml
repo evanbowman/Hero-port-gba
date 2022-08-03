@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="scr_herostep" type="RESOURCE"/>
+  <resource name="scr_bladereflect" type="RESOURCE"/>
+  <resource name="scr_heropain" type="RESOURCE"/>
+  <resource name="scr_levelup" type="RESOURCE"/>
+  <resource name="scr_fireright" type="RESOURCE"/>
+  <resource name="scr_fireleft" type="RESOURCE"/>
+  <resource name="scr_heropickup" type="RESOURCE"/>
+  <resource name="scr_wipescroll" type="RESOURCE"/>
+</resources>

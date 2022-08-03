@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="DRAW" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (shooting){
+    draw_sprite(spr_flame,0,x,y);
+    draw_sprite(spr_flame,0,x+2,y);
+    draw_sprite(spr_flame,0,x+4,y-2);
+    draw_sprite(spr_flame,0,x+6,y-2);
+    draw_sprite(spr_flame,0,x+8,y-4);
+    draw_sprite(spr_flame,0,x+10,y-4);
+    draw_sprite(spr_flame,0,x+12,y-6);
+    draw_sprite(spr_flame,0,x+14,y-6);
+    x-=16;
+    y+=8;
+    if (y&gt;164)
+        depth=0;
+    }
+else
+    scr_drawme();</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

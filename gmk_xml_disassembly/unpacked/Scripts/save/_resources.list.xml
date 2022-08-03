@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="scr_init" type="RESOURCE"/>
+  <resource name="scr_save" type="RESOURCE"/>
+  <resource name="scr_deletefile" type="RESOURCE"/>
+  <resource name="scr_copyfile" type="RESOURCE"/>
+  <resource name="scr_load" type="RESOURCE"/>
+  <resource name="scr_newfile" type="RESOURCE"/>
+  <resource name="scr_calcsum" type="RESOURCE"/>
+  <resource name="scr_checkfile" type="RESOURCE"/>
+  <resource name="scr_savefilerap" type="RESOURCE"/>
+  <resource name="scr_savekeys" type="RESOURCE"/>
+  <resource name="scr_loadkeys" type="RESOURCE"/>
+</resources>

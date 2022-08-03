@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="spr_hero" type="RESOURCE"/>
+  <resource name="spr_handstand1" type="RESOURCE"/>
+  <resource name="spr_handstand2" type="RESOURCE"/>
+  <resource name="spr_handstand3" type="RESOURCE"/>
+  <resource name="spr_handstand4" type="RESOURCE"/>
+  <resource name="spr_handstand5" type="RESOURCE"/>
+  <resource name="spr_handstand6" type="RESOURCE"/>
+  <resource name="spr_pickup" type="RESOURCE"/>
+  <resource name="spr_savepoint" type="RESOURCE"/>
+  <resource name="spr_ship" type="RESOURCE"/>
+  <resource name="spr_shiphatch" type="RESOURCE"/>
+  <resource name="spr_special" type="RESOURCE"/>
+  <resource name="spr_special2" type="RESOURCE"/>
+  <resource name="spr_cage" type="RESOURCE"/>
+  <resource name="spr_flower" type="RESOURCE"/>
+  <resource name="spr_flag" type="RESOURCE"/>
+  <resource name="spr_chest" type="RESOURCE"/>
+  <resource name="spr_foreverbomb" type="RESOURCE"/>
+  <resource name="spr_stone" type="RESOURCE"/>
+</resources>

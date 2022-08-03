@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="CREATE" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">drawhp=1;
+noblur=1;
+obj_sabot.alarm[2]=200;
+obj_sabot.text1="--- "+scr_omnitext(111)+" ---";
+obj_sabot.text2=scr_omnitext(537);
+obj_sabot.text3="";
+if (global.difficulty==2)
+    obj_sabot.text2="";
+obj_sabot.boss=1;
+
+for (j=0;j&lt;2;j+=1){
+    for (i=1;i&lt;19;i+=1)
+        instance_create(obj_sabot.x+i*16,obj_sabot.y+320+j*16,obj_liquid2);
+    }
+with (obj_guardianspecial){
+    if (!place_meeting(x,y,obj_blocksoldier))
+        instance_create(x,y,obj_blocksoldier);
+    }
+with (obj_guardianspecial2){
+    if (!place_meeting(x,y,obj_blockhunter))
+        instance_create(x,y,obj_blockhunter);
+    }
+flaming=1;
+y+=64;
+type=37;
+hp=128;
+hp2=64;
+if (global.hardmode)
+    timeline_index=tim_guardian_hard;
+else
+    timeline_index=tim_guardian;
+
+tempid=instance_create(x,y,obj_guardianneck);
+tempid.owner=id;
+tempid.xoffset=-4;
+tempid.yoffset=0;
+tempid.sprite_index=spr_silencercore;
+tempid.image_single=1;
+tempid.mode=1;
+tempid.anim=1;
+tempid=instance_create(x,y,obj_guardianneck);
+tempid.owner=id;
+tempid.xoffset=0;
+tempid.yoffset=-22;
+tempid.sprite_index=spr_guardian;
+tempid.image_single=0;
+tempid.mode=2;
+tempid=instance_create(x,y,obj_guardianneck);
+tempid.owner=id;
+tempid.xoffset=0;
+tempid.yoffset=20;
+tempid.sprite_index=spr_guardian;
+tempid.image_single=1;
+tempid.mode=3;
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

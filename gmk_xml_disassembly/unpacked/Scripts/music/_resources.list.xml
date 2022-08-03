@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="jbfmod" type="GROUP"/>
+  <resource name="scr_directsong" type="RESOURCE"/>
+  <resource name="scr_wantsong" type="RESOURCE"/>
+  <resource name="scr_createmusic" type="RESOURCE"/>
+  <resource name="scr_music" type="RESOURCE"/>
+  <resource name="scr_scrollmusic" type="RESOURCE"/>
+</resources>

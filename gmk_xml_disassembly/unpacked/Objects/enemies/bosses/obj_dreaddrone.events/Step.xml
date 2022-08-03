@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (hp&lt;=0){
+    obj_sabot.explo[4]=1;
+    with (obj_emegashot){
+        instance_create(x,y,obj_explo);
+        instance_destroy();
+        }
+    with (obj_eshot)
+        instance_destroy();
+    instance_destroy();
+    obj_bgdraw.alpha=0.015;
+    obj_sabot.shakescreen=12;
+    instance_create(x,y,obj_explospewer);
+    for (i=1;i&lt;361;i+=4){
+        sp+=4;
+        if (sp&gt;=16) sp=0;
+        tempid=instance_create(x,y,obj_firework);
+        tempid.sprite_index=spr_flame;
+        tempid.direction=i;
+        tempid.speed=(sp+4)/3+1;
+        tempid.i=1;
+        }
+    (instance_create(x,y,obj_pickup)).image_single=9;
+    }
+if (x&lt;obj_sabot.x+xsize) hspeed=abs(hspeed);
+if (x&gt;obj_sabot.x+320-xsize) hspeed=-abs(hspeed);
+if (y&lt;obj_sabot.y+ysize) vspeed=abs(vspeed);
+if (y&gt;obj_sabot.y+320-ysize) vspeed=-abs(vspeed);
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

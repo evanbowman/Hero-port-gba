@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (rfire&gt;0) &amp;&amp; global.hp&gt;0{
+    rfirecyc+=1;
+    if (rfirecyc==5){
+        rfirecyc=0;
+        rfire-=1;
+        tempid=instance_create(x,y,obj_eshot);
+        if (global.hardmode)
+            tempid.speed=2;
+        else
+            tempid.speed=1.5;
+        tempid.direction=point_direction(x,y,obj_hero.x,obj_hero.y)-80+rfire*20;
+        }
+    }
+if (hp&lt;=0){
+    obj_sabot.explo[3]=1;
+    instance_destroy();
+    instance_create(x,y,obj_bigexplo);
+    instance_create(x-8,y-8,obj_bigexplo);
+    instance_create(x+8,y-8,obj_bigexplo);
+    instance_create(x-8,y+8,obj_bigexplo);
+    instance_create(x+8,y+8,obj_bigexplo);
+    obj_sabot.shakescreen=6;
+    global.tempid=id;
+    with (obj_modeneck){
+        if (owner==global.tempid){
+            instance_destroy();
+            instance_create(x,y,obj_bigexplo);
+            }
+        }
+    }
+if (x&lt;obj_sabot.x+xsize) hspeed=abs(hspeed);
+if (x&gt;obj_sabot.x+320-xsize) hspeed=-abs(hspeed);
+if (y&lt;obj_sabot.y+ysize) vspeed=abs(vspeed);
+if (y&gt;obj_sabot.y+320-ysize) vspeed=-abs(vspeed);
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

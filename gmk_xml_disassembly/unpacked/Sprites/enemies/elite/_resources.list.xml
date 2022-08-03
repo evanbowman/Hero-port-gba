@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="spr_mother" type="RESOURCE"/>
+  <resource name="spr_generator" type="RESOURCE"/>
+  <resource name="spr_generatorwall" type="RESOURCE"/>
+  <resource name="spr_mode" type="RESOURCE"/>
+  <resource name="spr_hunter" type="RESOURCE"/>
+  <resource name="spr_direviper" type="RESOURCE"/>
+  <resource name="spr_eidolon" type="RESOURCE"/>
+  <resource name="spr_eidolongun" type="RESOURCE"/>
+  <resource name="spr_annihilator" type="RESOURCE"/>
+  <resource name="spr_blockannihilator" type="RESOURCE"/>
+  <resource name="spr_terror" type="RESOURCE"/>
+</resources>

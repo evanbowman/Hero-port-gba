@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="obj_drone" type="RESOURCE"/>
+  <resource name="obj_reaver" type="RESOURCE"/>
+  <resource name="obj_crusher" type="RESOURCE"/>
+  <resource name="obj_spew" type="RESOURCE"/>
+  <resource name="obj_turretleft" type="RESOURCE"/>
+  <resource name="obj_turretright" type="RESOURCE"/>
+  <resource name="obj_blomb" type="RESOURCE"/>
+  <resource name="obj_bolt" type="RESOURCE"/>
+  <resource name="obj_lurk" type="RESOURCE"/>
+</resources>

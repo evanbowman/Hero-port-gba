@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<timeline>
+  <moment stepNo="0">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">image_single=0;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="10">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">image_single=1;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="20">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">image_single=0;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="30">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">image_single=1;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="40">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">speed=0;
+neck+=1;
+obj_sabot.fire[8]=1;
+if (neck==1){
+    for (i=0;i&lt;15;i+=1){
+        tempid=instance_create(x,y,obj_reaperdroneneck);
+        tempid.rot=i*24;
+        tempid.rotspeed=4;
+        tempid.dmax=32;
+        tempid.owner=id;
+        }
+    for (i=0;i&lt;15;i+=1){
+        tempid=instance_create(x,y,obj_reaperdroneneck);
+        tempid.rot=i*24+14;
+        tempid.rotspeed=-3;
+        tempid.dmax=20;
+        tempid.owner=id;
+        }
+    }
+if (neck==2){
+    for (i=0;i&lt;5;i+=1){
+        for (j=0;j&lt;4;j+=1){
+            tempid=instance_create(x,y,obj_reaperdroneneck);
+            tempid.rot=i*72+j*15;
+            tempid.rotspeed=-4;
+            tempid.dmax=10+j*10;
+            tempid.owner=id;
+            }
+        }
+    }
+if (neck==3){
+    for (i=0;i&lt;3;i+=1){
+        for (j=0;j&lt;4;j+=1){
+            tempid=instance_create(x,y,obj_reaperdroneneck);
+            tempid.rot=i*120;
+            tempid.rotspeed=4;
+            tempid.dmax=10+j*10;
+            tempid.owner=id;
+            }
+        for (j=0;j&lt;4;j+=1){
+            tempid=instance_create(x,y,obj_reaperdroneneck);
+            tempid.rot=i*120;
+            tempid.rotspeed=-7;
+            tempid.dmax=10+j*10;
+            tempid.owner=id;
+            }
+        }
+    }
+if (neck==4){
+    neck=0;
+    for (i=0;i&lt;6;i+=1){
+        tempid=instance_create(x,y,obj_reaperdroneneck);
+        tempid.sprite_index=spr_reaver;
+        tempid.rot=i*90;
+        tempid.rotspeed=2+i;
+        tempid.dmax=16+i*4;
+        tempid.owner=id;
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="80">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">speed=1.3;
+direction=point_direction(x,y,obj_hero.x,obj_hero.y);</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="120">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">direction=point_direction(x,y,obj_hero.x,obj_hero.y);</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="160">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">direction=point_direction(x,y,obj_hero.x,obj_hero.y);</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="200">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">speed=0;
+if (instance_number(obj_reaperdroneneck)&gt;0){
+    obj_sabot.shakescreen=6;
+    scr_sound("explo2");
+    }
+for (i=0;i&lt;4;i+=1){
+    tempid=instance_create(x,y,obj_esupershot);
+    tempid.speed=2;
+    if (neck==1 || neck==3)
+        tempid.direction=i*90;
+    else
+        tempid.direction=i*90+45;
+    }
+
+with (obj_reaperdroneneck){
+    if (!place_free(x,y) || x&lt;obj_sabot.x || x&gt;obj_sabot.x+320 || y&lt;obj_sabot.y || y&gt;obj_sabot.y+320){
+        instance_create(x,y,obj_explo);
+        instance_destroy();
+        }
+    else{
+        if (sprite_index==spr_drone)
+            (instance_create(x,y,obj_drone)).hp=hp;
+        else
+            (instance_create(x,y,obj_reaver)).hp=hp;
+        instance_destroy();
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="330">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">speed=2;
+direction=point_direction(x,y,obj_hero.x,obj_hero.y)+90;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="370">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">direction=point_direction(x,y,obj_hero.x,obj_hero.y)-90;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="410">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">direction=random(360);</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="449">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (neck==1 || neck==3){
+    if (instance_number(obj_drone)&gt;0 || instance_number(obj_reaver)&gt;0){
+        obj_sabot.shakescreen=6;
+        scr_sound("explo3");
+        }
+    with (obj_drone)
+        hp=0;
+    with (obj_reaver)
+        hp=0;
+    }
+timeline_position=40;</argument>
+      </arguments>
+    </action>
+  </moment>
+</timeline>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<object id="22">
+  <sprite>spr_basebig2</sprite>
+  <solid>false</solid>
+  <visible>false</visible>
+  <depth>105</depth>
+  <persistent>false</persistent>
+  <parent/>
+  <mask/>
+</object>

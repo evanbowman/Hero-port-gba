@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="KEYPRESS" id="37">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (pause &amp;&amp; tier=="warp"){
+    warplistcur-=1;
+    if (warplistcur&lt;0)
+        warplistcur=warplistlen;
+    warpx=mwarpx[warplistcur];
+    warpy=mwarpy[warplistcur];
+    scr_sound("menutick");
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

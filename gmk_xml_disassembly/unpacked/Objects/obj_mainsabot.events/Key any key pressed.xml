@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="KEYPRESS" id="1">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">scr_debug(1);
+if (!ignoreall &amp;&amp; tier=="options" &amp;&amp; (selected==2 || selected==3)){
+    if (keyboard_lastkey!=vk_up &amp;&amp; keyboard_lastkey!=vk_down){
+        keycheck=keyboard_lastkey;
+        if (keycheck==ord("A") || keycheck==ord("B")
+         || keycheck==ord("C") || keycheck==ord("D")
+         || keycheck==ord("E") || keycheck==ord("F")
+         || keycheck==ord("G") || keycheck==ord("H")
+         || keycheck==ord("I") || keycheck==ord("J")
+         || keycheck==ord("K") || keycheck==ord("L")
+         || keycheck==ord("M") || keycheck==ord("N")
+         || keycheck==ord("O") || keycheck==ord("P")
+         || keycheck==ord("Q") || keycheck==ord("R")
+         || keycheck==ord("S") || keycheck==ord("T")
+         || keycheck==ord("U") || keycheck==ord("V")
+         || keycheck==ord("W") || keycheck==ord("X")
+         || keycheck==ord("Y") || keycheck==ord("Z")){
+            if (selected==2){
+                if (keycheck==global.fireright &amp;&amp; keycheck!=global.fireleft){
+                    global.fireright=global.fireleft;
+                    global.fireleft=keycheck;
+                    scr_sound("menuselect");
+                    }
+                else if (keycheck!=global.fireleft &amp;&amp; keycheck!=global.fireright){
+                    scr_sound("menuselect");
+                    global.fireleft=keycheck;
+                    }
+                else
+                    scr_sound("menuback");
+                }
+            else if (selected==3){
+                if (keycheck==global.fireleft &amp;&amp; keycheck!=global.fireright){
+                    global.fireleft=global.fireright;
+                    global.fireright=keycheck;
+                    scr_sound("menuselect");
+                    }
+                else if (keycheck!=global.fireleft &amp;&amp; keycheck!=global.fireright){
+                    scr_sound("menuselect");
+                    global.fireright=keycheck;
+                    }
+                else
+                    scr_sound("menuback");
+                }
+            scr_maintexts();
+            }
+        }
+    }
+tklast=keyboard_lastkey;</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

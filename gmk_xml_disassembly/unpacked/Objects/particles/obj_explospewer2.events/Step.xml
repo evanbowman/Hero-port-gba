@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">cyc+=1;
+for (i=0;i&lt;8;i+=1){
+    dir=22.5+i*45-cyc*11;
+    dir2=22.5+i*45+cyc*11;
+    cyc2=cyc*12;
+    if (i mod 2==1)
+        instance_create(x+cos(degtorad(dir))*cyc2,y+sin(degtorad(dir))*cyc2,obj_explo);
+    else
+        instance_create(x+cos(degtorad(dir2))*cyc2,y+sin(degtorad(dir2))*cyc2,obj_explo);
+    }
+if (cyc==25)
+    instance_destroy();</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

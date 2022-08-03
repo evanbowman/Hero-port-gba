@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<object id="230">
+  <sprite>spr_shot</sprite>
+  <solid>false</solid>
+  <visible>false</visible>
+  <depth>0</depth>
+  <persistent>false</persistent>
+  <parent>obj_spawner</parent>
+  <mask/>
+</object>

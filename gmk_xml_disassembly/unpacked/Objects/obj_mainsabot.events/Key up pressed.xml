@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="KEYPRESS" id="38">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">scr_maincode(0);
+if (!ignoreall &amp;&amp; tier!="maps"){
+    selected-=1;
+    if (selected==0)
+        selected=selections;
+    scr_maindesc();
+    scr_sound("menutick");
+    if (tier=="options" &amp;&amp; (selected==2 || selected==3))
+        keyboard_unset_map();
+    else if (tier=="options" &amp;&amp; (selected==1 || selected==4))
+        scr_setmaps();
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

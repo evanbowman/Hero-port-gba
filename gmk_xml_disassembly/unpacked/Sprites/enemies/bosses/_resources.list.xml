@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="spr_eliminator" type="RESOURCE"/>
+  <resource name="spr_smasher" type="RESOURCE"/>
+  <resource name="spr_silencer" type="RESOURCE"/>
+  <resource name="spr_silencercore" type="RESOURCE"/>
+  <resource name="spr_silencerwall" type="RESOURCE"/>
+  <resource name="spr_hydlas" type="RESOURCE"/>
+  <resource name="spr_hydlashead" type="RESOURCE"/>
+  <resource name="spr_processor" type="RESOURCE"/>
+  <resource name="spr_processorwall" type="RESOURCE"/>
+  <resource name="spr_grandmother" type="RESOURCE"/>
+  <resource name="spr_guardian" type="RESOURCE"/>
+  <resource name="spr_dread" type="RESOURCE"/>
+  <resource name="spr_tetron" type="RESOURCE"/>
+  <resource name="spr_tetronhead" type="RESOURCE"/>
+  <resource name="spr_tetronneck" type="RESOURCE"/>
+  <resource name="spr_tetronsit" type="RESOURCE"/>
+  <resource name="spr_tetronarm" type="RESOURCE"/>
+  <resource name="spr_tetronhead2" type="RESOURCE"/>
+  <resource name="spr_warmachine" type="RESOURCE"/>
+  <resource name="spr_warmachine2" type="RESOURCE"/>
+</resources>

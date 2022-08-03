@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<timeline>
+  <moment stepNo="0">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">image_single=0;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="10">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">image_single=5;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="20">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">image_single=0;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="30">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">image_single=5;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="40">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">awake=1;
+if (global.hp&gt;0){
+    if (left)
+        x2=-2;
+    else
+        x2=2;
+    shotcyc+=1;
+    if (shotcyc==1){
+        dir=point_direction(x+8,y+16,obj_hero.x,obj_hero.y);
+        if (sprite_index==spr_turretleft &amp;&amp; dir&gt;90 &amp;&amp; dir&lt;=180)
+            dir=90;
+        if (sprite_index==spr_turretleft &amp;&amp; dir&gt;180 &amp;&amp; dir&lt;=270)
+            dir=270;
+        if (sprite_index==spr_turretright &amp;&amp; dir&lt;90)
+            dir=90;
+        if (sprite_index==spr_turretright &amp;&amp; dir&gt;270)
+            dir=270;
+        tempid=instance_create(x+8,y+16,obj_esupershot);
+        tempid.speed=2;
+        tempid.direction=dir;
+        }
+    else{
+        shotcyc=0;
+        if (left)
+            dir=point_direction(x+4,y+16,obj_hero.x,obj_hero.y);
+        else
+            dir=point_direction(x+12,y+16,obj_hero.x,obj_hero.y);
+        if (sprite_index==spr_turretleft &amp;&amp; dir&gt;90 &amp;&amp; dir&lt;=180)
+            dir=90;
+        if (sprite_index==spr_turretleft &amp;&amp; dir&gt;180 &amp;&amp; dir&lt;=270)
+            dir=270;
+        if (sprite_index==spr_turretright &amp;&amp; dir&lt;90)
+            dir=90;
+        if (sprite_index==spr_turretright &amp;&amp; dir&gt;270)
+            dir=270;
+        if (left)
+            tempid=instance_create(x+4,y+16,obj_eshot);
+        else
+            tempid=instance_create(x+12,y+16,obj_eshot);
+        tempid.speed=2;
+        tempid.direction=dir-30;
+        if (left)
+            tempid=instance_create(x+4,y+16,obj_eshot);
+        else
+            tempid=instance_create(x+12,y+16,obj_eshot);
+        tempid.speed=2;
+        tempid.direction=dir+30;
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="79">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">timeline_position=40</argument>
+      </arguments>
+    </action>
+  </moment>
+</timeline>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<timeline>
+  <moment stepNo="0">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">image_single=0;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="10">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">image_single=1;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="20">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">image_single=0;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="30">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">image_single=1;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="40">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (!neckinit){
+    neckinit=1;
+    for (i=6;i&gt;0;i-=1){
+        tempid=instance_create(x,y,obj_neck);
+        tempid.owner=id;
+        tempid.offset=i*12;
+        tempid.chestspawn=chestspawn;
+        }
+    }
+
+if (global.hp&gt;0){
+    speed=1.5;
+    shotcyc+=1;
+    if (shotcyc==4){
+        shotcyc=0;
+        for (i=0;i&lt;4;i+=1){
+            tempid=instance_create(x,y,obj_eshot);
+            tempid.speed=2;
+            tempid.direction=i*90+45;
+            }
+        }
+    //Ortagonal
+    prevdir=direction;
+    temprand=floor(random(12));
+    if (!firsthome)
+        temprand=5;
+    if (temprand&lt;4)
+        direction=90*temprand;
+    else{
+        xd=x-obj_hero.x;
+        yd=y-obj_hero.y;
+        if (abs(xd)&gt;abs(yd)){
+            if (xd&lt;0)
+                direction=0;
+            else
+                direction=180;
+            }
+        else{
+            if (yd&lt;0)
+                direction=270;
+            else
+                direction=90;
+            }
+        }
+    if (!firsthome){
+        firsthome=1;
+        prevdir=direction;
+        }
+    if ((direction==0 &amp;&amp; prevdir==180) || (direction==180 &amp;&amp; prevdir==0) ||(direction==90 &amp;&amp; prevdir==270) ||(direction==270 &amp;&amp; prevdir==90))
+        direction=prevdir;
+
+    if (hp&lt;hpprev &amp;&amp; (direction==0 || direction==180)){
+        direction=90+floor(random(2))*180;
+        }
+    hpprev=hp;
+
+    if (direction==90 || direction==270){
+        if (x&gt;obj_hero.x)
+            image_single=2;
+        else
+            image_single=3;
+        }
+    else if (direction==180)
+        image_single=2;
+    else if (direction==0)
+        image_single=3;
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="59">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">timeline_position=40</argument>
+      </arguments>
+    </action>
+  </moment>
+</timeline>

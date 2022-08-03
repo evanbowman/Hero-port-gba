@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (global.hardmode){
+    if (speed&lt;maxspeed)
+        speed+=0.4;
+    if (speed&gt;maxspeed)
+        speed-=0.25;
+    }
+if (hp&lt;=0){
+    obj_sabot.explo[1]=1;
+    instance_destroy();
+    instance_create(x,y,obj_explo);
+    }
+if (place_meeting(x,y,obj_reaver)){
+    if (timeline_position&lt;45 &amp;&amp; timeline_position&gt;40)
+        timeline_position+=-1+floor(random(2));
+    }
+bounce=0;
+if (x&lt;obj_sabot.x+xsize){ hspeed=abs(hspeed); bounce=1;}
+if (x&gt;obj_sabot.x+320-xsize){ hspeed=-abs(hspeed); bounce=1;}
+if (y&lt;obj_sabot.y+ysize){ vspeed=abs(vspeed); bounce=1;}
+if (y&gt;obj_sabot.y+320-ysize){ vspeed=-abs(vspeed); bounce=1;}
+if (bounce){
+    if (hspeed&lt;0)
+        image_single=2;
+    else
+        image_single=3;
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

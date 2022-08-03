@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<timeline>
+  <moment stepNo="40">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.other</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (!shot40){
+    shot40=1;
+    (instance_create(x,y,obj_eshot)).hspeed=0.5;
+    (instance_create(x,y,obj_eshot)).hspeed=1;
+    (instance_create(x,y,obj_eshot)).hspeed=-0.5;
+    (instance_create(x,y,obj_eshot)).hspeed=-1;
+    }
+
+timecyc+=1
+if (timecyc==16)
+    timecyc=0;
+
+if (timecyc mod 8==0 &amp;&amp; global.hp&gt;0){
+    tempid=instance_create(x,y,obj_esupershot);
+    tempid.direction=point_direction(x,y,obj_hero.x,obj_hero.y)-60;
+    tempid.speed=0.5;
+    tempid=instance_create(x,y,obj_esupershot);
+    tempid.direction=point_direction(x,y,obj_hero.x,obj_hero.y)+60;
+    tempid.speed=0.5;
+    tempid=instance_create(x,y,obj_esupershot);
+    tempid.direction=point_direction(x,y,obj_hero.x,obj_hero.y)-40;
+    tempid.speed=1;
+    tempid=instance_create(x,y,obj_esupershot);
+    tempid.direction=point_direction(x,y,obj_hero.x,obj_hero.y)+40;
+    tempid.speed=1;
+    tempid=instance_create(x,y,obj_esupershot);
+    tempid.direction=point_direction(x,y,obj_hero.x,obj_hero.y)-20;
+    tempid.speed=1.5;
+    tempid=instance_create(x,y,obj_esupershot);
+    tempid.direction=point_direction(x,y,obj_hero.x,obj_hero.y)+20;
+    tempid.speed=1.5;
+    }
+
+else if (timecyc mod 4==0 &amp;&amp; global.hp&gt;0){
+    for (i=1;i&lt;10;i+=1){
+        tempid=instance_create(x,y,obj_esupershot);
+        tempid.speed=1+(i mod 2);
+        if (x&lt;hero.x)
+            tempid.direction=-80+i*16;
+        else
+            tempid.direction=260-i*16;
+        }
+    }
+
+else if (global.hp&gt;0){
+    tempid=instance_create(x,y,obj_eshot);
+    tempid.speed=1;
+    if (x&lt;obj_hero.x)
+        tempid.direction=random(160)-80;
+    else
+        tempid.direction=random(160)+100;
+    tempid=instance_create(x,y,obj_eshot);
+    tempid.direction=point_direction(x,y,obj_hero.x,obj_hero.y);
+    tempid.speed=1.5;
+    }
+</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="109">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.other</appliesTo>
+      <arguments>
+        <argument kind="STRING">timeline_position=40</argument>
+      </arguments>
+    </action>
+  </moment>
+</timeline>

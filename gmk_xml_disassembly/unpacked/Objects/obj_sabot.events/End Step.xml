@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="2">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if ((global.hp&lt;prevhp &amp;&amp; !mdk &amp;&amp; global.screenshaking) || fullflash){
+    if (global.hp&lt;prevhp &amp;&amp; global.gmversion==7 &amp;&amp; global.motionblur){
+        flashblur=1;
+        alphacyc=0;
+        }
+    }
+if (global.gmversion==7 &amp;&amp; global.motionblur &amp;&amp; obj_bgdraw.alpha&lt;1){
+    alphacyc-=1;
+    if (alphacyc&lt;=0){
+        alphacyc=2+2*(floor((instance_number(obj_deleteme)+instance_number(obj_lurk)*24+instance_number(obj_hydlashead)*5+instance_number(obj_processor)*80)/100));
+        with (obj_deleteme)
+            scr_compat(3);
+        with (obj_hero)
+            scr_compat(3);
+        with (obj_antenna)
+            scr_compat(3);
+        with (obj_antenna2)
+            scr_compat(3);
+        with (obj_weed)
+            scr_compat(3);
+        with (obj_weed2)
+            scr_compat(3);
+        if (flashblur &amp;&amp; !pause){
+            for (i=0;i&lt;4;i+=1){
+                for (j=0;j&lt;4;j+=1){
+                    tempid=instance_create(x+i*96,y+j*96,obj_blur);
+                    tempid.sprite_index=spr_blockhuge;
+                    tempid.alpha=1-obj_bgdraw.alpha;
+                    }
+                }
+            }
+        }
+    }
+flashblur=0;
+if (zeroalpha){
+    zeroalphacyc-=1;
+    if (zeroalphacyc&lt;=0){
+        zeroalphacyc=4;
+        with (obj_blur2){
+            if (x&gt;obj_sabot.tetcirx-obj_sabot.tetcirr+8 &amp;&amp; y&gt;obj_sabot.tetciry-obj_sabot.tetcirr+8 &amp;&amp; x&lt;obj_sabot.tetcirx+obj_sabot.tetcirr-8 &amp;&amp; y&lt;obj_sabot.tetciry+obj_sabot.tetcirr-8)
+                instance_destroy();
+            }
+        with (obj_flame){
+            if (x&gt;obj_sabot.x &amp;&amp; x&lt;obj_sabot.x+320 &amp;&amp; y&gt;obj_sabot.y-48 &amp;&amp; y&lt;obj_sabot.y+320){
+                tempid=instance_create(floor(round(x/2)*2),floor(round(y/2)*2)-obj_sabot.shake,obj_blur2);
+                tempid.sprite_index=sprite_index;
+                tempid.image_single=image_single;
+                if (sprite_index=spr_block || sprite_index==spr_blockmed)
+                    tempid.ttl-=1000;
+                if (sprite_index=spr_explo)
+                    tempid.ttl=40;
+                }
+            else
+                instance_destroy();
+            if (x&gt;obj_sabot.tetcirx-obj_sabot.tetcirr+8 &amp;&amp; y&gt;obj_sabot.tetciry-obj_sabot.tetcirr+8 &amp;&amp; x&lt;obj_sabot.tetcirx+obj_sabot.tetcirr-8 &amp;&amp; y&lt;obj_sabot.tetciry+obj_sabot.tetcirr-8)
+                instance_destroy();
+            }
+        with (obj_hero){
+            tempid=instance_create(floor(round(x/2)*2),floor(round(y/2)*2),obj_blur2);
+            tempid.sprite_index=sprite_index;
+            tempid.image_single=image_single;
+            tempid.ttl=-1000;
+            }
+        with (obj_tetronneck){
+            if (sprite_index==spr_tetronarm){
+                tempid=instance_create(floor(round(x/2)*2),floor(round(y/2)*2),obj_blur2);
+                tempid.sprite_index=sprite_index;
+                tempid.image_single=image_single;
+                tempid.ttl=-1000;
+                }
+            }
+        with (obj_tetron){
+            tempid=instance_create(floor(round(x/2)*2),floor(round(y/2)*2),obj_blur2);
+            tempid.sprite_index=sprite_index;
+            tempid.image_single=image_single;
+            tempid.ttl=-1000;
+            }
+        with (obj_tetronneck){
+            if (sprite_index==spr_tetronhead2){
+                tempid=instance_create(floor(round(x/2)*2),floor(round(y/2)*2),obj_blur2);
+                tempid.sprite_index=sprite_index;
+                tempid.image_single=image_single;
+                tempid.ttl=-1000;
+                }
+            }
+        with (obj_door1){
+            tempid=instance_create(floor(round(x/2)*2),floor(round(y/2)*2),obj_blur2);
+            tempid.sprite_index=sprite_index;
+            tempid.image_single=image_single;
+            tempid.ttl=-1000;
+            }
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

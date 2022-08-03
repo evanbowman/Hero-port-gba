@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="2">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (anim){
+    imgcyc+=1;
+    if (imgcyc==4){
+        imgcyc=0;
+        image_single+=1;
+        }
+    }
+if (hp&lt;=0){
+    if (sprite_index==spr_neck)
+        instance_create(x,y,obj_explo);
+    else if (sprite_index==spr_neck2)
+        instance_create(x,y,obj_bigexplo);
+    else if (sprite_index==spr_silencercore){
+        scr_sound("bossroar");
+        obj_sabot.explo[2]=1;
+        owner.hp-=1;
+        obj_sabot.shakescreen=6;
+        instance_create(x,y,obj_bigexplo);
+        }
+    else if (sprite_index==spr_processorwall)
+        obj_sabot.explo[1]=1;
+    if (sprite_index!=spr_lurkhitbox)
+        instance_destroy();
+    }
+x=owner.x+xoffset;
+y=owner.y+yoffset;
+
+if (move){
+    if (d&lt;dmax)
+        d+=1;
+    if (d&gt;dmax){
+        d-=2;
+        if (global.hardmode)
+            rot+=1.2;
+        else
+            rot+=0.4;
+        }
+    else
+        rot+=rotspeed;
+    if (rot&gt;360)
+        rot-=360;
+    if (rot&lt;0)
+        rot+=360;
+    frot=rot+offset;
+    x2=cos(degtorad(frot))*d;
+    y2=(sin(degtorad(frot))*d);
+    x=owner.x+x2;
+    y=owner.y+y2;
+    }
+
+if (sprite_index==spr_lurkhitbox){
+    if (fastanim)
+        cyc+=2;
+    else
+        cyc+=1;
+    if (cyc&gt;=4){
+        cyc=0;
+        anim+=1;
+        if (anim==8)
+            anim=0;
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

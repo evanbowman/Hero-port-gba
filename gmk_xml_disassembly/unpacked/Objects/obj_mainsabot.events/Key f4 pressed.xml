@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="KEYPRESS" id="115">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (keyboard_check(vk_alt)){
+    sound_stop_all();
+    game_end();
+    }
+else{
+    if (global.window==0)
+        global.window=1;
+    else if (global.window==1)
+        global.window=2;
+    else
+        global.window=0;
+    scr_compat(1);
+    scr_maintexts();
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

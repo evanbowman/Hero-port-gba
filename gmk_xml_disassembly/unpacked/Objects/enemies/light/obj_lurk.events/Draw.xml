@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="DRAW" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (wake)
+    draw_sprite(spr_lurk,anim+8,x,y);
+else
+    draw_sprite(spr_lurk,image_single,x,y);
+for (i=1;i&lt;24;i+=1){
+    img=anim+24-i
+    while (img&gt;7)
+        img-=8;
+    if (img&lt;0)
+        img+=8;
+    draw_sprite(spr_lurk,img,x,y+i*16);
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

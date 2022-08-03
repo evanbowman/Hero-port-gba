@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (hp&lt;=0){
+    instance_destroy();
+    if (image_single&lt;2)
+        image_single+=2;
+    (instance_create(x,y,obj_deadanni)).image_single=image_single+2;
+    }
+bounce=0;
+if (x&lt;obj_sabot.x+xsize){ hspeed=abs(hspeed); bounce=1;}
+if (x&gt;obj_sabot.x+320-xsize){ hspeed=-abs(hspeed); bounce=1;}
+if (y&lt;obj_sabot.y+ysize){ vspeed=abs(vspeed); bounce=1;}
+if (y&gt;obj_sabot.y+320-ysize){ vspeed=-abs(vspeed); bounce=1;}
+if (bounce){
+    if (hspeed&lt;0)
+        image_single=2;
+    else
+        image_single=3;
+    }
+
+if (spreadfire &amp;&amp; global.hp&gt;0){
+    if (global.hardmode)
+        sfcyc+=2;
+    else
+        sfcyc+=1;
+    if (sfcyc&gt;=16){
+        sfcyc=0;
+        tempid=instance_create(x,y,obj_egigashot);
+        tempid.speed=4;
+        tempid.direction=point_direction(x,y,obj_hero.x,obj_hero.y);
+        sfcyc2+=1;
+        if (sfcyc2==2)
+            sfcyc2=0;
+        if (global.hardmode &amp;&amp; sfcyc2==1){
+            tempid=instance_create(x,y,obj_esupershot);
+            tempid.speed=1;
+            tempid.direction=random(360);
+            }
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

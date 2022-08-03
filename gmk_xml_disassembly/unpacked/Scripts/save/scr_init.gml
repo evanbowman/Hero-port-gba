@@ -1,0 +1,15 @@
+global.hardmode=0;
+global.hp=10;
+global.maxhp=10;
+global.heat=0;
+global.maxheat=120;
+global.blaster=1;
+global.blade=0;
+global.suit=0;
+global.computers=0;
+global.shipscan=0;
+global.patternscan=0;
+global.expel=0;
+global.seconds=0;
+global.oncespecialtext="!";
+global.eliminator="!";

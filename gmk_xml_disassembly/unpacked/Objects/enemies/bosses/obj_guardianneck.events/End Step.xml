@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="2">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (anim){
+    imgcyc+=1;
+    if (imgcyc==4){
+        imgcyc=0;
+        image_single+=1;
+        }
+    }
+
+if (mode==1)
+    xoffset=-4+owner.lookdir*8;
+else if (mode==2 || mode==4)
+    image_single=owner.lookdir*3;
+else if (mode==3 || mode==5){
+    flamecyc+=1;
+    if (flamecyc==2 &amp;&amp; owner.flaming)
+        flame=0;
+    if (flamecyc==4){
+        flamecyc=0;
+        flame=1;
+        }
+    image_single=1+owner.lookdir*3+flame;
+    }
+
+x=floor((owner.x+xoffset)/2)*2;
+y=floor((owner.y+yoffset)/2)*2;</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="CREATE" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">drawhp=1;
+type=18;
+hp=64;
+if (global.hardmode)
+    timeline_index=tim_eyespy_hard;
+else
+    timeline_index=tim_eyespy;
+timeline_speed=1;
+tempid=instance_create(x,y,obj_eyespyradius);
+tempid.owner=id;</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

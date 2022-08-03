@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="COLLISION" with="obj_block">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (phase3 &amp;&amp; !landed){
+    if (!place_free(x,y+vspeed+1)){
+        landed=1;
+        speed=0;
+        gravity=0;
+        sprite_index=spr_tetronsit;
+        if (image_single==0)
+            move_outside_solid(180,32);
+        else
+            move_outside_solid(0,32);
+        move_contact_solid(270,64);
+        obj_sabot.shakescreen=12;
+        obj_sabot.explo[2]=1;
+        tempid=instance_create(x+16,y+32,obj_ebbomb);
+        tempid.speed=4;
+        tempid.direction=45;
+        tempid=instance_create(x-16,y+32,obj_ebbomb);
+        tempid.speed=4;
+        tempid.direction=135;
+        tempid=instance_create(x+16,y+32,obj_ebbomb);
+        tempid.speed=2;
+        tempid.direction=75;
+        tempid=instance_create(x-16,y+32,obj_ebbomb);
+        tempid.speed=2;
+        tempid.direction=105;
+        }
+    }
+
+if (!phase3){
+    gotit=0;
+    if (!place_free(x+2,y) || !place_free(x-2,y)){
+        hspeed*=-1;
+        gotit=1;
+        if (hspeed&lt;0)
+            image_single=0;
+        else
+            image_single=1;
+        }
+    if (!place_free(x,y+2) || !place_free(x,y-2)){
+        vspeed*=-1;
+        gotit=1;
+        }
+    if (!gotit){
+        hspeed*=-1;
+        vspeed*=-1;
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

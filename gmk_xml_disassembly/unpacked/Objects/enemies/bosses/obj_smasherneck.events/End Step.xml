@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="2">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (owner.move&gt;0 &amp;&amp; sprite_index==spr_smasher){
+    if (!place_free(x+8,y))
+        owner.move=3;
+    if (!place_free(x,y-8))
+        owner.move=4;
+    if (!place_free(x-8,y))
+        owner.move=1;
+    if (!place_free(x,y+8))
+        owner.move=2;
+    }
+
+if (rfire&gt;0){
+    rfirecyc+=1;
+    if (rfirecyc==5){
+        rfirecyc=0;
+        rfire-=1;
+        tempid=instance_create(x,y,obj_eshot);
+        if (global.hardmode)
+            tempid.speed=2;
+        else
+            tempid.speed=1.5;
+        tempid.direction=dir;
+        }
+    }
+
+if (anim){
+    imgcyc+=1;
+    if (imgcyc==4){
+        imgcyc=0;
+        image_single+=1;
+        }
+    }
+if (hp&lt;=0){
+    if (sprite_index==spr_silencercore){
+        owner.hp-=1;
+        obj_sabot.shakescreen=6;
+        instance_create(x,y,obj_bigexplo);
+        obj_sabot.explo[2]=1;
+        scr_sound("bossroar");
+        }
+    if (sprite_index==spr_neck2){
+        expcyc+=1;
+        if (expcyc==6){
+            obj_sabot.explo[2]=1;
+            expcyc=0;
+            instance_create(x,y,obj_bigexplo);
+            }
+        }
+    else
+        instance_destroy();
+    }
+x=owner.x+xoffset;
+y=owner.y+yoffset;
+
+if (move){
+    if (d&gt;dmax){
+        if (hp&gt;0)
+            d-=8;
+        else
+            d-=1;
+        }
+    rot+=rotspeed;
+    if (rot&gt;360)
+        rot-=360;
+    if (rot&lt;0)
+        rot+=360;
+    frot=rot+offset;
+    x2=cos(degtorad(frot))*d;
+    y2=(sin(degtorad(frot))*d);
+    x=owner.x+x2;
+    y=owner.y+y2;
+    }
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

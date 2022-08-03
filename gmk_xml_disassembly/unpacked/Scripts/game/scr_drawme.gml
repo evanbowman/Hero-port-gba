@@ -1,0 +1,1 @@
+draw_sprite(sprite_index,image_single,floor(round(x/2)*2),floor(round(y/2)*2));

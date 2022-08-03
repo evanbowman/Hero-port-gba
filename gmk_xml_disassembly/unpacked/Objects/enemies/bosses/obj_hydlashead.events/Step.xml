@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (hp&lt;=0 &amp;&amp; !dead){
+    dead=1;
+    obj_hydlas.headkill+=1;
+    }
+
+if (move){
+    xstep+=1;
+    if (xstep&gt;=xstepmax){
+        xstep=0;
+        xdir=floor(random(2));
+        xstepmax=16+floor(random(24));
+        }
+    if (xdir==0)
+        hspeed-=0.12;
+    if (xdir==1)
+        hspeed+=0.12;
+    if (hspeed&lt;-1.4)
+        hspeed=-1.4;
+    if (hspeed&gt;1.4)
+        hspeed=1.4;
+    if (x&lt;xstart-64)
+        xdir=1;
+    if (x&gt;xstart-16)
+        xdir=0;
+    
+    ystep+=1;
+    if (ystep&gt;=ystepmax){
+        ystep=0;
+        ydir=floor(random(2));
+        ystepmax=16+floor(random(24));
+        }
+    if (ydir==0)
+        vspeed-=0.12;
+    if (ydir==1)
+        vspeed+=0.12;
+    if (vspeed&lt;-1.4)
+        vspeed=-1.4;
+    if (vspeed&gt;1.4)
+        vspeed=1.4;
+    if (y&lt;ystart-80)
+        ydir=1;
+    if (y&gt;ystart+16)
+        ydir=0;
+    }
+
+if (dead){
+    deadcyc+=1;
+    if (deadcyc==1){
+        scr_sound("bossroar");
+        obj_sabot.explo[2]=1;
+        obj_sabot.shakescreen=6;
+        instance_create(x,y,obj_bigexplo);
+        tempid=instance_create(x,y,obj_ebomb);
+        tempid.speed=2;
+        tempid.direction=90+random(180);
+        }
+    if (deadcyc==10){
+        obj_sabot.explo[1]=1;
+        obj_sabot.shakescreen=2;
+        instance_create(x+(xdiff/5)*1,y+(ydiff/5)*1.5,obj_bigexplo);
+        tempid=instance_create(x+(xdiff/5)*1,y+(ydiff/5)*1.5,obj_ebomb);
+        tempid.speed=2;
+        tempid.direction=90+random(180);
+        }
+    if (deadcyc==20){
+        obj_sabot.explo[1]=1;
+        obj_sabot.shakescreen=2;
+        instance_create(x+(xdiff/5)*2,y+(ydiff/5)*3,obj_bigexplo);
+        tempid=instance_create(x+(xdiff/5)*2,y+(ydiff/5)*3,obj_ebomb);
+        tempid.speed=2;
+        tempid.direction=90+random(180);
+        }
+    if (deadcyc==30){
+        obj_sabot.explo[1]=1;
+        obj_sabot.shakescreen=2;
+        instance_create(x+(xdiff/5)*3,y+(ydiff/5)*4,obj_bigexplo);
+        tempid=instance_create(x+(xdiff/5)*3,y+(ydiff/5)*4,obj_ebomb);
+        tempid.speed=2;
+        tempid.direction=90+random(180);
+        }
+    if (deadcyc==40){
+        obj_sabot.explo[1]=1;
+        obj_sabot.shakescreen=2;
+        instance_create(x+(xdiff/5)*4,y+(ydiff/5)*4.6,obj_bigexplo);
+        tempid=instance_create(x+(xdiff/5)*4,y+(ydiff/5)*4.6,obj_ebomb);
+        tempid.speed=2;
+        tempid.direction=90+random(180);
+        }
+    if (deadcyc==50){
+        obj_sabot.explo[1]=1;
+        obj_sabot.shakescreen=2;
+        instance_create(xstart,ystart,obj_bigexplo);
+        tempid=instance_create(xstart,ystart,obj_ebomb);
+        tempid.speed=2;
+        tempid.direction=90+random(180);
+        }
+    if (deadcyc==60){
+        if (copy==0){
+            if (global.hardmode){
+                tempid=instance_create(xstart,ystart-4,obj_hydlashead);
+                tempid.copy=copy+1;
+                tempid.image_single=3;
+                tempid.timeline_index=tim_hydlashead_hard;
+                tempid.timeline_position=40;
+                tempid.hp=8;
+                tempid=instance_create(xstart,ystart+4,obj_hydlashead);
+                tempid.copy=copy+1
+                tempid.image_single=3;
+                tempid.timeline_index=tim_hydlashead_hard;
+                tempid.timeline_position=20;
+                tempid.hyper=1;
+                tempid.hp=8;
+                }
+            else{
+                tempid=instance_create(xstart,ystart,obj_hydlashead);
+                tempid.copy=copy+1;
+                tempid.image_single=3;
+                tempid.timeline_index=tim_hydlashead;
+                tempid.timeline_position=40;
+                tempid.hp=8;
+                }
+            }
+        else if (copy==1 &amp;&amp; global.hardmode &amp;&amp; hyper){
+            tempid=instance_create(xstart,ystart-4,obj_hydlashead);
+            tempid.copy=copy+1;
+            tempid.image_single=6;
+            tempid.hp=8;
+            if (global.hardmode)
+                tempid.timeline_index=tim_hydlashead_hard;
+            else
+                tempid.timeline_index=tim_hydlashead;
+            tempid.timeline_position=40;
+            }
+        instance_destroy();
+        }
+    }
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

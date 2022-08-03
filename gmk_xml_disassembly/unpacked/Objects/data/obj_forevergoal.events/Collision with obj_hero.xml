@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="COLLISION" with="obj_hero">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">with (other){
+    instance_destroy();
+    instance_create(x,y,obj_explospewer2);
+    scr_sound("pickup");
+    }
+obj_sabot.minusworld=minusworld;
+with (obj_sabot){
+    alarm[0]=40;
+    if (minusworld)
+        foreverlevel=-1;
+    else
+        foreverlevel+=1;
+    newforeverlevel=1;
+    if (foreverlevel&gt;=999)
+        foreverlevel=999;
+    if (flags&gt;global.bestflags)
+        global.bestflags=flags;
+    if (foreverlevel&gt;global.besttime5)
+        global.besttime5=foreverlevel;
+    scr_checkfile();
+    if (wrongsum==0)
+        scr_savekeys();
+    }
+scr_foreverdestroy();
+instance_destroy();
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

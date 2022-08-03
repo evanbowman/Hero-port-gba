@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="scr_omnitext" type="RESOURCE"/>
+  <resource name="scr_language1" type="RESOURCE"/>
+  <resource name="scr_language2" type="RESOURCE"/>
+  <resource name="scr_language3" type="RESOURCE"/>
+  <resource name="scr_language4" type="RESOURCE"/>
+  <resource name="scr_language5" type="RESOURCE"/>
+  <resource name="scr_language6" type="RESOURCE"/>
+  <resource name="scr_language7" type="RESOURCE"/>
+  <resource name="scr_language8" type="RESOURCE"/>
+  <resource name="scr_setlanguage" type="RESOURCE"/>
+  <resource name="scr_rgbt" type="RESOURCE"/>
+  <resource name="scr_secrets" type="RESOURCE"/>
+  <resource name="scr_notes" type="RESOURCE"/>
+</resources>

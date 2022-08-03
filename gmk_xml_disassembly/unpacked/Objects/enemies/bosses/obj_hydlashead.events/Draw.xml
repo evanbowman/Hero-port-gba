@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="DRAW" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">xdiff=xstart-x;
+ydiff=ystart-y;
+if (deadcyc&lt;75)
+draw_sprite(spr_neck,0,floor(round((x+(xdiff/5)*5)/2)*2),floor(round((y+(ydiff/5)*5)/2)*2));
+if (deadcyc&lt;60)
+draw_sprite(spr_neck,0,floor(round((x+(xdiff/5)*4)/2)*2),floor(round((y+(ydiff/5)*4.6)/2)*2));
+if (deadcyc&lt;45)
+draw_sprite(spr_neck,0,floor(round((x+(xdiff/5)*3)/2)*2),floor(round((y+(ydiff/5)*4)/2)*2));
+if (deadcyc&lt;30)
+draw_sprite(spr_neck,0,floor(round((x+(xdiff/5)*2)/2)*2),floor(round((y+(ydiff/5)*3)/2)*2));
+if (deadcyc&lt;15)
+draw_sprite(spr_neck,0,floor(round((x+(xdiff/5)*1)/2)*2),floor(round((y+(ydiff/5)*1.5)/2)*2));
+if (deadcyc==0)
+    draw_sprite(sprite_index,image_single,floor(round(x/2)*2),floor(round(y/2)*2));
+if (flash &amp;&amp; hp&gt;0){
+    flashcyc+=1;
+    if (flashcyc==2){
+        flashcyc=0;
+        draw_sprite(spr_vortexflash,0,floor(round((x-12)/2)*2),floor(round((y+2)/2)*2));
+        draw_sprite(spr_vortexflash,0,floor(round((x-20)/2)*2),floor(round((y+2)/2)*2));
+        draw_sprite(spr_vortexflash,0,floor(round((x-28)/2)*2),floor(round((y+2)/2)*2));
+        }
+    }
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="obj_smasher_s" type="RESOURCE"/>
+  <resource name="obj_silencer_s" type="RESOURCE"/>
+  <resource name="obj_hydlas_s" type="RESOURCE"/>
+  <resource name="obj_reaperdrone_s" type="RESOURCE"/>
+  <resource name="obj_processor_s" type="RESOURCE"/>
+  <resource name="obj_lurk2_s" type="RESOURCE"/>
+  <resource name="obj_grandmother_s" type="RESOURCE"/>
+  <resource name="obj_guardian_s" type="RESOURCE"/>
+  <resource name="obj_dread_s" type="RESOURCE"/>
+  <resource name="obj_elite_s" type="RESOURCE"/>
+  <resource name="obj_tetron_s" type="RESOURCE"/>
+  <resource name="obj_warmachine_s" type="RESOURCE"/>
+  <resource name="obj_missingno_s" type="RESOURCE"/>
+  <resource name="obj_dreaddrone_s" type="RESOURCE"/>
+  <resource name="obj_bossmodegoal_s" type="RESOURCE"/>
+</resources>

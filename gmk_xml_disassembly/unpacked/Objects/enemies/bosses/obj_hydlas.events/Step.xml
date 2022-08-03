@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (hp&gt;0)
+    retal+=1;
+if (retal&gt;=8){
+    retal=0;
+    if (obj_hero.x&gt;x-16){
+        tempid=instance_create(x+66,y+46,obj_eshot);
+        tempid.direction=point_direction(x+66,y+46,obj_hero.x,obj_hero.y)-30+random(60);
+        tempid.speed=2;
+        tempid=instance_create(x+76,y+58,obj_eshot);
+        tempid.direction=point_direction(x+76,y+58,obj_hero.x,obj_hero.y)-30+random(60);
+        tempid.speed=2;
+        }
+    }
+
+miscyc+=1;
+if ((miscyc==280-global.hardmode*120) &amp;&amp; global.hp&gt;0 &amp;&amp; hp&gt;0){
+    miscyc=0;
+    (instance_create(x+66,y+46,obj_emissile)).direction=75;
+    (instance_create(x+76,y+58,obj_emissile)).direction=50;
+    }
+if (instance_number(obj_hydlashead)==0 &amp;&amp; !dead){
+    with (obj_sabot){
+        if (!global.bossmode &amp;&amp; !global.reallyplay)
+            scr_wantsong(0);
+        }
+    if (global.difficulty!=2)
+        obj_hero.cannotwarp=1;
+    dead=1;
+    hp=0;
+    with (obj_emissile){
+        instance_destroy();
+        instance_create(x,y,obj_explo);
+        }
+    with (obj_ebomb){
+        instance_create(x,y,obj_explo);
+        instance_destroy();
+        }
+    with (obj_esupershot){
+        instance_create(x,y,obj_explo);
+        instance_destroy();
+        }
+    with (obj_eshot)
+        instance_destroy();
+    }
+if (dead){
+    if (global.bossmode || global.reallyplay){
+        totcyc=20;
+        ecyc=6;
+        scr_bossmodereward(2);
+        }
+    ecyc+=1;
+    if (ecyc&gt;=6){
+        ecyc=0;
+        totcyc+=1;
+        if (totcyc&lt;15){
+            obj_sabot.explo[1]=1;
+            obj_sabot.shakescreen=6;
+            instance_create(x+8+random(80),y+40+random(46),obj_bigexplo);
+            }
+        else if (totcyc==15){
+            obj_sabot.explo[3]=1;
+            obj_bgdraw.alpha=0.1;
+            obj_sabot.shakescreen=8;
+            instance_create(x+40,y+50,obj_explospewer);
+            (instance_create(x+40-32,y+50,obj_explospewer)).hspeed=-2;
+            (instance_create(x+40+32,y+50,obj_explospewer)).hspeed=2;
+            (instance_create(x+40,y+50-32,obj_explospewer)).vspeed=-2;
+            (instance_create(x+40,y+50+32,obj_explospewer)).vspeed=2;
+            }
+        else if (totcyc&gt;=20){
+            obj_sabot.boss=0;
+            obj_sabot.explo[4]=1;
+            obj_sabot.pickuppresent=1;
+            instance_destroy();
+            obj_bgdraw.alpha=0.015;
+            obj_sabot.shakescreen=12;
+            for (i=1;i&lt;361;i+=4){
+                sp+=4;
+                if (sp&gt;=16) sp=0;
+                tempid=instance_create(x+40,y+50,obj_bigexplo);
+                tempid.direction=i;
+                tempid.speed=sp+4;
+                tempid=instance_create(x+40,y+50,obj_firework);
+                tempid.sprite_index=spr_flame;
+                tempid.direction=i;
+                tempid.speed=(sp+4)/3+1;
+                tempid.i=1;
+                }
+            if (global.difficulty&lt;2){
+                if (global.difficulty==0)
+                    (instance_create(x+36,y+56,obj_pickup)).image_single=0;
+                else
+                    (instance_create(x+36,y+56,obj_pickup)).image_single=2;
+                }
+            else if (!global.reallyplay)
+                obj_sabot.mitemclear[obj_sabot.roomx,obj_sabot.roomy]=1;
+            }
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

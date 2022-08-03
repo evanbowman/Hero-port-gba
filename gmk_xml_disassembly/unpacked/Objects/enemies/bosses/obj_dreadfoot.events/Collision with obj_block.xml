@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="COLLISION" with="obj_block">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (bounces&lt;=0){
+    x=xprevious;
+    y=yprevious;
+    move_contact_solid(direction,32);
+    gravity=0;
+    speed=0;
+    owner.footready-=1;
+    for (i=0;i&lt;4;i+=1){
+        //tempid=instance_create(x-8+cos(degtorad(direction))*16,y-8-sin(degtorad(direction))*16,obj_ebbomb);
+        tempid=instance_create(x-8,y-8,obj_ebbomb);
+        tempid.speed=1.5;
+        tempid.direction=90*i+45;
+        }
+    }
+else{
+    bounces-=1;
+    speed*=0.8;
+    move_contact_solid(direction,32);
+    gotit=0;
+    if (!place_free(x+2,y) || !place_free(x-2,y)){
+        hspeed*=-1;
+        gotit=1;
+        }
+    if (!place_free(x,y+2) || !place_free(x,y-2)){
+        vspeed*=-1;
+        gotit=1;
+        }
+    if (!gotit){
+        hspeed*=-1;
+        vspeed*=-1;
+        }
+    }
+obj_sabot.shakescreen=2;
+obj_sabot.explo[2]=1;
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="DRAW" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">//Next want
+wait-=1;
+if (wait&lt;=0){
+wait=floor(random(30))+5;
+want=floor(random(4));
+blink=random(1);
+if (blink&lt;0.1)
+    doblink=3;
+if (v){
+    if (want==0){
+        wanty=6;
+        wantx=0;
+        }
+    else if (want==1){
+        wanty=16;
+        wantx=0;
+        }
+    else if (want==2){
+        wanty=6;
+        wantx=4;
+        }
+    else if (want==3){
+        wanty=16;
+        wantx=4;
+        }
+    }
+else{
+    if (want==0){
+        wantx=6;
+        wanty=0;
+        }
+    else if (want==1){
+        wantx=16;
+        wanty=0;
+        }
+    else if (want==2){
+        wantx=6;
+        wanty=4;
+        }
+    else if (want==3){
+        wantx=16;
+        wanty=4;
+        }
+    }
+}
+//Move
+if (instance_number(obj_eyespyradius)&gt;0){
+    if (v){
+        if (x&lt;xstart+wantx)
+            x+=2;
+        if (x&gt;xstart+wantx)
+            x-=2;
+        if (y&lt;ystart+wanty)
+            y+=4;
+        if (y&gt;ystart+wanty)
+            y-=4;
+        }
+    else{
+        if (x&lt;xstart+wantx)
+            x+=4;
+        if (x&gt;xstart+wantx)
+            x-=4;
+        if (y&lt;ystart+wanty)
+            y+=2;
+        if (y&gt;ystart+wanty)
+            y-=2;
+        }
+    }
+//Hero
+else{
+    if (v){
+        y=(obj_hero.y-y)/4+10+ystart;
+        x=obj_hero.x;
+        if (y&lt;ystart+6)
+            y=ystart+6;
+        else if (y&gt;ystart+16)
+            y=ystart+16;
+        if (x&lt;xstart)
+            x=xstart;
+        else if (x&gt;xstart+4)
+            x=xstart+4;
+        }
+    else{
+        x=(obj_hero.x-x)/4+10+xstart;
+        y=obj_hero.y;
+        if (x&lt;xstart+6)
+            x=xstart+6;
+        else if (x&gt;xstart+16)
+            x=xstart+16;
+        if (y&lt;ystart)
+            y=ystart;
+        else if (y&gt;ystart+4)
+            y=ystart+4;
+        }
+    }
+//Draw
+scr_drawme();
+if (doblink==3 || doblink==1){
+    if (v){
+        draw_sprite(spr_block3,0,xstart,ystart);
+        draw_sprite(spr_block3,0,xstart,ystart+16);
+        }
+    else{
+        draw_sprite(spr_block2,0,xstart,ystart);
+        draw_sprite(spr_block2,0,xstart+16,ystart);
+        }
+    }
+else if (doblink==2)
+    draw_sprite(spr_blockmed,0,xstart,ystart);
+if (doblink&gt;0)
+    doblink-=1;</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

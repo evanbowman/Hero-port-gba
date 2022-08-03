@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="scr_debug" type="RESOURCE"/>
+  <resource name="scr_sabotcreate" type="RESOURCE"/>
+  <resource name="scr_sabotstep" type="RESOURCE"/>
+  <resource name="scr_sabotdraw" type="RESOURCE"/>
+  <resource name="scr_eliminate" type="RESOURCE"/>
+  <resource name="scr_sabotpause" type="RESOURCE"/>
+  <resource name="scr_sabot_unpause" type="RESOURCE"/>
+  <resource name="scr_sabotenter" type="RESOURCE"/>
+  <resource name="scr_calcroom" type="RESOURCE"/>
+  <resource name="scr_warpready" type="RESOURCE"/>
+  <resource name="scr_respawn" type="RESOURCE"/>
+  <resource name="scr_button" type="RESOURCE"/>
+  <resource name="scr_bosslen" type="RESOURCE"/>
+  <resource name="scr_bossmodereward" type="RESOURCE"/>
+  <resource name="scr_bossmodestats" type="RESOURCE"/>
+  <resource name="scr_forevercreate" type="RESOURCE"/>
+  <resource name="scr_foreverdestroy" type="RESOURCE"/>
+  <resource name="scr_foreverstats" type="RESOURCE"/>
+  <resource name="scr_hintorder" type="RESOURCE"/>
+</resources>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="2">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (anim){
+    imgcyc+=1;
+    if (imgcyc==4){
+        imgcyc=0;
+        image_single+=1;
+        }
+    }
+if (hp&lt;=0){
+    if (sprite_index==spr_silencercore){
+        scr_sound("bossroar");
+        obj_sabot.explo[2]=1;
+        owner.hp-=1;
+        obj_sabot.shakescreen=6;
+        instance_create(x,y,obj_bigexplo);
+        }
+    else
+        instance_create(x,y,obj_bigexplo);
+    instance_destroy();
+    }
+
+if (arm){
+    x=owner.neckx[mode];
+    y=owner.necky[mode];
+    }
+else{
+    x=owner.x+xoffset;
+    y=owner.y+yoffset;
+    }
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

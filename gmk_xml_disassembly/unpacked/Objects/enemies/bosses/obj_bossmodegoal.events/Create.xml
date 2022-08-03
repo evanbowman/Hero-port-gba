@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="CREATE" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">tempseconds=global.seconds;
+if (global.normalrush){
+    if (global.seconds&lt;global.besttime6)
+        global.besttime6=global.seconds;
+    }
+else{
+    if (global.seconds&lt;global.besttime4)
+        global.besttime4=global.seconds;
+    }
+scr_checkfile();
+if (wrongsum==0)
+    scr_savekeys();
+
+scr_timestring();
+timestring1=timestring;
+if (global.normalrush)
+    global.seconds=global.besttime6;
+scr_timestring();
+timestring2=timestring;
+global.seconds=tempseconds;
+if (global.normalrush){
+    if (global.seconds&lt;5*60) trophy=0;
+    else if (global.seconds&lt;6*60) trophy=1;
+    else if (global.seconds&lt;8*60) trophy=2;
+    else if (global.seconds&lt;10*60) trophy=3;
+    else if (global.seconds&lt;12*60) trophy=4;
+    else if (global.seconds&lt;14*60) trophy=5;
+    else if (global.seconds&lt;16*60) trophy=6;
+    else if (global.seconds&lt;18*60) trophy=7;
+    else trophy=8;
+    }
+else{
+    if (global.seconds&lt;7*60) trophy=0;
+    else if (global.seconds&lt;8*60) trophy=1;
+    else if (global.seconds&lt;10*60) trophy=2;
+    else if (global.seconds&lt;12*60) trophy=3;
+    else if (global.seconds&lt;14*60) trophy=4;
+    else if (global.seconds&lt;16*60) trophy=5;
+    else if (global.seconds&lt;18*60) trophy=6;
+    else if (global.seconds&lt;20*60) trophy=7;
+    else trophy=8;
+    }
+
+mytext[0]=scr_omnitext(290);
+mytext[1]=scr_omnitext(291);
+mytext[2]=scr_omnitext(292);
+mytext[3]=scr_omnitext(293);
+mytext[4]=scr_omnitext(294);
+mytext[5]=scr_omnitext(545);
+mytext[6]=scr_omnitext(546);
+mytext[7]=scr_omnitext(547);
+mytext[8]=scr_omnitext(548);
+mytext[9]=scr_omnitext(549);
+mytext[10]=scr_omnitext(550);
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

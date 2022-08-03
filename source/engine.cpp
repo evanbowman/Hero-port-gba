@@ -70,11 +70,26 @@ Engine::Engine(Platform& pf) : hero_(alloc_object<Hero>(Vec2<Fixnum>{80, 80}))
     }
 
     room_.clear();
-    room_.load(0, 0);
+    room_.load(11, 0); // easy mode start position
 
     pf.speaker().play_music("zone5", 0);
 
     draw_hud();
+}
+
+
+
+void Engine::begin_game(Difficulty d)
+{
+    room_.clear();
+
+    // if (d == Difficulty::hard) {
+    //     room_.load(7, 0);
+    // } else {
+    //     room_.load(11, 14);
+    // }
+
+    room_.load(11, 14);
 }
 
 

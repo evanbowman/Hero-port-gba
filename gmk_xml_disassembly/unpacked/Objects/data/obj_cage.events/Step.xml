@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (neck){
+    x=owner.x;
+    y=owner.y;
+    image_single=owner.image_single;
+    }
+else{
+    if (hold&gt;0){
+        hold-=1;
+        image_single=dir;
+        }
+    else{
+        image_single=0;
+        movecyc+=2;
+        }
+    if (movecyc==2){
+        movecyc=0;
+        if (dir==1 &amp;&amp; hold==0){
+            if (place_meeting(x+2,y,obj_walldestroyer)){
+                dir=3;
+                hold=80;
+                }
+            else
+                x+=2;
+            if (place_meeting(x,y,obj_hero))
+                obj_hero.x+=2;
+            }
+        else if (dir==2 &amp;&amp; hold==0){
+            if (place_meeting(x,y-2,obj_walldestroyer)){
+                dir=4;
+                hold=80;
+                }
+            else
+                y-=2;
+            if (place_meeting(x,y,obj_hero))
+                obj_hero.y-=2;
+            }
+        else if (dir==3 &amp;&amp; hold==0){
+            if (place_meeting(x-2,y,obj_walldestroyer)){
+                dir=1;
+                hold=80;
+                }
+            else
+                x-=2;
+            if (place_meeting(x,y,obj_hero))
+                obj_hero.x-=2;
+            }
+        else if (dir==4 &amp;&amp; hold==0){
+            if (place_meeting(x,y+2,obj_walldestroyer)){
+                dir=2;
+                hold=80;
+                }
+            else
+                y+=2;
+            if (place_meeting(x,y,obj_hero))
+                obj_hero.y+=2;
+            }
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (!start){
+    speed*=0.92;
+    if (speed&lt;0.1){
+        speed=0;
+        start=1;
+        }
+    }
+if (mode==11){
+    imgcyc+=1;
+    if (imgcyc==4){
+        imgcyc=0;
+        image_single+=1;
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

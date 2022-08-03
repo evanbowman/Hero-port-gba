@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="spr_drone" type="RESOURCE"/>
+  <resource name="spr_reaver" type="RESOURCE"/>
+  <resource name="spr_crusher" type="RESOURCE"/>
+  <resource name="spr_spew" type="RESOURCE"/>
+  <resource name="spr_turretleft" type="RESOURCE"/>
+  <resource name="spr_turretright" type="RESOURCE"/>
+  <resource name="spr_blomb" type="RESOURCE"/>
+  <resource name="spr_bolt" type="RESOURCE"/>
+  <resource name="spr_lurk" type="RESOURCE"/>
+  <resource name="spr_lurkhitbox" type="RESOURCE"/>
+</resources>

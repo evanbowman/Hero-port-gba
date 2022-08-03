@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="obj_sharte" type="RESOURCE"/>
+  <resource name="obj_powerturretleft" type="RESOURCE"/>
+  <resource name="obj_powerturretright" type="RESOURCE"/>
+  <resource name="obj_boltaray" type="RESOURCE"/>
+  <resource name="obj_battledoor" type="RESOURCE"/>
+  <resource name="obj_chainsnake" type="RESOURCE"/>
+  <resource name="obj_soldier" type="RESOURCE"/>
+  <resource name="obj_neck" type="RESOURCE"/>
+  <resource name="obj_phaze" type="RESOURCE"/>
+  <resource name="obj_eyespy" type="RESOURCE"/>
+  <resource name="obj_eyespyradius" type="RESOURCE"/>
+</resources>

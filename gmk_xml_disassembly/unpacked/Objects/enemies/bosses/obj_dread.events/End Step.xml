@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="2">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">//FEET
+if (instance_number(obj_dreadfoot)&gt;0){
+    with (obj_dreadfoot){
+        if (mode==1){
+            owner.x1=x;
+            owner.y1=y;
+            }
+        else if (mode==2){
+            owner.x2=x;
+            owner.y2=y;
+            }
+        else if (mode==3){
+            owner.x3=x;
+            owner.y3=y;
+            }
+        }
+    if (global.hardmode){
+        x=(x1+x2+x3)/3;
+        y=(y1+y2+y3)/3;
+        neckx[2]=(((x-x3)/2))+x3;
+        necky[2]=(((y-y3)/2))+y3;
+        }
+    else{
+        x=((x1-x2)/2)+x2;
+        y=((y1-y2)/2)+y2;
+        }
+    neckx[0]=((x-x1)/2)+x1;
+    neckx[1]=(((x-x2)/2))+x2;
+    necky[0]=((y-y1)/2)+y1;
+    necky[1]=(((y-y2)/2))+y2;
+    }
+
+//INSIDE BLOCK
+if (hp&lt;=128 &amp;&amp; !dead){
+    if (!binit){
+        binit=1;
+        wait=-40;
+        }
+    if (!place_free(x,y))
+        move_outside_solid(point_direction(x,y,obj_sabot.x+160,obj_sabot.y+160),1);
+    else
+        bouncing=1;
+    }
+//BOUNCE
+if (bouncing &amp;&amp; !dead){
+    if (speed&gt;3)
+        speed=3;
+    wait+=1;
+    if (wait==bwait){
+        gravity=0.15;
+        if (x&lt;obj_sabot.x+160 &amp;&amp; y&lt;obj_sabot.y+160)
+            gravity_direction=random(70)+280;
+        else if (x&gt;=obj_sabot.x+160 &amp;&amp; y&lt;obj_sabot.y+160)
+            gravity_direction=random(70)+190;
+        else if (x&lt;obj_sabot.x+160 &amp;&amp; y&gt;=obj_sabot.y+160)
+            gravity_direction=random(70)+10;
+        else if (x&gt;=obj_sabot.x+160 &amp;&amp; y&gt;=obj_sabot.y+160)
+            gravity_direction=random(70)+100;
+        else
+            gravity_direction=random(360);
+        }
+    if (speed&gt;0 &amp;&amp; !place_free(x,y)){
+        wait=0;
+        bwaitcyc+=1;
+        if (bwaitcyc&gt;=4){
+            bwait=120;
+            bwaitcyc=0;
+            }
+        else
+            bwait=10;
+        obj_sabot.shakescreen=2;
+        obj_sabot.explo[2]=1;
+        x=xprevious;
+        y=yprevious;
+        move_outside_solid(direction+180,32);
+        move_contact_solid(direction,32);
+        speed=0;
+        gravity=0;
+        wait=0;
+        /*
+        for (i=0;i&lt;4;i+=1){
+            tempid=instance_create(x-8+cos(degtorad(direction))*16,y-8-sin(degtorad(direction))*16,obj_ebbomb);
+            tempid.speed=2;
+            tempid.direction=90*i+45;
+            }
+        */
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

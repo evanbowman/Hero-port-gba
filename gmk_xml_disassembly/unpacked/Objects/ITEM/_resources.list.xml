@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="obj_door1_s" type="RESOURCE"/>
+  <resource name="obj_door2_s" type="RESOURCE"/>
+  <resource name="obj_barrier_s" type="RESOURCE"/>
+  <resource name="obj_barrier2_s" type="RESOURCE"/>
+  <resource name="obj_holder" type="RESOURCE"/>
+  <resource name="obj_computer_s" type="RESOURCE"/>
+  <resource name="obj_shipscan_s" type="RESOURCE"/>
+  <resource name="obj_expel_s" type="RESOURCE"/>
+  <resource name="obj_savepoint_s" type="RESOURCE"/>
+  <resource name="obj_star" type="RESOURCE"/>
+  <resource name="obj_cirepart_s" type="RESOURCE"/>
+  <resource name="obj_cirepart2_s" type="RESOURCE"/>
+  <resource name="obj_ship" type="RESOURCE"/>
+  <resource name="obj_ship2" type="RESOURCE"/>
+  <resource name="obj_wallshooter" type="RESOURCE"/>
+  <resource name="obj_walldestroyer" type="RESOURCE"/>
+  <resource name="obj_cage_s" type="RESOURCE"/>
+  <resource name="obj_fblock" type="RESOURCE"/>
+  <resource name="obj_fblock2" type="RESOURCE"/>
+  <resource name="obj_fblock3" type="RESOURCE"/>
+</resources>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">//Init
+if (!init){
+    init=1;
+    if (facing==0){
+        image_single=0;
+        for (i=0;i&lt;10;i+=1){
+            tempid=instance_create(x,y,obj_neck);
+            tempid.sprite_index=spr_terror;
+            tempid.image_single=4;
+            tempid.owner=id;
+            tempid.offset=i;
+            tempid.terror=1;
+            tempid.depth=101;
+            posx[i]=x;
+            posy[i]=y;
+            }
+        }
+    else{
+        image_single=2;
+        for (i=0;i&lt;10;i+=1){
+            tempid=instance_create(x,y,obj_neck);
+            tempid.sprite_index=spr_terror;
+            tempid.image_single=4;
+            tempid.owner=id;
+            tempid.offset=i;
+            tempid.terror=1;
+            tempid.depth=101;
+            posx[i]=x;
+            posy[i]=y;
+            }
+        }
+    }
+
+//Grab Hero
+if ((att==1 || att==2) &amp;&amp; abs(x-xstart)&gt;16){
+    if (place_meeting(x-6,y,obj_hero) &amp;&amp; place_meeting(x+6,y,obj_hero) &amp;&amp; place_meeting(x,y-6,obj_hero) &amp;&amp; place_meeting(x,y+6,obj_hero)){
+        with (obj_hero)
+            instance_destroy();
+        scr_sound("death");
+        att=3;
+        if (!hyper){
+            obj_sabot.flags-=5;
+            if (obj_sabot.flags&lt;=0)
+                obj_sabot.flags=0;
+            obj_sabot.text1="-5 "+scr_omnitext(520);
+            obj_sabot.text2="";
+            obj_sabot.text3="";
+            }
+        gravity=0.1;
+        catch=1;
+        if (image_single==0)
+            image_single=1;
+        else if (image_single==2)
+            image_single=3;
+        speed=0;
+        }
+    }
+
+//Attack
+if (abs(obj_hero.y-8-y)&lt;16 &amp;&amp; abs(obj_hero.x-(xstart+16))&gt;48 &amp;&amp; att==0 &amp;&amp; ((obj_hero.x&lt;x+16 &amp;&amp; facing==0) || (obj_hero.x&gt;x+16 &amp;&amp; facing==1))){
+    att=1;
+    }
+
+if (att==1){
+    if (facing==0){
+        gravity=0.1;
+        gravity_direction=180;
+        if (speed&gt;4)
+            speed=4;
+        if (x+hspeed&lt;=obj_hero.x-16 || instance_number(obj_hero)==0 || (!place_free(x-4,y) &amp;&amp; x&lt;=xstart-32)){
+            speed=0;
+            att=2;
+            gravity=0;
+            }
+        }
+    else if (facing==1){
+        gravity=0.1;
+        gravity_direction=0;
+        if (speed&gt;4)
+            speed=4;
+        if (x+hspeed&gt;=obj_hero.x-16 || instance_number(obj_hero)==0 || (!place_free(x+4,y) &amp;&amp; x&gt;=xstart+32)){
+            speed=0;
+            att=2;
+            gravity=0;
+            }
+        }
+    }
+
+if (att==2){
+    animcyc+=1;
+    if (animcyc==4){
+        animcyc=0;
+        totalcyc+=1;
+        if (image_single==0){
+            image_single=1;
+            obj_sabot.hit[4]=1;
+            }
+        else if (image_single==1)
+            image_single=0;
+        else if (image_single==2){
+            image_single=3;
+            obj_sabot.hit[4]=1;
+            }
+        else if (image_single==3)
+            image_single=2;
+        }
+    if (totalcyc==9){
+        att=3;
+        gravity=0.1;
+        }
+    }
+
+if (att==3){
+    if (facing==0){
+        gravity_direction=0;
+        if (x+hspeed&gt;=xstart){
+            if (catch &amp;&amp; !caught){
+                caught=1;
+                if (hyper){
+                    alarm[1]=40;
+                    }
+                else{
+                    obj_sabot.alarm[0]=40;
+                    alarm[0]=1;
+                    obj_sabot.newforeverlevel=1;
+                    }
+                speed=0;
+                gravity=0;
+                x=xstart;
+                }
+            else if (!caught)
+                instance_destroy();
+            global.tempid=id;
+            with (obj_neck){
+                if (terror &amp;&amp; owner==global.tempid)
+                    instance_destroy();
+                }
+            }
+        }
+    else if (facing==1){
+        gravity_direction=180;
+        if (x+hspeed&lt;=xstart){
+            if (catch &amp;&amp; !caught){
+                caught=1;
+                if (hyper){
+                    alarm[1]=40;
+                    }
+                else{
+                    obj_sabot.alarm[0]=40;
+                    alarm[0]=1;
+                    obj_sabot.newforeverlevel=1;
+                    }
+                speed=0;
+                gravity=0;
+                x=xstart;
+                }
+            else if (!caught)
+                instance_destroy();
+            global.tempid=id;
+            with (obj_neck){
+                if (terror &amp;&amp; owner==global.tempid)
+                    instance_destroy();
+                }
+            }
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

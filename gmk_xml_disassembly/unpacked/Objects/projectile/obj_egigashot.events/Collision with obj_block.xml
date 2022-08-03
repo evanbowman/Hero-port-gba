@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="COLLISION" with="obj_block">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (obj_sabot.shakescreen&lt;6)
+    obj_sabot.shakescreen=6;
+instance_create(x,y,obj_gigaexplo);
+instance_destroy();
+obj_sabot.explo[2]=1;
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

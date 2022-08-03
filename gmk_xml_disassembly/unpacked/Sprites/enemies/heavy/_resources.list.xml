@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="spr_sharte" type="RESOURCE"/>
+  <resource name="spr_powerturretleft" type="RESOURCE"/>
+  <resource name="spr_powerturretright" type="RESOURCE"/>
+  <resource name="spr_boltaray" type="RESOURCE"/>
+  <resource name="spr_battledoor" type="RESOURCE"/>
+  <resource name="spr_chainsnake" type="RESOURCE"/>
+  <resource name="spr_neck" type="RESOURCE"/>
+  <resource name="spr_neck2" type="RESOURCE"/>
+  <resource name="spr_phazewake" type="RESOURCE"/>
+  <resource name="spr_phaze" type="RESOURCE"/>
+  <resource name="spr_soldier" type="RESOURCE"/>
+  <resource name="spr_eyespy" type="RESOURCE"/>
+  <resource name="spr_eyespyradius" type="RESOURCE"/>
+</resources>

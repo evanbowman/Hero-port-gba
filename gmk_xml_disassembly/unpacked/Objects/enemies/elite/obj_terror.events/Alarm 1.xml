@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="ALARM" id="1">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">//??? WARP
+with (obj_sabot){
+    pause=0;
+    instance_activate_region(x,y,319,319,1);
+    instance_activate_object(obj_deleteme);
+    roomx=2;
+    roomy=15;
+    x=roomx*320;
+    y=roomy*320;
+    //respawnroomx=roomx;
+    //respawnroomy=roomy;
+    //obj_bgdraw.alpha=0.1;
+    scr_scrollprepare();
+    //Deactivate surrounding world
+    instance_deactivate_all(1);
+    scr_scroll();
+    if (instance_number(obj_savepoint_s)==1)
+        instance_create(obj_savepoint_s.x+16,obj_savepoint_s.y-32,obj_hero);
+    else
+        instance_create(x+160,y+160,obj_hero);
+    //for (i=0;i&lt;36;i+=1){
+    //    tempid=instance_create(obj_hero.x,obj_hero.y,obj_explo);
+    //    tempid.gravity_direction=i*10;
+    //    tempid.gravity=6;
+    //    }
+    text1="";
+    text2="";
+    text3="";
+    skipdesc=1;
+    pickuppresent=0;
+    //global.hp=global.maxhp;
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

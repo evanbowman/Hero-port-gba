@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="COLLISION" with="obj_enemy">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (other.hp&gt;0){
+    if (other.type==29){ //Terror
+        //donothing
+        }
+    else if (other.sprite_index==spr_block)
+        scr_heropain(2);
+    else if (other.type==34 &amp;&amp; other.isneck)
+        scr_heropain(2);
+    else if (other.type==35 &amp;&amp; other.isneck)
+        scr_heropain(2);
+    else if (other.type==38 &amp;&amp; other.arm)
+        scr_heropain(2);
+    else if (other.type&lt;10)
+        scr_heropain(2);
+    else if (other.type&lt;20)
+        scr_heropain(3);
+    else
+        scr_heropain(4);
+    if (other.type==39 &amp;&amp; other.pain==0){ //Elite
+        other.hp-=4;
+        other.pain=30;
+        obj_sabot.hit[4]=1;
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

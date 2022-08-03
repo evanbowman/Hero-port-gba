@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="COLLISION" with="obj_block">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">hsp=hspeed;
+vsp=vspeed;
+move_bounce_solid(0);
+if (hspeed!=hsp)
+    hspeed*=0.5;
+if (vspeed!=vsp)
+    vspeed*=0.5;
+
+bounce+=1;
+if (bounce&gt;=2){
+    instance_destroy();
+    instance_create(x,y,obj_explo)
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

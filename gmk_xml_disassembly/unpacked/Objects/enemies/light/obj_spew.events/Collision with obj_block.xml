@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="COLLISION" with="obj_block">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">bounce=0;
+if (!place_free(x+2,y) || !place_free(x-2,y)){
+    hspeed*=-1;
+    bounce=1;
+    }
+if (!place_free(x,y+2) || !place_free(x,y-2)){
+    vspeed*=-1;
+    bounce=1;
+    }
+if (!bounce)
+    direction+=180;
+if (hspeed&lt;0)
+    image_single=2;
+else if (hspeed&gt;0)
+    image_single=3;
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

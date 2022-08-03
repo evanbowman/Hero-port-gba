@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="COLLISION" with="obj_evortex">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (global.blade==3){
+    obj_sabot.explo[2]=1;
+    global.bladelook=image_single;
+    with (other){
+        tempid=instance_create(x,y-6,obj_shot);
+        tempid.direction=180-global.bladelook*180;
+        tempid.speed=4;
+        tempid.nocount=1;
+        tempid=instance_create(x,y+6,obj_shot);
+        tempid.direction=180-global.bladelook*180;
+        tempid.speed=4;
+        tempid.nocount=1;
+        tempid=instance_create(x-6,y,obj_shot);
+        tempid.direction=180-global.bladelook*180;
+        tempid.speed=4;
+        tempid.nocount=1;
+        tempid=instance_create(x+6,y,obj_shot);
+        tempid.direction=180-global.bladelook*180;
+        tempid.speed=4;
+        tempid.nocount=1;
+        instance_create(x,y,obj_bigexplo);
+        instance_destroy();
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

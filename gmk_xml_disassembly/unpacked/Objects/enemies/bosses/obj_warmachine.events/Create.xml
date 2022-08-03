@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="CREATE" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">drawhp=1;
+x+=224;
+obj_sabot.alarm[2]=200;
+obj_sabot.text1="--- "+scr_omnitext(116)+" ---";
+obj_sabot.text2=scr_omnitext(544);
+obj_sabot.text3="";
+obj_sabot.boss=1;
+image_single=0;
+
+type=51;
+hp=256;
+timeline_index=tim_warmachine;
+timeline_speed=1;
+
+for (i=0;i&lt;11;i+=1){
+    tempid=instance_create(obj_sabot.x+i*32,obj_sabot.y+304,obj_fire);
+    tempid.image_single=i;
+    tempid.cyc=i*4;
+    tempid=instance_create(obj_sabot.x+i*32,obj_sabot.y-16,obj_fire);
+    tempid.sprite_index=spr_firedown;
+    tempid.type=1;
+    tempid.image_single=i;
+    tempid.cyc=i*4;
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

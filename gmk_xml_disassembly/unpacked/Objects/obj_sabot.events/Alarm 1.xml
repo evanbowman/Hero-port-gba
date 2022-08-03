@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="ALARM" id="1">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">//End boss defeated
+if (!global.annihilation){
+    global.annihilation=1;
+    global.anniunlock=1;
+    }
+if (!global.bonus){
+    global.bonus=1;
+    global.bonusunlock=1;
+    }
+if (global.difficulty==0){
+    if (global.seconds&lt;global.besttime1)
+        global.besttime1=global.seconds;
+    }
+else if (global.difficulty==1){
+    if (global.seconds&lt;global.besttime2)
+        global.besttime2=global.seconds;
+    }
+else if (global.difficulty==2){
+    if (global.seconds&lt;global.besttime3)
+        global.besttime3=global.seconds;
+    }
+scr_checkfile();
+if (wrongsum==0)
+    scr_savekeys();
+alarm[3]=2;
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

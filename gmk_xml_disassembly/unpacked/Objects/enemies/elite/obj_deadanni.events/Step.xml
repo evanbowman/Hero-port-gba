@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">cyc+=1;
+if (cyc mod 2 == 0)
+    obj_sabot.shakescreen=4;
+if (cyc mod 4 == 0){
+    instance_create(x-32+random(64),y-32+random(64),obj_bigexplo);
+    obj_sabot.explo[1]=1;
+    }
+if (cyc==80){
+    obj_sabot.explo[4]=1;
+    instance_create(x,y,obj_explospewer);
+    instance_create(x-16,y,obj_explospewer);
+    instance_create(x+16,y,obj_explospewer);
+    instance_create(x,y-16,obj_explospewer);
+    instance_create(x,y+16,obj_explospewer);
+    instance_destroy();
+    obj_sabot.shakescreen=20;
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

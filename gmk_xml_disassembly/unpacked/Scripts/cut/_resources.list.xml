@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="scr_cutcreate" type="RESOURCE"/>
+  <resource name="scr_cutdraw" type="RESOURCE"/>
+  <resource name="scr_jumpfromcut" type="RESOURCE"/>
+  <resource name="scr_cutenter" type="RESOURCE"/>
+  <resource name="scr_ctext" type="RESOURCE"/>
+  <resource name="scr_castscroll" type="RESOURCE"/>
+  <resource name="scr_cutpics" type="RESOURCE"/>
+</resources>

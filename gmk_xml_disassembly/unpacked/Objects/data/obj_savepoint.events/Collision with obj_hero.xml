@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="COLLISION" with="obj_hero">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_sabot.resetpickfps=1;
+scr_checkfile();
+if (wrongsum==0){
+    with (obj_sabot){
+        respawnroomx=roomx;
+        respawnroomy=roomy;
+        text1=scr_omnitext(554);
+        text2=scr_omnitext(561);
+        text3=scr_omnitext(562);
+        }
+    global.hp=global.maxhp;
+    obj_bgdraw.alpha=0.05;
+    instance_create(x+16,y+20,obj_explospewer2);
+    scr_save();
+    scr_sound("save");
+    instance_destroy();
+    }
+else{
+    with (obj_sabot){
+        respawnroomx=roomx;
+        respawnroomy=roomy;
+        text1=scr_omnitext(551);
+        text2=scr_omnitext(552);
+        text3=scr_omnitext(553);
+        }
+    global.hp=global.maxhp;
+    scr_sound("menuback");
+    instance_destroy();
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

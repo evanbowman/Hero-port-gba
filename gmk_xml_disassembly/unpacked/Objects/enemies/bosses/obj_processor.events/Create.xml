@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="CREATE" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_sabot.alarm[2]=200;
+obj_sabot.text1="--- "+scr_omnitext(109)+" ---";
+obj_sabot.text2=scr_omnitext(535);
+obj_sabot.text3="";
+if (global.difficulty==2)
+    obj_sabot.text2="";
+obj_sabot.boss=1;
+
+y+=80;
+image_single=0;
+type=35;
+hp=4;
+if (global.hardmode)
+    timeline_index=tim_processor_hard;
+else
+    timeline_index=tim_processor;
+
+tempid=instance_create(x,y,obj_processorneck);
+tempid.owner=id;
+tempid.xoffset=-20;
+tempid.yoffset=-20;
+tempid.hp=32;
+tempid.drawhp=1;
+tempid=instance_create(x,y,obj_processorneck);
+tempid.owner=id;
+tempid.xoffset=-20;
+tempid.yoffset=20;
+tempid.hp=32;
+tempid.drawhp=1;
+tempid=instance_create(x,y,obj_processorneck);
+tempid.owner=id;
+tempid.xoffset=20;
+tempid.yoffset=-20;
+tempid.hp=32;
+tempid.drawhp=1;
+tempid=instance_create(x,y,obj_processorneck);
+tempid.owner=id;
+tempid.xoffset=20;
+tempid.yoffset=20;
+tempid.hp=32;
+tempid.drawhp=1;
+
+tempid=instance_create(x,y,obj_processorneck);
+tempid.owner=id;
+tempid.xoffset=14;
+tempid.yoffset=0;
+tempid.sprite_index=spr_processorwall;
+tempid.hp=8;
+tempid=instance_create(x,y,obj_processorneck);
+tempid.owner=id;
+tempid.xoffset=18;
+tempid.yoffset=0;
+tempid.sprite_index=spr_processorwall;
+tempid.hp=8;
+tempid=instance_create(x,y,obj_processorneck);
+tempid.owner=id;
+tempid.xoffset=22;
+tempid.yoffset=0;
+tempid.sprite_index=spr_processorwall;
+tempid.hp=8;
+tempid=instance_create(x,y,obj_processorneck);
+tempid.owner=id;
+tempid.xoffset=26;
+tempid.yoffset=0;
+tempid.sprite_index=spr_processorwall;
+tempid.hp=8;
+
+tempid=instance_create(x-6,y+32,obj_processorneck);
+tempid.xoffset=-6;
+tempid.yoffset=32;
+tempid.sprite_index=spr_lurkhitbox;
+tempid.owner=id;
+tempid=instance_create(x-6,y+32,obj_processorneck);
+tempid.xoffset=0
+tempid.yoffset=0
+tempid.sprite_index=spr_processor;
+tempid.owner=id;
+tempid.solid=1;</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<timeline>
+  <moment stepNo="10">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">scr_sound("bossroar");</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="60">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">target=xstart+32;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="220">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">for (i=4;i&lt;8;i+=1){
+tempid=instance_create(x-52,y+28,obj_egigashot);
+tempid.speed=1+0.5*i;
+tempid.direction=180+i*2-(i mod 2)*8;
+tempid.gravity=0.03+i*0.01;
+tempid.gravity_direction=315;
+tempid=instance_create(x-52,y+28,obj_egigashot);
+tempid.speed=1+0.5*i;
+tempid.direction=180-i*2+(i mod 2)*8;
+tempid.gravity=0.03+i*0.01;
+tempid.gravity_direction=45;
+}</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="280">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">rise=1;
+risecyc=0;
+target-=32;
+obj_sabot.fire[8]=1;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="340">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">for (i=0;i&lt;4;i+=1){
+    tempid=instance_create(x-52,y+28,obj_ebomb);
+    tempid.speed=3;
+    tempid.direction=90+i*20;
+    tempid.gravity=0;
+    }
+if (mode==1){
+    tempid=instance_create(x-52,y+28,obj_emegashot);
+    tempid.speed=2;
+    tempid.direction=point_direction(x-52,y+28,obj_hero.x,obj_hero.y);
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="360">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">for (i=0;i&lt;4;i+=1){
+    tempid=instance_create(x-52,y+28,obj_ebomb);
+    tempid.speed=3;
+    tempid.direction=120+i*20;
+    tempid.gravity=0;
+    }
+if (mode==1){
+    tempid=instance_create(x-52,y+28,obj_emegashot);
+    tempid.speed=2;
+    tempid.direction=point_direction(x-52,y+28,obj_hero.x,obj_hero.y);
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="380">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">for (i=0;i&lt;4;i+=1){
+    tempid=instance_create(x-52,y+28,obj_ebomb);
+    tempid.speed=3;
+    tempid.direction=150+i*20;
+    tempid.gravity=0;
+    }
+if (mode==1){
+    tempid=instance_create(x-52,y+28,obj_emegashot);
+    tempid.speed=2;
+    tempid.direction=point_direction(x-52,y+28,obj_hero.x,obj_hero.y);
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="400">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">for (i=0;i&lt;4;i+=1){
+    tempid=instance_create(x-52,y+28,obj_ebomb);
+    tempid.speed=3;
+    tempid.direction=180+i*20;
+    tempid.gravity=0;
+    }
+if (mode==1){
+    tempid=instance_create(x-52,y+28,obj_emegashot);
+    tempid.speed=2;
+    tempid.direction=point_direction(x-52,y+28,obj_hero.x,obj_hero.y);
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="420">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (mode==0){
+    for (i=0;i&lt;3;i+=1){
+        tempid=instance_create(x-52,y+28,obj_egigashot);
+        tempid.speed=1.5+i*0.5;
+        tempid.direction=point_direction(x-52,y+28,obj_hero.x,obj_hero.y);
+        if (tempid.direction&gt;270)
+            tempid.direction=270;
+        if (tempid.direction&lt;90)
+            tempid.direction=90;
+        }
+    }
+else{
+    for (i=0;i&lt;3;i+=1){
+        tempid=instance_create(x-52,y+28,obj_egigashot);
+        tempid.speed=1.5+i*0.5;
+        tempid.direction=point_direction(x-52,y+28,obj_hero.x,obj_hero.y)-25;
+        if (tempid.direction&gt;270-30)
+            tempid.direction=270-30;
+        if (tempid.direction&lt;90-30)
+            tempid.direction=90-30;
+        tempid=instance_create(x-52,y+28,obj_egigashot);
+        tempid.speed=1.5+i*0.5;
+        tempid.direction=point_direction(x-52,y+28,obj_hero.x,obj_hero.y)+25;
+        if (tempid.direction&gt;270+30)
+            tempid.direction=270+30;
+        if (tempid.direction&lt;90+30)
+            tempid.direction=90+30;
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="440">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (mode==0){
+    for (i=0;i&lt;16;i+=1){
+        tempid=instance_create(x-52,y+28,obj_esupershot);
+        tempid.direction=90+i*11.25;
+        tempid.speed=1+(i mod 2);
+        }
+    }
+else{
+    for (i=0;i&lt;2;i+=1){
+        tempid=instance_create(x-52,y+28,obj_emissile);
+        tempid.direction=135+i*90;
+        }
+    }
+target+=32;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="480">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">for (i=0;i&lt;8;i+=1){
+    tempid=instance_create(x-52,y+28,obj_esupershot);
+    tempid.speed=0.5+(i mod 3)/2;
+    tempid.direction=110+i*20;
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="520">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (mode==1){
+    for (i=0;i&lt;16;i+=1){
+        tempid=instance_create(x-52,y+28,obj_esupershot);
+        tempid.direction=90+i*11.25;
+        tempid.speed=1+(i mod 2);
+        }
+    }
+else{
+    for (i=0;i&lt;2;i+=1){
+        tempid=instance_create(x-52,y+28,obj_emissile);
+        tempid.direction=135+i*90;
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="600">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (mode==0){
+    for (i=0;i&lt;3;i+=1){
+        tempid=instance_create(x-52,y+28,obj_egigashot);
+        tempid.speed=1.5+i*0.5;
+        tempid.direction=point_direction(x-52,y+28,obj_hero.x,obj_hero.y);
+        if (tempid.direction&gt;270)
+            tempid.direction=270;
+        if (tempid.direction&lt;90)
+            tempid.direction=90;
+        tempid=instance_create(x-52,y+28,obj_egigashot);
+        tempid.speed=1.3+i*0.5;
+        tempid.direction=point_direction(x-52,y+28,obj_hero.x,obj_hero.y)-8;
+        if (tempid.direction&gt;270-30)
+            tempid.direction=270-30;
+        if (tempid.direction&lt;90-30)
+            tempid.direction=90-30;
+        tempid=instance_create(x-52,y+28,obj_egigashot);
+        tempid.speed=1.3+i*0.5;
+        tempid.direction=point_direction(x-52,y+28,obj_hero.x,obj_hero.y)+8;
+        if (tempid.direction&gt;270+30)
+            tempid.direction=270+30;
+        if (tempid.direction&lt;90+30)
+            tempid.direction=90+30;
+        }
+    }
+else{
+    for (i=0;i&lt;3;i+=1){
+        tempid=instance_create(x-52,y+28,obj_egigashot);
+        tempid.speed=1.5+i*0.5;
+        tempid.direction=point_direction(x-52,y+28,obj_hero.x,obj_hero.y)-30;
+        if (tempid.direction&gt;270-30)
+            tempid.direction=270-30;
+        if (tempid.direction&lt;90-30)
+            tempid.direction=90-30;
+        tempid=instance_create(x-52,y+28,obj_egigashot);
+        tempid.speed=1.5+i*0.5;
+        tempid.direction=point_direction(x-52,y+28,obj_hero.x,obj_hero.y)+30;
+        if (tempid.direction&gt;270+30)
+            tempid.direction=270+30;
+        if (tempid.direction&lt;90+30)
+            tempid.direction=90+30;
+        }
+    }
+target+=64;
+with (obj_fire)
+    rise=0;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="680">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">charging=1;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="820">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">charging=0;
+chargings=0;
+massacre=1;
+massacrecyc=0;
+hp-=16;
+scr_sound("bossroar")
+scr_sound("explo2")
+scr_sound("explo3")
+scr_sound("explo4")
+</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="840">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">target-=64;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="920">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">for (i=0;i&lt;3;i+=1){
+    tempid=instance_create(x-52,y+28,obj_egigashot);
+    tempid.speed=2+i*0.5;
+    tempid.direction=point_direction(x-52,y+28,obj_hero.x,obj_hero.y);
+    if (tempid.direction&gt;270)
+        tempid.direction=270;
+    if (tempid.direction&lt;90)
+        tempid.direction=90;
+    tempid=instance_create(x-52,y+28,obj_egigashot);
+    tempid.speed=1.8+i*0.5;
+    tempid.direction=point_direction(x-52,y+28,obj_hero.x,obj_hero.y)-8;
+    if (tempid.direction&gt;270-40)
+        tempid.direction=270-40;
+    if (tempid.direction&lt;90-40)
+        tempid.direction=90-40;
+    tempid=instance_create(x-52,y+28,obj_egigashot);
+    tempid.speed=1.8+i*0.5;
+    tempid.direction=point_direction(x-52,y+28,obj_hero.x,obj_hero.y)+8;
+    if (tempid.direction&gt;270+40)
+        tempid.direction=270+40;
+    if (tempid.direction&lt;90+40)
+        tempid.direction=90+40;
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="940">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">for (i=0;i&lt;3;i+=1){
+    tempid=instance_create(x-52,y+28,obj_egigashot);
+    tempid.speed=2+i*0.5;
+    tempid.direction=point_direction(x-52,y+28,obj_hero.x,obj_hero.y)-25;
+    if (tempid.direction&gt;270-40)
+        tempid.direction=270-40;
+    if (tempid.direction&lt;90-40)
+        tempid.direction=90-40;
+    tempid=instance_create(x-52,y+28,obj_egigashot);
+    tempid.speed=2+i*0.5;
+    tempid.direction=point_direction(x-52,y+28,obj_hero.x,obj_hero.y)+25;
+    if (tempid.direction&gt;270+40)
+        tempid.direction=270+40;
+    if (tempid.direction&lt;90+40)
+        tempid.direction=90+40;
+    tempid=instance_create(x-52,y+28,obj_egigashot);
+    tempid.speed=1.6+i*0.5;
+    tempid.direction=point_direction(x-52,y+28,obj_hero.x,obj_hero.y)-55;
+    if (tempid.direction&gt;270-40)
+        tempid.direction=270-40;
+    if (tempid.direction&lt;90-40)
+        tempid.direction=90-40;
+    tempid=instance_create(x-52,y+28,obj_egigashot);
+    tempid.speed=1.6+i*0.5;
+    tempid.direction=point_direction(x-52,y+28,obj_hero.x,obj_hero.y)+55;
+    if (tempid.direction&gt;270+40)
+        tempid.direction=270+40;
+    if (tempid.direction&lt;90+40)
+        tempid.direction=90+40;
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="960">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">for (i=0;i&lt;3;i+=1){
+    tempid=instance_create(x-52,y+28,obj_egigashot);
+    tempid.speed=2+i*0.5;
+    tempid.direction=point_direction(x-52,y+28,obj_hero.x,obj_hero.y);
+    if (tempid.direction&gt;270)
+        tempid.direction=270;
+    if (tempid.direction&lt;90)
+        tempid.direction=90;
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="999">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (mode==0)
+    mode=1;
+else
+    mode=0;
+timeline_position=220;</argument>
+      </arguments>
+    </action>
+  </moment>
+</timeline>

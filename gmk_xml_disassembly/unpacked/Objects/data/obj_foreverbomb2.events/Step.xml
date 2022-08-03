@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">scr_outside();
+gravity=0.2;
+if (vspeed&gt;4)
+    vspeed=4;
+if (!place_free(x,y) || place_meeting(x,y,obj_enemy)){
+    instance_create(x,y,obj_explospewer3);
+    obj_sabot.explo[4]=1;
+    obj_sabot.shakescreen=10;
+    //Destroy instances
+    with (obj_eshot)
+        instance_destroy();
+    with (obj_enemy){
+        if (type==7){ //Bolt
+            instance_destroy();
+            instance_create(x,y,obj_explo);
+            }
+        else if (type!=29 &amp;&amp; !terror){
+            hp=0;
+            if (place_free(x,y) &amp;&amp; !snakeneck)
+                instance_create(x-8,y-8,obj_flag);
+            }
+        }
+    //Destroy spawners
+    with (obj_spawner){
+        if (spawn==obj_drone || spawn==obj_reaver || spawn==obj_crusher || spawn==obj_spew || spawn==obj_bolt || spawn==obj_boltaray || spawn==obj_chainsnake || spawn==obj_soldier || spawn==obj_phaze || spawn==obj_hunter || spawn==obj_direviper || spawn==obj_mode || spawn==obj_mother || spawn==obj_eidolon || spawn==obj_annihilator)
+            instance_destroy();
+        }
+    //Destroy landscape
+    global.temp=id;
+    with (obj_block){
+        if (point_distance(x+16,y+16,global.temp.x,global.temp.y)&lt;96 &amp;&amp; !nobomb){
+            instance_destroy();
+            if (hiddengoal){
+                instance_create(x+16,y+16,obj_forevergoal);
+                obj_sabot.mitem[floor(obj_sabot.x/320),floor(obj_sabot.y/320)]=2;
+                obj_sabot.mitemclear[floor(obj_sabot.x/320),floor(obj_sabot.y/320)]=0;
+                }
+            else if (sprite_index==spr_ship){
+                tempid=instance_create(x+32,y+16,obj_forevergoal);
+                tempid.minusworld=1;
+                tempid.image_single=9;
+                obj_sabot.mitem[floor(obj_sabot.x/320),floor(obj_sabot.y/320)]=2;
+                obj_sabot.mitemclear[floor(obj_sabot.x/320),floor(obj_sabot.y/320)]=0;
+                }
+            }
+        }
+    with (obj_dirt){
+        instance_destroy();
+        }
+    with (obj_dirtbig_s){
+        instance_destroy();
+        }
+    with (obj_pipe1){
+        instance_destroy();
+        }
+    with (obj_pipe1_s){
+        instance_destroy();
+        }
+    with (obj_pipe2_s){
+        instance_destroy();
+        }
+    instance_destroy();
+    obj_bgdraw.alpha=0.1;
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

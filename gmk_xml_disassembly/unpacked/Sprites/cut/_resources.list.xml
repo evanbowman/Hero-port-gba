@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="spr_cut1" type="RESOURCE"/>
+  <resource name="spr_cut2" type="RESOURCE"/>
+  <resource name="spr_cut3" type="RESOURCE"/>
+  <resource name="spr_cut4" type="RESOURCE"/>
+  <resource name="spr_cut5" type="RESOURCE"/>
+  <resource name="spr_cut6" type="RESOURCE"/>
+  <resource name="spr_cut7" type="RESOURCE"/>
+  <resource name="spr_cut8" type="RESOURCE"/>
+  <resource name="spr_cut9" type="RESOURCE"/>
+  <resource name="spr_cut10" type="RESOURCE"/>
+  <resource name="spr_cut11" type="RESOURCE"/>
+  <resource name="spr_cut12" type="RESOURCE"/>
+</resources>

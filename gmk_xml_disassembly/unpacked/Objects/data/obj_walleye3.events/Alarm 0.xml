@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="ALARM" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">want=floor(random(4));
+if (v){
+    if (want==0){
+        wanty=6;
+        wantx=0;
+        }
+    else if (want==1){
+        wanty=16;
+        wantx=0;
+        }
+    else if (want==2){
+        wanty=6;
+        wantx=4;
+        }
+    else if (want==3){
+        wanty=16;
+        wantx=4;
+        }
+    }
+else{
+    if (want==0){
+        wantx=6;
+        wanty=0;
+        }
+    else if (want==1){
+        wantx=16;
+        wanty=0;
+        }
+    else if (want==2){
+        wantx=6;
+        wanty=4;
+        }
+    else if (want==3){
+        wantx=16;
+        wanty=4;
+        }
+    }
+x=xstart+wantx;
+y=ystart+wanty;</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

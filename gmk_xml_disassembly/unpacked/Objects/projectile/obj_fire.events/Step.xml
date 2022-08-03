@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">imgcyc+=1;
+if (imgcyc==2){
+    imgcyc=0;
+    image_single+=1;
+    }
+cyc+=1;
+if (rise){
+    if (type==0 &amp;&amp; y1&gt;-48)
+        y1-=2;
+    else if (type==1 &amp;&amp; y1&lt;48)
+        y1+=2;
+    }
+else{
+    if (type==0 &amp;&amp; y1&lt;0)
+        y1+=2;
+    else if (type==1 &amp;&amp; y1&gt;0)
+        y1-=2;
+    }
+if (cyc==2) y2=0;
+if (cyc==4) y2=0;
+if (cyc==6) y2=0;
+if (cyc==8) y2=2;
+if (cyc==10) y2=2;
+if (cyc==12) y2=4;
+if (cyc==14) y2=6;
+if (cyc==16) y2=6;
+if (cyc==18) y2=8;
+if (cyc==20) y2=8;
+if (cyc==22) y2=8;
+if (cyc==24) y2=6;
+if (cyc==26) y2=6;
+if (cyc==28) y2=4;
+if (cyc==30) y2=2;
+if (cyc&gt;=32){
+    y2=2;
+    cyc=0;
+    }
+cyc+=1;
+if (type==0)
+    y=ystart+y1+y2;
+else
+    y=ystart+y1-y2;
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

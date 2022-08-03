@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">//PAINBLINK
+if (pain&gt;0)
+    pain-=1;
+
+//FLAME
+if (speed&gt;0 &amp;&amp; global.heroflames){
+    flamecycle+=1;
+    if (flamecycle==6){
+        flamecycle=0;
+        if (image_single==0)
+            instance_create(x+4,y+2,obj_flame);
+        else
+            instance_create(x-6,y+2,obj_flame);
+        }
+    }
+
+//DEAD
+if (hp&lt;=0 &amp;&amp; !dead){
+    if (global.difficulty==2 &amp;&amp; !global.bossmode &amp;&amp; !global.reallyplay)
+        obj_hero.elitekills+=2;
+    else
+        obj_hero.elitekills+=1;
+    if (obj_hero.elitekills==1){
+        instance_destroy();
+        instance_create(x,y,obj_explospewer);
+        obj_sabot.shakescreen=6;
+        scr_sound("death");
+        obj_sabot.explo[2]=1;
+        obj_sabot.explo[3]=1;
+        }
+    else{
+        with (obj_sabot){
+            if (!global.bossmode &amp;&amp; !global.reallyplay)
+                scr_wantsong(0);
+            }
+        scr_sound("death");
+        if (global.difficulty!=2)
+            obj_hero.cannotwarp=1;
+        speed=0;
+        dead=1;
+        timeline_index=-1;
+        with (obj_eshot)
+            instance_destroy();
+        }
+    }
+if (dead){
+    if ((global.bossmode || global.reallyplay) &amp;&amp; obj_hero.elitekills==2){
+        explocyc=80;
+        scr_bossmodereward(9);
+        }
+    explocyc+=1;
+    if (explocyc&gt;=80){
+        obj_sabot.pickuppresent=1;
+        instance_destroy();
+        instance_create(x,y,obj_explospewer);
+        obj_sabot.boss=0;
+        obj_sabot.explo[4]=1;
+        obj_sabot.shakescreen=12;
+        obj_bgdraw.alpha=0.015;
+        for (i=1;i&lt;361;i+=4){
+            sp+=4;
+            if (sp&gt;=16) sp=0;
+            tempid=instance_create(x,y,obj_firework);
+            tempid.sprite_index=spr_flame;
+            tempid.direction=i;
+            tempid.speed=(sp+4)/3+1;
+            tempid.i=1;
+            }
+        if (global.difficulty&lt;2)
+            (instance_create(x,y,obj_pickup)).image_single=2;
+        else if (!global.reallyplay)
+            obj_sabot.mitemclear[obj_sabot.roomx,obj_sabot.roomy]=1;
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

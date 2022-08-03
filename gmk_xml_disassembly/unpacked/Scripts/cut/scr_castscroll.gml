@@ -1,0 +1,242 @@
+if ((y2>-1894 && global.difficulty==2) || (y2>-2290 && global.difficulty!=2)){
+    y2cyc+=1;
+    if (y2cyc>=3-superscroll*2){
+        y2cyc=0;
+        y2-=2+superscroll*6;
+        }
+    }
+else
+    donescroll=1;
+
+scr_ctext(200,y2+400,scr_omnitext(79));
+scr_ctext(200,y2+480,scr_omnitext(80));
+scr_ctext(128,y2+544,scr_omnitext(81));
+scr_ctext(272,y2+544,scr_omnitext(82));
+scr_ctext(128,y2+608,scr_omnitext(83));
+scr_ctext(272,y2+608,scr_omnitext(84));
+scr_ctext(128,y2+672,scr_omnitext(85));
+scr_ctext(272,y2+672,scr_omnitext(86));
+scr_ctext(128,y2+736,scr_omnitext(87));
+scr_ctext(272,y2+736,scr_omnitext(88));
+scr_ctext(128,y2+848,scr_omnitext(89));
+scr_ctext(272,y2+848,scr_omnitext(90));
+scr_ctext(128,y2+912,scr_omnitext(91));
+scr_ctext(272,y2+912,scr_omnitext(92));
+scr_ctext(128,y2+976,scr_omnitext(93));
+scr_ctext(272,y2+976,scr_omnitext(94));
+scr_ctext(128,y2+1040,scr_omnitext(95));
+scr_ctext(272,y2+1040,scr_omnitext(96));
+scr_ctext(128,y2+1168,scr_omnitext(97));
+scr_ctext(272,y2+1168,scr_omnitext(98));
+scr_ctext(128,y2+1248,scr_omnitext(99));
+scr_ctext(272,y2+1248,scr_omnitext(100));
+scr_ctext(128,y2+1328,scr_omnitext(101));
+scr_ctext(272,y2+1328,scr_omnitext(102));
+scr_ctext(128,y2+1424,scr_omnitext(103));
+scr_ctext(272,y2+1424,scr_omnitext(104));
+if (global.difficulty==2){
+    scr_ctext(112,y2+1616,scr_omnitext(106));
+    scr_ctext(288,y2+1616,scr_omnitext(107));
+    scr_ctext(112,y2+1680,scr_omnitext(108));
+    scr_ctext(288,y2+1680,scr_omnitext(113));
+    scr_ctext(200,y2+1856,scr_omnitext(116));
+    scr_ctext(200,y2+2032,scr_omnitext(118));
+    scr_ctext(200,y2+2064,scr_omnitext(119));
+    scr_timestring();
+    scr_ctext(200,y2+2096,scr_omnitext(121)+" "+timestring);
+    if (!global.havemap3)
+        scr_ctext(200,y2+2128,scr_omnitext(580));
+    }
+else{
+    scr_ctext(112,y2+1664,scr_omnitext(105));
+    scr_ctext(288,y2+1664,scr_omnitext(106));
+    scr_ctext(112,y2+1808,scr_omnitext(107));
+    scr_ctext(288,y2+1808,scr_omnitext(108));
+    scr_ctext(112,y2+1920,scr_omnitext(109));
+    scr_ctext(288,y2+1920,scr_omnitext(110));
+    scr_ctext(112,y2+2048,scr_omnitext(111));
+    scr_ctext(288,y2+2048,scr_omnitext(112));
+    scr_ctext(112,y2+2112,scr_omnitext(113));
+    scr_ctext(288,y2+2112,scr_omnitext(114));
+    scr_ctext(200,y2+2272,scr_omnitext(115));
+    scr_ctext(200,y2+2384,scr_omnitext(117));
+    items=global.computers;
+    items+=global.level;
+    items=items/20*100;
+    itemstring=string(items)+"%";
+    scr_ctext(200,y2+2416,scr_omnitext(120)+" "+itemstring);
+    scr_timestring();
+    scr_ctext(200,y2+2448,scr_omnitext(121)+" "+timestring);
+    }
+if (global.anniunlock){
+    scr_ctext(200,y2+2480,scr_omnitext(122));
+    }
+if (global.bonusunlock)
+    scr_ctext(200,y2+2512,scr_omnitext(123));
+
+draw_sprite(spr_hero,0,200,y2+464);
+draw_sprite(spr_drone,1,128,y2+528);
+draw_sprite(spr_reaver,2,272,y2+528);
+draw_sprite(spr_crusher,1,128,y2+592);
+draw_sprite(spr_spew,2,272,y2+592);
+draw_sprite(spr_turretright,5,120,y2+638);
+draw_sprite(spr_blomb,1,272,y2+648);
+draw_sprite(spr_bolt,2,128,y2+720);
+draw_sprite(spr_lurk,11,266,y2+698);
+draw_sprite(spr_lurk,2,266,y2+714);
+
+draw_sprite(spr_sharte,1,128,y2+826);
+draw_sprite(spr_powerturretright,5,266,y2+812);
+draw_sprite(spr_boltaray,2,128,y2+894);
+draw_sprite(spr_battledoor,4,264,y2+872);
+draw_sprite(spr_chainsnake,2,100,y2+960);
+draw_sprite(spr_neck,0,118,y2+960);
+draw_sprite(spr_neck,0,122,y2+946);
+draw_sprite(spr_neck,0,136,y2+946);
+draw_sprite(spr_neck,0,140,y2+960);
+draw_sprite(spr_neck,0,154,y2+960);
+draw_sprite(spr_neck,0,158,y2+946);
+if (global.hardmode)
+    draw_sprite(spr_neck,0,172,y2+946);
+draw_sprite(spr_phaze,1,272,y2+956);
+draw_sprite(spr_soldier,2,128,y2+1024);
+draw_sprite(spr_eyespy,1,272,y2+1020);
+
+draw_sprite(spr_barrier2,1,96,y2+1130);
+draw_sprite(spr_generator,0,272,y2+1146);
+draw_sprite(spr_mode,1,128,y2+1226);
+draw_sprite(spr_hunter,2,272,y2+1224);
+draw_sprite(spr_direviper,2,88,y2+1308);
+draw_sprite(spr_neck2,2,112,y2+1308);
+draw_sprite(spr_neck2,2,120,y2+1288);
+draw_sprite(spr_neck2,2,140,y2+1288);
+draw_sprite(spr_neck2,2,144,y2+1308);
+draw_sprite(spr_neck2,2,164,y2+1308);
+draw_sprite(spr_neck2,2,172,y2+1288);
+draw_sprite(spr_mother,2,272,y2+1302);
+draw_sprite(spr_eidolon,1,128,y2+1400);
+draw_sprite(spr_annihilator,2,272,y2+1384);
+
+if (global.difficulty==2){
+draw_sprite(spr_silencer,0,112,y2+1592);
+draw_sprite(spr_silencercore,1,112,y2+1592);
+draw_sprite(spr_silencerwall,0,86,y2+1592);
+draw_sprite(spr_silencerwall,0,90,y2+1592);
+draw_sprite(spr_silencerwall,0,94,y2+1592);
+draw_sprite(spr_silencerwall,0,98,y2+1592);
+draw_sprite(spr_silencerwall,0,102,y2+1592);
+draw_sprite(spr_silencerwall,0,120,y2+1592);
+draw_sprite(spr_silencerwall,0,124,y2+1592);
+draw_sprite(spr_silencerwall,0,128,y2+1592);
+draw_sprite(spr_silencerwall,0,132,y2+1592);
+draw_sprite(spr_silencerwall,0,136,y2+1592);
+draw_sprite(spr_neck,0,284,y2+1528);
+draw_sprite(spr_neck,0,278,y2+1528);
+draw_sprite(spr_neck,0,272,y2+1526);
+draw_sprite(spr_neck,0,266,y2+1522);
+draw_sprite(spr_neck,0,284,y2+1542);
+draw_sprite(spr_neck,0,274,y2+1542);
+draw_sprite(spr_neck,0,264,y2+1544);
+draw_sprite(spr_neck,0,254,y2+1546);
+draw_sprite(spr_neck,0,244,y2+1548);
+draw_sprite(spr_neck,0,284,y2+1558);
+draw_sprite(spr_neck,0,280,y2+1562);
+draw_sprite(spr_neck,0,276,y2+1566);
+draw_sprite(spr_neck,0,272,y2+1570);
+draw_sprite(spr_hydlas,1,268,y2+1512);
+draw_sprite(spr_hydlashead,1,256,y2+1516);
+draw_sprite(spr_hydlashead,5,232,y2+1552);
+draw_sprite(spr_hydlashead,7,260,y2+1578);
+draw_sprite(spr_drone,1,112,y2+1664);
+draw_sprite(spr_hero,0,288,y2+1664);
+draw_sprite(spr_warmachine,0,200,y2+1784);
+}
+else{
+draw_sprite(spr_smasher,0,112,y2+1576);
+draw_sprite(spr_silencercore,1,56,y2+1526);
+draw_sprite(spr_silencercore,1,168,y2+1526);
+draw_sprite(spr_silencercore,1,56,y2+1554);
+draw_sprite(spr_silencercore,1,168,y2+1554);
+draw_sprite(spr_silencercore,1,56,y2+1598);
+draw_sprite(spr_silencercore,1,168,y2+1598);
+draw_sprite(spr_silencercore,1,56,y2+1626);
+draw_sprite(spr_silencercore,1,168,y2+1626);
+draw_sprite(spr_silencer,0,288,y2+1640);
+draw_sprite(spr_silencercore,1,288,y2+1640);
+draw_sprite(spr_silencerwall,0,262,y2+1640);
+draw_sprite(spr_silencerwall,0,266,y2+1640);
+draw_sprite(spr_silencerwall,0,270,y2+1640);
+draw_sprite(spr_silencerwall,0,274,y2+1640);
+draw_sprite(spr_silencerwall,0,278,y2+1640);
+draw_sprite(spr_silencerwall,0,296,y2+1640);
+draw_sprite(spr_silencerwall,0,300,y2+1640);
+draw_sprite(spr_silencerwall,0,304,y2+1640);
+draw_sprite(spr_silencerwall,0,308,y2+1640);
+draw_sprite(spr_silencerwall,0,312,y2+1640);
+draw_sprite(spr_neck,0,108,y2+1720);
+draw_sprite(spr_neck,0,102,y2+1720);
+draw_sprite(spr_neck,0,96,y2+1718);
+draw_sprite(spr_neck,0,90,y2+1714);
+draw_sprite(spr_neck,0,108,y2+1734);
+draw_sprite(spr_neck,0,98,y2+1734);
+draw_sprite(spr_neck,0,88,y2+1736);
+draw_sprite(spr_neck,0,78,y2+1738);
+draw_sprite(spr_neck,0,68,y2+1740);
+draw_sprite(spr_neck,0,108,y2+1750);
+draw_sprite(spr_neck,0,104,y2+1754);
+draw_sprite(spr_neck,0,100,y2+1758);
+draw_sprite(spr_neck,0,96,y2+1762);
+draw_sprite(spr_hydlas,1,92,y2+1704);
+draw_sprite(spr_hydlashead,1,80,y2+1708);
+draw_sprite(spr_hydlashead,5,56,y2+1744);
+draw_sprite(spr_hydlashead,1+(global.hardmode*6),84,y2+1770);
+draw_sprite(spr_drone,1,288,y2+1792);
+draw_sprite(spr_processor,0,112,y2+1880);
+draw_sprite(spr_silencercore,1,92,y2+1860);
+draw_sprite(spr_silencercore,1,132,y2+1860);
+draw_sprite(spr_silencercore,1,92,y2+1900);
+draw_sprite(spr_silencercore,1,132,y2+1900);
+draw_sprite(spr_processorwall,0,126,y2+1880);
+draw_sprite(spr_processorwall,0,130,y2+1880);
+draw_sprite(spr_processorwall,0,134,y2+1880);
+draw_sprite(spr_processorwall,0,138,y2+1880);
+draw_sprite(spr_grandmother,1,288,y2+1888);
+draw_sprite(spr_silencercore,1,278,y2+1888);
+draw_sprite(spr_silencercore,1,298,y2+1888);
+draw_sprite(spr_silencerwall,1,266,y2+1888);
+draw_sprite(spr_silencerwall,1,270,y2+1888);
+draw_sprite(spr_silencerwall,1,304,y2+1888);
+draw_sprite(spr_silencerwall,1,308,y2+1888);
+draw_sprite(spr_guardian,0,112,y2+1978);
+draw_sprite(spr_guardian,2,112,y2+2020);
+draw_sprite(spr_silencercore,1,108,y2+2000);
+if (global.hardmode){
+    draw_sprite(spr_dread,1,288,y2+2004);
+    draw_sprite(spr_tetronneck,0,218,y2+2006);
+    draw_sprite(spr_tetronneck,0,360,y2+2006);
+    draw_sprite(spr_neck2,0,244,y2+2004);
+    draw_sprite(spr_neck2,0,332,y2+2004);
+    draw_sprite(spr_silencercore,1,278,y2+1994);
+    draw_sprite(spr_silencercore,1,298,y2+1994);
+    draw_sprite(spr_silencercore,1,278,y2+2014);
+    draw_sprite(spr_silencercore,1,298,y2+2014);
+    draw_sprite(spr_silencercore,1,320,y2+2004);
+    draw_sprite(spr_silencercore,1,256,y2+2004);
+    draw_sprite(spr_silencercore,1,288,y2+1972);
+    draw_sprite(spr_silencercore,1,288,y2+2036);
+    }
+else{
+    draw_sprite(spr_dread,1,288,y2+2010);
+    draw_sprite(spr_tetronneck,0,218,y2+2012);
+    draw_sprite(spr_tetronneck,0,360,y2+2012);
+    draw_sprite(spr_neck2,0,244,y2+2010);
+    draw_sprite(spr_neck2,0,332,y2+2010);
+    draw_sprite(spr_silencercore,1,278,y2+2000);
+    draw_sprite(spr_silencercore,1,298,y2+2000);
+    draw_sprite(spr_silencercore,1,278,y2+2020);
+    draw_sprite(spr_silencercore,1,298,y2+2020);
+    }
+draw_sprite(spr_hero,0,112,y2+2096);
+draw_sprite(spr_eliminator,2,288,y2+2096);
+draw_sprite(spr_tetron,0,200,y2+2194);
+}

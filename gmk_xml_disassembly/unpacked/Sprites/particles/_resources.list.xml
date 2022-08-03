@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="spr_flame" type="RESOURCE"/>
+  <resource name="spr_explo" type="RESOURCE"/>
+  <resource name="spr_bigexplo" type="RESOURCE"/>
+  <resource name="spr_levelup" type="RESOURCE"/>
+  <resource name="spr_trophy" type="RESOURCE"/>
+  <resource name="spr_plink" type="RESOURCE"/>
+  <resource name="spr_weed" type="RESOURCE"/>
+  <resource name="spr_weed2" type="RESOURCE"/>
+  <resource name="spr_antenna" type="RESOURCE"/>
+  <resource name="spr_antenna2" type="RESOURCE"/>
+  <resource name="spr_corpse" type="RESOURCE"/>
+</resources>

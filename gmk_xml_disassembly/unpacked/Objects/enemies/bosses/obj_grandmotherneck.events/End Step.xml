@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="2">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (anim){
+    imgcyc+=1;
+    if (imgcyc==4){
+        imgcyc=0;
+        image_single+=1;
+        }
+    }
+
+if (move){
+    if (d&lt;dmax)
+        d+=1;
+    if (d&gt;dmax){
+        d-=0.65;
+        }
+    rot+=rotspeed;
+    if (rot&gt;360)
+        rot-=360;
+    if (rot&lt;0)
+        rot+=360;
+    frot=rot+offset;
+    x2=cos(degtorad(frot))*d;
+    y2=(sin(degtorad(frot))*d);
+    x=owner.x+x2;
+    y=owner.y+y2;
+    }
+
+if (hp&lt;=0){
+    if (sprite_index==spr_silencercore){
+        owner.hp-=1;
+        instance_create(x,y,obj_bigexplo);
+        }
+    else{
+        if (xoffset&lt;0){
+            (instance_create(x,y,obj_bigexplo)).hspeed=-6;
+            (instance_create(x,y,obj_bigexplo)).hspeed=-4;
+            (instance_create(x,y,obj_bigexplo)).hspeed=-2;
+            }
+        else{
+            (instance_create(x,y,obj_bigexplo)).hspeed=6;
+            (instance_create(x,y,obj_bigexplo)).hspeed=4;
+            (instance_create(x,y,obj_bigexplo)).hspeed=2;
+            }
+        }
+    obj_sabot.explo[2]=1;
+    scr_sound("bossroar");
+    obj_sabot.shakescreen=6;
+    instance_destroy();
+    }
+if (!move){
+    x=owner.x+xoffset;
+    y=owner.y+yoffset;
+    }
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

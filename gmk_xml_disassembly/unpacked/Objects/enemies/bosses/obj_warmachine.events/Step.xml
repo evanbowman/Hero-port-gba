@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">//MASSACRE
+if (massacre){
+    massacrecyc+=1;
+    for (i=0;i&lt;massacrecyc;i+=1){
+        tempid=instance_create(x-52-massacrecyc*24,y+28+8-massacrecyc*18+i*36,obj_gigaexplo);
+        tempid.x+=-4+random(8);
+        tempid.y+=-4+random(8);
+        tempid.massacre=1;
+        tempid.force=8;
+        }
+    if (obj_sabot.shakescreen==0)
+        obj_sabot.shakescreen=2;
+    if (massacrecyc&gt;=16){
+        massacre=0;
+        massacrecyc=0;
+        }
+    }
+
+//CHARGING
+if (charging){
+    if (obj_sabot.shakescreen==0)
+        obj_sabot.shakescreen=2;
+    if (chargings&gt;=15){
+        chargings=0;
+        obj_sabot.fire[8]=1;
+        }
+    chargings+=1;
+    temp1=140+random(80);
+    temp2=8+random(256);
+    tempid=instance_create(x-52+cos(degtorad(temp1))*temp2,y+28+sin(degtorad(temp1))*temp2,obj_flame);
+    tempid.gravity=0.2;
+    tempid.gravity_direction=point_direction(tempid.x,tempid.y,obj_warmachine.x-52,obj_warmachine.y+28)+180;
+    tempid.alarm[0]=40;
+    if (heropush)
+        heropush=0;
+    else{
+        heropush=1;
+        with (obj_hero){
+            if (place_free(x-2,y))
+                x-=2;
+            }
+        }
+    }
+
+//RAISE FIRE
+if (rise &amp;&amp; risecyc&lt;320){
+    if (obj_sabot.shakescreen==0)
+        obj_sabot.shakescreen=2;
+    risecyc+=8;
+    with (obj_fire){
+        if (x&lt;=obj_sabot.x+obj_warmachine.risecyc)
+            rise=1;
+        }
+    }
+
+//HEAT HERO
+with (obj_fire){
+    if (rise)
+        global.heat+=0.1;
+    if (global.heat&gt;global.maxheat)
+        global.heat=global.maxheat;
+    }
+
+//WALK
+if (x!=target){
+    walkcyc+=1;
+    if (walkcyc&gt;=20){
+        if (x&gt;target)
+            x-=16;
+        else
+            x+=16;
+        if (image_single==0)
+            image_single=1;
+        else{
+            image_single=0;
+            obj_sabot.explo[2]=1;
+            obj_sabot.shakescreen=6;
+            with (obj_sabot){
+                for (i=0;i&lt;20;i+=1){
+                    for (j=0;j&lt;4;j+=1){
+                        if (!place_free(x+i*16,y+j*16)){
+                            (instance_create(x+i*16+random(16),y+j*16,obj_flame)).vspeed=tempid.vspeed+random(4);
+                            }
+                        }
+                    }
+                }
+            }
+        walkcyc=0;
+        with (obj_pipe2){
+            if (place_meeting(x,y,obj_warmachine)){
+                instance_destroy();
+                obj_sabot.explo[1]=1;
+                instance_create(x+8,y+8,obj_explo);
+                }
+            }
+        }
+    }
+
+//DEAD
+if (hp&lt;=0 &amp;&amp; !dead){
+    with (obj_sabot)
+        scr_wantsong(0);
+    charging=0;
+    rise=0;
+    obj_hero.ignoreall=1;
+    obj_hero.cannotwarp=1;
+    with (obj_fire)
+        rise=0;
+    scr_sound("bossroar");
+    obj_hero.cannotwarp=1;
+    dead=1;
+    timeline_index=-1;
+    with (obj_esupershot){
+        instance_destroy();
+        instance_create(x,y,obj_explo);
+        }
+    with (obj_emegashot){
+        instance_destroy();
+        instance_create(x,y,obj_explo);
+        }
+    with (obj_egigashot){
+        instance_destroy();
+        instance_create(x,y,obj_explo);
+        }
+    with (obj_eshot){
+        if (!massacre)
+            instance_destroy();
+        }
+    obj_sabot.shakescreen=6;
+    }
+//DEAD
+if (dead){
+    deadcyc+=1;
+    if (!dead2){
+        if (obj_sabot.shakescreen==0)
+            obj_sabot.shakescreen=2;
+        target=xstart+32;
+        if (deadcyc mod 3==0){
+            if (deadcyc mod 6==0)
+                obj_sabot.explo[2]=1;
+            (instance_create(x-56+random(112),y-64+random(128),obj_bigexplo)).gravity=-0.2;
+            }
+        if (x=xstart+32)
+            deadcyc2+=1;
+        if (deadcyc2==100 &amp;&amp; global.hp&gt;0){
+            with (obj_door1){
+                instance_destroy();
+                instance_create(x+8,y+8,obj_explo);
+                instance_create(x+8,y+24,obj_explo);
+                }
+            scr_save(1);
+            obj_sabot.alarm[1]=200;
+            obj_sabot.cannotpause=1;
+            dead2=1;
+            obj_sabot.explo[4]=1;
+            sprite_index=spr_warmachine2;
+            obj_bgdraw.alpha=0.0005;
+            obj_sabot.shakescreen=12;
+            instance_create(x,y,obj_explospewer);
+            instance_create(x-32,y-32,obj_explospewer);
+            instance_create(x+32,y-32,obj_explospewer);
+            instance_create(x+32,y+32,obj_explospewer);
+            instance_create(x-32,y+32,obj_explospewer);
+            instance_create(x-64,y,obj_explospewer2);
+            instance_create(x+64,y,obj_explospewer2);
+            instance_create(x,y-64,obj_explospewer2);
+            instance_create(x,y+64,obj_explospewer2);
+            for (i=1;i&lt;361;i+=4){
+                sp+=4;
+                if (sp&gt;=16) sp=0;
+                tempid=instance_create(x,y,obj_firework);
+                tempid.sprite_index=spr_flame;
+                tempid.direction=i;
+                tempid.speed=(sp+4)/3+1;
+                tempid.i=1;
+                }
+            obj_sabot.mitemclear[obj_sabot.roomx,obj_sabot.roomy]=1;
+            }
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (instance_number(obj_hero)==1){
+    temp=((((direction - point_direction(x,y,obj_hero.x,obj_hero.y)) mod 360) + 540) mod 360) - 180;
+    if (temp&gt;0)
+        direction-=1.8;
+    else
+        direction+=1.8;
+    }
+
+imgcyc+=1;
+if (imgcyc==8 || !imginit){
+    imginit=1;
+    imgcyc=0;
+    if (direction&gt;22.5 &amp;&amp; direction&lt;=67.5)
+        image_single=add*8+1;
+    else if (direction&gt;67.5 &amp;&amp; direction&lt;=112.5)
+        image_single=add*8+2;
+    else if (direction&gt;112.5 &amp;&amp; direction&lt;=157.5)
+        image_single=add*8+3;
+    else if (direction&gt;157.5 &amp;&amp; direction&lt;=202.5)
+        image_single=add*8+4;
+    else if (direction&gt;202.5 &amp;&amp; direction&lt;=247.5)
+        image_single=add*8+5;
+    else if (direction&gt;247.5 &amp;&amp; direction&lt;=292.5)
+        image_single=add*8+6;
+    else if (direction&gt;292.5 &amp;&amp; direction&lt;=337.5)
+        image_single=add*8+7;
+    else
+        image_single=add*8;
+    }
+
+anim+=1;
+if (anim==3){
+    image_single+=8;
+    add=1;
+    }
+if (anim&gt;=6){
+    image_single-=8;
+    anim=0;
+    add=0;
+    }
+
+
+ttl+=1;
+if (ttl==400)
+    hp=0;
+if (hp&lt;=0){
+    instance_destroy();
+    instance_create(x,y,obj_explo);
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

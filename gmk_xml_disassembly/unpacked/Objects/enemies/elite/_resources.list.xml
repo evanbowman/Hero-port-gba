@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="obj_generator" type="RESOURCE"/>
+  <resource name="obj_generatorneck" type="RESOURCE"/>
+  <resource name="obj_mode" type="RESOURCE"/>
+  <resource name="obj_modeneck" type="RESOURCE"/>
+  <resource name="obj_hunter" type="RESOURCE"/>
+  <resource name="obj_direviper" type="RESOURCE"/>
+  <resource name="obj_mother" type="RESOURCE"/>
+  <resource name="obj_eidolon" type="RESOURCE"/>
+  <resource name="obj_eidolongun" type="RESOURCE"/>
+  <resource name="obj_annihilator" type="RESOURCE"/>
+  <resource name="obj_deadanni" type="RESOURCE"/>
+  <resource name="obj_terror" type="RESOURCE"/>
+</resources>

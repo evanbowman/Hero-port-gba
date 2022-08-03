@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (type==1){
+    imgcyc+=1;
+    if (imgcyc==2){
+        imgcyc=0;
+        if (img==0)
+            img=1;
+        else
+            img=0;
+        }
+    img2cyc+=1;
+    if (img2cyc==26 &amp;&amp; img2&lt;8){
+        img2cyc=0;
+        img2+=2;
+        if (img2==8)
+            sprite_index=spr_flame;
+        }
+    image_single=img2+img;
+    if (x&lt;244)
+        instance_destroy();
+    }
+else if (type==2){
+    if (y&lt;100 || y&gt;300)
+        instance_destroy();
+    }
+else if (type==3){
+    cyc+=1;
+    if (global.screenshaking){
+        if (cyc==3)
+            visible=0;
+        else if (cyc==4)
+            visible=1;
+        else if (cyc==7)
+            visible=0;
+        else if (cyc==8)
+            visible=1;
+        else if (cyc==11)
+            visible=0;
+        else if (cyc==12)
+            visible=1;
+        else if (cyc==14)
+            visible=0;
+        else if (cyc==16)
+            visible=1;
+        else if (cyc==17)
+            instance_destroy();
+        }
+    else{
+        if (cyc==12)
+            visible=0;
+        else if (cyc==17)
+            instance_destroy();
+        }
+    }
+else if (type==4){
+    cyc+=1;
+    if (cyc==1)
+        y+=2;
+    else if (cyc==2){
+        cyc=0;
+        y-=2;
+        }
+    }
+else if (type==5){
+    cyc+=1;
+    if (cyc==6)
+        visible=0;
+    else if (cyc==8){
+        cyc=0;
+        visible=1;
+        }
+    }
+else if (type==6){
+    imgcyc+=1;
+    if (imgcyc==2){
+        imgcyc=0;
+        if (img==0)
+            img=1;
+        else
+            img=0;
+        }
+    img2cyc+=1;
+    if (img2cyc==34 &amp;&amp; img2&lt;6){
+        img2cyc=0;
+        img2+=2;
+        }
+    image_single=img2+img;
+    }
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

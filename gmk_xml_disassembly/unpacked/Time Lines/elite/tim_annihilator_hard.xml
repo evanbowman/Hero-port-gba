@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<timeline>
+  <moment stepNo="0">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">image_single=0;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="10">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">image_single=1;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="20">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">image_single=0;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="30">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">image_single=1;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="40">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (x&gt;obj_hero.x)
+    image_single=2;
+else
+    image_single=3;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="80">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (x&gt;obj_hero.x)
+    image_single=2;
+else
+    image_single=3;
+
+speed=1.5;
+direction=point_direction(x,y,obj_hero.x,obj_hero.y);
+for (i=0;i&lt;4;i+=1){
+    tempid=instance_create(x,y,obj_esupershot);
+    tempid.speed=0.25;
+    tempid.direction=i*90+45;
+    }
+if (image_single==2)
+    tempid=instance_create(x-24,y,obj_egigashot);
+else
+    tempid=instance_create(x+24,y,obj_egigashot);
+tempid.speed=3;
+tempid.direction=point_direction(x,y,obj_hero.x,obj_hero.y);
+
+if (image_single==2)
+    tempid=instance_create(x-24,y,obj_emegashot);
+else
+    tempid=instance_create(x+24,y,obj_emegashot);
+tempid.speed=3;
+tempid.direction=point_direction(x,y,obj_hero.x,obj_hero.y)-45;
+if (image_single==2)
+    tempid=instance_create(x-24,y,obj_emegashot);
+else
+    tempid=instance_create(x+24,y,obj_emegashot);
+tempid.speed=3;
+tempid.direction=point_direction(x,y,obj_hero.x,obj_hero.y)+45;
+
+</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="120">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">speed=1.5;
+direction=direction+45+random(270);
+if (image_single==2){
+    tempid=instance_create(x-24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=180;
+    }
+else{
+    tempid=instance_create(x+24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=0;
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="130">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (image_single==2){
+    tempid=instance_create(x-24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=160;
+    tempid=instance_create(x-24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=200;
+    }
+else{
+    tempid=instance_create(x+24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=20;
+    tempid=instance_create(x+24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=-20;
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="140">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (image_single==2){
+    tempid=instance_create(x-24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=140;
+    tempid=instance_create(x-24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=220;
+    }
+else{
+    tempid=instance_create(x+24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=40;
+    tempid=instance_create(x+24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=-40;
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="150">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (image_single==2){
+    tempid=instance_create(x-24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=100;
+    tempid=instance_create(x-24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=260;
+    }
+else{
+    tempid=instance_create(x+24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=80;
+    tempid=instance_create(x+24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=-80;
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="160">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">speed=0;
+if (image_single==2){
+    tempid=instance_create(x-24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=80;
+    tempid=instance_create(x-24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=280;
+    }
+else{
+    tempid=instance_create(x+24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=100;
+    tempid=instance_create(x+24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=-100;
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="200">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (x&gt;obj_hero.x)
+    image_single=2;
+else
+    image_single=3;
+
+speed=1.5;
+direction=point_direction(x,y,obj_hero.x,obj_hero.y);
+for (i=0;i&lt;4;i+=1){
+    tempid=instance_create(x,y,obj_esupershot);
+    tempid.speed=0.25;
+    tempid.direction=i*90;
+    }
+if (image_single==2)
+    tempid=instance_create(x-24,y,obj_egigashot);
+else
+    tempid=instance_create(x+24,y,obj_egigashot);
+tempid.speed=3;
+tempid.direction=point_direction(x,y,obj_hero.x,obj_hero.y);
+
+if (image_single==2)
+    tempid=instance_create(x-24,y,obj_emegashot);
+else
+    tempid=instance_create(x+24,y,obj_emegashot);
+tempid.speed=3;
+tempid.direction=point_direction(x,y,obj_hero.x,obj_hero.y)-45;
+if (image_single==2)
+    tempid=instance_create(x-24,y,obj_emegashot);
+else
+    tempid=instance_create(x+24,y,obj_emegashot);
+tempid.speed=3;
+tempid.direction=point_direction(x,y,obj_hero.x,obj_hero.y)+45;
+
+</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="240">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">speed=1.5;
+direction=direction+45+random(270);
+if (image_single==2){
+    tempid=instance_create(x-24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=180;
+    }
+else{
+    tempid=instance_create(x+24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=0;
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="250">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (image_single==2){
+    tempid=instance_create(x-24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=160;
+    tempid=instance_create(x-24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=200;
+    }
+else{
+    tempid=instance_create(x+24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=20;
+    tempid=instance_create(x+24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=-20;
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="260">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (image_single==2){
+    tempid=instance_create(x-24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=140;
+    tempid=instance_create(x-24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=220;
+    }
+else{
+    tempid=instance_create(x+24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=40;
+    tempid=instance_create(x+24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=-40;
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="270">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (image_single==2){
+    tempid=instance_create(x-24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=100;
+    tempid=instance_create(x-24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=260;
+    }
+else{
+    tempid=instance_create(x+24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=80;
+    tempid=instance_create(x+24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=-80;
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="280">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">speed=0;
+if (image_single==2){
+    tempid=instance_create(x-24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=80;
+    tempid=instance_create(x-24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=280;
+    }
+else{
+    tempid=instance_create(x+24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=100;
+    tempid=instance_create(x+24,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=-100;
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="320">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">speed=1.5;
+direction=point_direction(x,y,obj_sabot.x+160,obj_sabot.y+160);
+flash=1;
+if (x&gt;obj_sabot.x+160)
+    image_single=2;
+else
+    image_single=3;
+</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="360">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">speed=0;
+image_single=1;
+flash=0;
+spreadfire=1;
+sfcyc=15;
+</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="440">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">spreadfire=0;
+</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="480">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (x&gt;obj_hero.x)
+    image_single=2;
+else
+    image_single=3;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="519">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">timeline_position=80;</argument>
+      </arguments>
+    </action>
+  </moment>
+</timeline>

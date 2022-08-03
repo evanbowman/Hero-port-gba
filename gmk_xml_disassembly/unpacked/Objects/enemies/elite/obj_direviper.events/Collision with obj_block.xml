@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="COLLISION" with="obj_block">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (direction==0 || direction==180){
+    if (!place_free(x,y-1))
+        direction=270;
+    else if (!place_free(x,y+1))
+        direction=90;
+    else
+        direction+=90-floor(random(2))*180;
+    }
+else{
+    if (!place_free(x-1,y))
+        direction=0;
+    else if (!place_free(x+1,y))
+        direction=180;
+    else
+        direction+=90-floor(random(2))*180;
+    }
+
+if (direction==180) image_single=2;
+else if (direction==0) image_single=5;
+else if (direction==90){
+    if (x&gt;obj_hero.x)
+        image_single=3;
+    else
+        image_single=4;
+    }
+else if (direction==270){
+    if (x&gt;obj_hero.x)
+        image_single=6;
+    else
+        image_single=7;
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

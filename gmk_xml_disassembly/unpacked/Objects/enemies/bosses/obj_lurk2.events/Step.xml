@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (hp&lt;=0){
+    obj_sabot.explo[1]=1;
+    instance_destroy();
+    for (i=0;i&lt;16;i+=1)
+        instance_create(x+4+random(8),y+16*i+8,obj_explo);
+    }
+if (place_meeting(x,y,obj_lurk)){
+    if (timeline_position&lt;90 &amp;&amp; timeline_position&gt;45)
+        timeline_position+=-2+floor(random(4));
+    }
+
+if (wake){
+    cyc+=1;
+    mask_index=spr_block;
+    if (cyc==4){
+        if (followcyc==0){
+            followcyc=8;
+            follow=floor(random(2));
+            if (follow==0)
+                dir=floor(random(2));
+            else{
+                if (y+16&gt;obj_hero.y)
+                    dir=0;
+                else
+                    dir=1;
+                }
+            if (y&gt;ystart-48)
+                dir=0;
+            else if (y&lt;ystart-128)
+                dir=1;
+            }
+        followcyc-=1;
+        cyc=0;
+        anim+=1;
+        if (anim==8)
+            anim=0;
+        if (dir==0 &amp;&amp; !place_meeting(x,y-2,obj_block) &amp;&amp; y&gt;obj_sabot.y)
+            y-=2;
+        else if (dir==1 &amp;&amp; !place_meeting(x,y+2,obj_block))
+            y+=2;
+        }
+    mask_index=spr_lurkhitbox;
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="scr_compat" type="RESOURCE"/>
+  <resource name="sabot" type="GROUP"/>
+  <resource name="game" type="GROUP"/>
+  <resource name="pause" type="GROUP"/>
+  <resource name="hero" type="GROUP"/>
+  <resource name="save" type="GROUP"/>
+  <resource name="main" type="GROUP"/>
+  <resource name="cut" type="GROUP"/>
+  <resource name="gamepad" type="GROUP"/>
+  <resource name="music" type="GROUP"/>
+  <resource name="translations" type="GROUP"/>
+</resources>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (!dirinit){
+    dirinit=1;
+    if (dir==1)
+        tempid.direction=270;
+    if (dir==2)
+        tempid.timeline_index=-1;
+    }
+if (hp&lt;=0){
+    obj_sabot.explo[2]=1;
+    instance_destroy();
+    instance_create(x,y,obj_bigexplo);
+    }
+if (wake &amp;&amp; global.hp&gt;0){
+    if (global.hardmode)
+        gigacyc+=4;
+    else
+        gigacyc+=2;
+    if (gigacyc&gt;=360)
+        gigacyc-=360;
+    gigacyc2+=1;
+    if (gigacyc2==16){
+        gigacyc2=0;
+        tempid=instance_create(x,y,obj_egigashot);
+        tempid.speed=3;
+        tempid.direction=gigacyc;
+        tempid=instance_create(x,y,obj_egigashot);
+        tempid.speed=3;
+        tempid.direction=gigacyc+180;
+        tempid=instance_create(x,y,obj_egigashot);
+        tempid.speed=3;
+        tempid.direction=gigacyc+90;
+        tempid=instance_create(x,y,obj_egigashot);
+        tempid.speed=3;
+        tempid.direction=gigacyc+270;
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

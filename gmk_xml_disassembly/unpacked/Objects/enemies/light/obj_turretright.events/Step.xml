@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (hp&lt;=0){
+    obj_sabot.explo[1]=1;
+    instance_destroy();
+    instance_create(x+8,y+8,obj_explo);
+    instance_create(x+8,y+24,obj_explo);
+    }
+lookdir=point_direction(x+8,y+16,obj_hero.x,obj_hero.y);
+if (awake &amp;&amp; global.hp&gt;0){
+    if (lookdir&lt;101.25) image_single=1;
+    else if (lookdir&gt;=101.25 &amp;&amp; lookdir&lt;123.75) image_single=2;
+    else if (lookdir&gt;=123.75 &amp;&amp; lookdir&lt;146.25) image_single=3;
+    else if (lookdir&gt;=146.25 &amp;&amp; lookdir&lt;168.75) image_single=4;
+    else if (lookdir&gt;=158.75 &amp;&amp; lookdir&lt;191.25) image_single=5;
+    else if (lookdir&gt;=191.25 &amp;&amp; lookdir&lt;213.75) image_single=6;
+    else if (lookdir&gt;=213.75 &amp;&amp; lookdir&lt;236.25) image_single=7;
+    else if (lookdir&gt;=236.25 &amp;&amp; lookdir&lt;258.75) image_single=8;
+    else image_single=9;
+    }
+if (x2!=0){
+    x2cyc+=1;
+    if (x2cyc==4){
+        x2cyc=0;
+        x2=0;
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

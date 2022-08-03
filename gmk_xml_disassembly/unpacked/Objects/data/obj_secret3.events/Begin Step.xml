@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="1">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (place_meeting(x,y,obj_hero)){
+with (obj_hero)
+    instance_destroy();
+if (type==2){
+    obj_sabot.ninenine=1;
+    obj_sabot.roomx=8;
+    obj_sabot.roomy=9;
+    obj_sabot.x=obj_sabot.roomx*320;
+    obj_sabot.y=obj_sabot.roomy*320;
+    }
+else if (type==1){
+    obj_sabot.ninenine=0;
+    obj_sabot.roomx=10;
+    obj_sabot.roomy=2;
+    obj_sabot.x=obj_sabot.roomx*320;
+    obj_sabot.y=obj_sabot.roomy*320;
+    }
+else if (type==0){
+    obj_sabot.ninenine=0;
+    obj_sabot.roomx=13;
+    obj_sabot.roomy=1;
+    obj_sabot.x=obj_sabot.roomx*320;
+    obj_sabot.y=obj_sabot.roomy*320;
+    }
+with (obj_sabot){
+    fullflash=1;
+    alarm[4]=2;
+    if (global.gmversion==5){
+        view_left[0]=x-40;
+        view_top[0]=y-40+shakescreen;
+        }
+    else{
+        view_xview[0]=x-40;
+        view_yview[0]=y-40+shakescreen;
+        }
+    scr_scrollprepare();
+    instance_deactivate_all(1);
+    scr_scroll();
+    if (ninenine)
+        instance_create(x+64,y+160,obj_hero);
+    else
+        instance_create(x+128,y+128,obj_hero);
+    }
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

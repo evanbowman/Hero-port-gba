@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="obj_dirt" type="RESOURCE"/>
+  <resource name="obj_pipe1" type="RESOURCE"/>
+  <resource name="obj_pipe2" type="RESOURCE"/>
+  <resource name="obj_liquid1" type="RESOURCE"/>
+  <resource name="obj_liquid2" type="RESOURCE"/>
+  <resource name="obj_liquid3" type="RESOURCE"/>
+  <resource name="obj_door1" type="RESOURCE"/>
+  <resource name="obj_door2" type="RESOURCE"/>
+  <resource name="obj_barrier" type="RESOURCE"/>
+  <resource name="obj_barrier2" type="RESOURCE"/>
+</resources>

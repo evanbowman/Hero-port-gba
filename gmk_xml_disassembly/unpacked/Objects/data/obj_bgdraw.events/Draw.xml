@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="DRAW" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (!global.motionblur)
+    alpha=1;
+if (alpha&lt;1)
+    scr_compat(2);
+else if (!obj_sabot.zeroalpha)
+    draw_sprite(spr_bggrid,0,x,y);
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

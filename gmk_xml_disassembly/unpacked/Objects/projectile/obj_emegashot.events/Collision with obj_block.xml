@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="COLLISION" with="obj_block">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">instance_create(x,y,obj_bigexplo);
+instance_destroy();
+if (global.hardmode){
+    for (i=0;i&lt;4;i+=1){
+        tempid=instance_create(x,y,obj_esupershot);
+        tempid.speed=2;
+        tempid.direction=i*90+45;
+        }
+    }
+else{
+    for (i=0;i&lt;4;i+=1){
+        tempid=instance_create(x,y,obj_eshot);
+        tempid.speed=2;
+        tempid.direction=i*90+45;
+        }
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

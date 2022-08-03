@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="DRAW" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (type==3){
+    for (i=0;i&lt;12;i+=1){
+        draw_sprite(spr_blockwide3,0,0,100+i*16);
+        draw_sprite(spr_blockwide3,0,160,100+i*16);
+        draw_sprite(spr_blockwide3,0,320,100+i*16);
+        }
+    draw_sprite(spr_blockwide3,0,0,284);
+    draw_sprite(spr_blockwide3,0,160,284);
+    draw_sprite(spr_blockwide3,0,320,284);
+    }
+else
+    scr_drawme();</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

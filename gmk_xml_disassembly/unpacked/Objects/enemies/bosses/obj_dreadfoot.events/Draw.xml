@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="DRAW" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (bounces&gt;0){
+    flashcyc+=1;
+    if (flashcyc==2){
+        flashcyc=0;
+        draw_sprite(sprite_index,0,floor(round((x-2)/2)*2),floor(round((y)/2)*2));
+        draw_sprite(sprite_index,0,floor(round((x+2)/2)*2),floor(round((y)/2)*2));
+        draw_sprite(sprite_index,0,floor(round((x)/2)*2),floor(round((y+2)/2)*2));
+        draw_sprite(sprite_index,0,floor(round((x)/2)*2),floor(round((y-2)/2)*2));
+        draw_sprite(sprite_index,0,floor(round((x-2)/2)*2),floor(round((y-2)/2)*2));
+        draw_sprite(sprite_index,0,floor(round((x+2)/2)*2),floor(round((y-2)/2)*2));
+        draw_sprite(sprite_index,0,floor(round((x-2)/2)*2),floor(round((y+2)/2)*2));
+        draw_sprite(sprite_index,0,floor(round((x+2)/2)*2),floor(round((y+2)/2)*2));
+        }
+    }
+scr_drawme();
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

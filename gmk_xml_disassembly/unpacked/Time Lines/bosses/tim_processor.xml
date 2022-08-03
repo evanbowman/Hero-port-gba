@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<timeline>
+  <moment stepNo="0">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_processorneck.image_single=0;
+direction=90;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="10">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_processorneck.image_single=2;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="20">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_processorneck.image_single=0;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="30">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_processorneck.image_single=2;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="40">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">with (obj_processorneck){
+    if (sprite_index==spr_silencercore)
+        anim=1;
+    }
+move=2;
+
+for (i=0;i&lt;4;i+=1){
+    tempid=instance_create(x,y,obj_processorneck);
+    tempid.sprite_index=spr_neck;
+    tempid.move=1;
+    tempid.rotspeed=-2;
+    tempid.offset=i*90;
+    tempid.dmax=12;
+    tempid.owner=id;
+    }
+for (i=0;i&lt;12;i+=1){
+    tempid=instance_create(x,y,obj_processorneck);
+    tempid.sprite_index=spr_neck2;
+    tempid.move=1;
+    tempid.rotspeed=4;
+    tempid.offset=i*30;
+    tempid.dmax=44;
+    tempid.owner=id;
+    }
+
+with (obj_lurk2_s){
+    instance_create(x,y,spawn);
+    instance_create(x+8,y+8,obj_explo);
+    }
+scr_sound("explo1");
+</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="120">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (instance_number(obj_lurk2)==0 &amp;&amp; !hold){
+    hold=1;
+    move=0;
+    obj_sabot.shakescreen=6;
+    scr_sound("explo3");
+    with (obj_processorneck){
+        if (sprite_index==spr_neck || sprite_index==spr_neck2)
+            hp=0;
+        }
+    }
+else{
+    shotcyc+=1;
+    if (shotcyc==4){
+        tempid=instance_create(x,y,obj_esupershot);
+        tempid.speed=2;
+        tempid.direction=30;
+        tempid=instance_create(x,y,obj_esupershot);
+        tempid.speed=2;
+        tempid.direction=-30;
+        }
+    if (shotcyc==8){
+        shotcyc=0;
+        tempid=instance_create(x,y,obj_esupershot);
+        tempid.speed=2;
+        tempid.direction=0;
+        }
+    move=floor(random(5));
+    if (x&lt;=xstart-32)
+        move=1;
+    if (x&gt;=xstart+32)
+        move=3;
+    if (y&lt;=ystart-32)
+        move=4;
+    if (y&gt;=ystart+32)
+        move=2;
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="135">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (!hold)
+    timeline_position=120;</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="360">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">obj_processorneck.fastanim=1;
+shaking=1;
+for (i=0;i&lt;4;i+=1){
+    tempid=instance_create(x-320,y,obj_processorneck);
+    tempid.sprite_index=spr_neck;
+    tempid.move=1;
+    tempid.rotspeed=-2;
+    tempid.offset=i*90;
+    tempid.dmax=12;
+    tempid.owner=id;
+    tempid.d=320;
+    }
+for (i=0;i&lt;12;i+=1){
+    tempid=instance_create(x-320,y,obj_processorneck);
+    tempid.sprite_index=spr_neck2;
+    tempid.move=1;
+    tempid.rotspeed=4;
+    tempid.offset=i*30;
+    tempid.dmax=44;
+    tempid.owner=id;
+    tempid.d=320;
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="520">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">shaking=0;
+with (obj_lurk2_s){
+    instance_create(x,y,spawn);
+    instance_create(x+8,y+8,obj_explo);
+    }
+obj_processorneck.fastanim=0;
+for (i=0;i&lt;24;i+=1){
+    tempid=instance_create(x,y,obj_esupershot);
+    tempid.speed=2;
+    tempid.direction=i*15;
+    }</argument>
+      </arguments>
+    </action>
+  </moment>
+  <moment stepNo="559">
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">hold=0;
+timeline_position=120;
+</argument>
+      </arguments>
+    </action>
+  </moment>
+</timeline>

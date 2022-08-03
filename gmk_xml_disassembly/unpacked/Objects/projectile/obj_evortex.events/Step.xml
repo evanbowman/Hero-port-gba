@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">scr_outside();
+if (dir==0)
+    x-=spd;
+else
+    x+=spd;
+cyc+=1;
+if (cyc==1){
+    cyc=0;
+    (instance_create(x,y,obj_evortex2)).image_single=0;
+    }
+
+if (!place_free(x,y)){
+    if (obj_sabot.shakescreen&lt;2)
+        obj_sabot.shakescreen=2;
+    instance_destroy();
+    instance_create(x,y,obj_bigexplo);
+    instance_create(x-8,y,obj_bigexplo);
+    instance_create(x+8,y,obj_bigexplo);
+    instance_create(x-16,y,obj_bigexplo);
+    instance_create(x+16,y,obj_bigexplo);
+    obj_sabot.explo[1]=1;
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

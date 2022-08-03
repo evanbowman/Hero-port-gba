@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="DRAW" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (global.normalrush){
+if (global.seconds&lt;3*60) ranktext=mytext[0];
+else if (global.seconds&lt;4*60) ranktext=mytext[1];
+else if (global.seconds&lt;5*60) ranktext=mytext[2];
+else if (global.seconds&lt;6*60) ranktext=mytext[3];
+else if (global.seconds&lt;8*60) ranktext=mytext[4];
+else if (global.seconds&lt;10*60) ranktext="a";
+else if (global.seconds&lt;12*60) ranktext="b";
+else if (global.seconds&lt;14*60) ranktext="c";
+else if (global.seconds&lt;16*60) ranktext="d";
+else if (global.seconds&lt;18*60) ranktext="e";
+else ranktext="f";
+}
+else{
+if (global.seconds&lt;5*60) ranktext=mytext[0];
+else if (global.seconds&lt;6*60) ranktext=mytext[1];
+else if (global.seconds&lt;7*60) ranktext=mytext[2];
+else if (global.seconds&lt;8*60) ranktext=mytext[3];
+else if (global.seconds&lt;10*60) ranktext=mytext[4];
+else if (global.seconds&lt;12*60) ranktext="a";
+else if (global.seconds&lt;14*60) ranktext="b";
+else if (global.seconds&lt;16*60) ranktext="c";
+else if (global.seconds&lt;18*60) ranktext="d";
+else if (global.seconds&lt;20*60) ranktext="e";
+else ranktext="f";
+}
+
+offset=-36;
+scr_ctext(x,y-26+offset,mytext[5],1)
+scr_ctext(x,y-2+offset,mytext[6]+timestring1,1)
+scr_ctext(x,y+12+offset,mytext[7]+timestring2,1)
+scr_ctext(x,y+32+offset,mytext[8]+ranktext,1)
+scr_ctext(x,y+54+offset,mytext[9],1)
+scr_ctext(x,y+68+offset,mytext[10],1)
+draw_sprite(spr_trophy,trophy,2064,3088);</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

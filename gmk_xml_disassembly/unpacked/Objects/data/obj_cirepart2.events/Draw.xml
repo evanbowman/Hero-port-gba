@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="DRAW" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (facdir==0){
+    factor+=0.5;
+    if (factor&gt;=16)
+        facdir=1;
+    }
+else{
+    factor-=0.5;
+    if (factor&lt;=2)
+        facdir=0;
+    }
+x=xstart-factor+random(factor)*2-2;
+y=ystart-factor+random(factor)*2-2;
+temprand=random(1);
+if (factor&lt;4) image_single=3;
+else if (factor&lt;8) image_single=2;
+else if (factor&lt;12) image_single=1;
+else image_single=0;
+if (temprand&lt;0.5)
+    scr_drawme();</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="1">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (obj_hero.x==x+26 &amp;&amp; obj_hero.y==y+16 &amp;&amp; instance_number(obj_foreverbomb2)==0){
+    if (!doit){
+        doit=4;
+        with (obj_sabot)
+            scr_sabotpause();
+        }
+    }
+if (obj_hero.y&lt;=y &amp;&amp; doit&gt;0)
+    doit-=1;</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

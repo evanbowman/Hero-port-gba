@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="COLLISION" with="obj_eshot">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">ignorelaser=0;
+if (!other.dud){
+    if (other.sprite_index==spr_evortex){
+        with (other){
+            if (global.blade==3 &amp;&amp; place_meeting(x,y,obj_blade))
+                obj_hero.ignorelaser=1;
+            }
+        }
+    if (!ignorelaser)
+        scr_heropain(other.force,other.heat);
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

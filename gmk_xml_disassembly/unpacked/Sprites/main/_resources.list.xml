@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="spr_herologo" type="RESOURCE"/>
+  <resource name="spr_sheen" type="RESOURCE"/>
+  <resource name="spr_map1" type="RESOURCE"/>
+  <resource name="spr_map2" type="RESOURCE"/>
+  <resource name="spr_map3" type="RESOURCE"/>
+</resources>

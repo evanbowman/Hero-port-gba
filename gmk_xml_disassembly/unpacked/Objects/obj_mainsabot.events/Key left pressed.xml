@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="KEYPRESS" id="37">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">scr_maincode(2);
+if (tier="bonus" &amp;&amp; selected==5){
+    musictest-=1;
+    if (musictest==0)
+        musictest=16;
+    scr_sound("menutick");
+    scr_maintexts();
+    }
+else if ((tier="bonus" &amp;&amp; selected==6) || tier="maps"){
+    scr_sound("menutick");
+    if (map==1){
+        if (map3)
+            map=3;
+        else if (map2)
+            map=2;
+        }
+    else if (map==2){
+        if (map1)
+            map=1;
+        else if (map3)
+            map=3;
+        }
+    else if (map==3){
+        if (map2)
+            map=2;
+        else if (map1)
+            map=1;
+        }
+    scr_sound("menumove");
+    scr_maintexts();
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

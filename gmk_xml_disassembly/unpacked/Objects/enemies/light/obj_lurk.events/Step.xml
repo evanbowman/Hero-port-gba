@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if (hp&lt;=0){
+    obj_sabot.explo[1]=1;
+    instance_destroy();
+    for (i=0;i&lt;16;i+=1)
+        instance_create(x+8,y+16*i+8,obj_explo);
+    }
+if (place_meeting(x,y,obj_lurk)){
+    if (timeline_position&lt;90 &amp;&amp; timeline_position&gt;45)
+        timeline_position+=-2+floor(random(4));
+    }
+
+if (wake){
+    cyc+=1;
+    mask_index=spr_block;
+    if (cyc==4){
+        cyc=0;
+        anim+=1;
+        if (anim==8)
+            anim=0;
+        if (y+16&gt;obj_hero.y &amp;&amp; !place_meeting(x,y-2,obj_block) &amp;&amp; y&gt;obj_sabot.y)
+            y-=2;
+        else if (y+16&lt;obj_hero.y &amp;&amp; !place_meeting(x,y+2,obj_block))
+            y+=2;
+        }
+    if (cyc mod 2==0){
+        if (x+8&lt;obj_hero.x &amp;&amp; anim&gt;4 &amp;&amp; !place_meeting(x+2,ystart,obj_block) &amp;&amp; !place_meeting(x+2,y,obj_block) &amp;&amp; place_meeting(x+12,ystart+2,obj_block) &amp;&amp; !place_meeting(x+4,ystart,obj_lurk))
+            x+=2;
+        else if (x+8&gt;obj_hero.x &amp;&amp; anim&gt;4 &amp;&amp; !place_meeting(x-2,ystart,obj_block) &amp;&amp; !place_meeting(x-2,y,obj_block) &amp;&amp; place_meeting(x-16,ystart+2,obj_block) &amp;&amp; !place_meeting(x-4,ystart,obj_lurk))
+            x-=2;
+        }
+    mask_index=spr_lurkhitbox;
+    }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

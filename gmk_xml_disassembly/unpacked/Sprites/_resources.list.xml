@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="hud" type="GROUP"/>
+  <resource name="projectile" type="GROUP"/>
+  <resource name="particles" type="GROUP"/>
+  <resource name="enemies" type="GROUP"/>
+  <resource name="blocks" type="GROUP"/>
+  <resource name="items" type="GROUP"/>
+  <resource name="main" type="GROUP"/>
+  <resource name="cut" type="GROUP"/>
+</resources>
