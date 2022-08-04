@@ -741,7 +741,7 @@ void Platform::Screen::draw(const Sprite& spr)
         oa->attribute_1 |= (abs_position.x + x_off) & 0x01ff;
         oa->attribute_2 = 2 + spr.get_texture_index() * scale + tex_off;
         oa->attribute_2 |= pb;
-        oa->attribute_2 |= ATTR2_PRIORITY(::sprite_priority);
+        oa->attribute_2 |= ATTR2_PRIORITY(spr.get_priority());
         oam_write_index += 1;
     };
 

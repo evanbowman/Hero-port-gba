@@ -17,6 +17,7 @@
 #include "objects/enemies/heavy/powerTurret.hpp"
 #include "objects/enemies/heavy/boltaray.hpp"
 #include "objects/enemies/heavy/soldier.hpp"
+#include "objects/particles/weed.hpp"
 #include "maps.hpp"
 #include "scene.hpp"
 #include "scenes.hpp"
@@ -99,8 +100,8 @@ void Engine::begin_game(Difficulty d)
     room_.clear();
 
     if (d == Difficulty::hard) {
-        room_.load(8, 2); // 6, 0
-        //room_.load(6, 0); // 6, 0
+        // room_.load(8, 2); // 6, 0
+        room_.load(6, 0);
     } else {
         room_.load(11, 14);
     }
@@ -198,6 +199,10 @@ void Engine::run()
 
         _platform->screen().clear();
 
+        if (frame_count_ == 0) {
+            animate_fluids();
+        }
+
         if (g_.flicker_ == 1) {
             platform().screen().fade(1.f, custom_color(0xffffff));
             g_.flicker_ = 2;
@@ -211,6 +216,27 @@ void Engine::run()
         _platform->screen().display();
     }
 
+}
+
+
+
+void Engine::animate_fluids()
+{
+    for (int x = 0; x < 20; ++x) {
+        for (int y = 0; y < 20; ++y) {
+            auto t = platform().get_tile(Layer::map_0, x, y);
+            if (t == 16) {
+                t = 9;
+            } else if (t == 24) {
+                t = 17;
+            } else if (t == 32) {
+                t = 25;
+            } else if (t >= 9 and t < 32) {
+                t = t + 1;
+            }
+            platform().set_tile(Layer::map_0, x, y, t);
+        }
+    }
 }
 
 
@@ -383,6 +409,14 @@ void Engine::Room::load(int chunk_x, int chunk_y)
 
             case 14:
                 engine().add_object<Lurk>(Vec2<Fixnum>{40 + obj.x_ * 8 + 1, obj.y_ * 8});
+                break;
+
+            case 15:
+                engine().add_object<Weed>(Vec2<Fixnum>{40 + obj.x_, obj.y_}, true);
+                break;
+
+            case 16:
+                engine().add_object<Weed>(Vec2<Fixnum>{40 + obj.x_, obj.y_}, false);
                 break;
 
             default:

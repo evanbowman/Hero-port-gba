@@ -65,6 +65,9 @@ def parse_instances(xml_list):
         rix = int((x - rx * 20 * 16) / 16)
         riy = int((y - ry * 20 * 16) / 16)
 
+        ra_x = int((x - rx * 20 * 16) / 2)
+        ra_y = int((y - ry * 20 * 16) / 2)
+
         if objname == "obj_block":
             set_wall(tx, ty)
         elif objname == "obj_blocktall":
@@ -154,6 +157,40 @@ def parse_instances(xml_list):
             rooms[rx][ry].append([13, rix, riy])
         elif objname == "obj_lurk_s":
             rooms[rx][ry].append([14, rix, riy])
+        elif objname == "obj_weed2":
+            rooms[rx][ry].append([15, ra_x, ra_y])
+        elif objname == "obj_weed1":
+            rooms[rx][ry].append([16, ra_x, ra_y])
+        elif objname == "obj_liquid3long_s":
+            for y in range(0, 4):
+                if y < 300 and tilemap[tx][ty + y] != 1:
+                    tilemap[tx][ty + y] = 25
+        elif objname == "obj_liquid1long_s":
+            for x in range(0, 4):
+                if tx + x < 300:
+                    prev = tilemap[tx + x][ty]
+                    if x < 300 and prev != 1 and prev != 25:
+                        tilemap[tx + x][ty] = 9
+        elif objname == "obj_liquid3_s":
+            if tilemap[tx][ty] != 1:
+                tilemap[tx][ty] = 25
+        elif objname == "obj_liquid1_s":
+            prev = tilemap[tx][ty]
+            if prev != 1 and prev != 25:
+                tilemap[tx][ty] = 9
+        elif objname == "obj_liquid2_s":
+            prev = tilemap[tx][ty]
+            if prev != 1 and prev != 25 and prev != 9:
+                tilemap[tx][ty] = 17
+        elif objname == "obj_liquid2big_s":
+            for x in range(0, 3):
+                for y in range(0, 3):
+                    if tx + x < 300 and ty + y < 300:
+                        prev = tilemap[tx + x][ty + y]
+                        if prev != 1 and prev != 25 and prev != 9:
+                            tilemap[tx + x][ty + y] = 17
+
+
 
 
 

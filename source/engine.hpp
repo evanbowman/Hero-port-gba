@@ -129,6 +129,8 @@ public:
 
 private:
 
+    void animate_fluids();
+
     ScenePtr<Scene> current_scene_;
     ScenePtr<Scene> next_scene_;
 
