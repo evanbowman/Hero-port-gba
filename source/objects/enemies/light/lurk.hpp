@@ -5,6 +5,7 @@
 #include "fmt.hpp"
 #include "number/random.hpp"
 #include "objects/particles/explo.hpp"
+#include "objects/projectile/enemyShot.hpp"
 
 
 
@@ -126,6 +127,34 @@ public:
 
         case 40:
             wake_ = true;
+            if (engine().g_.difficulty_ == Difficulty::hard) {
+                if (auto e = engine().add_object<EnemyShot>(position_)) {
+                    auto dir = rotate({1, 0}, 190);
+                    Vec2<Fixnum> spd;
+                    spd.x = Fixnum(dir.x * (1.5f / 2));
+                    spd.y = Fixnum(dir.y * (1.5f / 2));
+                    e->set_speed(spd);
+                }
+                if (auto e = engine().add_object<EnemyShot>(position_)) {
+                    auto dir = rotate({1, 0}, 350);
+                    Vec2<Fixnum> spd;
+                    spd.x = Fixnum(dir.x * (1.5f / 2));
+                    spd.y = Fixnum(dir.y * (1.5f / 2));
+                    e->set_speed(spd);
+                }
+            }
+            break;
+
+        case 80:
+            if (engine().g_.difficulty_ == Difficulty::hard) {
+                if (auto e = engine().add_object<EnemyShot>(position_)) {
+                    Vec2<float> dir = {0, -1.f};
+                    Vec2<Fixnum> spd;
+                    spd.x = Fixnum(dir.x * (1.5f / 2));
+                    spd.y = Fixnum(dir.y * (1.5f / 2));
+                    e->set_speed(spd);
+                }
+            }
             break;
 
         case 119:
