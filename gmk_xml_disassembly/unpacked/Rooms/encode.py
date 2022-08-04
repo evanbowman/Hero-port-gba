@@ -189,6 +189,9 @@ def parse_instances(xml_list):
                         prev = tilemap[tx + x][ty + y]
                         if prev != 1 and prev != 25 and prev != 9:
                             tilemap[tx + x][ty + y] = 17
+        elif objname == "obj_door1_s":
+            tilemap[tx][ty] = 33
+            tilemap[tx][ty + 1] = 34
 
 
 

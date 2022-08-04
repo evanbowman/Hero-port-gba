@@ -1,6 +1,7 @@
 #pragma once
 
 
+#include "bulkAllocator.hpp"
 #include "filesystem.hpp"
 #include "platform/platform.hpp"
 #include "object.hpp"
@@ -75,6 +76,8 @@ public:
 
         Vec2<int> coord_;
 
+        void render_entrances();
+
     } room_;
 
 
@@ -127,9 +130,28 @@ public:
     ObjectRef<Hero> hero_;
 
 
+    struct Persistence
+    {
+        struct TileModify
+        {
+            u8 tx_;
+            u8 ty_;
+            u8 room_x_ : 4;
+            u8 room_y_ : 4;
+            u8 new_value_;
+        };
+
+        Buffer<TileModify, 200> tile_modifications_;
+    };
+
+    DynamicMemory<Persistence> p_;
+
+    void unlock_doors();
+
 private:
 
-    void animate_fluids();
+    int animcyc_;
+    void animate_tiles();
 
     ScenePtr<Scene> current_scene_;
     ScenePtr<Scene> next_scene_;

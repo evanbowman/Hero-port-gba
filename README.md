@@ -83,12 +83,12 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 
 
 ### Fluids
-- [ ] Liquid Metal
+- [x] Liquid Metal
 
 
 ### Misc/environment
 - [ ] Water drips
-- [ ] Waving grass/eel things
+- [x] Waving grass/eel things
 
 
 ### Menus

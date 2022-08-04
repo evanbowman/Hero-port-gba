@@ -90,7 +90,7 @@ public:
                     origin.x += 0;
                     origin.y += 4;
                     if (left_) {
-                        origin.x -= 4;
+                        origin.x -= 6;
                     }
                     Vec2<Fixnum> fo;
                     fo.x = Fixnum(origin.x);
@@ -129,7 +129,7 @@ public:
                     origin.x += 0;
                     origin.y += 6;
                     if (left_) {
-                        origin.x -= 4;
+                        origin.x -= 6;
                     }
                     Vec2<Fixnum> fo;
                     fo.x = Fixnum(origin.x);
@@ -185,7 +185,7 @@ public:
                     origin.x += 0;
                     origin.y += 4;
                     if (left_) {
-                        origin.x -= 4;
+                        origin.x -= 6;
                     }
                     Vec2<Fixnum> fo;
                     fo.x = Fixnum(origin.x);
@@ -220,7 +220,7 @@ public:
                     origin.x += 0;
                     origin.y += 6;
                     if (left_) {
-                        origin.x -= 4;
+                        origin.x -= 6;
                     }
                     Vec2<Fixnum> fo;
                     fo.x = Fixnum(origin.x);

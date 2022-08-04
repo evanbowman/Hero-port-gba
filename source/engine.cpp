@@ -67,6 +67,7 @@ Engine& engine()
 
 Engine::Engine(Platform& pf) :
     hero_(alloc_object<Hero>(Vec2<Fixnum>{90, 80})),
+    p_(allocate_dynamic<Persistence>(pf)),
     current_scene_(scene_pool::alloc<OverworldScene>()),
     next_scene_(null_scene())
 {
@@ -200,7 +201,7 @@ void Engine::run()
         _platform->screen().clear();
 
         if (frame_count_ == 0) {
-            animate_fluids();
+            animate_tiles();
         }
 
         if (g_.flicker_ == 1) {
@@ -220,11 +221,36 @@ void Engine::run()
 
 
 
-void Engine::animate_fluids()
+void Engine::unlock_doors()
 {
     for (int x = 0; x < 20; ++x) {
         for (int y = 0; y < 20; ++y) {
-            auto t = platform().get_tile(Layer::map_0, x, y);
+            auto t = platform().get_tile(Layer::map_0, x + 5, y);
+            if (t == 33 or t == 34 or t == 35 or t == 36) {
+                p_->tile_modifications_.push_back({(u8)x,
+                                                   (u8)y,
+                                                   (u8)room_.coord_.x,
+                                                   (u8)room_.coord_.y,
+                                                   0
+                    });
+                platform().set_tile(Layer::map_0, x + 5, y, 0);
+                room_.walls_[x][y] = false;
+            }
+        }
+    }
+
+    room_.render_entrances();
+}
+
+
+
+void Engine::animate_tiles()
+{
+    animcyc_ = animcyc_ + 1;
+
+    for (int x = 0; x < 20; ++x) {
+        for (int y = 0; y < 20; ++y) {
+            auto t = platform().get_tile(Layer::map_0, x + 5, y);
             if (t == 16) {
                 t = 9;
             } else if (t == 24) {
@@ -234,7 +260,18 @@ void Engine::animate_fluids()
             } else if (t >= 9 and t < 32) {
                 t = t + 1;
             }
-            platform().set_tile(Layer::map_0, x, y, t);
+            if (animcyc_ % 2) {
+                if (t == 35) {
+                    t = 33;
+                } else if (t == 36) {
+                    t = 34;
+                } else if (t == 33) {
+                    t = 35;
+                } else if (t == 34) {
+                    t = 36;
+                }
+            }
+            platform().set_tile(Layer::map_0, x + 5, y, t);
         }
     }
 }
@@ -309,6 +346,28 @@ void Engine::draw_hud()
 
 
 
+void Engine::Room::render_entrances()
+{
+    // Redraw room entrances
+    for (int y = 0; y < 20; ++y) {
+        for (int x = 0; x < 20; ++x) {
+            if (walls_[x][y]) {
+
+            } else if (x == 19) {
+                platform().set_tile(Layer::map_0, x + 5, y, 2);
+            } else if (x == 0) {
+                platform().set_tile(Layer::map_0, x + 5, y, 3);
+            } else if (y == 19) {
+                platform().set_tile(Layer::map_0, x + 5, y, 4);
+            } else if (y == 0) {
+                platform().set_tile(Layer::map_0, x + 5, y, 5);
+            }
+        }
+    }
+}
+
+
+
 void Engine::Room::load(int chunk_x, int chunk_y)
 {
     clear();
@@ -327,22 +386,12 @@ void Engine::Room::load(int chunk_x, int chunk_y)
                     rd->tiles_[y][x] == 1 or
                     rd->tiles_[y][x] == 6 or
                     rd->tiles_[y][x] == 7 or
-                    rd->tiles_[y][x] == 8;
+                    rd->tiles_[y][x] == 8 or
+                    rd->tiles_[y][x] == 33 or
+                    rd->tiles_[y][x] == 34;
 
                 platform().set_tile(Layer::map_0, x + 5, y,
                                         rd->tiles_[y][x]);
-
-                if (walls_[x][y]) {
-
-                } else if (x == 19) {
-                    platform().set_tile(Layer::map_0, x + 5, y, 2);
-                } else if (x == 0) {
-                    platform().set_tile(Layer::map_0, x + 5, y, 3);
-                } else if (y == 19) {
-                    platform().set_tile(Layer::map_0, x + 5, y, 4);
-                } else if (y == 0) {
-                    platform().set_tile(Layer::map_0, x + 5, y, 5);
-                }
             }
         }
 
@@ -426,6 +475,18 @@ void Engine::Room::load(int chunk_x, int chunk_y)
     }
 
     coord_ = {chunk_x, chunk_y};
+
+    for (auto& m : engine().p_->tile_modifications_) {
+        if (m.room_x_ == chunk_x and m.room_y_ == chunk_y) {
+            platform().set_tile(Layer::map_0, m.tx_ + 5, m.ty_, m.new_value_);
+
+            auto v = m.new_value_;
+
+            walls_[m.tx_][m.ty_] = v == 1 or v == 6 or v == 7 or v == 8;
+        }
+    }
+
+    render_entrances();
 }
 
 

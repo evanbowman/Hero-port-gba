@@ -39,10 +39,16 @@ public:
 
         auto& e = engine();
 
-        step_list(e.enemies_, [](auto&) {});
+        bool enemies_destroyed = false;
+
+        step_list(e.enemies_, [&](auto&) { enemies_destroyed = true; });
         step_list(e.enemy_projectiles_, [](auto&) {});
         step_list(e.generic_objects_, [](auto&) {});
         step_list(e.player_projectiles_, [&](auto&) {--e.g_.shot_count_;});
+
+        if (enemies_destroyed and e.enemies_.empty()) {
+            e.unlock_doors();
+        }
 
         return null_scene();
     }
