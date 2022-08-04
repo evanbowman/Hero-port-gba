@@ -96,8 +96,20 @@ public:
 
         if (not place_free({position_.x + (direction_ * speed_).x,
                             position_.y + (direction_ * speed_).y})) {
-            direction_.x = direction_.x * -1;
-            direction_.y = direction_.y * -1;
+
+            auto prev_dir = direction_;
+            auto v = prev_dir * speed_;
+
+            if (not place_free({position_.x + v.x, position_.y})) {
+                direction_.x *= -1;
+                position_.x += direction_.x * speed_;
+            }
+
+            if (not place_free({position_.x, position_.y + v.y})) {
+                direction_.y *= -1;
+                position_.y += direction_.y * speed_;
+            }
+
         }
     }
 

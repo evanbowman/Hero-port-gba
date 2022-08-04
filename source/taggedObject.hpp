@@ -31,10 +31,15 @@ public:
         bolt,
         enemy_bullet,
         blomb,
+        boltaray,
+        spawner,
+        soldier,
+        lurk,
         count
     };
 
     static TaggedObject*& get_taglist(Tag tag);
+    static int count(Tag tag);
 
 
     explicit TaggedObject(Tag tag) : tag_(tag)

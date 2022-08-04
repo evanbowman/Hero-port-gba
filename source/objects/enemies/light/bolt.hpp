@@ -34,7 +34,7 @@ public:
     }
 
 
-    void damage(Health dmg) override
+    void damage(Health dmg, Shot& s) override
     {
         // TODO: screenshake
 

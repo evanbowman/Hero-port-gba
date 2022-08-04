@@ -21,6 +21,7 @@ public:
 
         sprite_index_ = 7;
         speed_.x = speed;
+        hitbox_.dimension_ = {3, 3, 0, 0};
     }
 
 

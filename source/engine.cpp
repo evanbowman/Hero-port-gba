@@ -12,6 +12,11 @@
 #include "objects/enemies/light/bolt.hpp"
 #include "objects/enemies/light/blomb.hpp"
 #include "objects/enemies/light/turret.hpp"
+#include "objects/enemies/light/lurk.hpp"
+#include "objects/enemies/heavy/spawner.hpp"
+#include "objects/enemies/heavy/powerTurret.hpp"
+#include "objects/enemies/heavy/boltaray.hpp"
+#include "objects/enemies/heavy/soldier.hpp"
 #include "maps.hpp"
 #include "scene.hpp"
 #include "scenes.hpp"
@@ -25,12 +30,10 @@ namespace herocore::scene_pool
 
 
 
-
 herocore::ScenePtr<herocore::Scene> herocore::null_scene()
 {
     return {nullptr, scene_pool::deleter};
 }
-
 
 
 
@@ -62,7 +65,7 @@ Engine& engine()
 
 
 Engine::Engine(Platform& pf) :
-    hero_(alloc_object<Hero>(Vec2<Fixnum>{80, 80})),
+    hero_(alloc_object<Hero>(Vec2<Fixnum>{90, 80})),
     current_scene_(scene_pool::alloc<OverworldScene>()),
     next_scene_(null_scene())
 {
@@ -96,7 +99,8 @@ void Engine::begin_game(Difficulty d)
     room_.clear();
 
     if (d == Difficulty::hard) {
-        room_.load(4, 0);
+        room_.load(8, 2); // 6, 0
+        //room_.load(6, 0); // 6, 0
     } else {
         room_.load(11, 14);
     }
@@ -108,9 +112,11 @@ void Engine::collision_check()
 {
     for (auto& p : enemy_projectiles_) {
         if (p->hitbox().overlapping(hero_->hitbox())) {
-            p->on_hero_collision();
-            g_.damage(p->force());
-            draw_hud();
+            if (p->force()) {
+                p->on_hero_collision();
+                g_.damage(p->force());
+                draw_hud();
+            }
         }
     }
 
@@ -118,7 +124,7 @@ void Engine::collision_check()
         for (auto& e : enemies_) {
             if (p->hitbox().overlapping(e->hitbox())) {
                 p->kill();
-                e->damage(1);
+                e->damage(1, *p);
                 break;
             }
         }
@@ -167,7 +173,7 @@ void Engine::run()
                 continue;
             } else if (hpos.x < Fixnum(41)) {
                 load(room_.coord_.x - 1, room_.coord_.y);
-                hero_->set_position({182, hero_->position().y});
+                hero_->set_position({186, hero_->position().y});
                 continue;
             } else if (hpos.y > Fixnum(154)) {
                 load(room_.coord_.x, room_.coord_.y + 1);
@@ -351,6 +357,32 @@ void Engine::Room::load(int chunk_x, int chunk_y)
 
             case 7:
                 engine().add_object<Turret>(Vec2<Fixnum>{40 + obj.x_ * 8, obj.y_ * 8});
+                break;
+
+            case 9:
+                engine().add_object<Boltaray>(Vec2<Fixnum>{40 + obj.x_ * 8 - 4, obj.y_ * 8 - 4});
+                break;
+
+            case 10:
+                engine().add_object<Spawner>(Vec2<Fixnum>{40 + obj.x_ * 8 - 8, obj.y_ * 8 - 4});
+                break;
+
+            case 11:
+                engine().add_object<Soldier>(Vec2<Fixnum>{40 + obj.x_ * 8 - 4, obj.y_ * 8 - 4});
+                break;
+
+            case 13:
+                if (auto t = engine().add_object<PowerTurret>(Vec2<Fixnum>{40 + obj.x_ * 8 + 8, obj.y_ * 8})) {
+                    t->set_left();
+                }
+                break;
+
+            case 12:
+                engine().add_object<PowerTurret>(Vec2<Fixnum>{40 + obj.x_ * 8, obj.y_ * 8});
+                break;
+
+            case 14:
+                engine().add_object<Lurk>(Vec2<Fixnum>{40 + obj.x_ * 8 + 1, obj.y_ * 8});
                 break;
 
             default:

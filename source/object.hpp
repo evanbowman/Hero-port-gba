@@ -60,6 +60,30 @@ public:
     bool place_free(Vec2<Fixnum> pos);
 
 
+    Fixnum& y()
+    {
+        return position_.y;
+    }
+
+
+    Fixnum& x()
+    {
+        return position_.x;
+    }
+
+
+    const Fixnum& y() const
+    {
+        return position_.y;
+    }
+
+
+    const Fixnum& x() const
+    {
+        return position_.x;
+    }
+
+
     const Vec2<Fixnum>& position() const
     {
         return position_;

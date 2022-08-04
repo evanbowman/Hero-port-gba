@@ -11,7 +11,7 @@ namespace herocore
 
 class EnemyProjectile : public Object
 {
-private:
+protected:
 
     u8 force_;
     u8 heat_;

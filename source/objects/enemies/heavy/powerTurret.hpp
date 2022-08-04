@@ -14,7 +14,7 @@ namespace herocore
 
 
 
-class Turret : public Enemy
+class PowerTurret : public Enemy
 {
 private:
     int shotcyc_ = 0;
@@ -22,12 +22,12 @@ private:
 
 public:
 
-    Turret(const Vec2<Fixnum>& pos) :
-        Enemy(TaggedObject::Tag::spew, Health{8})
+    PowerTurret(const Vec2<Fixnum>& pos) :
+        Enemy(TaggedObject::Tag::spew, Health{16})
     {
         position_ = pos;
 
-        sprite_index_ = 37;
+        sprite_index_ = 64;
         sprite_subimage_ = 0;
 
         hitbox_.dimension_.size_ = {8, 16};
@@ -43,6 +43,14 @@ public:
     }
 
 
+
+    int collision_damage() const override
+    {
+        return 3;
+    }
+
+
+
     void step() override
     {
         if (health_ == 0) {
@@ -52,7 +60,7 @@ public:
                 dx = 4;
             }
             engine().add_object<BigExplo>(Vec2<Fixnum>{position_.x - dx, position_.y + 0});
-            engine().add_object<BigExplo>(Vec2<Fixnum>{position_.x - dx, position_.y + 16});;
+            engine().add_object<BigExplo>(Vec2<Fixnum>{position_.x - dx, position_.y + 16});
             return;
         }
 
@@ -75,21 +83,22 @@ public:
 
         case 40:
             shotcyc_ += 1;
+
             if (engine().g_.difficulty_ == Difficulty::hard) {
                 if (shotcyc_ == 1) {
                     auto origin = fvec(position_);
                     origin.x += 0;
                     origin.y += 4;
                     if (left_) {
-                        origin.x -= 7;
+                        origin.x -= 4;
                     }
                     Vec2<Fixnum> fo;
                     fo.x = Fixnum(origin.x);
                     fo.y = Fixnum(origin.y);
-                    auto em = engine().add_object<Megashot>(fo);
-                    auto s = engine().add_object<EnemyShot>(fo);
-                    auto s2 = engine().add_object<EnemyShot>(fo);
-                    if (not s or not em or not s2) {
+                    auto s = engine().add_object<Supershot>(fo);
+                    auto s1 = engine().add_object<Supershot>(fo);
+                    auto s2 = engine().add_object<Megashot>(fo);
+                    if (not s or not s1 or not s2) {
                         break;
                     }
                     auto h = engine().hero()->position();
@@ -107,18 +116,12 @@ public:
                         }
                     } else {
                         auto dir = direction(origin, fvec(engine().hero()->position()));
-                        auto d = (1.8f / 2) * rotate(dir, 30);
-                        auto d2 = (1.8f / 2) * rotate(dir, 330);
                         Vec2<Fixnum> fv;
                         fv.x = Fixnum(dir.x);
                         fv.y = Fixnum(dir.y);
-                        em->set_speed(fv);
-                        fv.x = Fixnum(d.x);
-                        fv.y = Fixnum(d.y);
-                        s->set_speed(fv);
-                        fv.x = Fixnum(d2.x);
-                        fv.y = Fixnum(d2.y);
-                        s2->set_speed(fv);
+                        s->set_speed(fv * Fixnum(1.4f / 2));
+                        s1->set_speed(fv * Fixnum(1.8f / 2));
+                        s2->set_speed(fv * Fixnum(2.2f / 2));
                     }
                 } else {
                     shotcyc_ = 0;
@@ -126,14 +129,17 @@ public:
                     origin.x += 0;
                     origin.y += 6;
                     if (left_) {
-                        origin.x -= 7;
+                        origin.x -= 4;
                     }
                     Vec2<Fixnum> fo;
                     fo.x = Fixnum(origin.x);
                     fo.y = Fixnum(origin.y);
                     auto s = engine().add_object<Supershot>(fo);
                     auto s2 = engine().add_object<Supershot>(fo);
-                    if (not s or not s2) {
+                    auto s3 = engine().add_object<Supershot>(fo);
+                    auto s4 = engine().add_object<Supershot>(fo);
+                    auto s5 = engine().add_object<Supershot>(fo);
+                    if (not s or not s2 or not s3 or not s4) {
                         break;
                     }
                     auto h = engine().hero()->position();
@@ -151,8 +157,10 @@ public:
                         }
                     } else {
                         auto dir = direction(origin, fvec(engine().hero()->position()));
-                        auto d = rotate(dir, 30);
-                        auto d2 = rotate(dir, 330);
+                        auto d = rotate(dir, 15);
+                        auto d2 = rotate(dir, 345);
+                        auto d3 = rotate(dir, 40);
+                        auto d4 = rotate(dir, 320);
                         Vec2<Fixnum> fv;
                         fv.x = Fixnum(d.x);
                         fv.y = Fixnum(d.y);
@@ -160,6 +168,15 @@ public:
                         fv.x = Fixnum(d2.x);
                         fv.y = Fixnum(d2.y);
                         s2->set_speed(fv);
+                        fv.x = Fixnum(d3.x);
+                        fv.y = Fixnum(d3.y);
+                        s3->set_speed(fv);
+                        fv.x = Fixnum(d4.x);
+                        fv.y = Fixnum(d4.y);
+                        s4->set_speed(fv);
+                        fv.x = Fixnum(dir.x);
+                        fv.y = Fixnum(dir.y);
+                        s5->set_speed(fv);
                     }
                 }
             } else {
@@ -173,7 +190,7 @@ public:
                     Vec2<Fixnum> fo;
                     fo.x = Fixnum(origin.x);
                     fo.y = Fixnum(origin.y);
-                    auto s = engine().add_object<Supershot>(fo);
+                    auto s = engine().add_object<Megashot>(fo);
                     if (not s) {
                         break;
                     }
@@ -208,9 +225,11 @@ public:
                     Vec2<Fixnum> fo;
                     fo.x = Fixnum(origin.x);
                     fo.y = Fixnum(origin.y);
-                    auto s = engine().add_object<EnemyShot>(fo);
-                    auto s2 = engine().add_object<EnemyShot>(fo);
-                    if (not s or not s2) {
+                    auto s = engine().add_object<Supershot>(fo);
+                    auto s2 = engine().add_object<Supershot>(fo);
+                    auto s3 = engine().add_object<Supershot>(fo);
+                    auto s4 = engine().add_object<Supershot>(fo);
+                    if (not s or not s2 or not s3 or not s4) {
                         break;
                     }
                     auto h = engine().hero()->position();
@@ -228,8 +247,10 @@ public:
                         }
                     } else {
                         auto dir = direction(origin, fvec(engine().hero()->position()));
-                        auto d = rotate(dir, 30);
-                        auto d2 = rotate(dir, 330);
+                        auto d = rotate(dir, 15);
+                        auto d2 = rotate(dir, 345);
+                        auto d3 = rotate(dir, 40);
+                        auto d4 = rotate(dir, 320);
                         Vec2<Fixnum> fv;
                         fv.x = Fixnum(d.x);
                         fv.y = Fixnum(d.y);
@@ -237,9 +258,16 @@ public:
                         fv.x = Fixnum(d2.x);
                         fv.y = Fixnum(d2.y);
                         s2->set_speed(fv);
+                        fv.x = Fixnum(d3.x);
+                        fv.y = Fixnum(d3.y);
+                        s3->set_speed(fv);
+                        fv.x = Fixnum(d4.x);
+                        fv.y = Fixnum(d4.y);
+                        s4->set_speed(fv);
                     }
                 }
             }
+
             if (left_) {
                 position_.x += 1;
             } else {

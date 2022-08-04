@@ -7,6 +7,21 @@ namespace herocore
 
 
 
+int TaggedObject::count(Tag tag)
+{
+    int result = 0;
+    if (TaggedObject* tl = get_taglist(tag)) {
+        while (tl) {
+            ++result;
+            tl = tl->next();
+        }
+    }
+
+    return result;
+}
+
+
+
 TaggedObject*& TaggedObject::get_taglist(Tag tag)
 {
     static Buffer<TaggedObject*, (int)Tag::count> tag_lists_;

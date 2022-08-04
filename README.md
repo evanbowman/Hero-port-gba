@@ -2,7 +2,7 @@
 
 I'm porting Hero Core, an old gamemaker game I used to play when I was in highschool, to Gameboy Advance in my spare time.
 
-## Progress:
+## Implemenation status:
 
 ### Flip Hero:
 - [x] Movement
@@ -24,17 +24,17 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 - [x] Turret
 - [x] Blomb
 - [x] Bolt
-- [ ] Lurk
+- [x] Lurk
 
 
 #### Heavy
-- [ ] Spawner
-- [ ] Power Turret
-- [ ] Boltaray
+- [x] Spawner
+- [x] Power Turret
+- [x] Boltaray
 - [ ] Battle Door
 - [ ] Chain Snake
 - [ ] Phase
-- [ ] Soldier
+- [x] Soldier
 - [ ] Eyespy
 
 
@@ -71,7 +71,7 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 - [ ] Eliteshot
 - [ ] Missile
 - [ ] Gigashot
-- [ ] Laser
+- [x] Laser
 - [ ] Tetron Laser
 - [ ] Massacre
 
@@ -84,3 +84,16 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 
 ### Fluids
 - [ ] Liquid Metal
+
+
+### Misc/environment
+- [ ] Water drips
+- [ ] Waving grass/eel things
+
+
+### Menus
+- [ ] Title screen
+- [ ] World map
+- [ ] Pause menu
+- [ ] Intro cutscene
+- [ ] Intro help text

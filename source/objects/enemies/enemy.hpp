@@ -1,6 +1,7 @@
 #pragma once
 
 #include "taggedObject.hpp"
+#include "objects/projectile/shot.hpp"
 
 
 
@@ -22,7 +23,7 @@ public:
     }
 
 
-    virtual void damage(Health dmg)
+    virtual void damage(Health dmg, Shot& s)
     {
         health_ = std::max(0, health_ - dmg);
     }
