@@ -88,6 +88,11 @@ public:
 
         void clear_adjacent_barriers();
 
+        bool has_exit_up() const;
+        bool has_exit_down() const;
+        bool has_exit_left() const;
+        bool has_exit_right() const;
+
     } room_;
 
 

@@ -22,6 +22,7 @@
 #include "objects/enemies/boss/reaperDrone.hpp"
 #include "objects/misc/savepoint.hpp"
 #include "objects/particles/weed.hpp"
+#include "objects/particles/star.hpp"
 #include "maps.hpp"
 #include "scene.hpp"
 #include "scenes.hpp"
@@ -135,7 +136,7 @@ void Engine::begin_game(Difficulty d)
     if (d == Difficulty::hard) {
         g_.checkpoint_room_ = {6, 0};
         load(6, 0, false);
-        // load(1, 4, false);
+        // load(1, 4, false); // reaper drone
     } else {
         g_.checkpoint_room_ = {11, 14};
         load(11, 14, false);
@@ -207,7 +208,7 @@ void Engine::collision_check()
 
 void Engine::run()
 {
-    platform().speaker().play_music("zone1", 0);
+    platform().speaker().play_music("boss", 0);
 
     while (true) {
 
@@ -227,26 +228,26 @@ void Engine::run()
                 current_scene_ = std::move(next_scene_);
             }
 
-            if (key_down<Key::alt_1>()) {
+            if (key_down<Key::alt_1>() or key_down<Key::alt_2>()) {
                 g_.autofire_ = not g_.autofire_;
             }
 
             hero_->step();
 
             const auto hpos = hero_->position();
-            if (hpos.x > Fixnum(196)) {
+            if (hpos.x > Fixnum(196) and room_.has_exit_right()) {
                 load(room_.coord_.x + 1, room_.coord_.y, false);
                 hero_->set_position({50, hero_->position().y});
                 continue;
-            } else if (hpos.x < Fixnum(41)) {
+            } else if (hpos.x < Fixnum(41) and room_.has_exit_left()) {
                 load(room_.coord_.x - 1, room_.coord_.y, false);
                 hero_->set_position({186, hero_->position().y});
                 continue;
-            } else if (hpos.y > Fixnum(154)) {
+            } else if (hpos.y > Fixnum(154) and room_.has_exit_down()) {
                 load(room_.coord_.x, room_.coord_.y + 1, false);
                 hero_->set_position({hero_->position().x, 10});
                 continue;
-            } else if (hpos.y < 2) {
+            } else if (hpos.y < 2 and room_.has_exit_up()) {
                 load(room_.coord_.x, room_.coord_.y - 1, false);
                 hero_->set_position({hero_->position().x, 148});
                 continue;
@@ -488,15 +489,15 @@ void Engine::Room::render_entrances()
     // Redraw room entrances
     for (int y = 0; y < 20; ++y) {
         for (int x = 0; x < 20; ++x) {
-            if (walls_[x][y]) {
+            if (platform().get_tile(Layer::map_0, x + 5, y)) {
 
-            } else if (x == 19) {
+            } else if (x == 19 and has_exit_right()) {
                 platform().set_tile(Layer::map_0, x + 5, y, 2);
-            } else if (x == 0) {
+            } else if (x == 0 and has_exit_left()) {
                 platform().set_tile(Layer::map_0, x + 5, y, 3);
-            } else if (y == 19) {
+            } else if (y == 19 and has_exit_down()) {
                 platform().set_tile(Layer::map_0, x + 5, y, 4);
-            } else if (y == 0) {
+            } else if (y == 0 and has_exit_up()) {
                 platform().set_tile(Layer::map_0, x + 5, y, 5);
             }
         }
@@ -713,6 +714,10 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                                                  obj.y_);
                 break;
 
+            case 26:
+                engine().add_object<Star>(Vec2<Fixnum>{40 + obj.x_, obj.y_});
+                break;
+
             default:
                 break;
             }
@@ -732,6 +737,50 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
     }
 
     render_entrances();
+}
+
+
+
+bool Engine::Room::has_exit_up() const
+{
+    if (coord_.y == 0) {
+        return false;
+    }
+
+    return true;
+}
+
+
+
+bool Engine::Room::has_exit_down() const
+{
+    if (coord_.y == 14) {
+        return false;
+    }
+
+    return true;
+}
+
+
+
+bool Engine::Room::has_exit_left() const
+{
+    if (coord_.x == 0) {
+        return false;
+    }
+
+    return true;
+}
+
+
+
+bool Engine::Room::has_exit_right() const
+{
+    if (coord_.x == 14) {
+        return false;
+    }
+
+    return true;
 }
 
 
