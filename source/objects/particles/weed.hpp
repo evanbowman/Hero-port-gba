@@ -29,8 +29,13 @@ public:
         sprite_subimage_ = rng::choice<6>(rng::utility_state);
 
         if (yflip) {
-            vflip_ = true;
+            // vflip_ = true;
             position_.y -= 13;
+            position_.x -= 3;
+            vflip_ = true;
+        } else {
+            position_.x -= 4;
+            position_.y += 5;
         }
     }
 

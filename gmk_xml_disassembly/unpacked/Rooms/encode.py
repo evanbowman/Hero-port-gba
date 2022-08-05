@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 import sys
 import math
+import re
 
 
 
@@ -19,6 +20,7 @@ root = tree.getroot()
 
 tilemap = []
 rooms = []
+zones = []
 
 
 for i in range(0, 300):
@@ -33,6 +35,13 @@ for i in range(0, 15):
     for j in range(0, 15):
         rlist.append([])
     rooms.append(rlist)
+
+
+for i in range(0, 15):
+    rlist = []
+    for j in range(0, 15):
+        rlist.append(0)
+    zones.append(rlist)
 
 
 
@@ -129,7 +138,7 @@ def parse_instances(xml_list):
                 if x < 300 and tilemap[tx + x][ty] != 1:
                     tilemap[tx + x][ty] = 8
         elif objname == "obj_drone_s":
-            rooms[rx][ry].append([1, rix, riy])
+            rooms[rx][ry].append([1, ra_x, ra_y])
         elif objname == "obj_reaver_s":
             rooms[rx][ry].append([2, rix, riy])
         elif objname == "obj_spew_s":
@@ -157,9 +166,9 @@ def parse_instances(xml_list):
             rooms[rx][ry].append([13, rix, riy])
         elif objname == "obj_lurk_s":
             rooms[rx][ry].append([14, rix, riy])
-        elif objname == "obj_weed2":
+        elif objname == "obj_weed":
             rooms[rx][ry].append([15, ra_x, ra_y])
-        elif objname == "obj_weed1":
+        elif objname == "obj_weed2":
             rooms[rx][ry].append([16, ra_x, ra_y])
         elif objname == "obj_generator_s":
             rooms[rx][ry].append([17, rix, riy])
@@ -213,7 +222,21 @@ def parse_instances(xml_list):
             rooms[rx][ry].append([25, ra_x, ra_y])
         elif objname == "obj_star":
             rooms[rx][ry].append([26, ra_x, ra_y])
-
+        elif objname == "obj_antenna":
+            if tilemap[tx][ty - 1] == 0: # Idk why these object jump down a slot...
+                tilemap[tx][ty - 1] = 41
+        elif objname == "obj_antenna2":
+            if tilemap[tx][ty - 1] == 0:
+                tilemap[tx][ty - 1] = 45
+        elif objname == "obj_loc":
+            # Sigh. The gamemaker objects set zone number via creation code
+            # in gml attached to the room data. I guess we'll have to parse gml.
+            # Thankfully, the author uses a regular coding style...
+            code = inst[2].text
+            znstr = code.find("zonenum=")
+            if znstr > -1:
+                num = int(re.search(r'\d+', code[znstr + 8:]).group())
+                zones[rx][ry] = num
 
 
 
@@ -230,6 +253,7 @@ def encode_room(x, y):
     ry = y
 
     print("{", end="")
+    print(str(zones[x][y]) + ",", end="")
     print("{", end="")
     for y in range(0, 20):
         print("{", end="")

@@ -71,7 +71,7 @@ Engine& engine()
 
 
 Engine::Engine(Platform& pf) :
-    hero_(alloc_object<Hero>(Vec2<Fixnum>{90, 80})),
+    hero_(alloc_object<Hero>(Vec2<Fixnum>{90, 70})),
     p_(allocate_dynamic<Persistence>(pf)),
     current_scene_(scene_pool::alloc<OverworldScene>()),
     next_scene_(null_scene())
@@ -124,9 +124,9 @@ void Engine::begin_game(Difficulty d)
 {
     room_.clear();
 
-    hero_->set_position(Vec2<Fixnum>{90, 80});
+    hero_->set_position(Vec2<Fixnum>{90, 70});
     g_.checkpoint_coords_.x = 50;
-    g_.checkpoint_coords_.y = 80;
+    g_.checkpoint_coords_.y = 70;
 
     g_.hp_ = g_.max_hp_;
     g_.invulnerable_ = 0;
@@ -136,6 +136,7 @@ void Engine::begin_game(Difficulty d)
     if (d == Difficulty::hard) {
         g_.checkpoint_room_ = {6, 0};
         load(6, 0, false);
+        // load(6, 1, false);
         // load(1, 4, false); // reaper drone
     } else {
         g_.checkpoint_room_ = {11, 14};
@@ -208,8 +209,6 @@ void Engine::collision_check()
 
 void Engine::run()
 {
-    platform().speaker().play_music("boss", 0);
-
     while (true) {
 
         if (frame_count_ == 2) {
@@ -335,7 +334,9 @@ void Engine::animate_tiles()
         for (int y = 0; y < 20; ++y) {
             auto t = platform().get_tile(Layer::map_0, x + 5, y);
             if (frame_count_ == 0) {
-                if (t == 16) {
+                if (t == 0 or t == 1) {
+                    // Nothing (most tiles)
+                } else if (t == 16) {
                     t = 9;
                 } else if (t == 24) {
                     t = 17;
@@ -347,7 +348,15 @@ void Engine::animate_tiles()
             }
 
             if (animcyc_ == 4) {
-                if (t == 35) {
+                if (t == 0 or t == 1) {
+                    // Nothing (most tiles)
+                } else if (t == 44) {
+                    t = 41;
+                } else if (t == 48) {
+                    t = 45;
+                } else if (t >= 41 and t < 48) {
+                    t++;
+                } else if (t == 35) {
                     t = 33;
                 } else if (t == 36) {
                     t = 34;
@@ -383,6 +392,7 @@ void Engine::load(int chunk_x, int chunk_y, bool restore)
 
     g_.shot_count_ = 0;
 
+    platform().sleep(1);
     room_.load(chunk_x, chunk_y, restore);
 }
 
@@ -563,6 +573,52 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
     }
 
     if (rd) {
+
+        if (rd->zone_ and rd->zone_ not_eq zone_) {
+            zone_ = rd->zone_;
+            switch (zone_) {
+            case 1:
+                platform().speaker().play_music("zone1", 0);
+                break;
+
+            case 2:
+                platform().speaker().play_music("zone2", 0);
+                break;
+
+            case 3:
+                platform().speaker().play_music("zone3", 0);
+                break;
+
+            case 4:
+                platform().speaker().play_music("zone4", 0);
+                break;
+
+            case 5:
+                platform().speaker().play_music("zone5", 0);
+                break;
+
+            case 6:
+                platform().speaker().play_music("zone6", 0);
+                break;
+
+            case 7:
+                platform().speaker().play_music("zone7", 0);
+                break;
+
+            case 8:
+                platform().speaker().play_music("zone8", 0);
+                break;
+
+            case 9:
+                platform().speaker().play_music("zone9", 0);
+                break;
+
+            case 10:
+                platform().speaker().play_music("zone10", 0);
+                break;
+            }
+        }
+
         for (int y = 0; y < 20; ++y) {
             for (int x = 0; x < 20; ++x) {
                 walls_[x][y] =
@@ -601,7 +657,7 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                 break;
 
             case 1:
-                engine().add_object<Drone>(Vec2<Fixnum>{40 + obj.x_ * 8 - 4, obj.y_ * 8 - 4});
+                engine().add_object<Drone>(Vec2<Fixnum>{40 + obj.x_ - 4, obj.y_ - 4});
                 break;
 
             case 2:
@@ -661,11 +717,11 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                 break;
 
             case 15:
-                engine().add_object<Weed>(Vec2<Fixnum>{40 + obj.x_, obj.y_}, true);
+                engine().add_object<Weed>(Vec2<Fixnum>{40 + obj.x_, obj.y_}, false);
                 break;
 
             case 16:
-                engine().add_object<Weed>(Vec2<Fixnum>{40 + obj.x_, obj.y_}, false);
+                engine().add_object<Weed>(Vec2<Fixnum>{40 + obj.x_, obj.y_}, true);
                 break;
 
             case 17:
@@ -718,6 +774,10 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                 engine().add_object<Star>(Vec2<Fixnum>{40 + obj.x_, obj.y_});
                 break;
 
+            case 27:
+
+                break;
+
             default:
                 break;
             }
@@ -767,6 +827,18 @@ bool Engine::Room::has_exit_left() const
 {
     if (coord_.x == 0) {
         return false;
+    }
+
+    if (engine().g_.difficulty_ == Difficulty::hard) {
+        // FIXME!!! Find some other way to detect whether the player is
+        // outdoors? I don't know yet how the gamemaker code does this. For now,
+        // there are only a few rooms where you're outside of the asteroid, so
+        // I'm just hard-coding them. The gamemaker code puts the whole map in a
+        // single room, and it's unclear to me yet how the game determines
+        // whether a room is "outdoors".
+        if (coord_ == Vec2<int>{6, 0}) {
+            return false;
+        }
     }
 
     return true;

@@ -6,6 +6,7 @@
 
 struct RoomData
 {
+    u8 zone_;
     u8 tiles_[20][20];
 
     struct Object {
@@ -14,7 +15,7 @@ struct RoomData
         u8 y_ = 0;
     };
 
-    Object objects_[40];
+    Object objects_[60];
 };
 
 

@@ -123,6 +123,13 @@ void Hero::step()
             }
         }
     }
+
+    if (engine().g_.heat_) {
+        heatcyc_ += 1;
+        if (heatcyc_ == 6) {
+            heatcyc_ = 0;
+        }
+    }
 }
 
 
@@ -138,6 +145,22 @@ void Hero::draw(Platform::Screen& screen) const
         Object::draw(screen);
     } if (not engine().g_.invulnerable_) {
         Object::draw(screen);
+        if (engine().g_.heat_) {
+            if (heatcyc_ > 3) {
+                Sprite spr_;
+                spr_.set_origin({origin_.x, origin_.y});
+                spr_.set_texture_index(sprite_index_ + sprite_subimage_);
+                spr_.set_flip({hflip_, vflip_});
+                spr_.set_position({x() - 1, y()});
+                screen.draw(spr_);
+                spr_.set_position({x() + 1, y()});
+                screen.draw(spr_);
+                spr_.set_position({x(), y() - 1});
+                screen.draw(spr_);
+                spr_.set_position({x(), y() + 1});
+                screen.draw(spr_);
+            }
+        }
     }
 }
 

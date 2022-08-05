@@ -151,6 +151,7 @@ public:
 
         switch (timeline_++) {
         case 0:
+            platform().speaker().play_music("boss", 0);
             sprite_index_ = 2;
             break;
 
@@ -326,6 +327,7 @@ public:
 
         switch (timeline_++) {
         case 0:
+            platform().speaker().play_music("boss", 0);
             sprite_index_ = 2;
             break;
 
@@ -529,6 +531,8 @@ public:
         if (health_ <= 0) {
             explo_ = 20;
             dead_ = true;
+
+            platform().speaker().stop_music();
 
             for (auto& e : engine().enemies_) {
                 if (e.get() not_eq this) {

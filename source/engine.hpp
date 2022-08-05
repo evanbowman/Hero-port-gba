@@ -93,6 +93,7 @@ public:
         bool has_exit_left() const;
         bool has_exit_right() const;
 
+        u8 zone_ = 0;
     } room_;
 
 

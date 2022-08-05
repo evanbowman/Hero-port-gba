@@ -38,6 +38,7 @@ private:
     Fixnum flyspeed_ = Fixnum(1);
     int autofire_index_ = 0;
     u8 jetpack_counter_ = 0;
+    u8 heatcyc_ = 0;
 };
 
 
