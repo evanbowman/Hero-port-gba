@@ -18,6 +18,7 @@
 #include "objects/enemies/heavy/boltaray.hpp"
 #include "objects/enemies/heavy/soldier.hpp"
 #include "objects/enemies/elite/generator.hpp"
+#include "objects/enemies/elite/barrier.hpp"
 #include "objects/particles/weed.hpp"
 #include "maps.hpp"
 #include "scene.hpp"
@@ -102,6 +103,7 @@ void Engine::respawn_to_checkpoint()
     // TODO: implement checkpoints!
 
     begin_game(g_.difficulty_);
+    draw_hud();
 }
 
 
@@ -132,7 +134,7 @@ void Engine::collision_check()
         if (p->hitbox().overlapping(hero_->hitbox())) {
             if (p->force()) {
                 p->on_hero_collision();
-                g_.damage(p->force());
+                g_.damage(p->force(), 30);
                 draw_hud();
             }
         }
@@ -150,7 +152,8 @@ void Engine::collision_check()
 
     for (auto& e : enemies_) {
         if (e->hitbox().overlapping(hero_->hitbox())) {
-            g_.damage(e->collision_damage());
+            g_.damage(e->collision_damage(),
+                      e->collision_damage_extra_invulnerable_time());
             draw_hud();
         }
     }
@@ -501,6 +504,10 @@ void Engine::Room::load(int chunk_x, int chunk_y)
 
             case 17:
                 engine().add_object<Generator>(Vec2<Fixnum>{40 + obj.x_ * 8 - 5, obj.y_ * 8 - 5});
+                break;
+
+            case 18:
+                engine().add_object<Barrier>(Vec2<Fixnum>{40 + obj.x_ * 8, obj.y_ * 8}, false);
                 break;
 
             default:

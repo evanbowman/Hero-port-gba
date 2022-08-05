@@ -36,6 +36,7 @@ public:
         soldier,
         lurk,
         generator,
+        barrier,
         count
     };
 

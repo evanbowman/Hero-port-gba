@@ -35,6 +35,12 @@ public:
     }
 
 
+    virtual int collision_damage_extra_invulnerable_time() const
+    {
+        return 0;
+    }
+
+
     Health health() const
     {
         return health_;

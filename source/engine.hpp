@@ -94,7 +94,7 @@ public:
         int maxheat_ = 10;
         u8 flicker_ = 0;
 
-        void damage(int amount)
+        void damage(int amount, int extra_invulnerable_time)
         {
             if (invulnerable_) {
                 return;
@@ -103,7 +103,7 @@ public:
             flicker_ = 1;
 
             hp_ = std::max(0, (int)(hp_ - amount));
-            invulnerable_ = 30;
+            invulnerable_ = 30 + extra_invulnerable_time;
         }
     } g_;
 

@@ -328,6 +328,14 @@ public:
         }
     }
 
+
+    int collision_damage() const override
+    {
+        return 4;
+    }
+
+
+
 };
 
 
