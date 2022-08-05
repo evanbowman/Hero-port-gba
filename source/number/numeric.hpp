@@ -1,11 +1,34 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+// Copyright (C) 2022  Evan Bowman
+//
+// This program is free software; you can redistribute it and/or modify it under
+// the terms of version 2 of the GNU General Public License as published by the
+// Free Software Foundation.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+// details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program; if not, write to the Free Software Foundation, Inc., 51
+// Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+//
+// GPL2 ONLY. No later versions permitted.
+//
+////////////////////////////////////////////////////////////////////////////////
+
+
 #pragma once
 
 #include "int.h"
 #include <ciso646> // For MSVC. What an inept excuse for a compiler.
+
 #include "fixnum.hpp"
 
 
-#ifdef __GBA__
+#if defined(__GBA__) or defined(__NDS__)
 template <typename T> using Atomic = T;
 #else
 #include <atomic>
@@ -16,7 +39,40 @@ template <typename T> using Atomic = std::atomic<T>;
 enum class byte : u8 {};
 
 
-template <typename T> struct Vec2 {
+inline u8 count_ones(u8 byte)
+{
+    static const u8 nibble_lut[16] = {
+        0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4};
+
+    return nibble_lut[byte & 0x0F] + nibble_lut[byte >> 4];
+}
+
+
+
+inline int count_ones(u64 x)
+{
+    int sum = 0;
+
+    for (int i = 0; i < 8; ++i) {
+        sum += count_ones(((u8*)&x)[i]);
+    }
+
+    return sum;
+}
+
+
+
+template <typename T> struct Vec3
+{
+    T x = 0;
+    T y = 0;
+    T z = 0;
+};
+
+
+
+template <typename T> struct Vec2
+{
     T x = 0;
     T y = 0;
 
@@ -34,7 +90,9 @@ template <typename T> struct Vec2 {
 };
 
 
-template <typename T, typename U = T> struct Rect {
+
+template <typename T, typename U = T> struct Rect
+{
     T x_off = 0;
     T y_off = 0;
     U w = 0;
@@ -84,7 +142,8 @@ inline Float sqrt_approx(const Float x)
     constexpr Float magic = 0x5f3759df;
     const Float xhalf = 0.5f * x;
 
-    union {
+    union
+    {
         float x;
         int i;
     } u;
@@ -147,6 +206,11 @@ template <typename T> Vec2<T> operator/(const T& rhs, const Vec2<T>& lhs)
 template <typename T> bool operator==(const Vec2<T>& rhs, const Vec2<T>& lhs)
 {
     return lhs.x == rhs.x and lhs.y == rhs.y;
+}
+
+template <typename T> bool operator==(const Vec3<T>& rhs, const Vec3<T>& lhs)
+{
+    return lhs.x == rhs.x and lhs.y == rhs.y and lhs.z == rhs.z;
 }
 
 template <typename T>
@@ -219,17 +283,65 @@ constexpr Microseconds milliseconds(u32 count)
 }
 
 
-// These functions are imprecise versions of sin/cos for embedded
-// systems. Fortunately, we aren't doing heavy scientific calculations, so a
-// slightly imprecise angle is just fine. If you want an angle in terms of 360,
-// cast the result to a float, divide by numeric_limits<s16>::max(), and
-// multiply by 360.
-s16 sine(s16 angle);
 
 
-// This cosine function is implemented in terms of sine, and therefore
-// slightly more expensive to call than sine.
-s16 cosine(s16 angle);
+#define INT16_BITS (8 * sizeof(int16_t))
+#ifndef INT16_MAX
+#define INT16_MAX ((1 << (INT16_BITS - 1)) - 1)
+#endif
+
+#define TABLE_BITS (5)
+#define TABLE_SIZE (1 << TABLE_BITS)
+#define TABLE_MASK (TABLE_SIZE - 1)
+
+#define LOOKUP_BITS (TABLE_BITS + 2)
+#define LOOKUP_MASK ((1 << LOOKUP_BITS) - 1)
+#define FLIP_BIT (1 << TABLE_BITS)
+#define NEGATE_BIT (1 << (TABLE_BITS + 1))
+#define INTERP_BITS (INT16_BITS - 1 - LOOKUP_BITS)
+#define INTERP_MASK ((1 << INTERP_BITS) - 1)
+
+static constexpr const int16_t sin90[TABLE_SIZE + 1] = {
+    0x0000, 0x0647, 0x0c8b, 0x12c7, 0x18f8, 0x1f19, 0x2527, 0x2b1e, 0x30fb,
+    0x36b9, 0x3c56, 0x41cd, 0x471c, 0x4c3f, 0x5133, 0x55f4, 0x5a81, 0x5ed6,
+    0x62f1, 0x66ce, 0x6a6c, 0x6dc9, 0x70e1, 0x73b5, 0x7640, 0x7883, 0x7a7c,
+    0x7c29, 0x7d89, 0x7e9c, 0x7f61, 0x7fd7, 0x7fff};
+
+constexpr inline s16 sine(s16 angle)
+{
+    s16 v0 = 0;
+    s16 v1 = 0;
+    if (angle < 0) {
+        angle += INT16_MAX;
+        angle += 1;
+    }
+    v0 = (angle >> INTERP_BITS);
+    if (v0 & FLIP_BIT) {
+        v0 = ~v0;
+        v1 = ~angle;
+    } else {
+        v1 = angle;
+    }
+    v0 &= TABLE_MASK;
+    v1 = sin90[v0] +
+         (s16)(((int32_t)(sin90[v0 + 1] - sin90[v0]) * (v1 & INTERP_MASK)) >>
+               INTERP_BITS);
+    if ((angle >> INTERP_BITS) & NEGATE_BIT)
+        v1 = -v1;
+    return v1;
+}
+
+
+
+constexpr inline s16 cosine(s16 angle)
+{
+    if (angle < 0) {
+        angle += INT16_MAX;
+        angle += 1;
+    }
+    return sine(angle - s16((270.f / 360.f) * INT16_MAX));
+}
+
 
 
 using UnitVec = Vec2<Float>;
@@ -245,7 +357,7 @@ inline UnitVec direction(const Vec2<Float>& origin, const Vec2<Float>& target)
 }
 
 
-inline Vec2<Float> rotate(const Vec2<Float>& input, Float angle)
+constexpr inline Vec2<Float> rotate(const Vec2<Float>& input, Float angle)
 {
     const s16 converted_angle = INT16_MAX * (angle / 360.f);
     const Float cos_theta = Float(cosine(converted_angle)) / INT16_MAX;
@@ -271,6 +383,18 @@ inline Float distance(const Vec2<Float>& from, const Vec2<Float>& to)
 
 
 enum class Cardinal : u8 { north, south, west, east };
+
+
+
+inline s32 parse_int(const char* str, u32 len)
+{
+    s32 n = 0;
+    for (u32 i = 0; i < len; ++i) {
+        n = n * 10 + (str[i] - '0');
+    }
+    return n;
+}
+
 
 
 inline Float fast_atan_approx(Float x)
@@ -307,3 +431,44 @@ inline Float fast_atan2_approx(Float x, Float y)
     }
     return result;
 }
+
+
+
+namespace detail
+{
+template <std::size_t... Is> struct seq
+{
+};
+template <std::size_t N, std::size_t... Is>
+struct gen_seq : gen_seq<N - 1, N - 1, Is...>
+{
+};
+template <std::size_t... Is> struct gen_seq<0, Is...> : seq<Is...>
+{
+};
+
+
+template <class Generator, std::size_t... Is>
+constexpr auto generate_array_helper(Generator g, seq<Is...>)
+    -> std::array<decltype(g(std::size_t{}, sizeof...(Is))), sizeof...(Is)>
+{
+    return {{g(Is, sizeof...(Is))...}};
+}
+
+template <std::size_t tcount, class Generator>
+constexpr auto generate_array(Generator g)
+    -> decltype(generate_array_helper(g, gen_seq<tcount>{}))
+{
+    return generate_array_helper(g, gen_seq<tcount>{});
+}
+} // namespace detail
+
+
+inline constexpr auto make_rotation_lut(float v)
+{
+    return detail::generate_array<360>(
+        [](std::size_t curr, std::size_t total) -> Vec2<Fixnum> {
+            auto off = rotate({1.f, 0}, curr);
+            return Vec2<Fixnum>{Fixnum(off.x), Fixnum(off.y)};
+        });
+};

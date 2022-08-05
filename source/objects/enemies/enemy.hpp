@@ -29,6 +29,12 @@ public:
     }
 
 
+    void destroy()
+    {
+        health_ = -1;
+    }
+
+
     virtual int collision_damage() const
     {
         return 2;
@@ -54,6 +60,12 @@ public:
         // if (not place_free(position_)) {
         //     position_ = prev;
         // }
+    }
+
+
+    void set_health(Health hp)
+    {
+        health_ = hp;
     }
 
 

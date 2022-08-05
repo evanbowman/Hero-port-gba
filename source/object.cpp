@@ -96,6 +96,15 @@ bool Object::place_free(Vec2<Fixnum> pos)
         }
     }
 
+    for (auto& obj : engine().generic_solids_) {
+        if (obj.get() not_eq this) {
+            if (obj->hitbox().overlapping(hitbox_)) {
+                hitbox_.position_ = cached_pos;
+                return false;
+            }
+        }
+    }
+
     hitbox_.position_ = cached_pos;
 
     if (pos.x > 200 or pos.x < 40 or pos.y < 0 or pos.y > 160) {

@@ -207,6 +207,10 @@ def parse_instances(xml_list):
         elif objname == "obj_door2_s":
             tilemap[tx][ty] = 37
             tilemap[tx + 1][ty] = 38
+        elif objname == "obj_savepoint_s":
+            rooms[rx][ry].append([24, ra_x, ra_y])
+        elif objname == "obj_reaperdrone_s":
+            rooms[rx][ry].append([25, ra_x, ra_y])
 
 
 

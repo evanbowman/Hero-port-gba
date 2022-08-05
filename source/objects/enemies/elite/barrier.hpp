@@ -33,7 +33,7 @@ public:
             sprite_index_ = 96;
             hitbox_.dimension_.size_ = {16, 32};
         } else {
-            sprite_index_ = 97;
+            sprite_index_ = 100;
             hitbox_.dimension_.size_ = {32, 16};
         }
 
@@ -76,7 +76,7 @@ public:
 
     int collision_damage_extra_invulnerable_time() const override
     {
-        return -27;
+        return -29;
     }
 
 

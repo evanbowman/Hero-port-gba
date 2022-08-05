@@ -11,7 +11,8 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 - [ ] blade
 - [ ] burst
 - [ ] warp
-- [ ] overheat
+- [ ] Level up
+- [x] overheat
 - [x] damage animation
 
 
@@ -53,7 +54,7 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 - [ ] Rock Smasher
 - [ ] Silencer
 - [ ] Plasma Hydra
-- [ ] Reaper Drone
+- [x] Reaper Drone
 - [ ] Liquid Metal Processor
 - [ ] Grand Mother
 - [ ] Guardian
@@ -89,7 +90,9 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 ### Misc/environment
 - [ ] Water drips
 - [x] Waving grass/eel things
-- [ ] Stars
+- [x] Stars
+- [x] Checkpoints
+- [ ] Saving
 
 
 ### Menus

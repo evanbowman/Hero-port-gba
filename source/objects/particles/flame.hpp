@@ -36,7 +36,6 @@ private:
 
     int counter_ = 20;
 
-
 };
 
 

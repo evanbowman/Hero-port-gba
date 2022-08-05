@@ -10,6 +10,7 @@
 #include "objects/projectile/enemyProjectile.hpp"
 #include "objects/projectile/shot.hpp"
 #include "objects/fluids/liquidMetal.hpp"
+#include "objects/solid.hpp"
 #include "objects/hero.hpp"
 #include "scene.hpp"
 
@@ -50,6 +51,8 @@ public:
             } else if constexpr (std::is_base_of<LiquidMetal, T>() or
                                  std::is_same<LiquidMetal, T>()) {
                 lm_.push(std::move(obj));
+            } else if constexpr (std::is_base_of<Solid, T>()) {
+                generic_solids_.push(std::move(obj));
             } else {
                 generic_objects_.push(std::move(obj));
             }
@@ -77,7 +80,7 @@ public:
             }
         }
 
-        void load(int chunk_x, int chunk_y);
+        void load(int chunk_x, int chunk_y, bool restore);
 
         Vec2<int> coord_;
 
@@ -101,6 +104,9 @@ public:
         int maxheat_ = 120;
         int suit_ = 0;
         u8 flicker_ = 0;
+
+        Vec2<u8> checkpoint_room_;
+        Vec2<u8> checkpoint_coords_;
 
         void damage(int amount, int extra_invulnerable_time)
         {
@@ -129,13 +135,14 @@ public:
     void collision_check();
 
 
-    void load(int chunk_x, int chunk_y);
+    void load(int chunk_x, int chunk_y, bool restore);
 
 
     ObjectList<Enemy> enemies_;
     ObjectList<EnemyProjectile> enemy_projectiles_;
     ObjectList<Shot> player_projectiles_;
     ObjectList<Object> generic_objects_;
+    ObjectList<Object> generic_solids_;
     ObjectList<LiquidMetal> lm_;
 
     ObjectRef<Hero> hero_;

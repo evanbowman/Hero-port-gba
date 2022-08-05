@@ -81,10 +81,25 @@ public:
     }
 
 
+    bool collision() const
+    {
+        return collision_;
+    }
+
+
+    void set_collision()
+    {
+        collision_ = true;
+    }
+
+
 private:
     TaggedObject* next_ = nullptr;
     TaggedObject* prev_ = nullptr;
     Tag tag_;
+
+protected:
+    bool collision_ = false;
 };
 
 

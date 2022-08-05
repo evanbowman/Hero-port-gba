@@ -1973,6 +1973,7 @@ static const u32 null_music[null_music_len] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 
 #include "gba_platform_soundcontext.hpp"
+#include "data/boss.hpp"
 #include "data/zone5.hpp"
 #include "data/zone1.hpp"
 
@@ -1986,6 +1987,7 @@ static const struct AudioTrack {
     int length_; // NOTE: For music, this is the track length in 32 bit words,
                  // but for sounds, length_ reprepresents bytes.
 } music_tracks[] = {
+      DEF_MUSIC(boss, boss),
       DEF_MUSIC(zone5, zone5),
       DEF_MUSIC(zone1, zone1)
 };

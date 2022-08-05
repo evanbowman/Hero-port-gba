@@ -57,6 +57,7 @@ public:
         step_list(e.enemies_, [&](auto&) { enemies_destroyed = true; });
         step_list(e.enemy_projectiles_, [](auto&) {});
         step_list(e.generic_objects_, [](auto&) {});
+        step_list(e.generic_solids_, [](auto&) {});
         step_list(e.player_projectiles_, [&](auto&) {--e.g_.shot_count_;});
 
         if (enemies_destroyed and e.enemies_.empty()) {
@@ -86,6 +87,7 @@ public:
         draw_list(e.enemy_projectiles_);
         draw_list(e.player_projectiles_);
         draw_list(e.enemies_);
+        draw_list(e.generic_solids_);
         draw_list(e.generic_objects_);
     }
 

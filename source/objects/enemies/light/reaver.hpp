@@ -36,7 +36,7 @@ public:
 
     void step() override
     {
-        if (health_ == 0) {
+        if (health_ <= 0) {
             kill();
             engine().add_object<Explo>(position_);
             return;

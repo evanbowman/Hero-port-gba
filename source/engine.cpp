@@ -19,6 +19,8 @@
 #include "objects/enemies/heavy/soldier.hpp"
 #include "objects/enemies/elite/generator.hpp"
 #include "objects/enemies/elite/barrier.hpp"
+#include "objects/enemies/boss/reaperDrone.hpp"
+#include "objects/misc/savepoint.hpp"
 #include "objects/particles/weed.hpp"
 #include "maps.hpp"
 #include "scene.hpp"
@@ -102,7 +104,16 @@ void Engine::respawn_to_checkpoint()
 {
     // TODO: implement checkpoints!
 
-    begin_game(g_.difficulty_);
+    room_.clear();
+    hero_->set_position(Vec2<Fixnum>{40 + g_.checkpoint_coords_.x,
+                                         g_.checkpoint_coords_.y});
+
+    g_.hp_ = g_.max_hp_;
+    g_.invulnerable_ = 0;
+    g_.shot_count_ = 0;
+    g_.autofire_ = false;
+
+    load(g_.checkpoint_room_.x, g_.checkpoint_room_.y, true);
     draw_hud();
 }
 
@@ -113,6 +124,8 @@ void Engine::begin_game(Difficulty d)
     room_.clear();
 
     hero_->set_position(Vec2<Fixnum>{90, 80});
+    g_.checkpoint_coords_.x = 50;
+    g_.checkpoint_coords_.y = 80;
 
     g_.hp_ = g_.max_hp_;
     g_.invulnerable_ = 0;
@@ -120,9 +133,12 @@ void Engine::begin_game(Difficulty d)
     g_.autofire_ = false;
 
     if (d == Difficulty::hard) {
-        load(6, 0);
+        g_.checkpoint_room_ = {6, 0};
+        load(6, 0, false);
+        // load(1, 4, false);
     } else {
-        load(11, 14);
+        g_.checkpoint_room_ = {11, 14};
+        load(11, 14, false);
     }
 }
 
@@ -132,10 +148,15 @@ void Engine::collision_check()
 {
     for (auto& p : enemy_projectiles_) {
         if (p->hitbox().overlapping(hero_->hitbox())) {
-            if (p->force()) {
-                p->on_hero_collision();
-                g_.damage(p->force(), 30);
-                draw_hud();
+            if (not g_.invulnerable_) {
+                if (p->force()) {
+                    p->on_hero_collision();
+                    g_.damage(p->force(), 30);
+                    g_.heat_ += p->heat();
+                    g_.heat_ = std::min(g_.heat_, g_.maxheat_);
+                    draw_hud();
+                }
+
             }
         }
     }
@@ -152,19 +173,32 @@ void Engine::collision_check()
 
     for (auto& e : enemies_) {
         if (e->hitbox().overlapping(hero_->hitbox())) {
-            g_.damage(e->collision_damage(),
-                      e->collision_damage_extra_invulnerable_time());
-            draw_hud();
+            if (not g_.invulnerable_) {
+                g_.damage(e->collision_damage(),
+                          e->collision_damage_extra_invulnerable_time());
+                draw_hud();
+            }
         }
     }
 
-    for (auto& l : lm_) {
-        if (l->hitbox().overlapping(hero_->hitbox())) {
-            if (g_.heat_ < g_.maxheat_) {
-                g_.heat_ += 3;
-                g_.heat_ = std::min(g_.heat_, g_.maxheat_);
-                draw_hud_heat();
+    // Check internal collisions between objects, record a collision flag in the
+    // objects themselves. Some objects check collisions with same-type objects
+    // to prevent bunching up.
+    for (int i = 0; i < (int)TaggedObject::Tag::count; ++i) {
+        auto tag = (TaggedObject::Tag)i;
+        auto l1 = TaggedObject::get_taglist(tag);
+        while (l1) {
+            if (not l1->collision()) {
+                auto l2 = TaggedObject::get_taglist(tag);
+                while (l2) {
+                    if (l1->hitbox().overlapping(l2->hitbox())) {
+                        l1->set_collision();
+                        break;
+                    }
+                    l2 = l2->next();
+                }
             }
+            l1 = l1->next();
         }
     }
 }
@@ -180,7 +214,9 @@ void Engine::run()
         if (frame_count_ == 2) {
             frame_count_ = 0;
 
-            // collision_check();
+            // NOTE: The original game runs at 40fps. I'm using the downtime
+            // between frames to run collision checking.
+            collision_check();
 
         } else {
 
@@ -199,19 +235,19 @@ void Engine::run()
 
             const auto hpos = hero_->position();
             if (hpos.x > Fixnum(196)) {
-                load(room_.coord_.x + 1, room_.coord_.y);
+                load(room_.coord_.x + 1, room_.coord_.y, false);
                 hero_->set_position({50, hero_->position().y});
                 continue;
             } else if (hpos.x < Fixnum(41)) {
-                load(room_.coord_.x - 1, room_.coord_.y);
+                load(room_.coord_.x - 1, room_.coord_.y, false);
                 hero_->set_position({186, hero_->position().y});
                 continue;
             } else if (hpos.y > Fixnum(154)) {
-                load(room_.coord_.x, room_.coord_.y + 1);
+                load(room_.coord_.x, room_.coord_.y + 1, false);
                 hero_->set_position({hero_->position().x, 10});
                 continue;
             } else if (hpos.y < 2) {
-                load(room_.coord_.x, room_.coord_.y - 1);
+                load(room_.coord_.x, room_.coord_.y - 1, false);
                 hero_->set_position({hero_->position().x, 148});
                 continue;
             }
@@ -224,7 +260,16 @@ void Engine::run()
 
             ++frame_count_;
 
-            collision_check();
+            for (auto& l : lm_) {
+                if (l->hitbox().overlapping(hero_->hitbox())) {
+                    if (g_.heat_ < g_.maxheat_) {
+                        g_.heat_ += 3;
+                        g_.heat_ = std::min(g_.heat_, g_.maxheat_);
+                        draw_hud_heat();
+                        break;
+                    }
+                }
+            }
         }
 
         _platform->screen().clear();
@@ -250,6 +295,7 @@ void Engine::run()
 
 void Engine::unlock_doors()
 {
+    bool changed = false;
     for (int x = 0; x < 20; ++x) {
         for (int y = 0; y < 20; ++y) {
             auto t = platform().get_tile(Layer::map_0, x + 5, y);
@@ -263,8 +309,13 @@ void Engine::unlock_doors()
                     });
                 platform().set_tile(Layer::map_0, x + 5, y, 0);
                 room_.walls_[x][y] = false;
+                changed = true;
             }
         }
+    }
+
+    if (not changed) {
+        return;
     }
 
     room_.render_entrances();
@@ -320,17 +371,18 @@ void Engine::animate_tiles()
 
 
 
-void Engine::load(int chunk_x, int chunk_y)
+void Engine::load(int chunk_x, int chunk_y, bool restore)
 {
     enemies_.clear();
     enemy_projectiles_.clear();
     generic_objects_.clear();
+    generic_solids_.clear();
     player_projectiles_.clear();
     lm_.clear();
 
     g_.shot_count_ = 0;
 
-    room_.load(chunk_x, chunk_y);
+    room_.load(chunk_x, chunk_y, restore);
 }
 
 
@@ -348,6 +400,14 @@ void Engine::draw_hud()
         pf.set_tile(Layer::overlay, 3, y, 84);
         pf.set_tile(Layer::overlay, 4, y, 85);
     }
+
+    pf.set_tile(Layer::overlay, 2, 0, 119);
+    pf.set_tile(Layer::overlay, 3, 0, 120);
+    pf.set_tile(Layer::overlay, 4, 0, 121);
+
+    pf.set_tile(Layer::overlay, 25, 0, 122);
+    pf.set_tile(Layer::overlay, 26, 0, 123);
+    pf.set_tile(Layer::overlay, 27, 0, 124);
 
     Float hp_percent = g_.hp_ / Float(g_.max_hp_);
     int v_tiles = 18;
@@ -490,7 +550,7 @@ void Engine::Room::clear_adjacent_barriers()
 
 
 
-void Engine::Room::load(int chunk_x, int chunk_y)
+void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
 {
     clear();
 
@@ -640,6 +700,17 @@ void Engine::Room::load(int chunk_x, int chunk_y)
             case 23:
                 engine().add_object<LiquidMetal>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
                                                  Hitbox::Dimension{8, 8, 0, 0});
+                break;
+
+            case 24:
+                engine().add_object<Savepoint>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
+                                               not restore);
+                break;
+
+            case 25:
+                engine().add_object<ReaperDrone>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
+                                                 obj.x_,
+                                                 obj.y_);
                 break;
 
             default:

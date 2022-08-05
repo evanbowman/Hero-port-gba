@@ -30,10 +30,17 @@ public:
 
     void step() override
     {
-        if (health_ == 0) {
+        if (health_ <= 0) {
             kill();
             engine().add_object<Explo>(position_);
             return;
+        }
+
+        if (TaggedObject::collision_) {
+            if (timeline_ < 90 and timeline_ > 45) {
+                timeline_ += -2 + rng::choice<4>(rng::utility_state);
+                TaggedObject::collision_ = false;
+            }
         }
 
         move(position_ + speed_);

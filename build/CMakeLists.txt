@@ -108,6 +108,7 @@ if(GAMEBOY_ADVANCE)
 
     # Data files below. Because the gameboy advance does not have a filesystem,
     # all of the sounds and images need to be compiled into the ROM.
+    ${DATA_DIR}/boss.s
     ${DATA_DIR}/zone5.s
     ${DATA_DIR}/zone1.s
     ${DATA_DIR}/overlay.s
