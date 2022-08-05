@@ -36,6 +36,12 @@ public:
     }
 
 
+    void set_speed(Vec2<Fixnum> spd)
+    {
+        speed_ = spd;
+    }
+
+
     void step() override
     {
         hitbox_.dimension_.size_ = {4, 4};
