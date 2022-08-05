@@ -141,7 +141,15 @@ public:
             u8 new_value_;
         };
 
+        struct ObjectRemove
+        {
+            u8 room_x_ : 4;
+            u8 room_y_ : 4;
+            u8 tag_;
+        };
+
         Buffer<TileModify, 200> tile_modifications_;
+        Buffer<ObjectRemove, 30> object_modifications_;
     };
 
     DynamicMemory<Persistence> p_;

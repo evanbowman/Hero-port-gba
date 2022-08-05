@@ -17,6 +17,7 @@
 #include "objects/enemies/heavy/powerTurret.hpp"
 #include "objects/enemies/heavy/boltaray.hpp"
 #include "objects/enemies/heavy/soldier.hpp"
+#include "objects/enemies/elite/generator.hpp"
 #include "objects/particles/weed.hpp"
 #include "maps.hpp"
 #include "scene.hpp"
@@ -101,8 +102,8 @@ void Engine::begin_game(Difficulty d)
     room_.clear();
 
     if (d == Difficulty::hard) {
-        // room_.load(8, 2); // 6, 0
-        room_.load(6, 0);
+        room_.load(8, 2); // 6, 0
+        // room_.load(6, 0);
     } else {
         room_.load(11, 14);
     }
@@ -200,9 +201,7 @@ void Engine::run()
 
         _platform->screen().clear();
 
-        if (frame_count_ == 0) {
-            animate_tiles();
-        }
+        animate_tiles();
 
         if (g_.flicker_ == 1) {
             platform().screen().fade(1.f, custom_color(0xffffff));
@@ -226,7 +225,8 @@ void Engine::unlock_doors()
     for (int x = 0; x < 20; ++x) {
         for (int y = 0; y < 20; ++y) {
             auto t = platform().get_tile(Layer::map_0, x + 5, y);
-            if (t == 33 or t == 34 or t == 35 or t == 36) {
+            if (t == 33 or t == 34 or t == 35 or t == 36 or
+                t == 37 or t == 38 or t == 39 or t == 40) {
                 p_->tile_modifications_.push_back({(u8)x,
                                                    (u8)y,
                                                    (u8)room_.coord_.x,
@@ -247,20 +247,26 @@ void Engine::unlock_doors()
 void Engine::animate_tiles()
 {
     animcyc_ = animcyc_ + 1;
+    if (animcyc_ == 5) {
+        animcyc_ = 0;
+    }
 
     for (int x = 0; x < 20; ++x) {
         for (int y = 0; y < 20; ++y) {
             auto t = platform().get_tile(Layer::map_0, x + 5, y);
-            if (t == 16) {
-                t = 9;
-            } else if (t == 24) {
-                t = 17;
-            } else if (t == 32) {
-                t = 25;
-            } else if (t >= 9 and t < 32) {
-                t = t + 1;
+            if (frame_count_ == 0) {
+                if (t == 16) {
+                    t = 9;
+                } else if (t == 24) {
+                    t = 17;
+                } else if (t == 32) {
+                    t = 25;
+                } else if (t >= 9 and t < 32) {
+                    t = t + 1;
+                }
             }
-            if (animcyc_ % 2) {
+
+            if (animcyc_ == 4) {
                 if (t == 35) {
                     t = 33;
                 } else if (t == 36) {
@@ -269,6 +275,14 @@ void Engine::animate_tiles()
                     t = 35;
                 } else if (t == 34) {
                     t = 36;
+                } else if (t == 37) {
+                    t = 39;
+                } else if (t == 38) {
+                    t = 40;
+                } else if (t == 39) {
+                    t = 37;
+                } else if (t == 40) {
+                    t = 38;
                 }
             }
             platform().set_tile(Layer::map_0, x + 5, y, t);
@@ -388,7 +402,9 @@ void Engine::Room::load(int chunk_x, int chunk_y)
                     rd->tiles_[y][x] == 7 or
                     rd->tiles_[y][x] == 8 or
                     rd->tiles_[y][x] == 33 or
-                    rd->tiles_[y][x] == 34;
+                    rd->tiles_[y][x] == 34 or
+                    rd->tiles_[y][x] == 37 or
+                    rd->tiles_[y][x] == 38;
 
                 platform().set_tile(Layer::map_0, x + 5, y,
                                         rd->tiles_[y][x]);
@@ -466,6 +482,10 @@ void Engine::Room::load(int chunk_x, int chunk_y)
 
             case 16:
                 engine().add_object<Weed>(Vec2<Fixnum>{40 + obj.x_, obj.y_}, false);
+                break;
+
+            case 17:
+                engine().add_object<Generator>(Vec2<Fixnum>{40 + obj.x_ * 8 - 5, obj.y_ * 8 - 5});
                 break;
 
             default:

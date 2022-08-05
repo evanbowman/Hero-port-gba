@@ -35,6 +35,7 @@ public:
         spawner,
         soldier,
         lurk,
+        generator,
         count
     };
 

@@ -39,8 +39,8 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 
 
 #### Elite
-- [ ] Barrier
-- [ ] Generator
+- [x] Barrier
+- [x] Generator
 - [ ] Mode
 - [ ] Hunter
 - [ ] Dire Viper
@@ -89,6 +89,7 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 ### Misc/environment
 - [ ] Water drips
 - [x] Waving grass/eel things
+- [ ] Stars
 
 
 ### Menus

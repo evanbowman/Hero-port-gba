@@ -161,6 +161,8 @@ def parse_instances(xml_list):
             rooms[rx][ry].append([15, ra_x, ra_y])
         elif objname == "obj_weed1":
             rooms[rx][ry].append([16, ra_x, ra_y])
+        elif objname == "obj_generator_s":
+            rooms[rx][ry].append([17, rix, riy])
         elif objname == "obj_liquid3long_s":
             for y in range(0, 4):
                 if y < 300 and tilemap[tx][ty + y] != 1:
@@ -192,6 +194,9 @@ def parse_instances(xml_list):
         elif objname == "obj_door1_s":
             tilemap[tx][ty] = 33
             tilemap[tx][ty + 1] = 34
+        elif objname == "obj_door2_s":
+            tilemap[tx][ty] = 37
+            tilemap[tx + 1][ty] = 38
 
 
 
