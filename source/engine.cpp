@@ -157,6 +157,16 @@ void Engine::collision_check()
             draw_hud();
         }
     }
+
+    for (auto& l : lm_) {
+        if (l->hitbox().overlapping(hero_->hitbox())) {
+            if (g_.heat_ < g_.maxheat_) {
+                g_.heat_ += 3;
+                g_.heat_ = std::min(g_.heat_, g_.maxheat_);
+                draw_hud_heat();
+            }
+        }
+    }
 }
 
 
@@ -316,6 +326,7 @@ void Engine::load(int chunk_x, int chunk_y)
     enemy_projectiles_.clear();
     generic_objects_.clear();
     player_projectiles_.clear();
+    lm_.clear();
 
     g_.shot_count_ = 0;
 
@@ -336,10 +347,6 @@ void Engine::draw_hud()
         pf.set_tile(Layer::overlay, 2, y, 83);
         pf.set_tile(Layer::overlay, 3, y, 84);
         pf.set_tile(Layer::overlay, 4, y, 85);
-
-        pf.set_tile(Layer::overlay, 30 - 5, y, 89);
-        pf.set_tile(Layer::overlay, 30 - 4, y, 90);
-        pf.set_tile(Layer::overlay, 30 - 3, y, 91);
     }
 
     Float hp_percent = g_.hp_ / Float(g_.max_hp_);
@@ -374,6 +381,44 @@ void Engine::draw_hud()
             pf.set_tile(Layer::overlay, 29 - x, y, 95);
         }
     }
+
+    draw_hud_heat();
+}
+
+
+
+void Engine::draw_hud_heat()
+{
+    auto& pf = platform();
+
+    for (int y = 1; y < 19; ++y) {
+        pf.set_tile(Layer::overlay, 30 - 5, y, 89);
+        pf.set_tile(Layer::overlay, 30 - 4, y, 90);
+        pf.set_tile(Layer::overlay, 30 - 3, y, 91);
+    }
+
+    if (g_.heat_ == 0) {
+        return;
+    }
+
+    Float heat_percent = g_.heat_ / Float(g_.maxheat_);
+    int v_tiles = 18;
+    int full_tiles = heat_percent * v_tiles;
+
+    int remainder = (10 * heat_percent * v_tiles) - 10 * full_tiles;
+    int rt = (remainder / 10.f) * 4;
+
+    for (int y = 18; y > 18 - full_tiles; --y) {
+        pf.set_tile(Layer::overlay, 30 - 5, y, 114);
+        pf.set_tile(Layer::overlay, 30 - 4, y, 115);
+    }
+
+    if (rt) {
+        pf.set_tile(Layer::overlay, 30 - 5, 18 - full_tiles, 108 + 2 * (rt - 1));
+        pf.set_tile(Layer::overlay, 30 - 4, 18 - full_tiles, 109 + 2 * (rt - 1));
+    }
+
+
 }
 
 
@@ -563,7 +608,10 @@ void Engine::Room::load(int chunk_x, int chunk_y)
                 break;
 
             case 17:
-                engine().add_object<Generator>(Vec2<Fixnum>{40 + obj.x_ * 8 - 5, obj.y_ * 8 - 5});
+                engine().add_object<Generator>(Vec2<Fixnum>{40 + obj.x_ * 8 - 5,
+                                                                obj.y_ * 8 - 5},
+                    obj.x_,
+                    obj.y_);
                 break;
 
             case 18:
@@ -572,6 +620,26 @@ void Engine::Room::load(int chunk_x, int chunk_y)
 
             case 19:
                 engine().add_object<Barrier>(Vec2<Fixnum>{40 + obj.x_ * 8, obj.y_ * 8}, true);
+                break;
+
+            case 20:
+                engine().add_object<LiquidMetal>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
+                                                 Hitbox::Dimension{8, 32, 0, 0});
+                break;
+
+            case 21:
+                engine().add_object<LiquidMetal>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
+                                                 Hitbox::Dimension{32, 8, 0, 0});
+                break;
+
+            case 22:
+                engine().add_object<LiquidMetal>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
+                                                 Hitbox::Dimension{24, 24, 0, 0});
+                break;
+
+            case 23:
+                engine().add_object<LiquidMetal>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
+                                                 Hitbox::Dimension{8, 8, 0, 0});
                 break;
 
             default:

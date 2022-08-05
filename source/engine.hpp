@@ -9,6 +9,7 @@
 #include "objects/enemies/enemy.hpp"
 #include "objects/projectile/enemyProjectile.hpp"
 #include "objects/projectile/shot.hpp"
+#include "objects/fluids/liquidMetal.hpp"
 #include "objects/hero.hpp"
 #include "scene.hpp"
 
@@ -46,6 +47,9 @@ public:
             } else if constexpr (std::is_base_of<Shot, T>()) {
                 player_projectiles_.push(std::move(obj));
                 ++g_.shot_count_;
+            } else if constexpr (std::is_base_of<LiquidMetal, T>() or
+                                 std::is_same<LiquidMetal, T>()) {
+                lm_.push(std::move(obj));
             } else {
                 generic_objects_.push(std::move(obj));
             }
@@ -93,7 +97,9 @@ public:
         int max_hp_ = hp_;
         int invulnerable_ = 0;
         int shot_count_ = 0;
-        int maxheat_ = 10;
+        int heat_ = 0;
+        int maxheat_ = 120;
+        int suit_ = 0;
         u8 flicker_ = 0;
 
         void damage(int amount, int extra_invulnerable_time)
@@ -116,6 +122,7 @@ public:
     }
 
 
+    void draw_hud_heat();
     void draw_hud();
 
 
@@ -129,6 +136,7 @@ public:
     ObjectList<EnemyProjectile> enemy_projectiles_;
     ObjectList<Shot> player_projectiles_;
     ObjectList<Object> generic_objects_;
+    ObjectList<LiquidMetal> lm_;
 
     ObjectRef<Hero> hero_;
 

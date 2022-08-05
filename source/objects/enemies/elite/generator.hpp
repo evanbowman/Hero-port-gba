@@ -23,12 +23,17 @@ private:
     int timeline_ = 0;
     int timcyc_ = 0;
     bool shot_40_ = false;
+    u8 spawn_x_;
+    u8 spawn_y_;
 
 
 public:
 
-    Generator(const Vec2<Fixnum>& pos) :
-        Enemy(TaggedObject::Tag::generator, Health{32})
+    Generator(const Vec2<Fixnum>& pos,
+              u8 spawn_x, u8 spawn_y) :
+        Enemy(TaggedObject::Tag::generator, Health{32}),
+        spawn_x_(spawn_x),
+        spawn_y_(spawn_y)
     {
         position_ = pos;
 
@@ -48,6 +53,13 @@ public:
             kill();
             engine().add_object<ExploSpewer>(position_);
             engine().room_.clear_adjacent_barriers();
+
+            engine().p_->object_modifications_.push_back({
+                    (u8)engine().room_.coord_.x,
+                    (u8)engine().room_.coord_.y,
+                    spawn_x_,
+                    spawn_y_
+                });
         }
 
         anim_ += 1;

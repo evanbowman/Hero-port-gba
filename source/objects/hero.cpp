@@ -16,6 +16,28 @@ void Hero::step()
         return;
     }
 
+
+    if (engine().g_.heat_) {
+        switch (engine().g_.suit_) {
+        case 0:
+            engine().g_.heat_ -= 1;
+            break;
+
+        case 1:
+            engine().g_.heat_ -= 2;
+            break;
+
+        default:
+            engine().g_.heat_ = 0;
+            break;
+        }
+        if (engine().g_.heat_ < 0) {
+            engine().g_.heat_ = 0;
+        }
+        engine().draw_hud_heat();
+    }
+
+
     if (key_down<Key::action_2>()) {
         hflip_ = false;
 
@@ -123,6 +145,9 @@ void Hero::draw(Platform::Screen& screen) const
 
 void Hero::fireleft()
 {
+    if (engine().g_.heat_) {
+        return;
+    }
     if (engine().g_.shot_count_ < 6) {
         engine().add_object<Shot>(Vec2<Fixnum>{position_.x, position_.y + 3},
                                   Fixnum(-2));
@@ -133,6 +158,9 @@ void Hero::fireleft()
 
 void Hero::fireright()
 {
+    if (engine().g_.heat_) {
+        return;
+    }
     if (engine().g_.shot_count_ < 6) {
         engine().add_object<Shot>(Vec2<Fixnum>{position_.x + 3, position_.y + 3},
                                   Fixnum(2));
