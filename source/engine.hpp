@@ -79,6 +79,8 @@ public:
 
         void render_entrances();
 
+        void clear_adjacent_barriers();
+
     } room_;
 
 
@@ -146,7 +148,8 @@ public:
         {
             u8 room_x_ : 4;
             u8 room_y_ : 4;
-            u8 tag_;
+            u8 x_;
+            u8 y_;
         };
 
         Buffer<TileModify, 200> tile_modifications_;

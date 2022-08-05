@@ -2,7 +2,7 @@
 
 I'm porting Hero Core, an old gamemaker game I used to play when I was in highschool, to Gameboy Advance in my spare time.
 
-## Implemenation status:
+## Implementation status:
 
 ### Flip Hero:
 - [x] Movement
@@ -12,7 +12,7 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 - [ ] burst
 - [ ] warp
 - [ ] overheat
-- [ ] damage animation
+- [x] damage animation
 
 
 ### Enemies:

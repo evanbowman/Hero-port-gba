@@ -47,6 +47,7 @@ public:
         if (health_ == 0) {
             kill();
             engine().add_object<ExploSpewer>(position_);
+            engine().room_.clear_adjacent_barriers();
         }
 
         anim_ += 1;

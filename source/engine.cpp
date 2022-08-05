@@ -400,6 +400,50 @@ void Engine::Room::render_entrances()
 
 
 
+void Engine::Room::clear_adjacent_barriers()
+{
+    auto get_chunk = [&](int chunk_x, int chunk_y) {
+                         const RoomData* rd;
+                         if (engine().g_.difficulty_ == Difficulty::hard) {
+                             rd = load_room_hard(chunk_x, chunk_y);
+                         } else {
+                             rd = load_room_normal(chunk_x, chunk_y);
+                             return rd;
+                         }
+                         return rd;
+                     };
+
+    auto x = coord_.x;
+    auto y = coord_.y;
+
+    auto barrier_clear =
+        [&](int x_off, int y_off) {
+            if (not (x + x_off > 0 and x + x_off < 15 and y + y_off > 0 and y + y_off < 15)) {
+                return;
+            }
+            if (auto ch = get_chunk(x + x_off, y + y_off)) {
+                for (auto& obj : ch->objects_) {
+                    if (obj.type_ == 18) {
+                        engine().p_->object_modifications_.push_back({
+                                (u8)(x + x_off),
+                                (u8)(y + y_off),
+                                obj.x_,
+                                obj.y_
+                            });
+                    }
+                }
+            }
+        };
+
+    barrier_clear(0, 0);
+    barrier_clear(-1, 0);
+    barrier_clear(1, 0);
+    barrier_clear(0, 1);
+    barrier_clear(0, -1);
+}
+
+
+
 void Engine::Room::load(int chunk_x, int chunk_y)
 {
     clear();
@@ -430,6 +474,21 @@ void Engine::Room::load(int chunk_x, int chunk_y)
         }
 
         for (auto& obj : rd->objects_) {
+
+            bool removed = false;
+            for (auto& rem : engine().p_->object_modifications_) {
+                if (rem.room_x_ == chunk_x and
+                    rem.room_y_ == chunk_y and
+                    rem.x_ == obj.x_ and
+                    rem.y_ == obj.y_) {
+                    removed = true;
+                }
+            }
+
+            if (removed) {
+                continue;
+            }
+
             switch (obj.type_) {
             case 0: // null
                 break;
