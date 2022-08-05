@@ -165,6 +165,8 @@ def parse_instances(xml_list):
             rooms[rx][ry].append([17, rix, riy])
         elif objname == "obj_barrier_s":
             rooms[rx][ry].append([18, rix, riy])
+        elif objname == "obj_barrier2_s":
+            rooms[rx][ry].append([19, rix, riy])
         elif objname == "obj_liquid3long_s":
             for y in range(0, 4):
                 if y < 300 and tilemap[tx][ty + y] != 1:

@@ -418,12 +418,13 @@ void Engine::Room::clear_adjacent_barriers()
 
     auto barrier_clear =
         [&](int x_off, int y_off) {
-            if (not (x + x_off > 0 and x + x_off < 15 and y + y_off > 0 and y + y_off < 15)) {
+            if (not (x + x_off > 0 and x + x_off < 15 and
+                     y + y_off > 0 and y + y_off < 15)) {
                 return;
             }
             if (auto ch = get_chunk(x + x_off, y + y_off)) {
                 for (auto& obj : ch->objects_) {
-                    if (obj.type_ == 18) {
+                    if (obj.type_ == 18 or obj.type_ == 19) {
                         engine().p_->object_modifications_.push_back({
                                 (u8)(x + x_off),
                                 (u8)(y + y_off),
@@ -567,6 +568,10 @@ void Engine::Room::load(int chunk_x, int chunk_y)
 
             case 18:
                 engine().add_object<Barrier>(Vec2<Fixnum>{40 + obj.x_ * 8, obj.y_ * 8}, false);
+                break;
+
+            case 19:
+                engine().add_object<Barrier>(Vec2<Fixnum>{40 + obj.x_ * 8, obj.y_ * 8}, true);
                 break;
 
             default:

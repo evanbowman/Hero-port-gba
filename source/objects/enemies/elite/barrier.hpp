@@ -17,18 +17,26 @@ class Barrier : public Enemy
 private:
     int anim_ = 0;
     bool visible_ = true;
+    bool wide_;
 
 public:
 
     Barrier(const Vec2<Fixnum>& pos, bool wide) :
-        Enemy(TaggedObject::Tag::barrier, Health{32})
+        Enemy(TaggedObject::Tag::barrier, Health{32}),
+        wide_(wide)
     {
         position_ = pos;
 
-        sprite_index_ = 96;
-        sprite_subimage_ = 0;
-        hitbox_.dimension_.size_ = {16, 32};
         hitbox_.dimension_.origin_ = {0, 0};
+
+        if (not wide) {
+            sprite_index_ = 96;
+            hitbox_.dimension_.size_ = {16, 32};
+        } else {
+            sprite_index_ = 97;
+            hitbox_.dimension_.size_ = {32, 16};
+        }
+
     }
 
 
@@ -56,7 +64,12 @@ public:
         spr_.set_position(position_);
         spr_.set_flip({hflip_, vflip_});
         screen.draw(spr_);
-        spr_.set_position({position_.x, position_.y + 16});
+
+        if (not wide_) {
+            spr_.set_position({position_.x, position_.y + 16});
+        } else {
+            spr_.set_position({position_.x + 16, position_.y});
+        }
         screen.draw(spr_);
     }
 
