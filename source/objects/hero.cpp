@@ -12,6 +12,10 @@ namespace herocore
 
 void Hero::step()
 {
+    if (engine().g_.hp_ == 0) {
+        return;
+    }
+
     if (key_down<Key::action_2>()) {
         hflip_ = false;
 
@@ -103,6 +107,10 @@ void Hero::step()
 
 void Hero::draw(Platform::Screen& screen) const
 {
+    if (engine().g_.hp_ == 0) {
+        return;
+    }
+
     if (engine().g_.invulnerable_ > 0 and
         engine().g_.invulnerable_ % 4 < 2) {
         Object::draw(screen);

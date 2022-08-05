@@ -1,6 +1,7 @@
 #pragma once
 
 #include "object.hpp"
+#include "engine.hpp"
 
 
 
@@ -44,6 +45,52 @@ private:
     int counter_ = 20;
 
 
+};
+
+
+
+class ExploSpewer : public Object
+{
+private:
+    int cyc_ = 0;
+
+public:
+
+    ExploSpewer(const Vec2<Fixnum>& pos)
+    {
+        position_ = pos;
+    }
+
+
+    void step() override
+    {
+        if (cyc_ == 0) {
+            engine().add_object<BigExplo>(Vec2<Fixnum>{x(), y()});
+            engine().add_object<BigExplo>(Vec2<Fixnum>{x() - 16, y()});
+            engine().add_object<BigExplo>(Vec2<Fixnum>{x() + 16, y()});
+            engine().add_object<BigExplo>(Vec2<Fixnum>{x(), y() - 16});
+            engine().add_object<BigExplo>(Vec2<Fixnum>{x(), y() + 16});
+        }
+        if (cyc_ == 4) {
+            engine().add_object<BigExplo>(Vec2<Fixnum>{x(), y()});
+            engine().add_object<BigExplo>(Vec2<Fixnum>{x() - 8, y() - 8});
+            engine().add_object<BigExplo>(Vec2<Fixnum>{x() + 8, y() - 8});
+            engine().add_object<BigExplo>(Vec2<Fixnum>{x() + 8, y() + 8});
+            engine().add_object<BigExplo>(Vec2<Fixnum>{x() - 8, y() + 8});
+        }
+        if (cyc_ == 8) {
+            engine().add_object<BigExplo>(Vec2<Fixnum>{x(), y()});
+            engine().add_object<BigExplo>(Vec2<Fixnum>{x() - 16, y() - 16});
+            engine().add_object<BigExplo>(Vec2<Fixnum>{x() + 16, y() - 16});
+            engine().add_object<BigExplo>(Vec2<Fixnum>{x() + 16, y() + 16});
+            engine().add_object<BigExplo>(Vec2<Fixnum>{x() - 16, y() + 16});
+        }
+
+        if (cyc_ == 9) {
+            kill();
+        }
+        cyc_ += 1;
+    }
 };
 
 

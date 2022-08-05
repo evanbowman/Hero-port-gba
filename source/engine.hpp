@@ -56,6 +56,7 @@ public:
     }
 
 
+    void respawn_to_checkpoint();
     void begin_game(Difficulty d);
 
 

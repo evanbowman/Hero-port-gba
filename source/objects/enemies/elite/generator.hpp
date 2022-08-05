@@ -46,7 +46,7 @@ public:
     {
         if (health_ == 0) {
             kill();
-            // TODO: explosion emitter
+            engine().add_object<ExploSpewer>(position_);
         }
 
         anim_ += 1;

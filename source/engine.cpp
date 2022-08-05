@@ -97,15 +97,30 @@ Engine::Engine(Platform& pf) :
 
 
 
+void Engine::respawn_to_checkpoint()
+{
+    // TODO: implement checkpoints!
+
+    begin_game(g_.difficulty_);
+}
+
+
+
 void Engine::begin_game(Difficulty d)
 {
     room_.clear();
 
+    hero_->set_position(Vec2<Fixnum>{90, 80});
+
+    g_.hp_ = g_.max_hp_;
+    g_.invulnerable_ = 0;
+    g_.shot_count_ = 0;
+    g_.autofire_ = false;
+
     if (d == Difficulty::hard) {
-        room_.load(8, 2); // 6, 0
-        // room_.load(6, 0);
+        load(6, 0);
     } else {
-        room_.load(11, 14);
+        load(11, 14);
     }
 }
 

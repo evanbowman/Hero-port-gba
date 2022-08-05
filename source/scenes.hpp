@@ -2,6 +2,7 @@
 
 #include "scene.hpp"
 #include "engine.hpp"
+#include "objects/particles/bigExplo.hpp"
 
 
 
@@ -20,10 +21,22 @@ public:
 
 class OverworldScene : public Scene
 {
+    int respawn_countdown_ = 0;
+
 public:
 
     ScenePtr<Scene> step() override
     {
+        if (engine().g_.hp_ <= 0) {
+            if (respawn_countdown_ == 0) {
+                respawn_countdown_ = 60;
+                engine().add_object<ExploSpewer>(engine().hero()->position());
+            } else if (respawn_countdown_ == 1) {
+                engine().respawn_to_checkpoint();
+            }
+            --respawn_countdown_;
+        }
+
         auto step_list =
                 [&](auto& objects, auto on_destroy) {
                     for (auto it = objects.begin(); it not_eq objects.end();) {
