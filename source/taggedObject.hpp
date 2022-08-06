@@ -37,6 +37,7 @@ public:
         lurk,
         generator,
         barrier,
+        phase,
         count
     };
 

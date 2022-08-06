@@ -237,6 +237,8 @@ def parse_instances(xml_list):
             if znstr > -1:
                 num = int(re.search(r'\d+', code[znstr + 8:]).group())
                 zones[rx][ry] = num
+        elif objname == "obj_phaze_s":
+            rooms[rx][ry].append([27, ra_x, ra_y])
 
 
 

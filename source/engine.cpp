@@ -17,6 +17,7 @@
 #include "objects/enemies/heavy/powerTurret.hpp"
 #include "objects/enemies/heavy/boltaray.hpp"
 #include "objects/enemies/heavy/soldier.hpp"
+#include "objects/enemies/heavy/phaze.hpp"
 #include "objects/enemies/elite/generator.hpp"
 #include "objects/enemies/elite/barrier.hpp"
 #include "objects/enemies/boss/reaperDrone.hpp"
@@ -135,8 +136,8 @@ void Engine::begin_game(Difficulty d)
 
     if (d == Difficulty::hard) {
         g_.checkpoint_room_ = {6, 0};
-        load(6, 0, false);
-        // load(6, 1, false);
+        // load(6, 0, false);
+        load(3, 6, false);
         // load(1, 4, false); // reaper drone
     } else {
         g_.checkpoint_room_ = {11, 14};
@@ -775,7 +776,7 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                 break;
 
             case 27:
-
+                engine().add_object<Phaze>(Vec2<Fixnum>{40 + obj.x_, obj.y_});
                 break;
 
             default:
