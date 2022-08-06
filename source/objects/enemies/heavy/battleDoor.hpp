@@ -6,6 +6,7 @@
 #include "objects/projectile/enemyShot.hpp"
 #include "objects/projectile/supershot.hpp"
 #include "objects/projectile/megashot.hpp"
+#include "objects/projectile/missile.hpp"
 #include "objects/projectile/gigashot.hpp"
 #include "objects/particles/bigExplo.hpp"
 
@@ -135,7 +136,23 @@ public:
                 }
                 shotcyc2_ += 1;
                 if (shotcyc2_ == 1) {
-                    // TODO missiles!
+                    if (engine().hero()->x() < x() + 4) {
+                        Vec2<Fixnum> o{x() - 8, y() + 8};
+                        if (auto m = engine().add_object<Missile>(o)) {
+                            m->set_dir(rotate({1, 0}, 140));
+                        }
+                        if (auto m = engine().add_object<Missile>(o)) {
+                            m->set_dir(rotate({1, 0}, 220));
+                        }
+                    } else {
+                        Vec2<Fixnum> o{x() + 16, y() + 8};
+                        if (auto m = engine().add_object<Missile>(o)) {
+                            m->set_dir(rotate({1, 0}, 40));
+                        }
+                        if (auto m = engine().add_object<Missile>(o)) {
+                            m->set_dir(rotate({1, 0}, 320));
+                        }
+                    }
                 } else if (shotcyc2_ == 2) {
                     if (engine().hero()->x() < x() + 4) {
                         Vec2<Fixnum> o{x() - 8, y() + 4};
@@ -269,7 +286,23 @@ public:
                 }
                 shotcyc2_ += 1;
                 if (shotcyc2_ == 1) {
-                    // TODO missiles!
+                    if (engine().hero()->x() < x() + 4) {
+                        Vec2<Fixnum> o{x() - 8, y() + 8};
+                        if (auto m = engine().add_object<Missile>(o)) {
+                            m->set_dir(rotate({1, 0}, 140));
+                        }
+                        if (auto m = engine().add_object<Missile>(o)) {
+                            m->set_dir(rotate({1, 0}, 220));
+                        }
+                    } else {
+                        Vec2<Fixnum> o{x() + 16, y() + 8};
+                        if (auto m = engine().add_object<Missile>(o)) {
+                            m->set_dir(rotate({1, 0}, 40));
+                        }
+                        if (auto m = engine().add_object<Missile>(o)) {
+                            m->set_dir(rotate({1, 0}, 320));
+                        }
+                    }
                 } else if (shotcyc2_ == 2) {
                     if (engine().hero()->x() < x() + 4) {
                         Vec2<Fixnum> o{x() - 8, y() + 4};
@@ -383,6 +416,13 @@ public:
 
             engine().room_.walls_[spawn_x_ / 8][spawn_y_ / 8] = false;
             engine().room_.walls_[spawn_x_ / 8][spawn_y_ / 8 + 1] = false;
+
+            engine().p_->objects_removed_.push_back({
+                    (u8)engine().room_.coord_.x,
+                    (u8)engine().room_.coord_.y,
+                    spawn_x_,
+                    spawn_y_
+                });
 
             engine().add_object<BigExplo>(Vec2<Fixnum>{
                     position_.x + 4, position_.y + 8});

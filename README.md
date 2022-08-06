@@ -70,7 +70,7 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 - [x] EMegashot
 - [x] EBomb
 - [ ] Eliteshot
-- [ ] Missile
+- [x] Missile
 - [x] Gigashot
 - [x] Laser
 - [ ] Tetron Laser

@@ -137,8 +137,8 @@ void Engine::begin_game(Difficulty d)
 
     if (d == Difficulty::hard) {
         g_.checkpoint_room_ = {6, 0};
-        // load(6, 0, false);
-        load(9, 6, false);
+        load(6, 0, false);
+        // load(9, 6, false); // battle door
         // load(1, 4, false); // reaper drone
     } else {
         g_.checkpoint_room_ = {11, 14};
