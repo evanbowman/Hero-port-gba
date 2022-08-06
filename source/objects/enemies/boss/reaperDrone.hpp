@@ -482,7 +482,7 @@ public:
                     x() + 4, y() + 4
                 });
 
-            engine().p_->object_modifications_.push_back({
+            engine().p_->objects_removed_.push_back({
                     (u8)engine().room_.coord_.x,
                     (u8)engine().room_.coord_.y,
                     spawn_x_,

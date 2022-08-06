@@ -32,7 +32,7 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 - [x] Spawner
 - [x] Power Turret
 - [x] Boltaray
-- [ ] Battle Door
+- [x] Battle Door
 - [ ] Chain Snake
 - [x] Phase
 - [x] Soldier
@@ -71,7 +71,7 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 - [x] EBomb
 - [ ] Eliteshot
 - [ ] Missile
-- [ ] Gigashot
+- [x] Gigashot
 - [x] Laser
 - [ ] Tetron Laser
 - [ ] Massacre

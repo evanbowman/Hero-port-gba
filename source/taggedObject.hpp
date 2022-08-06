@@ -28,16 +28,12 @@ public:
         reaver,
         crusher,
         spew,
-        bolt,
-        enemy_bullet,
         blomb,
         boltaray,
-        spawner,
         soldier,
         lurk,
-        generator,
-        barrier,
         phase,
+        ignored,
         count
     };
 

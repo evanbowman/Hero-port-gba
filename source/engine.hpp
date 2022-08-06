@@ -174,7 +174,7 @@ public:
         };
 
         Buffer<TileModify, 200> tile_modifications_;
-        Buffer<ObjectRemove, 30> object_modifications_;
+        Buffer<ObjectRemove, 40> objects_removed_;
     };
 
     DynamicMemory<Persistence> p_;

@@ -18,6 +18,7 @@
 #include "objects/enemies/heavy/boltaray.hpp"
 #include "objects/enemies/heavy/soldier.hpp"
 #include "objects/enemies/heavy/phaze.hpp"
+#include "objects/enemies/heavy/battleDoor.hpp"
 #include "objects/enemies/elite/generator.hpp"
 #include "objects/enemies/elite/barrier.hpp"
 #include "objects/enemies/boss/reaperDrone.hpp"
@@ -137,7 +138,7 @@ void Engine::begin_game(Difficulty d)
     if (d == Difficulty::hard) {
         g_.checkpoint_room_ = {6, 0};
         // load(6, 0, false);
-        load(3, 6, false);
+        load(9, 6, false);
         // load(1, 4, false); // reaper drone
     } else {
         g_.checkpoint_room_ = {11, 14};
@@ -542,7 +543,7 @@ void Engine::Room::clear_adjacent_barriers()
             if (auto ch = get_chunk(x + x_off, y + y_off)) {
                 for (auto& obj : ch->objects_) {
                     if (obj.type_ == 18 or obj.type_ == 19) {
-                        engine().p_->object_modifications_.push_back({
+                        engine().p_->objects_removed_.push_back({
                                 (u8)(x + x_off),
                                 (u8)(y + y_off),
                                 obj.x_,
@@ -640,7 +641,7 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
         for (auto& obj : rd->objects_) {
 
             bool removed = false;
-            for (auto& rem : engine().p_->object_modifications_) {
+            for (auto& rem : engine().p_->objects_removed_) {
                 if (rem.room_x_ == chunk_x and
                     rem.room_y_ == chunk_y and
                     rem.x_ == obj.x_ and
@@ -778,6 +779,11 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
             case 27:
                 engine().add_object<Phaze>(Vec2<Fixnum>{40 + obj.x_, obj.y_});
                 break;
+
+            case 28:
+                engine().add_object<BattleDoor>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
+                                                obj.x_,
+                                                obj.y_);
 
             default:
                 break;

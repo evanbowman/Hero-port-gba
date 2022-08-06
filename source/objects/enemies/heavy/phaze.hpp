@@ -162,7 +162,6 @@ public:
 
 private:
     int timeline_ = 0;
-    int movecyc_ = 0;
 };
 
 

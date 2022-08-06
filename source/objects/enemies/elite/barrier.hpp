@@ -22,7 +22,7 @@ private:
 public:
 
     Barrier(const Vec2<Fixnum>& pos, bool wide) :
-        Enemy(TaggedObject::Tag::barrier, Health{32}),
+        Enemy(TaggedObject::Tag::ignored, Health{32}),
         wide_(wide)
     {
         position_ = pos;

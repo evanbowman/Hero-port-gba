@@ -24,7 +24,7 @@ private:
 public:
 
     Bolt(const Vec2<Fixnum>& pos) :
-        Enemy(TaggedObject::Tag::bolt, Health{1})
+        Enemy(TaggedObject::Tag::ignored, Health{1})
     {
         position_ = pos;
 

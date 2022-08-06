@@ -239,6 +239,8 @@ def parse_instances(xml_list):
                 zones[rx][ry] = num
         elif objname == "obj_phaze_s":
             rooms[rx][ry].append([27, ra_x, ra_y])
+        elif objname == "obj_battledoor_s":
+            rooms[rx][ry].append([28, ra_x, ra_y])
 
 
 

@@ -23,7 +23,7 @@ class Spawner : public Enemy
 public:
 
     Spawner(const Vec2<Fixnum>& pos) :
-        Enemy(TaggedObject::Tag::spawner, Health{16})
+        Enemy(TaggedObject::Tag::ignored, Health{16})
     {
         position_ = pos;
 

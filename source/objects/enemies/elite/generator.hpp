@@ -31,7 +31,7 @@ public:
 
     Generator(const Vec2<Fixnum>& pos,
               u8 spawn_x, u8 spawn_y) :
-        Enemy(TaggedObject::Tag::generator, Health{32}),
+        Enemy(TaggedObject::Tag::ignored, Health{32}),
         spawn_x_(spawn_x),
         spawn_y_(spawn_y)
     {
@@ -54,7 +54,7 @@ public:
             engine().add_object<ExploSpewer>(position_);
             engine().room_.clear_adjacent_barriers();
 
-            engine().p_->object_modifications_.push_back({
+            engine().p_->objects_removed_.push_back({
                     (u8)engine().room_.coord_.x,
                     (u8)engine().room_.coord_.y,
                     spawn_x_,
