@@ -74,7 +74,6 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 - [x] Gigashot
 - [x] Laser
 - [ ] Tetron Laser
-- [ ] Massacre
 
 
 ### Walls
@@ -93,6 +92,8 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 - [x] Stars
 - [x] Checkpoints
 - [ ] Saving
+- [x] Music
+- [ ] Sound effects
 
 
 ### Menus
