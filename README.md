@@ -34,7 +34,7 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 - [x] Boltaray
 - [ ] Battle Door
 - [ ] Chain Snake
-- [ ] Phase
+- [x] Phase
 - [x] Soldier
 - [ ] Eyespy
 
