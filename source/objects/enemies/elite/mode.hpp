@@ -100,6 +100,7 @@ public:
             for (auto& e : engine().enemies_) {
                 if (auto m = dynamic_cast<ModeNeck*>(e.get())) {
                     if (m->owner() == this) {
+                        engine().add_object<BigExplo>(e->position());
                         e->kill();
                     }
                 }
@@ -335,6 +336,7 @@ inline void ModeNeck::step()
 {
     if (health_ == 0) {
         kill();
+        engine().add_object<BigExplo>(position_);
         return;
     }
 
