@@ -22,6 +22,7 @@
 #include "objects/enemies/elite/generator.hpp"
 #include "objects/enemies/elite/barrier.hpp"
 #include "objects/enemies/elite/mode.hpp"
+#include "objects/enemies/elite/hunter.hpp"
 #include "objects/enemies/boss/reaperDrone.hpp"
 #include "objects/misc/savepoint.hpp"
 #include "objects/particles/weed.hpp"
@@ -139,7 +140,9 @@ void Engine::begin_game(Difficulty d)
     if (d == Difficulty::hard) {
         g_.checkpoint_room_ = {6, 0};
         // load(6, 0, false);
-        load(11, 1, false); // mode
+        load(10, 0, false); // test
+        // load(10, 2, false); // hunter
+        // load(11, 1, false); // mode
         // load(9, 6, false); // battle door
         // load(1, 4, false); // reaper drone
     } else {
@@ -252,7 +255,7 @@ void Engine::run()
                 continue;
             } else if (hpos.y < 2 and room_.has_exit_up()) {
                 load(room_.coord_.x, room_.coord_.y - 1, false);
-                hero_->set_position({hero_->position().x, 148});
+                hero_->set_position({hero_->position().x, 144});
                 continue;
             }
 
@@ -790,6 +793,10 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
 
             case 29:
                 engine().add_object<Mode>(Vec2<Fixnum>{40 + obj.x_ - 8, obj.y_ - 8});
+                break;
+
+            case 30:
+                engine().add_object<Hunter>(Vec2<Fixnum>{40 + obj.x_ - 8, obj.y_ - 8});
                 break;
 
             default:
