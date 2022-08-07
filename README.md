@@ -42,7 +42,7 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 #### Elite
 - [x] Barrier
 - [x] Generator
-- [ ] Mode
+- [x] Mode
 - [ ] Hunter
 - [ ] Dire Viper
 - [ ] Mother

@@ -21,6 +21,7 @@
 #include "objects/enemies/heavy/battleDoor.hpp"
 #include "objects/enemies/elite/generator.hpp"
 #include "objects/enemies/elite/barrier.hpp"
+#include "objects/enemies/elite/mode.hpp"
 #include "objects/enemies/boss/reaperDrone.hpp"
 #include "objects/misc/savepoint.hpp"
 #include "objects/particles/weed.hpp"
@@ -137,7 +138,8 @@ void Engine::begin_game(Difficulty d)
 
     if (d == Difficulty::hard) {
         g_.checkpoint_room_ = {6, 0};
-        load(6, 0, false);
+        // load(6, 0, false);
+        load(11, 1, false); // mode
         // load(9, 6, false); // battle door
         // load(1, 4, false); // reaper drone
     } else {
@@ -784,6 +786,11 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                 engine().add_object<BattleDoor>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
                                                 obj.x_,
                                                 obj.y_);
+                break;
+
+            case 29:
+                engine().add_object<Mode>(Vec2<Fixnum>{40 + obj.x_ - 8, obj.y_ - 8});
+                break;
 
             default:
                 break;
