@@ -23,6 +23,7 @@
 #include "objects/enemies/elite/barrier.hpp"
 #include "objects/enemies/elite/mode.hpp"
 #include "objects/enemies/elite/hunter.hpp"
+#include "objects/enemies/elite/eidolon.hpp"
 #include "objects/enemies/boss/reaperDrone.hpp"
 #include "objects/misc/savepoint.hpp"
 #include "objects/particles/weed.hpp"
@@ -140,7 +141,7 @@ void Engine::begin_game(Difficulty d)
     if (d == Difficulty::hard) {
         g_.checkpoint_room_ = {6, 0};
         // load(6, 0, false);
-        load(10, 0, false); // test
+        load(9, 12, false); // eidolon
         // load(10, 2, false); // hunter
         // load(11, 1, false); // mode
         // load(9, 6, false); // battle door
@@ -797,6 +798,10 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
 
             case 30:
                 engine().add_object<Hunter>(Vec2<Fixnum>{40 + obj.x_ - 8, obj.y_ - 8});
+                break;
+
+            case 31:
+                engine().add_object<Eidolon>(Vec2<Fixnum>{40 + obj.x_, obj.y_});
                 break;
 
             default:

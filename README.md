@@ -46,7 +46,7 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 - [x] Hunter
 - [ ] Dire Viper
 - [ ] Mother
-- [ ] Warp Eidolon
+- [x] Warp Eidolon
 - [ ] Annihilator
 
 

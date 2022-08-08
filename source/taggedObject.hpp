@@ -32,7 +32,7 @@ public:
         boltaray,
         soldier,
         lurk,
-        phase,
+        phaze,
         ignored,
         count
     };

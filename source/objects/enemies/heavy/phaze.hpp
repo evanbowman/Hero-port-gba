@@ -24,7 +24,7 @@ private:
 public:
 
     Phaze(const Vec2<Fixnum>& pos) :
-        Enemy(TaggedObject::Tag::phase, Health{8})
+        Enemy(TaggedObject::Tag::phaze, Health{8})
     {
         position_ = pos;
 
