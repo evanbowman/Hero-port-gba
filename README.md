@@ -1,6 +1,6 @@
 # Hero Port GBA
 
-I'm porting Hero Core, an old gamemaker game I used to play when I was in highschool, to Gameboy Advance in my spare time.
+I'm porting Hero Core, a gamemaker game I used to play when I was in highschool, to Gameboy Advance in my spare time.
 Game by Daniel Remar, music by BrotherAndroid.
 
 ## Implementation status:
