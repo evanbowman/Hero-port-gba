@@ -102,3 +102,8 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 - [ ] Pause menu
 - [ ] Intro cutscene
 - [ ] Intro help text
+
+
+# Building
+
+Devkitpro gba toolchain required. Then, cd into the build folder and run ./set-gameboyadvance-toolchain. Then run make.

@@ -140,8 +140,8 @@ void Engine::begin_game(Difficulty d)
 
     if (d == Difficulty::hard) {
         g_.checkpoint_room_ = {6, 0};
-        // load(6, 0, false);
-        load(9, 12, false); // eidolon
+        load(6, 0, false);
+        // load(9, 12, false); // eidolon
         // load(10, 2, false); // hunter
         // load(11, 1, false); // mode
         // load(9, 6, false); // battle door
