@@ -33,7 +33,7 @@ I'm porting Hero Core, an old gamemaker game I used to play when I was in highsc
 - [x] Power Turret
 - [x] Boltaray
 - [x] Battle Door
-- [ ] Chain Snake
+- [x] Chain Snake
 - [x] Phase
 - [x] Soldier
 - [ ] Eyespy
