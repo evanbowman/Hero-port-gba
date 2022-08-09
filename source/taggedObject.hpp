@@ -33,6 +33,8 @@ public:
         soldier,
         lurk,
         phaze,
+        chainsnake,
+        chainsnake_neck,
         ignored,
         count
     };

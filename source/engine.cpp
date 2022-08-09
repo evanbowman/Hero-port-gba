@@ -19,6 +19,7 @@
 #include "objects/enemies/heavy/soldier.hpp"
 #include "objects/enemies/heavy/phaze.hpp"
 #include "objects/enemies/heavy/battleDoor.hpp"
+#include "objects/enemies/heavy/chainsnake.hpp"
 #include "objects/enemies/elite/generator.hpp"
 #include "objects/enemies/elite/barrier.hpp"
 #include "objects/enemies/elite/mode.hpp"
@@ -140,7 +141,8 @@ void Engine::begin_game(Difficulty d)
 
     if (d == Difficulty::hard) {
         g_.checkpoint_room_ = {6, 0};
-        load(6, 0, false);
+        // load(6, 0, false);
+        load(9, 8, false); // chain snake
         // load(9, 12, false); // eidolon
         // load(10, 2, false); // hunter
         // load(11, 1, false); // mode
@@ -802,6 +804,10 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
 
             case 31:
                 engine().add_object<Eidolon>(Vec2<Fixnum>{40 + obj.x_, obj.y_});
+                break;
+
+            case 32:
+                engine().add_object<Chainsnake>(Vec2<Fixnum>{40 + obj.x_, obj.y_});
                 break;
 
             default:
