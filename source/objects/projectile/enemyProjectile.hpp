@@ -40,6 +40,14 @@ public:
     }
 
 
+    void set_speed(float magnitude, int direction_angle)
+    {
+        auto d = rotate({1, 0}, direction_angle);
+        speed_.x = Fixnum(d.x * magnitude);
+        speed_.y = Fixnum(d.y * magnitude);;
+    }
+
+
     void set_speed(const Vec2<Fixnum>& speed)
     {
         speed_ = speed;

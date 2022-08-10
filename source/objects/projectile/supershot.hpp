@@ -25,12 +25,6 @@ public:
     }
 
 
-    void set_speed(const Vec2<Fixnum>& speed)
-    {
-        speed_ = speed;
-    }
-
-
     void step() override
     {
         if (not place_free({position_.x + speed_.x, position_.y + speed_.y})) {

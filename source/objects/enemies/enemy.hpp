@@ -23,9 +23,10 @@ public:
     }
 
 
-    virtual void damage(Health dmg, Shot& s)
+    virtual bool damage(Health dmg, Shot& s)
     {
         health_ = std::max(0, health_ - dmg);
+        return true;
     }
 
 

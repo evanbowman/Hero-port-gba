@@ -60,14 +60,15 @@ public:
     }
 
 
-    virtual void damage(Health dmg, Shot& s)
+    virtual bool damage(Health dmg, Shot& s)
     {
         Hitbox hb = hitbox_;
         hb.dimension_.size_ = {4, 5};
         if (hb.overlapping(s.hitbox())) {
             health_ = std::max(0, health_ - dmg);
+            return true;
         }
-
+        return false;
     }
 
 

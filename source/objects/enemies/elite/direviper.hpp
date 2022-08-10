@@ -276,7 +276,7 @@ public:
 
     int collision_damage() const override
     {
-        return 3;
+        return 4;
     }
 };
 

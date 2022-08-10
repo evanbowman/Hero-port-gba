@@ -26,6 +26,7 @@
 #include "objects/enemies/elite/hunter.hpp"
 #include "objects/enemies/elite/eidolon.hpp"
 #include "objects/enemies/elite/direviper.hpp"
+#include "objects/enemies/elite/annihilator.hpp"
 #include "objects/enemies/boss/reaperDrone.hpp"
 #include "objects/misc/savepoint.hpp"
 #include "objects/particles/weed.hpp"
@@ -143,10 +144,11 @@ void Engine::begin_game(Difficulty d)
     if (d == Difficulty::hard) {
         g_.checkpoint_room_ = {6, 0};
         // load(6, 0, false);
+        load(0, 6, false); // annihilator
         // load(9, 8, false); // chain snake
         // load(9, 12, false); // eidolon
         // load(10, 2, false); // hunter
-        load(11, 1, false); // mode
+        // load(11, 1, false); // mode
         // load(9, 6, false); // battle door
         // load(1, 4, false); // reaper drone
     } else {
@@ -178,7 +180,11 @@ void Engine::collision_check()
         for (auto& e : enemies_) {
             if (p->hitbox().overlapping(e->hitbox())) {
                 p->kill();
-                e->damage(1, *p);
+                if (e->damage(1, *p)) {
+                    add_object<Explo>(Vec2<Fixnum>{
+                            p->x() - 2, p->y() - 2
+                        });
+                }
                 break;
             }
         }
@@ -813,6 +819,12 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
 
             case 33:
                 engine().add_object<Direviper>(Vec2<Fixnum>{40 + obj.x_, obj.y_});
+                break;
+
+            case 34:
+                engine().add_object<Annihilator>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
+                                                 obj.x_,
+                                                 obj.y_);
                 break;
 
             default:

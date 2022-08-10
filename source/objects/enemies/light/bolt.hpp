@@ -34,7 +34,7 @@ public:
     }
 
 
-    void damage(Health dmg, Shot& s) override
+    bool damage(Health dmg, Shot& s) override
     {
         // TODO: screenshake
 
@@ -77,6 +77,7 @@ public:
         }
 
         engine().add_object<BigExplo>(Vec2<Fixnum>{position_.x + 4, position_.y + 4});
+        return true;
     }
 
 
