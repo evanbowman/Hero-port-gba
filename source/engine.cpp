@@ -856,6 +856,14 @@ bool Engine::Room::has_exit_up() const
         return false;
     }
 
+
+    if (engine().g_.difficulty_ == Difficulty::normal) {
+        if (coord_ == Vec2<int>{11, 14}) {
+            return false;
+        }
+    }
+
+
     return true;
 }
 
@@ -899,6 +907,12 @@ bool Engine::Room::has_exit_right() const
 {
     if (coord_.x == 14) {
         return false;
+    }
+
+    if (engine().g_.difficulty_ == Difficulty::normal) {
+        if (coord_ == Vec2<int>{11, 14}) {
+            return false;
+        }
     }
 
     return true;
