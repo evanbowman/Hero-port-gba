@@ -143,8 +143,8 @@ void Engine::begin_game(Difficulty d)
 
     if (d == Difficulty::hard) {
         g_.checkpoint_room_ = {6, 0};
-        // load(6, 0, false);
-        load(0, 6, false); // annihilator
+        load(6, 0, false);
+        // load(0, 6, false); // annihilator
         // load(9, 8, false); // chain snake
         // load(9, 12, false); // eidolon
         // load(10, 2, false); // hunter

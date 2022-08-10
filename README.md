@@ -48,7 +48,7 @@ Game by Daniel Remar, music by BrotherAndroid.
 - [x] Dire Viper
 - [ ] Mother
 - [x] Warp Eidolon
-- [ ] Annihilator
+- [x] Annihilator
 
 
 #### Bosses
