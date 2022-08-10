@@ -28,11 +28,18 @@ private:
     Fixnum rot_ = 0;
     Fixnum d_ = 0;
     int dmax_ = 16;
+
+    // NOTE: this diverges from the original code. Rendering lasers (vortex)
+    // requires lots of sprites, and drawing five lasers at once significantly
+    // lags the engine. I've decided to stagger the lasers by an offset, kind of
+    // like the warp-eidolon does, due to hardware constraints.
+    int offset_ = 0;
+
     mutable u8 flashcyc_ = 0;
 
 public:
 
-    ModeNeck(Mode* owner, Fixnum rot);
+    ModeNeck(Mode* owner, Fixnum rot, int offset);
 
 
     void step() override;
@@ -130,11 +137,12 @@ public:
             if (not neckinit_) {
                 if (engine().g_.difficulty_ == Difficulty::normal) {
                     for (int i = 0; i < 3; ++i) {
-                        engine().add_object<ModeNeck>(this, Fixnum(i * 120));
+                        engine().add_object<ModeNeck>(this, Fixnum(i * 120), 0);
                     }
                 } else {
                     for (int i = 0; i < 5; ++i) {
-                        engine().add_object<ModeNeck>(this, Fixnum(i * 72));
+                        engine().add_object<ModeNeck>(this, Fixnum(i * 72),
+                                                      -20 + i * 9);
                     }
                 }
 
@@ -243,6 +251,12 @@ public:
             }
             break;
 
+        case 240:
+            if (engine().g_.difficulty_ == Difficulty::hard) {
+                flash_ = true;
+            }
+            break;
+
         case 260:
             flash_ = true;
             break;
@@ -281,10 +295,11 @@ public:
 
 
 
-inline ModeNeck::ModeNeck(Mode* owner, Fixnum rot) :
+inline ModeNeck::ModeNeck(Mode* owner, Fixnum rot, int offset) :
         Enemy(TaggedObject::Tag::ignored, Health{16}),
         owner_(owner),
-        rot_(rot)
+        rot_(rot),
+        offset_(offset)
 {
     position_ = owner_->position();
     sprite_index_ = 125;
@@ -300,7 +315,7 @@ inline void ModeNeck::draw(Platform::Screen& s) const
 {
     Enemy::draw(s);
 
-    if (owner_->flash()) {
+    if (owner_->timeline() > 260 + offset_ and owner_->timeline() < 300 + offset_) {
         flashcyc_ += 1;
         if (flashcyc_ == 2) {
             flashcyc_ = 0;
@@ -340,7 +355,7 @@ inline void ModeNeck::step()
         return;
     }
 
-    if (owner_->timeline() == 300) {
+    if (owner_->timeline() == 300 + offset_) {
         if (x() > engine().hero()->x()) {
             if (auto v = engine().add_object<Vortex>(Vec2<Fixnum>{x(),
                                                                   y() - 4})) {

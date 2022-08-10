@@ -45,7 +45,7 @@ Game by Daniel Remar, music by BrotherAndroid.
 - [x] Generator
 - [x] Mode
 - [x] Hunter
-- [ ] Dire Viper
+- [x] Dire Viper
 - [ ] Mother
 - [x] Warp Eidolon
 - [ ] Annihilator

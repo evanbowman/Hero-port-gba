@@ -29,6 +29,7 @@ public:
         crusher,
         spew,
         blomb,
+        bolt,
         boltaray,
         soldier,
         lurk,

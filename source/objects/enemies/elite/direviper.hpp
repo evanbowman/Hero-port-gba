@@ -5,8 +5,9 @@
 #include "number/random.hpp"
 #include "objects/projectile/enemyShot.hpp"
 #include "objects/projectile/supershot.hpp"
-#include "objects/projectile/megashot.hpp"
+#include "objects/projectile/gigashot.hpp"
 #include "objects/particles/bigExplo.hpp"
+#include "objects/enemies/light/bolt.hpp"
 #include "bulkAllocator.hpp"
 
 
@@ -16,33 +17,33 @@ namespace herocore
 
 
 
-class Chainsnake;
+class Direviper;
 
 
 
-class ChainsnakeNeck : public Enemy
+class DireviperNeck : public Enemy
 {
 private:
-    Chainsnake* owner_;
+    Direviper* owner_;
     int offset_;
 
 public:
 
-    ChainsnakeNeck(Chainsnake* owner, int offset) :
-        Enemy(Tag::chainsnake_neck, Health{99}),
+    DireviperNeck(Direviper* owner, int offset) :
+        Enemy(Tag::chainsnake_neck, Health{200}),
         owner_(owner), offset_(offset)
     {
-        sprite_index_ = 141;
-        origin_ = {3, 3};
-        hitbox_.dimension_.origin_ = {3, 3};
-        hitbox_.dimension_.size_ = {6, 6};
+        sprite_index_ = 125;
+        origin_ = {4, 4};
+        hitbox_.dimension_.origin_ = {4, 4};
+        hitbox_.dimension_.size_ = {8, 8};
     }
 
 
     inline void step() override;
 
 
-    Chainsnake* owner() const
+    Direviper* owner() const
     {
         return owner_;
     }
@@ -51,7 +52,7 @@ public:
 
 
 
-class Chainsnake : public Enemy
+class Direviper : public Enemy
 {
 private:
     int timeline_ = 0;
@@ -70,17 +71,17 @@ public:
     DynamicMemory<HistoryBuffer> hist_;
 
 
-    Chainsnake(const Vec2<Fixnum>& pos) :
-        Enemy(TaggedObject::Tag::chainsnake_neck, Health{8}),
+    Direviper(const Vec2<Fixnum>& pos) :
+        Enemy(TaggedObject::Tag::chainsnake_neck, Health{32}),
         hist_(allocate_dynamic<HistoryBuffer>(platform()))
     {
         position_ = pos;
 
-        sprite_index_ = 137;
+        sprite_index_ = 142;
 
-        hitbox_.dimension_.size_ = {10, 8};
-        hitbox_.dimension_.origin_ = {5, 4};
-        origin_ = {5, 4};
+        hitbox_.dimension_.size_ = {12, 12};
+        hitbox_.dimension_.origin_ = {6, 6};
+        origin_ = {6, 6};
     }
 
 
@@ -89,7 +90,7 @@ public:
         if (health_ == 0) {
             kill();
             for (auto& e : engine().enemies_) {
-                if (auto eg = dynamic_cast<ChainsnakeNeck*>(e.get())) {
+                if (auto eg = dynamic_cast<DireviperNeck*>(e.get())) {
                     if (eg->owner() == this) {
                         eg->kill();
                     }
@@ -100,7 +101,7 @@ public:
             return;
         }
 
-        auto speed = Fixnum(1.3f / 2);
+        auto speed = Fixnum(2.f / 2);
 
         const bool hard = engine().g_.difficulty_ == Difficulty::hard;
         if (hard) {
@@ -125,29 +126,32 @@ public:
             break;
 
         case 40: {
-            if (hard) {
-                shotcyc_ += 1;
-                if (shotcyc_ == 4) {
-                    for (int i = 0; i < 4; ++i) {
-                        if (auto e = engine().add_object<EnemyShot>(Vec2<Fixnum>{
-                                    x() - 2, y() - 2
-                                })) {
-                            auto d = rotate({1, 0}, 45 + i * 90);
-                            e->set_speed({Fixnum(d.x), Fixnum(d.y)});
-                        }
-                    }
-                    shotcyc_ = 0;
+            shotcyc_ += 1;
+            if (shotcyc_ == 6) {
+
+                if (TaggedObject::count(Tag::bolt) < 2) {
+                    engine().add_object<Bolt>(Vec2<Fixnum>{
+                                x() - 4, y() - 4
+                                    });
+                }
+
+                shotcyc_ = 0;
+            }
+
+            if (shotcyc_ % 4 == 0) {
+                if (auto e = engine().add_object<Gigashot>(Vec2<Fixnum>{
+                            x() - 6, y() - 6
+                        })) {
+                    auto d = rotate({1, 0}, dir_);
+                    e->set_speed({Fixnum(d.x * 1.5f), Fixnum(d.y * 1.5f)});
                 }
             }
+
             if (not neckinit_) {
                 neckinit_ = true;
-                int count = 5;
-                if (hard) {
-                    count = 6;
-                }
-                for (int i = count; i > 0; --i) {
+                for (int i = 7; i > 0; --i) {
                     int offset = i * 12;
-                    engine().add_object<ChainsnakeNeck>(this, offset);
+                    engine().add_object<DireviperNeck>(this, offset);
                 }
             }
             {
@@ -239,16 +243,22 @@ public:
             }
 
 
-            if (dir_ == 90 or dir_ == 270) {
-                if (x() < engine().hero()->x()) {
-                    sprite_subimage_ = 2;
-                } else {
-                    sprite_subimage_ = 3;
-                }
-            } else if (dir_ == 180) {
+            if (dir_ == 180) {
                 sprite_subimage_ = 2;
             } else if (dir_ == 0) {
-                sprite_subimage_ = 3;
+                sprite_subimage_ = 5;
+            } else if (dir_ == 270) {
+                if (x() > engine().hero()->x()) {
+                    sprite_subimage_ = 3;
+                } else {
+                    sprite_subimage_ = 4;
+                }
+            } else if (dir_ == 90) {
+                if (x() > engine().hero()->x()) {
+                    sprite_subimage_ = 6;
+                } else {
+                    sprite_subimage_ = 7;
+                }
             }
         }
 
@@ -272,7 +282,7 @@ public:
 
 
 
-inline void ChainsnakeNeck::step()
+inline void DireviperNeck::step()
 {
     position_.x = (*owner()->hist_)[offset_].x;
     position_.y = (*owner()->hist_)[offset_].y;
