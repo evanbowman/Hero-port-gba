@@ -105,7 +105,7 @@ void Hero::step()
                 engine().add_object<Flame>(Vec2<Fixnum>{position_.x + 5,
                                                         position_.y + 5});
             } else {
-                engine().add_object<Flame>(Vec2<Fixnum>{position_.x + 1,
+                engine().add_object<Flame>(Vec2<Fixnum>{position_.x + 0,
                                                         position_.y + 5});
             }
         }

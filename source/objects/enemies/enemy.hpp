@@ -26,6 +26,7 @@ public:
     virtual bool damage(Health dmg, Shot& s)
     {
         health_ = std::max(0, health_ - dmg);
+        s.kill();
         return true;
     }
 

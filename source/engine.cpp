@@ -28,6 +28,7 @@
 #include "objects/enemies/elite/direviper.hpp"
 #include "objects/enemies/elite/annihilator.hpp"
 #include "objects/enemies/boss/reaperDrone.hpp"
+#include "objects/enemies/boss/silencer.hpp"
 #include "objects/misc/savepoint.hpp"
 #include "objects/particles/weed.hpp"
 #include "objects/particles/star.hpp"
@@ -144,6 +145,7 @@ void Engine::begin_game(Difficulty d)
     if (d == Difficulty::hard) {
         g_.checkpoint_room_ = {6, 0};
         load(6, 0, false);
+        // load(13, 8, false); // silencer
         // load(0, 6, false); // annihilator
         // load(9, 8, false); // chain snake
         // load(9, 12, false); // eidolon
@@ -179,13 +181,14 @@ void Engine::collision_check()
     for (auto& p : player_projectiles_) {
         for (auto& e : enemies_) {
             if (p->hitbox().overlapping(e->hitbox())) {
-                p->kill();
                 if (e->damage(1, *p)) {
                     add_object<Explo>(Vec2<Fixnum>{
                             p->x() - 2, p->y() - 2
                         });
                 }
-                break;
+                if (p->dead()) {
+                    break;
+                }
             }
         }
     }
@@ -826,6 +829,11 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                                                  obj.x_,
                                                  obj.y_);
                 break;
+
+            case 35:
+                engine().add_object<Silencer>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
+                                              obj.x_,
+                                              obj.y_);
 
             default:
                 break;

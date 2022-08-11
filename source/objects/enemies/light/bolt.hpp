@@ -39,6 +39,7 @@ public:
         // TODO: screenshake
 
         kill();
+        s.kill();
 
         if (engine().g_.difficulty_ == Difficulty::hard) {
             auto c = position_;

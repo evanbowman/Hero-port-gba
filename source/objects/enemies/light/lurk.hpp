@@ -60,8 +60,9 @@ public:
     }
 
 
-    virtual bool damage(Health dmg, Shot& s)
+    bool damage(Health dmg, Shot& s) override
     {
+        s.kill();
         Hitbox hb = hitbox_;
         hb.dimension_.size_ = {4, 5};
         if (hb.overlapping(s.hitbox())) {

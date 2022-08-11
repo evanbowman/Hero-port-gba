@@ -92,6 +92,8 @@ public:
 
     bool damage(Health dmg, Shot& s) override
     {
+        s.kill();
+
         if (sprite_subimage_ not_eq 2) {
             return false;
         }
