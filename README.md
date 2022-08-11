@@ -54,7 +54,7 @@ Game by Daniel Remar, music by BrotherAndroid.
 #### Bosses
 - [ ] Rock Smasher
 - [x] Silencer
-- [ ] Plasma Hydra
+- [x] Plasma Hydra
 - [x] Reaper Drone
 - [ ] Liquid Metal Processor
 - [ ] Grand Mother
