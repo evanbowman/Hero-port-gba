@@ -75,14 +75,33 @@ public:
 
     void step() override
     {
+        const bool hard = engine().g_.difficulty_ == Difficulty::hard;
+
+
         if (health_ == 0) {
             kill();
             if (copy_ == 0) {
-                auto h = engine().add_object<HydraHead>(Vec2<Fixnum>{x_start_, y_start_}, 40);
-                if (h) {
-                    h->copy_++;
-                    h->health_ = 8;
+
+                if (hard) {
+                    auto h = engine().add_object<HydraHead>(Vec2<Fixnum>{x_start_, y_start_ - 2}, 40);
+                    if (h) {
+                        h->copy_++;
+                        h->health_ = 8;
+                    }
+
+                    h = engine().add_object<HydraHead>(Vec2<Fixnum>{x_start_, y_start_ + 2}, 40);
+                    if (h) {
+                        h->copy_++;
+                        h->health_ = 8;
+                    }
+                } else {
+                    auto h = engine().add_object<HydraHead>(Vec2<Fixnum>{x_start_, y_start_}, 40);
+                    if (h) {
+                        h->copy_++;
+                        h->health_ = 8;
+                    }
                 }
+
             } else if (copy_ == 1) {
 
             }
