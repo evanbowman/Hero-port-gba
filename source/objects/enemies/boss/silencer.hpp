@@ -4,7 +4,12 @@
 #include "engine.hpp"
 #include "fmt.hpp"
 #include "number/random.hpp"
+#include "objects/enemies/light/drone.hpp"
+#include "objects/enemies/light/spew.hpp"
+#include "objects/projectile/enemyShot.hpp"
+#include "objects/projectile/megashot.hpp"
 #include "objects/particles/explo.hpp"
+#include "objects/particles/bigExplo.hpp"
 
 
 
@@ -13,50 +18,85 @@ namespace herocore
 
 
 
-class SilencerNeck : public Enemy
+class SilencerCore : public Enemy
 {
 private:
     Enemy* owner_ = nullptr;
-    Vec2<int> offset_;
+    int animcyc_ = 0;
 
 public:
 
-    SilencerNeck(Enemy* owner, Vec2<int> offset) :
-        Enemy(TaggedObject::Tag::ignored, Health{2}),
-        owner_(owner),
-        offset_(offset)
+    SilencerCore(Enemy* owner) :
+        Enemy(TaggedObject::Tag::ignored, Health{32}),
+        owner_(owner)
     {
-        hitbox_.dimension_.size_ = {2, 4};
-        hitbox_.dimension_.origin_ = {0, 0};
-        if (offset.x > 0) {
-            hitbox_.dimension_.origin_ = {2, 0};
-        }
+        hitbox_.dimension_.size_ = {4, 4};
+        hitbox_.dimension_.origin_ = {3, 3};
+        origin_ = {3, 3};
 
-        sprite_index_ = 163;
+        sprite_index_ = 164;
     }
 
 
     void step() override
     {
         if (health_ == 0) {
+            engine().add_object<ExploSpewer>(Vec2<Fixnum>{
+                    x(), y()
+                });
             kill();
+            platform().speaker().stop_music();
+            owner_->kill();
+            for (auto& e : engine().enemies_) {
+                e->kill();
+            }
         }
-        position_.x = owner_->position().x + offset_.x;
-        position_.y = owner_->position().y + offset_.y;
-    }
 
+        animcyc_ += 1;
+        if (animcyc_ == 4) {
+            animcyc_ = 0;
+            sprite_subimage_ += 1;
+            if (sprite_subimage_ == 4) {
+                sprite_subimage_ = 0;
+            }
+        }
+
+        position_.x = owner_->position().x;
+        position_.y = owner_->position().y;
+    }
 };
 
 
 
 class Silencer : public Enemy
 {
+private:
+    Fixnum spd_ = 0.f;
+    int move_ = 0;
+
+    Vec2<float> dir_ = {0, 1};
+
+    u8 spawn_x_;
+    u8 spawn_y_;
+
+    struct Shield
+    {
+        u8 health_ = 2;
+        s8 x_offset_ = 0;
+    };
+
+    using Shields = std::array<Shield, 10>;
+    DynamicMemory<Shields> shields_;
+
 public:
 
     Silencer(const Vec2<Fixnum>& pos,
              u8 spawn_x,
              u8 spawn_y) :
-        Enemy(TaggedObject::Tag::ignored, Health{32})
+        Enemy(TaggedObject::Tag::ignored, Health{32}),
+        spawn_x_(spawn_x),
+        spawn_y_(spawn_y),
+        shields_(allocate_dynamic<Shields>(platform()))
     {
         position_ = pos;
 
@@ -66,17 +106,20 @@ public:
         hitbox_.dimension_.origin_ = {16, 8};
         origin_ = {16, 8};
 
-        engine().add_object<SilencerNeck>(this, Vec2<int>{-5, -2});
-        engine().add_object<SilencerNeck>(this, Vec2<int>{-7, -2});
-        engine().add_object<SilencerNeck>(this, Vec2<int>{-9, -2});
-        engine().add_object<SilencerNeck>(this, Vec2<int>{-11, -2});
-        engine().add_object<SilencerNeck>(this, Vec2<int>{-13, -2});
+        engine().add_object<SilencerCore>(this);
 
-        engine().add_object<SilencerNeck>(this, Vec2<int>{4, -2});
-        engine().add_object<SilencerNeck>(this, Vec2<int>{6, -2});
-        engine().add_object<SilencerNeck>(this, Vec2<int>{8, -2});
-        engine().add_object<SilencerNeck>(this, Vec2<int>{10, -2});
-        engine().add_object<SilencerNeck>(this, Vec2<int>{12, -2});
+
+        (*shields_)[9].x_offset_ = -5;
+        (*shields_)[8].x_offset_ = -7;
+        (*shields_)[7].x_offset_ = -9;
+        (*shields_)[6].x_offset_ = -11;
+        (*shields_)[5].x_offset_ = -13;
+
+        (*shields_)[4].x_offset_ = 4;
+        (*shields_)[3].x_offset_ = 6;
+        (*shields_)[2].x_offset_ = 8;
+        (*shields_)[1].x_offset_ = 10;
+        (*shields_)[0].x_offset_ = 12;
 
         speed_.y = Fixnum(0.001f);
     }
@@ -94,6 +137,20 @@ public:
         spr_.set_position({x() + 16, y()});
         spr_.set_flip({true, false});
         screen.draw(spr_);
+
+        {
+            Fixnum posx = position_.x;
+
+            Sprite spr;
+            spr.set_texture_index(163);
+
+            for (auto& s : *shields_) {
+                if (s.health_ > 0) {
+                    spr.set_position({posx + s.x_offset_, y() - 2});
+                    screen.draw(spr);
+                }
+            }
+        }
     }
 
 
@@ -116,6 +173,27 @@ public:
             return false;
         }
 
+        Hitbox sh;
+        Vec2<Fixnum> pos;
+        sh.position_ = &pos;
+
+        for (auto& s_ : *shields_) {
+            if (s_.health_ > 0) {
+                pos.x = x() + s_.x_offset_;
+                pos.y = y() - 2;
+                sh.dimension_.size_ = {2, 4};
+                sh.dimension_.origin_ = {0, 0};
+                if (s_.x_offset_ > 0) {
+                    sh.dimension_.origin_ = {-2, 0};
+                }
+                if (sh.overlapping(s.hitbox())) {
+                    s.kill();
+                    s_.health_ = std::max(0, (int)s_.health_ - dmg);
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 
@@ -124,11 +202,14 @@ public:
     {
         if (health_ <= 0) {
             kill();
+            for (auto& e : engine().enemies_) {
+                e->kill();
+            }
             engine().add_object<Explo>(position_);
             return;
         }
 
-        Enemy::step();
+        const bool hard = engine().g_.difficulty_ == Difficulty::hard;
 
         switch (timeline_++) {
         case 0:
@@ -145,32 +226,184 @@ public:
             break;
 
         case 40:
+            move_ = 1;
             break;
 
-        case 75:
+        case 80:
+        case 90: {
+            int sp_count = 2;
+            if (hard) {
+                sp_count = 3;
+            }
+            if (TaggedObject::count(Tag::drone) < sp_count) {
+                engine().add_object<Drone>(Vec2<Fixnum>{x() - 4, y() - 4});
+            }
+            break;
+        }
+        case 100:
+            if (hard) {
+                if (TaggedObject::count(Tag::drone) < 3) {
+                    engine().add_object<Drone>(Vec2<Fixnum>{x() - 4, y() - 4});
+                }
+            }
             break;
 
-        case 99:
+        case 600:
+            if (not hard) {
+                break;
+            }
+            spd_ = 0;
+            speed_ = {};
+            move_ = 0;
+            for (int i = 0; i < 4; ++i) {
+                if (auto e = engine().add_object<Megashot>(Vec2<Fixnum>{x() - 4,
+                                                                        y() - 4})) {
+                    e->set_speed(0.5f, i * 90 + 45);
+                }
+                if (auto e = engine().add_object<EnemyShot>(Vec2<Fixnum>{x() - 2,
+                                                                         y() - 2})) {
+                    e->set_speed(0.5f, i * 90);
+                }
+                if (auto e = engine().add_object<EnemyShot>(Vec2<Fixnum>{x() - 2,
+                                                                         y() - 2})) {
+                    e->set_speed(1.f, i * 90);
+                }
+            }
+            break;
+
+        case 640:
+        case 240:
+            if (timeline_ - 1 == 640 and hard) {
+                break;
+            }
+            spd_ = 0;
+            speed_ = {};
+            move_ = 0;
+            if (hard) {
+                for (int i = 0; i < 5; ++i) {
+                    if (auto e = engine().add_object<EnemyShot>(Vec2<Fixnum>{x() - 2,
+                                                                                 y() - 2})) {
+                        e->set_speed(1.8f / 2, i * 22 - 45);
+                    }
+                    if (auto e = engine().add_object<EnemyShot>(Vec2<Fixnum>{x() - 2,
+                                                                                 y() - 2})) {
+                        e->set_speed(1.8f / 2, i * 22 + 135);
+                    }
+                }
+            } else {
+                for (int i = 0; i < 3; ++i) {
+                    if (i not_eq 1) {
+                        if (auto e = engine().add_object<EnemyShot>(Vec2<Fixnum>{x() - 2,
+                                                                                     y() - 2})) {
+                            e->set_speed(1.5f / 2, i * 45 - 45);
+                        }
+                        if (auto e = engine().add_object<EnemyShot>(Vec2<Fixnum>{x() - 2,
+                                                                                     y() - 2})) {
+                            e->set_speed(1.5f / 2, i * 45 + 135);
+                        }
+                    }
+                }
+            }
+            break;
+
+        case 400:
+            if (hard) {
+                move_ = 2;
+            }
+            break;
+
+        case 440:
+        case 450:
+            move_ = 2;
+            if (not hard) {
+                break;
+            }
+            if (TaggedObject::count(Tag::spew) < 2) {
+                engine().add_object<Spew>(Vec2<Fixnum>{x() - 4, y() - 4});
+            }
+            break;
+
+
+        case 480:
+        case 490:
+            if (hard) {
+                break;
+            }
+            if (TaggedObject::count(Tag::spew) < 2) {
+                engine().add_object<Spew>(Vec2<Fixnum>{x() - 4, y() - 4});
+            }
+            break;
+
+        case 839:
             timeline_ = 40;
             break;
         }
 
         if (not place_free({position_.x + speed_.x,
-                            position_.y + speed_.y})) {
+                            position_.y + speed_.y}, 3)) {
             auto x = position_.x;
             auto y = position_.y;
-            if (not place_free({x + 2, y}) or not place_free({x - 2, y})) {
-                speed_.x = speed_.x * -1;
+            if (not place_free({x + 3, y}, 3) or not place_free({x - 3, y}, 3)) {
+                dir_.x = dir_.x * -1.f;
             }
-            if (not place_free({x, y + 2}) or not place_free({x, y - 2})) {
-                speed_.y = speed_.y * -1;
+            if (not place_free({x, y + 2}, 3) or not place_free({x, y - 2}, 3)) {
+                dir_.y = dir_.y * -1.f;
             }
+        }
+
+        Enemy::step();
+
+        Fixnum maxspeed = 1;
+        if (engine().g_.difficulty_ == Difficulty::hard) {
+            maxspeed = Fixnum(1.f + 1.f / 3);
+        }
+
+        if (move_ == 1) {
+            if (spd_ < maxspeed) {
+                spd_ += Fixnum(0.05f / 2);
+            }
+            dir_ = rotate(dir_, 1);
+        }
+        if (move_ == 2) {
+            if (spd_ < maxspeed) {
+                spd_ += Fixnum(0.05f / 2);
+            }
+            dir_ = rotate(dir_, 359);
+        }
+
+        if (spd_ > 0) {
+            trailcyc_ += 1;
+            if (trailcyc_ == 30) {
+                trailcyc_ = 0;
+                EnemyProjectile* e;
+                if (engine().g_.difficulty_ == Difficulty::hard) {
+                    e = engine().add_object<Supershot>(Vec2<Fixnum>{
+                            x() - 2, y() - 2
+                                });
+                } else {
+                    e = engine().add_object<EnemyShot>(Vec2<Fixnum>{
+                            x() - 2, y() - 2
+                                });
+                }
+
+                if (e) {
+
+                    auto d2 = rotate(dir_, 180);
+                    d2 = d2 * 0.5f;
+                    e->set_speed({Fixnum(d2.x), Fixnum(d2.y)});
+                }
+            }
+        }
+
+        {
+            speed_.x = spd_ * Fixnum(dir_.x);
+            speed_.y = spd_ * Fixnum(dir_.y);
         }
     }
 
 
 private:
-
+    int trailcyc_ = 0;
     int timeline_ = 0;
 
 };

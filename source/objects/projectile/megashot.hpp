@@ -28,12 +28,6 @@ public:
     }
 
 
-    void set_speed(const Vec2<Fixnum>& speed)
-    {
-        speed_ = speed;
-    }
-
-
     void kill() override
     {
         EnemyProjectile::kill();

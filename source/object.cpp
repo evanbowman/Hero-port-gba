@@ -58,6 +58,64 @@ struct IntHitbox
 
 
 
+bool Object::place_free(Vec2<Fixnum> pos, int diameter)
+{
+    auto intx = pos.x.as_integer();
+    auto inty = pos.y.as_integer();
+
+    // Onscreen area starts at 0, 40.
+    intx -= 40;
+
+    const int tile_x = intx / 8;
+    const int tile_y = inty / 8;
+
+    Vec2<Fixnum> wall_pos;
+
+    Hitbox wall_hb;
+    wall_hb.dimension_.size_ = {8, 8};
+    wall_hb.position_ = &wall_pos;
+
+    auto cached_pos = hitbox_.position_;
+    hitbox_.position_ = &pos;
+
+    for (int x = -diameter; x < 1 + diameter; ++x) {
+        for (int y = -diameter; y < 1 + diameter; ++y) {
+            auto cx = tile_x + x;
+            auto cy = tile_y + y;
+            if (cx > -1 and cx < 20 and cy > -1 and cy < 20) {
+                if (engine().room_.walls_[cx][cy]) {
+                    wall_pos.x = 40 + cx * 8;
+                    wall_pos.y = cy * 8;
+
+                    if (wall_hb.overlapping(hitbox_)) {
+                        hitbox_.position_ = cached_pos;
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
+    for (auto& obj : engine().generic_solids_) {
+        if (obj.get() not_eq this) {
+            if (obj->hitbox().overlapping(hitbox_)) {
+                hitbox_.position_ = cached_pos;
+                return false;
+            }
+        }
+    }
+
+    hitbox_.position_ = cached_pos;
+
+    if (pos.x > 200 or pos.x < 40 or pos.y < 0 or pos.y > 160) {
+        return false;
+    }
+
+    return true; // TODO...
+}
+
+
+
 bool Object::place_free(Vec2<Fixnum> pos)
 {
     auto intx = pos.x.as_integer();

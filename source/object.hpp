@@ -60,6 +60,9 @@ public:
     bool place_free(Vec2<Fixnum> pos);
 
 
+    bool place_free(Vec2<Fixnum> pos, int diameter);
+
+
     Fixnum& y()
     {
         return position_.y;
