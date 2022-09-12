@@ -307,6 +307,22 @@ void HydraHead::step()
 
 
 
+Hydra::Hydra(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y) :
+    Enemy(TaggedObject::Tag::ignored, Health{9999})
+{
+    position_ = pos;
+
+    sprite_index_ = 0;
+
+    hitbox_.dimension_.size_ = {42, 48};
+
+    engine().add_object<HydraHead>(Vec2<Fixnum>{x(), y() + 5}, 40);
+    engine().add_object<HydraHead>(Vec2<Fixnum>{x(), y() + 5 + 8}, 20);
+    engine().add_object<HydraHead>(Vec2<Fixnum>{x(), y() + 5 + 16}, 0);
+
+    draw_image(platform(), 49, spawn_x / 8 + 5, spawn_y / 8, 6, 6, Layer::map_0);
+}
+
 
 
 }

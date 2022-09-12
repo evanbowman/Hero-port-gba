@@ -81,19 +81,7 @@ private:
 
 public:
 
-    Hydra(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y) :
-        Enemy(TaggedObject::Tag::ignored, Health{9999})
-    {
-        position_ = pos;
-
-        sprite_index_ = 0;
-
-        hitbox_.dimension_.size_ = {42, 48};
-
-        engine().add_object<HydraHead>(Vec2<Fixnum>{x(), y() + 7}, 40);
-        engine().add_object<HydraHead>(Vec2<Fixnum>{x(), y() + 7 + 8}, 20);
-        engine().add_object<HydraHead>(Vec2<Fixnum>{x(), y() + 7 + 16}, 0);
-    }
+    Hydra(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y);
 
 
     void step() override
