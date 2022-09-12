@@ -86,7 +86,7 @@ public:
 
     void step() override
     {
-        if (health_ <= 0) {
+        if (health_ <= 0 or length(engine().enemies_) == 1) {
             kill();
             engine().add_object<Explo>(position_);
             return;

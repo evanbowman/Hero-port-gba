@@ -80,6 +80,7 @@ void HydraHead::step()
     const bool hard = engine().g_.difficulty_ == Difficulty::hard;
 
     if (deadcyc_) {
+        flash_ = false;
         ++deadcyc_;
 
         auto xdiff_ = Fixnum(0.2f) * (x_start_ - x());
