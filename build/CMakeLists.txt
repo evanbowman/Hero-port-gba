@@ -57,6 +57,7 @@ set(SOURCES
   ${SOURCE_DIR}/taggedObject.cpp
   ${SOURCE_DIR}/objects/hero.cpp
   ${SOURCE_DIR}/localization.cpp
+  ${SOURCE_DIR}/objects/enemies/boss/hydra.cpp
   ${SOURCE_DIR}/memory/pool.cpp
   ${SOURCE_DIR}/filesystem.cpp
   ${SOURCE_DIR}/string.cpp

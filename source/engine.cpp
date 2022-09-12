@@ -29,6 +29,7 @@
 #include "objects/enemies/elite/annihilator.hpp"
 #include "objects/enemies/boss/reaperDrone.hpp"
 #include "objects/enemies/boss/silencer.hpp"
+#include "objects/enemies/boss/hydra.hpp"
 #include "objects/misc/savepoint.hpp"
 #include "objects/particles/weed.hpp"
 #include "objects/particles/star.hpp"
@@ -144,7 +145,8 @@ void Engine::begin_game(Difficulty d)
 
     if (d == Difficulty::hard) {
         g_.checkpoint_room_ = {6, 0};
-        load(6, 0, false);
+        // load(6, 0, false);
+        load(11, 6, false); // hydra
         // load(13, 8, false); // silencer
         // load(0, 6, false); // annihilator
         // load(9, 8, false); // chain snake
@@ -493,6 +495,9 @@ void Engine::draw_hud_heat()
     }
 
     Float heat_percent = g_.heat_ / Float(g_.maxheat_);
+
+    platform().screen().fade(0.2f * heat_percent, ColorConstant::silver_white);
+
     int v_tiles = 18;
     int full_tiles = heat_percent * v_tiles;
 
@@ -834,6 +839,13 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                 engine().add_object<Silencer>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
                                               obj.x_,
                                               obj.y_);
+                break;
+
+            case 36:
+                engine().add_object<Hydra>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
+                                           obj.x_,
+                                           obj.y_);
+                break;
 
             default:
                 break;
