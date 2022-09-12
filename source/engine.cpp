@@ -145,8 +145,8 @@ void Engine::begin_game(Difficulty d)
 
     if (d == Difficulty::hard) {
         g_.checkpoint_room_ = {6, 0};
-        // load(6, 0, false);
-        load(11, 6, false); // hydra
+        load(6, 0, false);
+        // load(11, 6, false); // hydra
         // load(13, 8, false); // silencer
         // load(0, 6, false); // annihilator
         // load(9, 8, false); // chain snake

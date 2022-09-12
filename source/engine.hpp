@@ -99,7 +99,7 @@ public:
 
     struct Globalstate
     {
-        Difficulty difficulty_ = Difficulty::hard;
+        Difficulty difficulty_ = Difficulty::normal;
         bool autofire_ = false;
         bool hero_jetpack_flames_ = true;
         int hp_ = 10;
