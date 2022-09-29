@@ -23,6 +23,9 @@ public:
     void draw(Platform::Screen& s) const override;
 
 
+    bool overlapping_impl(Object& obj);
+
+
     bool overlapping(Object& obj) override;
 
 
@@ -106,8 +109,12 @@ private:
         }
     };
 
-    using ChildBuffer = Buffer<Orb, 16>;
-    DynamicMemory<ChildBuffer> orbs_;
+    using OrbBuffer = Buffer<Orb, 16>;
+    struct Components
+    {
+        OrbBuffer orbs_;
+    };
+    DynamicMemory<Components> c_;
 };
 
 

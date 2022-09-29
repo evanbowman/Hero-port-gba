@@ -73,7 +73,7 @@ public:
 
 
 RockSmasher::RockSmasher(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y) :
-    orbs_(allocate_dynamic<ChildBuffer>(platform()))
+    c_(allocate_dynamic<Components>(platform()))
 {
     position_ = pos;
 
@@ -129,13 +129,14 @@ RockSmasher::RockSmasher(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y) :
                                          Fixnum(54 / 2),
                                          Fixnum(22 / 2),
                                          13);
+
 }
 
 
 
 void RockSmasher::draw(Platform::Screen& s) const
 {
-    for (auto& orb : (*orbs_)) {
+    for (auto& orb : (c_->orbs_)) {
         orb.draw(s);
     }
 
@@ -144,15 +145,8 @@ void RockSmasher::draw(Platform::Screen& s) const
 
 
 
-bool RockSmasher::overlapping(Object& other)
+bool RockSmasher::overlapping_impl(Object& other)
 {
-    // Checking intersection with the rocksmasher is pretty costly. Only test
-    // collisions with the player and the player's shots.
-    if (&other not_eq engine().hero() and not
-        dynamic_cast<Shot*>(&other)) {
-        return false;
-    }
-
     auto& hb = other.hitbox();
 
     // We can't realistically do pixel-perfect collisions on a gba. Or maybe we
@@ -244,14 +238,43 @@ bool RockSmasher::overlapping(Object& other)
 
 
 
+bool RockSmasher::overlapping(Object& other)
+{
+    // Checking intersection with the rocksmasher is pretty costly. Only test
+    // collisions with the player and the player's shots.
+    if (&other not_eq engine().hero()) {
+        return false;
+    }
+
+    return overlapping_impl(other);
+}
+
+
+
 void RockSmasher::step()
 {
+    if (hp_ == 0) {
+        c_->orbs_.clear();
+        kill();
+    }
+
     platform().scroll(Layer::map_1,
                       -(position_.x - 40).as_integer(),
                       -(position_.y - 40).as_integer());
 
 
-    for (auto& orb : (*orbs_)) {
+    for (auto& s : engine().player_projectiles_) {
+        if (s->x() < x() - 36 or
+            s->x() > x() + 30 or
+            s->y() < y() - 30 or
+            s->y() > y() + 36) {
+            if (overlapping_impl(*s)) {
+                s->kill();
+            }
+        }
+    }
+
+    for (auto& orb : (c_->orbs_)) {
         orb.step();
     }
 
@@ -280,28 +303,28 @@ void RockSmasher::step()
         switch (move_) {
         case 1:
             position_.x += 1;
-            if (overlapping(*engine().hero())) {
+            if (overlapping_impl(*engine().hero())) {
                 engine().hero()->x() += 1;
             }
             break;
 
         case 2:
             position_.y -= 1;
-            if (overlapping(*engine().hero())) {
+            if (overlapping_impl(*engine().hero())) {
                 engine().hero()->y() -= 1;
             }
             break;
 
         case 3:
             position_.x -= 1;
-            if (overlapping(*engine().hero())) {
+            if (overlapping_impl(*engine().hero())) {
                 engine().hero()->x() -= 1;
             }
             break;
 
         case 4:
             position_.y += 1;
-            if (overlapping(*engine().hero())) {
+            if (overlapping_impl(*engine().hero())) {
                 engine().hero()->y() += 1;
             }
             break;
@@ -322,14 +345,14 @@ void RockSmasher::step()
 
     case 40:
         for (int i = 0; i < 8; ++i) {
-            orbs_->emplace_back(this,
+            c_->orbs_.emplace_back(this,
                                 Fixnum(i * 45),
                                 Fixnum((256 + 32 * i) / 2),
                                 Fixnum(128 / 2),
                                 Fixnum(-0.5f),
                                 1);
 
-            orbs_->emplace_back(this,
+            c_->orbs_.emplace_back(this,
                                 Fixnum(i * 45),
                                 Fixnum((256 + 32 * i) / 2),
                                 Fixnum(112 / 2),
@@ -366,7 +389,7 @@ void RockSmasher::step()
         }
 
         if (shotcyc_ == 2 or shotcyc_ == 6) {
-            for (auto& o : (*orbs_)) {
+            for (auto& o : (c_->orbs_)) {
                 if (o.mode_ == 1) {
                     Vec2<Fixnum> v{o.x_, o.y_};
                     if (auto e = engine().add_object<EnemyShot>(v)) {
@@ -381,8 +404,8 @@ void RockSmasher::step()
         }
 
         if (shotcyc_ == 4 or shotcyc_ == 8) {
-            for (auto& o : (*orbs_)) {
-                if (o.mode_ == 1) {
+            for (auto& o : (c_->orbs_)) {
+                if (o.mode_ == 2) {
                     Vec2<Fixnum> v{o.x_, o.y_};
                     if (auto e = engine().add_object<Supershot>(v)) {
                         auto dir = direction(fvec(v),
@@ -399,12 +422,34 @@ void RockSmasher::step()
             shotcyc_ = 0;
             shotcyc2_ += 1;
             if (shotcyc2_ == 1) {
-                // TODO...
+                for (auto& o : (c_->orbs_)) {
+                    if (o.mode_ == 2) {
+                        Vec2<Fixnum> v{o.x_, o.y_};
+                        if (auto e = engine().add_object<Supershot>(v)) {
+                            auto dir = rotate({1, 0}, 270);
+                            if (o.x_ > x()) {
+                                dir = rotate({1, 0}, 90);
+                            }
+                            e->set_speed({Fixnum(dir.x), Fixnum(dir.y)});
+                        }
+                    }
+                }
             }
 
             if (shotcyc2_ == 2) {
                 shotcyc2_ = 0;
-                // TODO..
+                for (auto& o : (c_->orbs_)) {
+                    if (o.mode_ == 2) {
+                        Vec2<Fixnum> v{o.x_, o.y_};
+                        if (auto e = engine().add_object<Supershot>(v)) {
+                            auto dir = rotate({1, 0}, 180);
+                            if (o.y_ > y()) {
+                                dir = rotate({1, 0}, 0);
+                            }
+                            e->set_speed({Fixnum(dir.x), Fixnum(dir.y)});
+                        }
+                    }
+                }
             }
         }
 
