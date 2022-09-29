@@ -30,6 +30,7 @@
 #include "objects/enemies/boss/reaperDrone.hpp"
 #include "objects/enemies/boss/silencer.hpp"
 #include "objects/enemies/boss/hydra.hpp"
+#include "objects/enemies/boss/rockSmasher.hpp"
 #include "objects/misc/savepoint.hpp"
 #include "objects/particles/weed.hpp"
 #include "objects/particles/star.hpp"
@@ -81,7 +82,7 @@ Engine& engine()
 
 
 Engine::Engine(Platform& pf) :
-    hero_(alloc_object<Hero>(Vec2<Fixnum>{90, 70})),
+    hero_(alloc_object<Hero>(Vec2<Fixnum>{110, 70})),
     p_(allocate_dynamic<Persistence>(pf)),
     current_scene_(scene_pool::alloc<OverworldScene>()),
     next_scene_(null_scene())
@@ -115,6 +116,15 @@ void Engine::respawn_to_checkpoint()
 {
     // TODO: implement checkpoints!
 
+    for (int x = 0; x < 64; ++x) {
+        for (int y = 0; y < 64; ++y) {
+            // FIXME...
+            // Empty tile in rocksmasher tile layer.
+            platform().set_tile(Layer::map_1, x, y, 24);
+        }
+    }
+
+
     room_.clear();
     hero_->set_position(Vec2<Fixnum>{40 + g_.checkpoint_coords_.x,
                                          g_.checkpoint_coords_.y});
@@ -134,7 +144,7 @@ void Engine::begin_game(Difficulty d)
 {
     room_.clear();
 
-    hero_->set_position(Vec2<Fixnum>{90, 70});
+    hero_->set_position(Vec2<Fixnum>{110, 130});
     g_.checkpoint_coords_.x = 50;
     g_.checkpoint_coords_.y = 70;
 
@@ -157,7 +167,8 @@ void Engine::begin_game(Difficulty d)
         // load(1, 4, false); // reaper drone
     } else {
         g_.checkpoint_room_ = {11, 14};
-        load(11, 14, false);
+        // load(11, 14, false);
+        load(9, 9, false); // rock smasher
     }
 }
 
@@ -198,9 +209,12 @@ void Engine::collision_check()
     for (auto& e : enemies_) {
         if (e->hitbox().overlapping(hero_->hitbox())) {
             if (not g_.invulnerable_) {
-                g_.damage(e->collision_damage(),
-                          e->collision_damage_extra_invulnerable_time());
-                draw_hud();
+                auto dmg = e->collision_damage();
+                if (dmg) {
+                    g_.damage(dmg,
+                              e->collision_damage_extra_invulnerable_time());
+                    draw_hud();
+                }
             }
         }
     }
@@ -677,6 +691,10 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                 continue;
             }
 
+            // NOTE: see encode.py for object type integers. I wrote a python
+            // script to scrape objects from the game map, and I assigned
+            // integers to each type of object. If I had more time, I might try
+            // to clean this code up.
             switch (obj.type_) {
             case 0: // null
                 break;
@@ -845,6 +863,12 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                 engine().add_object<Hydra>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
                                            obj.x_,
                                            obj.y_);
+                break;
+
+            case 37:
+                engine().add_object<RockSmasher>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
+                                                 obj.x_,
+                                                 obj.y_);
                 break;
 
             default:

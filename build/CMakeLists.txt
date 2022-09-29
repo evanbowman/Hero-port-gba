@@ -58,6 +58,7 @@ set(SOURCES
   ${SOURCE_DIR}/objects/hero.cpp
   ${SOURCE_DIR}/localization.cpp
   ${SOURCE_DIR}/objects/enemies/boss/hydra.cpp
+  ${SOURCE_DIR}/objects/enemies/boss/rockSmasher.cpp
   ${SOURCE_DIR}/memory/pool.cpp
   ${SOURCE_DIR}/filesystem.cpp
   ${SOURCE_DIR}/string.cpp
@@ -123,6 +124,7 @@ if(GAMEBOY_ADVANCE)
     ${DATA_DIR}/zone1.s
     ${DATA_DIR}/overlay.s
     ${DATA_DIR}/tile0.s
+    ${DATA_DIR}/rock_smasher.s
     ${DATA_DIR}/spritesheet.s
     ${DATA_DIR}/overlay_text_key.s
     ${DATA_DIR}/charset0.s
@@ -336,6 +338,7 @@ if(GAMEBOY_ADVANCE)
     add_overlay(charset0 0 0 NO)
     add_overlay(charset1 0 0 NO)
     add_tilesheet(tile0 0 0 NO)
+    add_tilesheet(rock_smasher 0 0 NO)
     add_spritesheet(spritesheet 2 2 NO)
 
     configure_file(images.cpp.in ${SOURCE_DIR}/platform/gba/images.cpp)

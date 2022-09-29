@@ -98,7 +98,7 @@ bool Object::place_free(Vec2<Fixnum> pos, int diameter)
 
     for (auto& obj : engine().generic_solids_) {
         if (obj.get() not_eq this) {
-            if (obj->hitbox().overlapping(hitbox_)) {
+            if (((Solid*)obj.get())->overlapping(*this)) {
                 hitbox_.position_ = cached_pos;
                 return false;
             }
@@ -156,7 +156,7 @@ bool Object::place_free(Vec2<Fixnum> pos)
 
     for (auto& obj : engine().generic_solids_) {
         if (obj.get() not_eq this) {
-            if (obj->hitbox().overlapping(hitbox_)) {
+            if (((Solid*)obj.get())->overlapping(*this)) {
                 hitbox_.position_ = cached_pos;
                 return false;
             }

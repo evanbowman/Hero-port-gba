@@ -52,7 +52,7 @@ Game by Daniel Remar, music by BrotherAndroid.
 
 
 #### Bosses
-- [ ] Rock Smasher
+- [x] Rock Smasher
 - [x] Silencer
 - [x] Plasma Hydra
 - [x] Reaper Drone
@@ -61,8 +61,12 @@ Game by Daniel Remar, music by BrotherAndroid.
 - [ ] Guardian
 - [ ] Star Splitter
 - [ ] Elite
-- [ ] Eliminator
 - [ ] Cruiser Tetron
+
+- [ ] Eliminator
+- [ ] Boss death animations
+
+Note: boss death animations involve tons of code and I haven't finished them yet. Sometimes there's as much code in the boss death sequence as in the boss itself.
 
 
 ### Enemy Projectiles
