@@ -19,6 +19,31 @@ public:
 
 
 
+class MapScene : public Scene
+{
+public:
+
+    ScenePtr<Scene> step() override;
+
+
+    void display() override;
+
+
+    void enter(Scene& prev_scene) override;
+
+private:
+
+    void show_worldmap();
+    void show_zoomedmap();
+
+    int sel_ = 0;
+
+    Buffer<Vec2<u8>, 16> warp_points_;
+
+};
+
+
+
 class OverworldScene : public Scene
 {
     int respawn_countdown_ = 0;
@@ -64,6 +89,11 @@ public:
             e.unlock_doors();
         }
 
+        if (platform().keyboard().down_transition<Key::start>()) {
+            engine().paused_ = true;
+            return scene_pool::alloc<MapScene>();
+        }
+
         return null_scene();
     }
 
@@ -92,6 +122,7 @@ public:
     }
 
 };
+
 
 
 

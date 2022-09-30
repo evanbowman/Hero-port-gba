@@ -141,7 +141,7 @@ void Engine::begin_game(Difficulty d)
 {
     room_.clear();
 
-    hero_->set_position(Vec2<Fixnum>{110, 130});
+    hero_->set_position(Vec2<Fixnum>{110, 80});
     g_.checkpoint_coords_.x = 50;
     g_.checkpoint_coords_.y = 70;
 
@@ -164,8 +164,8 @@ void Engine::begin_game(Difficulty d)
         // load(1, 4, false); // reaper drone
     } else {
         g_.checkpoint_room_ = {11, 14};
-        // load(11, 14, false);
-        load(9, 9, false); // rock smasher
+        load(11, 14, false);
+        // load(9, 9, false); // rock smasher
     }
 }
 
@@ -173,6 +173,10 @@ void Engine::begin_game(Difficulty d)
 
 void Engine::collision_check()
 {
+    if (paused_) {
+        return;
+    }
+
     for (auto& p : enemy_projectiles_) {
         if (p->hitbox().overlapping(hero_->hitbox())) {
             if (not g_.invulnerable_) {
@@ -293,13 +297,15 @@ void Engine::run()
 
             ++frame_count_;
 
-            for (auto& l : lm_) {
-                if (l->hitbox().overlapping(hero_->hitbox())) {
-                    if (g_.heat_ < g_.maxheat_) {
-                        g_.heat_ += 3;
-                        g_.heat_ = std::min(g_.heat_, g_.maxheat_);
-                        draw_hud_heat();
-                        break;
+            if (not paused_) {
+                for (auto& l : lm_) {
+                    if (l->hitbox().overlapping(hero_->hitbox())) {
+                        if (g_.heat_ < g_.maxheat_) {
+                            g_.heat_ += 3;
+                            g_.heat_ = std::min(g_.heat_, g_.maxheat_);
+                            draw_hud_heat();
+                            break;
+                        }
                     }
                 }
             }
@@ -427,6 +433,8 @@ void Engine::load(int chunk_x, int chunk_y, bool restore)
 
     platform().sleep(1);
     room_.load(chunk_x, chunk_y, restore);
+
+    visited_.set(chunk_x, chunk_y, true);
 }
 
 

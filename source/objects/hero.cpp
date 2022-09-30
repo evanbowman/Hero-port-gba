@@ -12,6 +12,10 @@ namespace herocore
 
 void Hero::step()
 {
+    if (engine().paused_) {
+        return;
+    }
+
     if (engine().g_.hp_ == 0) {
         return;
     }

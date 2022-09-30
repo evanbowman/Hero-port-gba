@@ -13,6 +13,7 @@
 #include "objects/solid.hpp"
 #include "objects/hero.hpp"
 #include "scene.hpp"
+#include "bitvector.hpp"
 
 
 
@@ -96,6 +97,8 @@ public:
         u8 zone_ = 0;
     } room_;
 
+    Bitmatrix<16, 16> visited_;
+    bool paused_ = false;
 
     struct Globalstate
     {

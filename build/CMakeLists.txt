@@ -54,6 +54,7 @@ set(SOURCES
   ${SOURCE_DIR}/engine.cpp
   ${SOURCE_DIR}/object.cpp
   ${SOURCE_DIR}/maps.cpp
+  ${SOURCE_DIR}/scenes.cpp
   ${SOURCE_DIR}/taggedObject.cpp
   ${SOURCE_DIR}/objects/hero.cpp
   ${SOURCE_DIR}/localization.cpp
