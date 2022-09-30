@@ -222,7 +222,7 @@ private:
 };
 
 
-using Fixnum = FixedPoint<40, s64>;
+using Fixnum = FixedPoint<32, s64>;
 
 
 constexpr Fixnum operator"" _fixed(long double value)

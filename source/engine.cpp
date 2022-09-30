@@ -114,13 +114,10 @@ Engine::Engine(Platform& pf) :
 
 void Engine::respawn_to_checkpoint()
 {
-    // TODO: implement checkpoints!
-
     for (int x = 0; x < 64; ++x) {
         for (int y = 0; y < 64; ++y) {
-            // FIXME...
-            // Empty tile in rocksmasher tile layer.
-            platform().set_tile(Layer::map_1, x, y, 24);
+            // NOTE: I'm using layer 1 for large bosses, clear out the layer.
+            platform().set_tile(Layer::map_1, x, y, 0);
         }
     }
 

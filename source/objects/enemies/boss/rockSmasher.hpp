@@ -55,6 +55,7 @@ private:
         u8 rfire_ = 0;
         u8 rfirecyc_ = 0;
         u8 dir_ = 0;
+        int r_ = 0;
 
         Orb(RockSmasher* owner,
             Fixnum rot,
@@ -63,12 +64,13 @@ private:
             Fixnum rot_speed,
             u8 mode) :
             owner_(owner),
-            rot_(rot),
+            rot_(0),
             d_(d),
             d_max_(d_max),
             rot_speed_(rot_speed),
             mode_(mode)
         {
+            r_ = rot.as_integer();
         }
 
         void draw(Platform::Screen& s) const
@@ -92,16 +94,29 @@ private:
 
             rot_ += rot_speed_;
 
-            if (rot_ > 360) {
-                rot_ -= 360;
+            if (rot_speed_ > 0) {
+                while (rot_ > 1) {
+                    ++r_;
+                    rot_ -= 1;
+                }
+            } else {
+                while (rot_ < -1) {
+                    --r_;
+                    rot_ += 1;
+                }
             }
 
-            if (rot_ < 0) {
-                rot_ += 360;
+
+            if (r_ > 360) {
+                r_ -= 360;
+            }
+
+            if (r_ < 0) {
+                r_ += 360;
             }
 
             static constexpr auto rot_lut = make_rotation_lut(0);
-            auto rvec = rot_lut[rot_.as_integer()];
+            auto rvec = rot_lut[r_];
 
             auto result = owner_->position() + rvec * d_;
             x_ = result.x;
@@ -109,10 +124,21 @@ private:
         }
     };
 
+public:
+    struct Core
+    {
+        u8 tx_;
+        u8 ty_;
+        u8 hp_;
+    };
+
     using OrbBuffer = Buffer<Orb, 16>;
     struct Components
     {
         OrbBuffer orbs_;
+        Core cores_[8];
+        int core_animcyc_ = 0;
+        int core_anim_ = 0;
     };
     DynamicMemory<Components> c_;
 };

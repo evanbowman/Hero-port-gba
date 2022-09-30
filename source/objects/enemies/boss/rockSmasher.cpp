@@ -12,37 +12,89 @@ namespace herocore
 
 
 
+class EnemyShotTimeout : public EnemyProjectile
+{
+private:
+
+    int anim_ = 0;
+    int count_ = 0;
+
+public:
+
+    EnemyShotTimeout(const Vec2<Fixnum>& pos) : EnemyProjectile(pos, 1, 0)
+    {
+        sprite_index_ = 17;
+
+        hitbox_.dimension_.size_ = {5, 5};
+    }
+
+
+    void step() override
+    {
+        Object::step();
+
+        anim_ += 1;
+        if (anim_ == 2) {
+            anim_ = 0;
+            sprite_subimage_ += 1;
+            if (sprite_subimage_ > 3) {
+                sprite_subimage_ = 0;
+            }
+        }
+
+        count_ += 1;
+        if (count_ > 80) {
+            kill();
+        }
+    }
+
+};
+
+
+
 class RockSmasherCore : public Enemy
 {
 private:
     RockSmasher* owner_ = nullptr;
     int animcyc_ = 0;
-    Fixnum x_offset_;
-    Fixnum y_offset_;
 
 public:
 
-    u8 rfire_ = 0;
+    Fixnum x_offset_;
+    Fixnum y_offset_;
+
+    s8 rfire_ = 0;
     u8 rfirecyc_ = 0;
     u8 dir_ = 0;
 
     u8 mode_ = 0;
+    u8 id_ = 0;
 
     RockSmasherCore(RockSmasher* owner,
                     Fixnum x_offset,
                     Fixnum y_offset,
-                    u8 mode) :
+                    u8 mode,
+                    u8 id) :
         Enemy(TaggedObject::Tag::ignored, Health{32}),
         owner_(owner),
         x_offset_(x_offset),
         y_offset_(y_offset),
-        mode_(mode)
+        mode_(mode),
+        id_(id)
     {
         hitbox_.dimension_.size_ = {4, 5};
         hitbox_.dimension_.origin_ = {3, 3};
         origin_ = {3, 3};
 
         sprite_index_ = 164;
+
+        position_.x = owner_->position().x + x_offset_;
+        position_.y = owner_->position().y + y_offset_;
+    }
+
+
+    void draw(Platform::Screen&) const override
+    {
     }
 
 
@@ -54,19 +106,25 @@ public:
                 });
             kill();
             owner_->hp_--;
+            owner_->c_->cores_[id_].hp_ = 0;
         }
 
-        animcyc_ += 1;
-        if (animcyc_ == 4) {
-            animcyc_ = 0;
-            sprite_subimage_ += 1;
-            if (sprite_subimage_ == 4) {
-                sprite_subimage_ = 0;
+        if (rfire_ > 0) {
+            rfirecyc_ += 1;
+            if (rfirecyc_ == 5) {
+                rfirecyc_ = 0;
+                rfire_ = -1;
+
+                if (auto e = engine().add_object<EnemyShotTimeout>(position_)) {
+                    if (dir_ == 180) {
+                        e->set_speed({Fixnum(-1.5f), Fixnum(0)});
+                    } else {
+                        e->set_speed({Fixnum(1.5f), Fixnum(0)});
+                    }
+
+                }
             }
         }
-
-        position_.x = owner_->position().x + x_offset_;
-        position_.y = owner_->position().y + y_offset_;
     }
 };
 
@@ -81,54 +139,88 @@ RockSmasher::RockSmasher(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y) :
 
     for (int x = 0; x < 64; ++x) {
         for (int y = 0; y < 64; ++y) {
-            platform().set_tile(Layer::map_1, x, y, 24);
+            platform().set_tile(Layer::map_1, x, y, 54);
         }
     }
 
     draw_image(platform(), 2, 0, 0, 10, 10, Layer::map_1);
 
+    for (int x = 2; x < 8; ++x) {
+        for (int y = 2; y < 8; ++y) {
+            platform().set_tile(Layer::map_1, x, y, 0);
+        }
+    }
+
+
+    auto setup_core = [&](int n, u8 tx, u8 ty)
+                      {
+                          c_->cores_[n].tx_ = tx;
+                          c_->cores_[n].ty_ = ty;
+                          c_->cores_[n].hp_ = 32;
+                      };
+
+    setup_core(0, 1, 1);
+    setup_core(1, 1, 3);
+    setup_core(2, 1, 6);
+    setup_core(3, 1, 7);
+
+    setup_core(4, 8, 1);
+    setup_core(5, 8, 3);
+    setup_core(6, 8, 6);
+    setup_core(7, 8, 7);
+
+    // While cores are drawn with tiles for speed, we still create invisible
+    // core sentinel objects for collision checking.
     engine().add_object<RockSmasherCore>(this,
                                          Fixnum(-54 / 2),
                                          Fixnum(-50 / 2),
-                                         u8(18));
+                                         u8(18),
+                                         0);
 
     engine().add_object<RockSmasherCore>(this,
                                          Fixnum(-54 / 2),
                                          Fixnum(-22 / 2),
-                                         u8(17));
+                                         u8(17),
+                                         1);
 
 
     engine().add_object<RockSmasherCore>(this,
                                          Fixnum(-54 / 2),
                                          Fixnum(50 / 2),
-                                         u8(15));
+                                         u8(15),
+                                         3);
 
     engine().add_object<RockSmasherCore>(this,
                                          Fixnum(-54 / 2),
                                          Fixnum(22 / 2),
-                                         u8(16));
+                                         u8(16),
+                                         2);
 
 
     engine().add_object<RockSmasherCore>(this,
                                          Fixnum(54 / 2),
                                          Fixnum(-50 / 2),
-                                         11);
+                                         11,
+                                         4);
 
     engine().add_object<RockSmasherCore>(this,
                                          Fixnum(54 / 2),
                                          Fixnum(-22 / 2),
-                                         12);
+                                         12,
+                                         5);
 
 
     engine().add_object<RockSmasherCore>(this,
                                          Fixnum(54 / 2),
                                          Fixnum(50 / 2),
-                                         14);
+                                         14,
+                                         7);
 
     engine().add_object<RockSmasherCore>(this,
                                          Fixnum(54 / 2),
                                          Fixnum(22 / 2),
-                                         13);
+                                         13,
+                                         6);
 
 }
 
@@ -141,6 +233,90 @@ void RockSmasher::draw(Platform::Screen& s) const
     }
 
     Solid::draw(s);
+
+    c_->core_animcyc_ += 1;
+    if (c_->core_animcyc_ == 4) {
+        c_->core_animcyc_ = 0;
+        c_->core_anim_ += 1;
+        if (c_->core_anim_ == 4) {
+            c_->core_anim_ = 0;
+        }
+
+        // Originally I was using actual objects, but switched to tiles due to
+        // lag.
+        auto draw_cores =
+            [&](u8 tl, u8 tr)
+            {
+                if (c_->cores_[0].hp_) {
+                    platform().set_tile(Layer::map_1, 1, 1, (tl - 1) + 1);
+                    platform().set_tile(Layer::map_1, 1, 2, (tl - 1) + 2);
+                } else {
+                    platform().set_tile(Layer::map_1, 1, 1, 13);
+                    platform().set_tile(Layer::map_1, 1, 2, 23);
+                }
+                if (c_->cores_[1].hp_) {
+                    platform().set_tile(Layer::map_1, 1, 3, (tl - 1) + 3);
+                } else {
+                    platform().set_tile(Layer::map_1, 1, 3, 33);
+                }
+                if (c_->cores_[2].hp_) {
+                    platform().set_tile(Layer::map_1, 1, 6, (tl - 1) + 4);
+                } else {
+                    platform().set_tile(Layer::map_1, 1, 6, 63);
+                }
+                if (c_->cores_[3].hp_) {
+                    platform().set_tile(Layer::map_1, 1, 7, (tl - 1) + 5);
+                    platform().set_tile(Layer::map_1, 1, 8, (tl - 1) + 6);
+                } else {
+                    platform().set_tile(Layer::map_1, 1, 7, 73);
+                    platform().set_tile(Layer::map_1, 1, 8, 83);
+                }
+
+                if (c_->cores_[4].hp_) {
+                    platform().set_tile(Layer::map_1, 8, 1, (tr - 1) + 1);
+                    platform().set_tile(Layer::map_1, 8, 2, (tr - 1) + 2);
+                } else {
+                    platform().set_tile(Layer::map_1, 8, 1, 30);
+                    platform().set_tile(Layer::map_1, 8, 2, 30);
+                }
+                if (c_->cores_[5].hp_) {
+                    platform().set_tile(Layer::map_1, 8, 3, (tr - 1) + 3);
+                } else {
+                    platform().set_tile(Layer::map_1, 8, 3, 40);
+                }
+                if (c_->cores_[6].hp_) {
+                    platform().set_tile(Layer::map_1, 8, 6, (tr - 1) + 4);
+                } else {
+                    platform().set_tile(Layer::map_1, 8, 6, 70);
+                }
+                if (c_->cores_[7].hp_) {
+                    platform().set_tile(Layer::map_1, 8, 7, (tr - 1) + 5);
+                    platform().set_tile(Layer::map_1, 8, 8, (tr - 1) + 6);
+                } else {
+                    platform().set_tile(Layer::map_1, 8, 7, 80);
+                    platform().set_tile(Layer::map_1, 8, 8, 90);
+                }
+            };
+
+        switch (c_->core_anim_) {
+        case 0:
+            draw_cores(24, 64);
+            break;
+
+        case 1:
+            draw_cores(34, 74);
+            break;
+
+        case 2:
+            draw_cores(44, 102);
+            break;
+
+        case 3:
+            draw_cores(34, 74);
+            break;
+        }
+    }
+
 }
 
 
@@ -256,6 +432,13 @@ void RockSmasher::step()
     if (hp_ == 0) {
         c_->orbs_.clear();
         kill();
+
+        for (int x = 0; x < 64; ++x) {
+            for (int y = 0; y < 64; ++y) {
+                platform().set_tile(Layer::map_1, x, y, 0);
+            }
+        }
+
     }
 
     platform().scroll(Layer::map_1,
@@ -328,6 +511,13 @@ void RockSmasher::step()
                 engine().hero()->y() += 1;
             }
             break;
+        }
+
+        for (auto& e : engine().enemies_) {
+            if (auto p = dynamic_cast<RockSmasherCore*>(e.get())) {
+                p->x() = x() + p->x_offset_;
+                p->y() = y() + p->y_offset_;
+            }
         }
     }
 
