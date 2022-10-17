@@ -16,6 +16,7 @@ public:
 
     using Health = s16;
 
+
     Enemy(Tag tag, Health health) :
         TaggedObject(tag),
         health_(health)
@@ -23,12 +24,10 @@ public:
     }
 
 
-    virtual bool damage(Health dmg, Shot& s)
-    {
-        health_ = std::max(0, health_ - dmg);
-        s.kill();
-        return true;
-    }
+    virtual int hit_sound() const { return 1; }
+
+
+    virtual bool damage(Health dmg, Shot& s);
 
 
     void destroy()

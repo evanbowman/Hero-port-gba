@@ -40,6 +40,9 @@ private:
     u8 shotcyc3_ = 0;
     u8 shotcyc4_ = 0;
 
+    u8 spawn_x_;
+    u8 spawn_y_;
+
     int timeline_ = 0;
 
     struct Orb

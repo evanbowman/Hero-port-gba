@@ -15,7 +15,10 @@ private:
 
 public:
 
-    Shot(const Vec2<Fixnum>& pos, Fixnum speed)
+    Shot(const Vec2<Fixnum>& pos,
+         Fixnum speed,
+         int power) :
+        power_(power)
     {
         position_ = pos;
 
@@ -36,9 +39,15 @@ public:
     }
 
 
+    int damage() const
+    {
+        return power_;
+    }
+
+
 private:
     int timeline_ = 0;
-
+    int power_;
 };
 
 

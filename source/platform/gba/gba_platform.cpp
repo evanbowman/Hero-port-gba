@@ -2028,9 +2028,41 @@ static const AudioTrack* find_music(const char* name)
 // assembly output, adding the file to CMake, adding the include, and adding the
 // sound to the sounds array, it's just too tedious to keep working this way...
 #include "data/sound_msg.hpp"
+#include "data/snd_fireshot.hpp"
+#include "data/snd_bossroar.hpp"
+#include "data/snd_save.hpp"
+#include "data/snd_death.hpp"
+#include "data/snd_herospawn.hpp"
+#include "data/snd_hit1.hpp"
+#include "data/snd_hit2.hpp"
+#include "data/snd_hit3.hpp"
+#include "data/snd_hit4.hpp"
+#include "data/snd_pain.hpp"
+#include "data/snd_explo1.hpp"
+#include "data/snd_explo2.hpp"
+#include "data/snd_explo3.hpp"
+#include "data/snd_explo4.hpp"
 
 
-static const AudioTrack sounds[] = {DEF_SOUND(msg, sound_msg)};
+
+static const AudioTrack sounds[] = {
+    DEF_SOUND(msg, sound_msg),
+    DEF_SOUND(snd_fireshot, snd_fireshot),
+    DEF_SOUND(snd_hit1, snd_hit1),
+    DEF_SOUND(snd_hit2, snd_hit2),
+    DEF_SOUND(snd_hit3, snd_hit3),
+    DEF_SOUND(snd_hit4, snd_hit4),
+    DEF_SOUND(snd_mimicshot, snd_fireshot),
+    DEF_SOUND(snd_explo1, snd_explo1),
+    DEF_SOUND(snd_explo2, snd_explo2),
+    DEF_SOUND(snd_explo3, snd_explo3),
+    DEF_SOUND(snd_explo4, snd_explo4),
+    DEF_SOUND(snd_pain, snd_pain),
+    DEF_SOUND(snd_bossroar, snd_bossroar),
+    DEF_SOUND(snd_save, snd_save),
+    DEF_SOUND(snd_death, snd_death),
+    DEF_SOUND(snd_herospawn, snd_herospawn),
+};
 
 
 static const AudioTrack* get_sound(const char* name)
@@ -2068,6 +2100,20 @@ static std::optional<ActiveSoundInfo> make_sound(const char* name)
 }
 
 
+
+volatile bool user_sound_lock = false;
+
+
+
+template <typename F> auto modify_sounds(F&& callback)
+{
+    user_sound_lock = true;
+    callback();
+    user_sound_lock = false;
+}
+
+
+
 // If you're going to edit any of the variables used by the interrupt handler
 // for audio playback, you should use this helper function.
 template <typename F> auto modify_audio(F&& callback)
@@ -2082,7 +2128,7 @@ bool Platform::Speaker::is_sound_playing(const char* name)
 {
     if (auto sound = get_sound(name)) {
         bool playing = false;
-        modify_audio([&] {
+        modify_sounds([&] {
             for (const auto& info : snd_ctx.active_sounds) {
                 if ((s8*)sound->data_ == info.data_) {
                     playing = true;
@@ -2142,13 +2188,13 @@ void Platform::Speaker::play_sound(const char* name,
         return;
     }
 
-    auto sound_file = platform->fs().get_file(name);
-    if (sound_file.data_) {
-        ActiveSoundInfo info{0, static_cast<s32>(sound_file.size_), 0, 0};
-        info.priority_ = priority;
-        info.data_ = reinterpret_cast<const s8*>(sound_file.data_);
-        push_sound(info);
-    }
+    // auto sound_file = platform->fs().get_file(name);
+    // if (sound_file.data_) {
+    //     ActiveSoundInfo info{0, static_cast<s32>(sound_file.size_), 0, 0};
+    //     info.priority_ = priority;
+    //     info.data_ = reinterpret_cast<const s8*>(sound_file.data_);
+    //     push_sound(info);
+    // }
 }
 
 
@@ -2267,17 +2313,20 @@ static void audio_update_isr()
     }
 
     // Maybe the world's worst sound mixing code...
-    for (auto it = snd_ctx.active_sounds.begin();
-         it not_eq snd_ctx.active_sounds.end();) {
-        if (UNLIKELY(it->position_ + 4 >= it->length_)) {
-            it = snd_ctx.active_sounds.erase(it);
 
-        } else {
-            for (int i = 0; i < 4; ++i) {
-                mixing_buffer[i] += it->data_[it->position_++];
+    if (not user_sound_lock) {
+        for (auto it = snd_ctx.active_sounds.begin();
+             it not_eq snd_ctx.active_sounds.end();) {
+            if (UNLIKELY(it->position_ + 4 >= it->length_)) {
+                it = snd_ctx.active_sounds.erase(it);
+
+            } else {
+                for (int i = 0; i < 4; ++i) {
+                    mixing_buffer[i] += it->data_[it->position_++];
+                }
+
+                ++it;
             }
-
-            ++it;
         }
     }
 
@@ -2433,6 +2482,32 @@ void audio_start()
 
 
 
+namespace
+{
+__attribute__((section(".ewram"))) int _ewram_static_data = 0;
+}
+
+
+
+bool ram_overclock()
+{
+    volatile unsigned& memctrl_register =
+        *reinterpret_cast<unsigned*>(0x4000800);
+    memctrl_register = 0x0E000020;
+
+    volatile int& ewram_static_data = _ewram_static_data;
+    ewram_static_data = 1;
+
+    if (ewram_static_data != 1) {
+        memctrl_register = 0x0D000020;
+        return false;
+    } else {
+        return true;
+    }
+}
+
+
+
 
 Platform::Platform()
 {
@@ -2441,7 +2516,11 @@ Platform::Platform()
         fatal("failed to allocate glyph table");
     }
 
-    REG_WAITCNT = 0b0000001100010111;
+    ram_overclock();
+
+
+    REG_WAITCNT = 0b0000000000010111;
+    REG_WAITCNT |= 1 << 14;
 
     irqInit();
     irqEnable(IRQ_VBLANK);

@@ -89,6 +89,7 @@ public:
     {
         if (health_ == 0) {
             kill();
+            platform().speaker().play_sound("snd_explo3", 1);
             for (auto& e : engine().enemies_) {
                 if (auto eg = dynamic_cast<DireviperNeck*>(e.get())) {
                     if (eg->owner() == this) {

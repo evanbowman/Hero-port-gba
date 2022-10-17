@@ -58,8 +58,11 @@ set(SOURCES
   ${SOURCE_DIR}/taggedObject.cpp
   ${SOURCE_DIR}/objects/hero.cpp
   ${SOURCE_DIR}/localization.cpp
+  ${SOURCE_DIR}/objects/enemies/enemy.cpp
   ${SOURCE_DIR}/objects/enemies/boss/hydra.cpp
   ${SOURCE_DIR}/objects/enemies/boss/rockSmasher.cpp
+  ${SOURCE_DIR}/objects/enemies/boss/elite.cpp
+  ${SOURCE_DIR}/objects/enemies/boss/guardian.cpp
   ${SOURCE_DIR}/memory/pool.cpp
   ${SOURCE_DIR}/filesystem.cpp
   ${SOURCE_DIR}/string.cpp
@@ -130,7 +133,22 @@ if(GAMEBOY_ADVANCE)
     ${DATA_DIR}/overlay_text_key.s
     ${DATA_DIR}/charset0.s
     ${DATA_DIR}/charset1.s
-    ${DATA_DIR}/sound_msg.s)
+    ${DATA_DIR}/sound_msg.s
+
+    ${DATA_DIR}/snd_pain.s
+    ${DATA_DIR}/snd_fireshot.s
+    ${DATA_DIR}/snd_bossroar.s
+    ${DATA_DIR}/snd_death.s
+    ${DATA_DIR}/snd_herospawn.s
+    ${DATA_DIR}/snd_save.s
+    ${DATA_DIR}/snd_hit1.s
+    ${DATA_DIR}/snd_hit2.s
+    ${DATA_DIR}/snd_hit3.s
+    ${DATA_DIR}/snd_hit4.s
+    ${DATA_DIR}/snd_explo1.s
+    ${DATA_DIR}/snd_explo2.s
+    ${DATA_DIR}/snd_explo3.s
+    ${DATA_DIR}/snd_explo4.s)
 
 else()
   set(SOURCES
@@ -242,7 +260,7 @@ if(APPLE OR UNIX OR GAMEBOY_ADVANCE)
 
   set(SHARED_COMPILE_OPTIONS
     -g3
-    -O2
+    -O3
     -Wall
     -Werror
     # Lua seems not to compile with the pedantic option, looks like the

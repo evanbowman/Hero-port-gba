@@ -159,8 +159,6 @@ def parse_instances(xml_list):
             rooms[rx][ry].append([10, rix, riy])
         elif objname == "obj_soldier_s":
             rooms[rx][ry].append([11, rix, riy])
-        #elif objname == "obj_elite_s":
-        #    rooms[rx][ry].append([11, rix, riy])
         # NOTE: there's a typo in Daniel's code.
         elif objname == "obj_powerturretlerft_s":
             rooms[rx][ry].append([12, rix, riy])
@@ -261,6 +259,10 @@ def parse_instances(xml_list):
             rooms[rx][ry].append([36, ra_x, ra_y])
         elif objname == "obj_smasher_s":
             rooms[rx][ry].append([37, ra_x, ra_y])
+        elif objname == "obj_elite_s":
+            rooms[rx][ry].append([38, ra_x, ra_y])
+        elif objname == "obj_guardian_s":
+            rooms[rx][ry].append([39, ra_x, ra_y])
 
 
 

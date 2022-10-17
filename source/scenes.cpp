@@ -8,6 +8,73 @@ namespace herocore
 
 
 
+static const std::array<Vec2<u8>, 10> hint_order_normal = {{
+    {11, 4},
+    {11, 0},
+    {9, 6},
+    {0, 3},
+    {9, 9},
+    {8, 1},
+    {1, 6},
+    {6, 9},
+    {5, 13},
+    {7, 7}
+}};
+
+
+
+static const std::array<Vec2<u8>, 10> hint_order_hard = {{
+    {13, 8},
+    {11, 6},
+    {1, 4},
+    {8, 13},
+    {7, 4},
+    {5, 14},
+    {14, 11},
+    {0, 11},
+    {9, 1},
+    {7, 7}
+}};
+
+
+
+
+void english__to_string(int num, char* buffer, int base)
+{
+    int i = 0;
+    bool is_negative = false;
+
+    if (num == 0) {
+        buffer[i++] = '0';
+        buffer[i] = '\0';
+        return;
+    }
+
+    // Based on the behavior of itoa()
+    if (num < 0 && base == 10) {
+        is_negative = true;
+        num = -num;
+    }
+
+    while (num != 0) {
+        int rem = num % base;
+        buffer[i++] = (rem > 9) ? (rem - 10) + 'a' : rem + '0';
+        num = num / base;
+    }
+
+    if (is_negative) {
+        buffer[i++] = '-';
+    }
+
+    buffer[i] = '\0';
+
+    str_reverse(buffer, i);
+
+    return;
+}
+
+
+
 void MapScene::show_worldmap()
 {
     for (int x = 0; x < 20; ++x) {
@@ -32,6 +99,7 @@ void MapScene::show_worldmap()
     // which ones are linked, by checking edges.
 
     u8 margin = 1;
+    u8 pad_x = 1;
 
     for (int x = 0; x < 15; ++x) {
         for (int y = 0; y < 15; ++y) {
@@ -43,9 +111,9 @@ void MapScene::show_worldmap()
                 continue;
             }
 
-            if (not engine().visited_.get(x, y)) {
+            if (not engine().p_->visited_.get(x, y)) {
                 platform().set_tile(Layer::overlay,
-                                    x + 5 + margin,
+                                    x + 5 + margin + pad_x,
                                     y + margin,
                                     125);
                 continue;
@@ -153,17 +221,54 @@ void MapScene::show_worldmap()
             if (engine().room_.coord_.x == x and
                 engine().room_.coord_.y == y) {
                 t += 16;
+                pt_ = {x + 5 + margin + pad_x, y + margin};
             }
-
 
             if (left or right or up or down) {
                 platform().set_tile(Layer::overlay,
-                                    x + 5 + margin,
+                                    x + 5 + margin + pad_x,
                                     y + margin,
                                     126 + t);
             }
         }
     }
+
+    if (hard) {
+        for (auto& h : hint_order_hard) {
+            bool found = false;
+            for (auto& b : engine().p_->completed_bosses_) {
+                if (b == h) {
+                    found = true;
+                    break;
+                }
+            }
+            if (not found) {
+                platform().set_tile(Layer::overlay,
+                                    h.x + 5 + margin + pad_x,
+                                    h.y + margin,
+                                    158);
+                break;
+            }
+        }
+    } else {
+        for (auto& h : hint_order_normal) {
+            bool found = false;
+            for (auto& b : engine().p_->completed_bosses_) {
+                if (b == h) {
+                    found = true;
+                    break;
+                }
+            }
+            if (not found) {
+                platform().set_tile(Layer::overlay,
+                                    h.x + 5 + margin + pad_x,
+                                    h.y + margin,
+                                    158);
+                break;
+            }
+        }
+    }
+
 
     draw_image(platform(),
                159,
@@ -173,16 +278,16 @@ void MapScene::show_worldmap()
                2,
                Layer::overlay);
 
-    platform().set_tile(Layer::overlay, 5, 0, 165);
-    platform().set_tile(Layer::overlay, 5, 16, 167);
-    platform().set_tile(Layer::overlay, 5 + 16, 16, 169);
-    platform().set_tile(Layer::overlay, 5 + 16, 0, 171);
+    platform().set_tile(Layer::overlay, 5 + pad_x, 0, 165);
+    platform().set_tile(Layer::overlay, 5 + pad_x, 16, 167);
+    platform().set_tile(Layer::overlay, 5 + pad_x + 16, 16, 169);
+    platform().set_tile(Layer::overlay, 5 + pad_x + 16, 0, 171);
 
     for (int y = 1; y < 16; ++y) {
-        platform().set_tile(Layer::overlay, 5, y, 166);
-        platform().set_tile(Layer::overlay, 5 + 16, y, 170);
-        platform().set_tile(Layer::overlay, 5 + y, 16, 168);
-        platform().set_tile(Layer::overlay, 5 + y, 0, 172);
+        platform().set_tile(Layer::overlay, 5 + pad_x, y, 166);
+        platform().set_tile(Layer::overlay, 5 + pad_x + 16, y, 170);
+        platform().set_tile(Layer::overlay, 5 + pad_x + y, 16, 168);
+        platform().set_tile(Layer::overlay, 5 + pad_x + y, 0, 172);
     }
 }
 
@@ -223,7 +328,7 @@ void MapScene::show_zoomedmap()
                 continue;
             }
 
-            if (not engine().visited_.get(x, y)) {
+            if (not engine().p_->visited_.get(x, y)) {
                 platform().set_tile(Layer::overlay,
                                     x + 5 + margin,
                                     y + margin,
@@ -357,7 +462,7 @@ void MapScene::enter(Scene& prev_scene)
 
 ScenePtr<Scene> MapScene::step()
 {
-    if (platform().keyboard().down_transition<Key::start>()) {
+    if (key_down<Key::start>()) {
         for (int x = 0; x < 20; ++x) {
             for (int y = 0; y < 20; ++y) {
                 platform().set_tile(Layer::overlay, x + 5, y, 0);
@@ -365,6 +470,23 @@ ScenePtr<Scene> MapScene::step()
         }
         engine().paused_ = false;
         return scene_pool::alloc<OverworldScene>();
+    }
+
+    flicker_cyc_ += 1;
+    if (flicker_cyc_ == 5) {
+        flicker_cyc_ = 0;
+
+        auto t = platform().get_tile(Layer::overlay, pt_.x, pt_.y);
+        if (flicker_on_) {
+            t -= 16;
+        } else {
+            t += 16;
+        }
+
+        flicker_on_ = not flicker_on_;
+
+        platform().set_tile(Layer::overlay, pt_.x, pt_.y, t);
+
     }
 
     return null_scene();

@@ -76,7 +76,7 @@ public:
         for (int i = 0; i < 8; ++i) {
             int dir = 22.5f + i * 45 - cyc_ * 11;
             int dir2 = 22.5f + i * 45 + cyc_ * 11;
-            int cyc2 = cyc_ * 12;
+            int cyc2 = cyc_ * 14;
 
             if (dir >= 360) {
                 dir -= 360;
@@ -99,7 +99,12 @@ public:
             }
 
             if (pos.x > 40 and pos.y > 0 and pos.x < 200 and pos.y < 160) {
-                engine().add_object<Explo>(pos);
+                auto cached = position_;
+                position_ = pos;
+                if (place_free({pos.x, pos.y})) {
+                    engine().add_object<Explo>(pos);
+                }
+                position_ = cached;
             }
 
         }

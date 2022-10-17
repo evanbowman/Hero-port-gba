@@ -413,6 +413,7 @@ public:
     {
         if (health_ == 0) {
             kill();
+            platform().speaker().play_sound("snd_explo2", 1);
 
             engine().room_.walls_[spawn_x_ / 8][spawn_y_ / 8] = false;
             engine().room_.walls_[spawn_x_ / 8][spawn_y_ / 8 + 1] = false;

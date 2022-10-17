@@ -74,6 +74,7 @@ public:
         if (health_ == 0) {
             kill();
             if (explo) {
+                platform().speaker().play_sound("snd_explo1", 1);
                 engine().add_object<Explo>(position_);
             }
             return;
@@ -151,7 +152,7 @@ public:
 
         switch (timeline_++) {
         case 0:
-            platform().speaker().play_music("boss", 0);
+            engine().swapsong("boss");
             sprite_index_ = 2;
             break;
 
@@ -247,17 +248,8 @@ public:
         }
 
         case 200: {
-            int kill_count = 0;
-            if (length(engine().enemies_) > 16) {
-                kill_count = length(engine().enemies_) - 16;
-            }
             for (auto& e : engine().enemies_) {
                 if (e.get() not_eq this) {
-                    if (kill_count > 0) {
-                        e->kill();
-                        engine().add_object<Explo>(e->position());
-                        --kill_count;
-                    }
                     e->destroy();
                 }
             }
@@ -327,7 +319,7 @@ public:
 
         switch (timeline_++) {
         case 0:
-            platform().speaker().play_music("boss", 0);
+            engine().swapsong("boss");
             sprite_index_ = 2;
             break;
 
@@ -407,24 +399,15 @@ public:
             auto dir = direction(fvec(position_),
                                  fvec(engine().hero()->position()));
 
-            speed_.x = Fixnum((1.3f / 2) * dir.x);
-            speed_.y = Fixnum((1.3f / 2) * dir.y);
+            speed_.x = Fixnum((1.4f / 2) * dir.x);
+            speed_.y = Fixnum((1.4f / 2) * dir.y);
             break;
 
         }
 
         case 200: {
-            int kill_count = 0;
-            if (length(engine().enemies_) > 16) {
-                kill_count = length(engine().enemies_) - 16;
-            }
             for (auto& e : engine().enemies_) {
                 if (e.get() not_eq this) {
-                    if (kill_count > 0) {
-                        e->kill();
-                        engine().add_object<Explo>(e->position());
-                        --kill_count;
-                    }
                     e->destroy();
                 }
             }
@@ -436,8 +419,8 @@ public:
             auto dir = direction(fvec(position_),
                                  fvec(engine().hero()->position()));
             rotate(dir, 90);
-            speed_.x = Fixnum((1.8f / 2) * dir.x);
-            speed_.y = Fixnum((1.8f / 2) * dir.y);
+            speed_.x = Fixnum((1.9f / 2) * dir.x);
+            speed_.y = Fixnum((1.9f / 2) * dir.y);
             break;
         }
 
@@ -445,8 +428,8 @@ public:
             auto dir = direction(fvec(position_),
                                  fvec(engine().hero()->position()));
             rotate(dir, 360 - 90);
-            speed_.x = Fixnum((1.8f / 2) * dir.x);
-            speed_.y = Fixnum((1.8f / 2) * dir.y);
+            speed_.x = Fixnum((1.9f / 2) * dir.x);
+            speed_.y = Fixnum((1.9f / 2) * dir.y);
             break;
         }
 
@@ -454,8 +437,8 @@ public:
             auto dir = direction(fvec(position_),
                                  fvec(engine().hero()->position()));
             rotate(dir, rng::choice<360>(rng::utility_state));
-            speed_.x = Fixnum((1.8f / 2) * dir.x);
-            speed_.y = Fixnum((1.8f / 2) * dir.y);
+            speed_.x = Fixnum((1.9f / 2) * dir.x);
+            speed_.y = Fixnum((1.9f / 2) * dir.y);
             break;
         }
 
@@ -465,6 +448,7 @@ public:
                     e->destroy();
                 }
             }
+            play_sound("snd_explo3", 5);
             break;
 
         case 449:
@@ -489,6 +473,8 @@ public:
                     spawn_y_
                 });
 
+            engine().boss_completed();
+
             return;
         }
 
@@ -497,6 +483,7 @@ public:
             if (explocyc_ >= explo_ and explo_ > 0) {
                 explocyc_ = 0;
                 explo_ -= 1;
+                platform().speaker().play_sound("snd_explo2", 10);
                 auto temprand = rng::choice<360>(rng::utility_state);
                 for (int i = 0; i < 4; ++i) {
                     if (auto e = engine().add_object<Explo>(position_)) {
@@ -523,6 +510,7 @@ public:
                 explocyc_ += 1;
                 if (explocyc_ > 20) {
                     destroy_ = true;
+                    platform().speaker().play_sound("snd_explo4", 1);
                 }
             }
             return;
@@ -533,6 +521,8 @@ public:
             dead_ = true;
 
             platform().speaker().stop_music();
+            play_sound("snd_bossroar", 12);
+            platform().speaker().play_sound("snd_explo2", 10);
 
             for (auto& e : engine().enemies_) {
                 if (e.get() not_eq this) {

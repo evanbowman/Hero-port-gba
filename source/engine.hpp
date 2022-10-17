@@ -26,6 +26,15 @@ namespace herocore
 
 
 
+inline void play_sound(const char* name, int priority)
+{
+    if (not platform().speaker().is_sound_playing(name)) {
+        platform().speaker().play_sound(name, priority);
+    }
+}
+
+
+
 enum class Difficulty { normal, hard };
 
 
@@ -97,7 +106,6 @@ public:
         u8 zone_ = 0;
     } room_;
 
-    Bitmatrix<16, 16> visited_;
     bool paused_ = false;
 
     struct Globalstate
@@ -114,6 +122,10 @@ public:
         int suit_ = 0;
         u8 flicker_ = 0;
 
+        const char* current_music_ = "";
+        const char* prev_music_ = "";
+
+        const char* checkpoint_music_ = "";
         Vec2<u8> checkpoint_room_;
         Vec2<u8> checkpoint_coords_;
 
@@ -127,8 +139,24 @@ public:
 
             hp_ = std::max(0, (int)(hp_ - amount));
             invulnerable_ = 30 + extra_invulnerable_time;
+            play_sound("snd_pain", 11);
         }
     } g_;
+
+
+    void swapsong(const char* track)
+    {
+        g_.prev_music_ = g_.current_music_;
+        g_.current_music_ = track;
+        platform().speaker().play_music(track, 0);
+    }
+
+
+    void prevsong()
+    {
+        g_.current_music_ = g_.prev_music_;
+        platform().speaker().play_music(g_.current_music_, 0);
+    }
 
 
     Object* hero() const
@@ -157,6 +185,12 @@ public:
     ObjectRef<Hero> hero_;
 
 
+    void boss_completed()
+    {
+        p_->completed_bosses_.push_back(room_.coord_.cast<u8>());
+    }
+
+
     struct Persistence
     {
         struct TileModify
@@ -178,6 +212,14 @@ public:
 
         Buffer<TileModify, 200> tile_modifications_;
         Buffer<ObjectRemove, 40> objects_removed_;
+
+        Bitmatrix<16, 16> visited_;
+        Buffer<Vec2<u8>, 10> completed_bosses_;
+
+        u8 blaster_ = 1;
+        u8 blade_ = 0;
+        u8 suit_ = 0;
+        u8 level_ = 0;
     };
 
     DynamicMemory<Persistence> p_;

@@ -104,6 +104,7 @@ public:
             engine().add_object<ExploSpewer>(Vec2<Fixnum>{
                     x(), y()
                 });
+            platform().sleep(4);
             kill();
             owner_->hp_--;
             owner_->c_->cores_[id_].hp_ = 0;
@@ -131,6 +132,8 @@ public:
 
 
 RockSmasher::RockSmasher(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y) :
+    spawn_x_(spawn_x),
+    spawn_y_(spawn_y),
     c_(allocate_dynamic<Components>(platform()))
 {
     position_ = pos;
@@ -439,6 +442,16 @@ void RockSmasher::step()
             }
         }
 
+
+        engine().p_->objects_removed_.push_back({
+                (u8)engine().room_.coord_.x,
+                (u8)engine().room_.coord_.y,
+                spawn_x_,
+                spawn_y_
+            });
+
+        engine().boss_completed();
+
     }
 
     platform().scroll(Layer::map_1,
@@ -529,7 +542,7 @@ void RockSmasher::step()
               engine().hero()->x() < x() + 23)) {
             timeline_ = 0;
         } else {
-            platform().speaker().play_music("boss", 0);
+            engine().swapsong("boss");
         }
         break;
 

@@ -123,10 +123,13 @@ void HydraHead::step()
 
     if (health() == 0 and deadcyc_ == 0) {
         deadcyc_++;
+        platform().speaker().play_sound("snd_bossroar", 9);
+        platform().speaker().play_sound("snd_explo3", 8);
     }
 
     if (deadcyc_ == 60) {
         kill();
+        platform().speaker().play_sound("snd_explo1", 1);
         if (copy_ == 0) {
 
             if (hard) {
@@ -309,7 +312,9 @@ void HydraHead::step()
 
 
 Hydra::Hydra(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y) :
-    Enemy(TaggedObject::Tag::ignored, Health{9999})
+    Enemy(TaggedObject::Tag::ignored, Health{9999}),
+    spawn_x_(spawn_x),
+    spawn_y_(spawn_y)
 {
     position_ = pos;
 

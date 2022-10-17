@@ -34,6 +34,12 @@ public:
     void fireright();
 
 
+    u8& blaster_level() const;
+    u8& blade_level() const;
+    u8& suit_level() const;
+    u8& level() const;
+
+
 private:
     Fixnum flyspeed_ = Fixnum(1);
     int autofire_index_ = 0;

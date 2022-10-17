@@ -40,6 +40,9 @@ private:
 
     Buffer<Vec2<u8>, 16> warp_points_;
 
+    Vec2<int> pt_;
+    u8 flicker_cyc_ = 0;
+    bool flicker_on_ = true;
 };
 
 
@@ -54,9 +57,12 @@ public:
     {
         if (engine().g_.hp_ <= 0) {
             if (respawn_countdown_ == 0) {
-                respawn_countdown_ = 60;
+                platform().speaker().play_sound("snd_death", 10);
+                platform().speaker().play_sound("snd_explo3", 1);
+                respawn_countdown_ = 80;
                 engine().add_object<ExploSpewer>(engine().hero()->position());
             } else if (respawn_countdown_ == 1) {
+                platform().speaker().play_sound("snd_herospawn", 11);
                 engine().respawn_to_checkpoint();
             }
             --respawn_countdown_;
@@ -89,7 +95,7 @@ public:
             e.unlock_doors();
         }
 
-        if (platform().keyboard().down_transition<Key::start>()) {
+        if (key_down<Key::start>()) {
             engine().paused_ = true;
             return scene_pool::alloc<MapScene>();
         }

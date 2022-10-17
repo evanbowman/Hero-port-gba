@@ -67,8 +67,10 @@ public:
         hb.dimension_.size_ = {4, 5};
         if (hb.overlapping(s.hitbox())) {
             health_ = std::max(0, health_ - dmg);
+            play_sound("snd_hit1", 1);
             return true;
         }
+
         return false;
     }
 
@@ -77,6 +79,7 @@ public:
     {
         if (health_ == 0) {
             kill();
+            platform().speaker().play_sound("snd_explo1", 1);
             engine().add_object<Explo>(Vec2<Fixnum>{x() - 1, y()});
             for (int y = 0; y < 1 + height_ / 8; ++y) {
                 engine().add_object<Explo>(Vec2<Fixnum>{x() - 1,

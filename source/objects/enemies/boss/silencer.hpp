@@ -23,18 +23,28 @@ class SilencerCore : public Enemy
 private:
     Enemy* owner_ = nullptr;
     int animcyc_ = 0;
+    u8 spawn_x_;
+    u8 spawn_y_;
 
 public:
 
-    SilencerCore(Enemy* owner) :
+    SilencerCore(Enemy* owner, u8 spawn_x, u8 spawn_y) :
         Enemy(TaggedObject::Tag::ignored, Health{32}),
-        owner_(owner)
+        owner_(owner),
+        spawn_x_(spawn_x),
+        spawn_y_(spawn_y)
     {
         hitbox_.dimension_.size_ = {4, 4};
         hitbox_.dimension_.origin_ = {3, 3};
         origin_ = {3, 3};
 
         sprite_index_ = 164;
+    }
+
+
+    int hit_sound() const override
+    {
+        return 4;
     }
 
 
@@ -50,6 +60,17 @@ public:
             for (auto& e : engine().enemies_) {
                 e->kill();
             }
+
+            engine().add_object<Explo>(position_);
+
+            engine().p_->objects_removed_.push_back({
+                    (u8)engine().room_.coord_.x,
+                    (u8)engine().room_.coord_.y,
+                    spawn_x_,
+                    spawn_y_
+                });
+
+            engine().boss_completed();
         }
 
         animcyc_ += 1;
@@ -76,8 +97,10 @@ private:
 
     Vec2<float> dir_ = {0, 1};
 
+public:
     u8 spawn_x_;
     u8 spawn_y_;
+private:
 
     struct Shield
     {
@@ -106,7 +129,7 @@ public:
         hitbox_.dimension_.origin_ = {16, 8};
         origin_ = {16, 8};
 
-        engine().add_object<SilencerCore>(this);
+        engine().add_object<SilencerCore>(this, spawn_x_, spawn_y_);
 
 
         (*shields_)[9].x_offset_ = -5;
@@ -188,6 +211,7 @@ public:
                 }
                 if (sh.overlapping(s.hitbox())) {
                     s.kill();
+                    platform().speaker().play_sound("snd_hit2", 1);
                     s_.health_ = std::max(0, (int)s_.health_ - dmg);
                     return true;
                 }
@@ -205,7 +229,7 @@ public:
             for (auto& e : engine().enemies_) {
                 e->kill();
             }
-            engine().add_object<Explo>(position_);
+
             return;
         }
 
@@ -213,7 +237,7 @@ public:
 
         switch (timeline_++) {
         case 0:
-            platform().speaker().play_music("boss", 0);
+            engine().swapsong("boss");
             break;
 
         case 10:

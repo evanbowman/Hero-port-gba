@@ -105,6 +105,12 @@ public:
     }
 
 
+    const auto& speed() const
+    {
+        return speed_;
+    }
+
+
 protected:
 
     Vec2<Fixnum> position_;

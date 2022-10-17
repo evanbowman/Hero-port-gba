@@ -60,7 +60,7 @@ Game by Daniel Remar, music by BrotherAndroid.
 - [ ] Grand Mother
 - [ ] Guardian
 - [ ] Star Splitter
-- [ ] Elite
+- [x] Elite
 - [ ] Cruiser Tetron
 
 - [ ] Eliminator

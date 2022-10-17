@@ -45,6 +45,8 @@ public:
             hb.overlapping(engine().hero()->hitbox())) {
             avail_ = false;
             platform().sleep(4);
+            platform().speaker().play_sound("snd_save", 10);
+            engine().g_.checkpoint_music_ = engine().g_.current_music_;
             engine().g_.checkpoint_room_ = engine().room_.coord_.cast<u8>();
             engine().g_.checkpoint_coords_.x = (x() - 40 + 4).as_integer();
             engine().g_.checkpoint_coords_.y = (y() - 12).as_integer();

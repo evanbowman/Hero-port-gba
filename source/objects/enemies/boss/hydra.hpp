@@ -58,10 +58,19 @@ public:
 
     bool damage(Health dmg, Shot& s) override
     {
+        if (health_ == 0) {
+            return false;
+        }
         if (sprite_subimage_ not_eq 2) {
             s.kill();
             return false;
         }
+        if (s.speed().x > 0) {
+            position_.x += 3;
+        } else {
+            position_.x -= 3;
+        }
+        platform().speaker().play_sound("snd_hit4", 1);
         health_ = std::max(0, health_ - dmg);
         s.kill();
         return true;
@@ -78,10 +87,19 @@ class Hydra : public Enemy
 {
 private:
     int timeline_ = 0;
+    u8 spawn_x_;
+    u8 spawn_y_;
 
 public:
 
     Hydra(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y);
+
+
+    bool damage(Health dmg, Shot& s) override
+    {
+        s.kill();
+        return false;
+    }
 
 
     void step() override
@@ -89,12 +107,24 @@ public:
         if (health_ <= 0 or length(engine().enemies_) == 1) {
             kill();
             engine().add_object<Explo>(position_);
+
+            engine().p_->objects_removed_.push_back({
+                    (u8)engine().room_.coord_.x,
+                    (u8)engine().room_.coord_.y,
+                    spawn_x_,
+                    spawn_y_
+                });
+
+            engine().boss_completed();
+
+            platform().speaker().stop_music();
+
             return;
         }
 
         switch (timeline_++) {
         case 0:
-            platform().speaker().play_music("boss", 0);
+            engine().swapsong("boss");
             break;
 
         case 10:

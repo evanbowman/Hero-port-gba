@@ -38,6 +38,8 @@ public:
     {
         // TODO: screenshake
 
+        platform().speaker().play_sound("snd_explo1", 1);
+
         kill();
         s.kill();
 

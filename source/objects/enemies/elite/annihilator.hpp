@@ -102,7 +102,7 @@ public:
         if (hflip_) {
             position.x += 16;
         } else {
-            position.x += 3;
+            position.x -= 3;
         }
 
         Hitbox hb = hitbox_;

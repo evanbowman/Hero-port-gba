@@ -52,6 +52,7 @@ public:
             if (s->hitbox().overlapping(hitbox_)) {
                 kill();
                 s->kill();
+                platform().speaker().play_sound("snd_explo1", 1);
                 engine().add_object<Explo>(Vec2<Fixnum>{x() - 4, y() - 4});
             }
         }

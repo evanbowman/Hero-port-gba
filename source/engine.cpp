@@ -28,9 +28,11 @@
 #include "objects/enemies/elite/direviper.hpp"
 #include "objects/enemies/elite/annihilator.hpp"
 #include "objects/enemies/boss/reaperDrone.hpp"
+#include "objects/enemies/boss/guardian.hpp"
 #include "objects/enemies/boss/silencer.hpp"
 #include "objects/enemies/boss/hydra.hpp"
 #include "objects/enemies/boss/rockSmasher.hpp"
+#include "objects/enemies/boss/elite.hpp"
 #include "objects/misc/savepoint.hpp"
 #include "objects/particles/weed.hpp"
 #include "objects/particles/star.hpp"
@@ -114,6 +116,11 @@ Engine::Engine(Platform& pf) :
 
 void Engine::respawn_to_checkpoint()
 {
+    if (g_.current_music_ not_eq g_.checkpoint_music_) {
+        g_.current_music_ = g_.checkpoint_music_;
+        platform().speaker().play_music(g_.current_music_, 0);
+    }
+
     for (int x = 0; x < 64; ++x) {
         for (int y = 0; y < 64; ++y) {
             // NOTE: I'm using layer 1 for large bosses, clear out the layer.
@@ -165,7 +172,12 @@ void Engine::begin_game(Difficulty d)
     } else {
         g_.checkpoint_room_ = {11, 14};
         load(11, 14, false);
+        // load(11, 4, false); // silencer
+        // load(9, 6, false); // reaper drone
+        // load(11, 0, false); // hydra
         // load(9, 9, false); // rock smasher
+        // load(5, 13, false); // elite
+        // load(0, 6, false); // annihilator
     }
 }
 
@@ -195,7 +207,7 @@ void Engine::collision_check()
     for (auto& p : player_projectiles_) {
         for (auto& e : enemies_) {
             if (p->hitbox().overlapping(e->hitbox())) {
-                if (e->damage(1, *p)) {
+                if (e->damage(p->damage(), *p)) {
                     add_object<Explo>(Vec2<Fixnum>{
                             p->x() - 2, p->y() - 2
                         });
@@ -264,7 +276,7 @@ void Engine::run()
                 current_scene_ = std::move(next_scene_);
             }
 
-            if (key_down<Key::alt_1>() or key_down<Key::alt_2>()) {
+            if (key_down<Key::alt_2>()) {
                 g_.autofire_ = not g_.autofire_;
             }
 
@@ -404,6 +416,7 @@ void Engine::animate_tiles()
                 } else if (t == 34) {
                     t = 36;
                 } else if (t == 37) {
+                    platform().fatal("here");
                     t = 39;
                 } else if (t == 38) {
                     t = 40;
@@ -434,7 +447,7 @@ void Engine::load(int chunk_x, int chunk_y, bool restore)
     platform().sleep(1);
     room_.load(chunk_x, chunk_y, restore);
 
-    visited_.set(chunk_x, chunk_y, true);
+    p_->visited_.set(chunk_x, chunk_y, true);
 }
 
 
@@ -495,6 +508,14 @@ void Engine::draw_hud()
     }
 
     draw_hud_heat();
+
+    draw_image(platform(),
+               173,
+               0,
+               0,
+               2,
+               2,
+               Layer::overlay);
 }
 
 
@@ -620,47 +641,59 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
 
         if (rd->zone_ and rd->zone_ not_eq zone_) {
             zone_ = rd->zone_;
+            const char* current_music = engine().g_.current_music_;
             switch (zone_) {
             case 1:
-                platform().speaker().play_music("zone1", 0);
+                current_music = "zone1";
+                platform().speaker().play_music(current_music, 0);
                 break;
 
             case 2:
-                platform().speaker().play_music("zone2", 0);
+                current_music = "zone2";
+                platform().speaker().play_music(current_music, 0);
                 break;
 
             case 3:
-                platform().speaker().play_music("zone3", 0);
+                current_music = "zone3";
+                platform().speaker().play_music(current_music, 0);
                 break;
 
             case 4:
-                platform().speaker().play_music("zone4", 0);
+                current_music = "zone4";
+                platform().speaker().play_music(current_music, 0);
                 break;
 
             case 5:
-                platform().speaker().play_music("zone5", 0);
+                current_music = "zone5";
+                platform().speaker().play_music(current_music, 0);
                 break;
 
             case 6:
-                platform().speaker().play_music("zone6", 0);
+                current_music = "zone6";
+                platform().speaker().play_music(current_music, 0);
                 break;
 
             case 7:
-                platform().speaker().play_music("zone7", 0);
+                current_music = "zone7";
+                platform().speaker().play_music(current_music, 0);
                 break;
 
             case 8:
-                platform().speaker().play_music("zone8", 0);
+                current_music = "zone8";
+                platform().speaker().play_music(current_music, 0);
                 break;
 
             case 9:
-                platform().speaker().play_music("zone9", 0);
+                current_music = "zone9";
+                platform().speaker().play_music(current_music, 0);
                 break;
 
             case 10:
-                platform().speaker().play_music("zone10", 0);
+                current_music = "zone10";
+                platform().speaker().play_music(current_music, 0);
                 break;
             }
+            engine().g_.current_music_ = current_music;
         }
 
         for (int y = 0; y < 20; ++y) {
@@ -874,6 +907,18 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                 engine().add_object<RockSmasher>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
                                                  obj.x_,
                                                  obj.y_);
+                break;
+
+            case 38:
+                engine().add_object<Elite>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
+                                           obj.x_,
+                                           obj.y_);
+                break;
+
+            case 39:
+                engine().add_object<GuardianCore>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
+                                                  obj.x_,
+                                                  obj.y_);
                 break;
 
             default:

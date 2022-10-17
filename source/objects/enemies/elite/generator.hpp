@@ -51,6 +51,7 @@ public:
     {
         if (health_ == 0) {
             kill();
+            platform().speaker().play_sound("snd_explo4", 1);
             engine().add_object<ExploSpewer>(position_);
             engine().room_.clear_adjacent_barriers();
 
@@ -340,6 +341,17 @@ public:
             break;
         }
     }
+
+
+
+    bool damage(Health dmg, Shot& s) override
+    {
+        platform().speaker().play_sound("snd_hit3", 1);
+        health_ = std::max(0, health_ - dmg);
+        s.kill();
+        return true;
+    }
+
 
 
     int collision_damage() const override

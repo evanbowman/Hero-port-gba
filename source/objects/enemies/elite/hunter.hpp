@@ -45,6 +45,7 @@ public:
     {
         if (health_ == 0) {
             kill();
+            platform().speaker().play_sound("snd_explo3", 1);
             engine().add_object<BigExplo>(Vec2<Fixnum>{position_.x,
                                                        position_.y});
             return;

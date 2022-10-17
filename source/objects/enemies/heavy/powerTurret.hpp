@@ -55,6 +55,7 @@ public:
     {
         if (health_ == 0) {
             kill();
+            platform().speaker().play_sound("snd_explo2", 1);
             int dx = -4;
             if (left_) {
                 dx = 4;

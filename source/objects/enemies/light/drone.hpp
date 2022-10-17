@@ -33,6 +33,7 @@ public:
         if (health_ <= 0) {
             kill();
             engine().add_object<Explo>(position_);
+            platform().speaker().play_sound("snd_explo1", 1);
             return;
         }
 

@@ -176,8 +176,12 @@ void Hero::fireleft()
         return;
     }
     if (engine().g_.shot_count_ < 6) {
+        if (not platform().speaker().is_sound_playing("snd_fireshot")) {
+            platform().speaker().play_sound("snd_fireshot", 1);
+        }
         engine().add_object<Shot>(Vec2<Fixnum>{position_.x, position_.y + 3},
-                                  Fixnum(-2));
+                                  Fixnum(-2),
+                                  1);
     }
 }
 
@@ -189,9 +193,41 @@ void Hero::fireright()
         return;
     }
     if (engine().g_.shot_count_ < 6) {
+        if (not platform().speaker().is_sound_playing("snd_fireshot")) {
+            platform().speaker().play_sound("snd_fireshot", 1);
+        }
         engine().add_object<Shot>(Vec2<Fixnum>{position_.x + 3, position_.y + 3},
-                                  Fixnum(2));
+                                  Fixnum(2),
+                                  1);
     }
+}
+
+
+
+u8& Hero::blaster_level() const
+{
+    return engine().p_->blaster_;
+}
+
+
+
+u8& Hero::blade_level() const
+{
+    return engine().p_->blade_;
+}
+
+
+
+u8& Hero::suit_level() const
+{
+    return engine().p_->suit_;
+}
+
+
+
+u8& Hero::level() const
+{
+    return engine().p_->level_;
 }
 
 
