@@ -177,7 +177,7 @@ void Engine::begin_game(Difficulty d)
         // load(11, 0, false); // hydra
         // load(9, 9, false); // rock smasher
         // load(5, 13, false); // elite
-        // load(0, 6, false); // annihilator
+        load(1, 6, false); // annihilator
     }
 }
 
