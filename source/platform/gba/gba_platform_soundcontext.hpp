@@ -17,7 +17,7 @@ struct ActiveSoundInfo {
 
 struct SoundContext {
     // Only three sounds will play at a time... hey, sound mixing's expensive!
-    Buffer<ActiveSoundInfo, 3> active_sounds;
+    Buffer<ActiveSoundInfo, 2> active_sounds;
 
     const AudioSample* music_track = nullptr;
     s32 music_track_length = 0;
