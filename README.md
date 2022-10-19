@@ -58,7 +58,7 @@ Game by Daniel Remar, music by BrotherAndroid.
 - [x] Reaper Drone
 - [ ] Liquid Metal Processor
 - [ ] Grand Mother
-- [ ] Guardian
+- [x] Guardian
 - [ ] Star Splitter
 - [x] Elite
 - [ ] Cruiser Tetron

@@ -177,7 +177,7 @@ void Engine::begin_game(Difficulty d)
         // load(11, 0, false); // hydra
         // load(9, 9, false); // rock smasher
         // load(5, 13, false); // elite
-        // load(1, 6, false); // annihilator
+        load(1, 6, false); // annihilator
     }
 }
 
@@ -919,6 +919,14 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                 engine().add_object<GuardianCore>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
                                                   obj.x_,
                                                   obj.y_);
+                break;
+
+            case 40:
+                engine().add_object<HunterDormant>(Vec2<Fixnum>{40 + obj.x_, obj.y_});
+                break;
+
+            case 41:
+                engine().add_object<SoldierDormant>(Vec2<Fixnum>{40 + obj.x_, obj.y_});
                 break;
 
             default:

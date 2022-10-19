@@ -37,6 +37,7 @@ public:
         chainsnake,
         chainsnake_neck,
         ignored,
+        hunter,
         count
     };
 

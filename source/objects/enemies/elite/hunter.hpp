@@ -18,6 +18,21 @@ namespace herocore
 
 
 
+class HunterDormant : public Solid
+{
+public:
+    HunterDormant(const Vec2<Fixnum>& pos)
+    {
+        position_ = pos;
+        position_.x -= 8;
+        position_.y -= 8;
+        sprite_index_ = 126;
+        hitbox_.dimension_.size_ = {14, 14};
+    }
+};
+
+
+
 class Hunter : public Enemy
 {
 private:
@@ -27,7 +42,7 @@ private:
 public:
 
     Hunter(const Vec2<Fixnum>& pos) :
-        Enemy(TaggedObject::Tag::ignored, Health{32})
+        Enemy(TaggedObject::Tag::hunter, Health{32})
     {
         position_ = pos;
 

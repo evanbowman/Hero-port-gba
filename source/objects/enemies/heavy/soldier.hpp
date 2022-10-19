@@ -15,6 +15,21 @@ namespace herocore
 
 
 
+class SoldierDormant : public Solid
+{
+public:
+    SoldierDormant(const Vec2<Fixnum>& pos)
+    {
+        position_ = pos;
+        position_.x -= 2;
+        position_.y -= 2;
+        sprite_index_ = 60;
+        hitbox_.dimension_.size_ = {6, 8};
+    }
+};
+
+
+
 class Soldier : public Enemy
 {
 public:

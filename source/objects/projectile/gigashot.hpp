@@ -55,6 +55,7 @@ private:
 
     int anim_ = 0;
     int count_ = 0;
+    Vec2<Fixnum> grav_;
 
 public:
 
@@ -72,6 +73,12 @@ public:
     }
 
 
+    void set_grav(const Vec2<Fixnum>& g)
+    {
+        grav_ = g;
+    }
+
+
     void on_hero_collision() override
     {
         // Passes through fliphero.
@@ -85,6 +92,8 @@ public:
             kill();
             return;
         }
+
+        speed_ = speed_ + grav_;
 
         Object::step();
 
