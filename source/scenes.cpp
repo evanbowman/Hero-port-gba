@@ -38,6 +38,25 @@ static const std::array<Vec2<u8>, 10> hint_order_hard = {{
 
 
 
+bool is_boss_level(Difficulty d, Vec2<u8> room)
+{
+    if (d == Difficulty::normal) {
+        for (auto& r : hint_order_normal) {
+            if (r == room) {
+                return true;
+            }
+        }
+    } else {
+        for (auto& r : hint_order_hard) {
+            if (r == room) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+
 
 void english__to_string(int num, char* buffer, int base)
 {

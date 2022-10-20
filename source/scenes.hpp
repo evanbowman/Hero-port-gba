@@ -11,6 +11,10 @@ namespace herocore
 
 
 
+bool is_boss_level(Difficulty d, Vec2<u8> room);
+
+
+
 class DiffSelScene : public Scene
 {
 public:

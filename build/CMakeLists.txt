@@ -63,6 +63,7 @@ set(SOURCES
   ${SOURCE_DIR}/objects/enemies/boss/rockSmasher.cpp
   ${SOURCE_DIR}/objects/enemies/boss/elite.cpp
   ${SOURCE_DIR}/objects/enemies/boss/guardian.cpp
+  ${SOURCE_DIR}/objects/enemies/boss/eliminator.cpp
   ${SOURCE_DIR}/memory/pool.cpp
   ${SOURCE_DIR}/filesystem.cpp
   ${SOURCE_DIR}/string.cpp

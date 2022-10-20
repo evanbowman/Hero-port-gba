@@ -32,10 +32,20 @@ public:
     }
 
 
-private:
+    void draw(Platform::Screen& screen) const override
+    {
+        Sprite spr_;
+        spr_.set_texture_index(sprite_index_);
+        spr_.set_position(position_);
+        spr_.set_priority(priority_);
+        screen.draw(spr_);
+    }
+
+
+public:
 
     int counter_ = 20;
-
+    u8 priority_ = 1;
 };
 
 

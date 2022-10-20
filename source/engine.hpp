@@ -121,6 +121,7 @@ public:
         int maxheat_ = 120;
         int suit_ = 0;
         u8 flicker_ = 0;
+        u8 summon_eliminator_tics_ = 0;
 
         const char* current_music_ = "";
         const char* prev_music_ = "";
@@ -187,6 +188,13 @@ public:
 
     void boss_completed()
     {
+        for (auto& b : p_->completed_bosses_) {
+            if (b == room_.coord_.cast<u8>()) {
+                // Just in case...
+                return;
+            }
+        }
+        p_->level_++; // FIXME!
         p_->completed_bosses_.push_back(room_.coord_.cast<u8>());
     }
 
@@ -215,6 +223,7 @@ public:
 
         Bitmatrix<16, 16> visited_;
         Buffer<Vec2<u8>, 10> completed_bosses_;
+        bool eliminator_defeated_ = false;
 
         u8 blaster_ = 1;
         u8 blade_ = 0;
@@ -223,6 +232,8 @@ public:
     };
 
     DynamicMemory<Persistence> p_;
+
+    void summon_eliminator();
 
     void unlock_doors();
 

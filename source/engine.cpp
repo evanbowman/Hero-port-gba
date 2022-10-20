@@ -33,12 +33,14 @@
 #include "objects/enemies/boss/hydra.hpp"
 #include "objects/enemies/boss/rockSmasher.hpp"
 #include "objects/enemies/boss/elite.hpp"
+#include "objects/enemies/boss/eliminator.hpp"
 #include "objects/misc/savepoint.hpp"
 #include "objects/particles/weed.hpp"
 #include "objects/particles/star.hpp"
 #include "maps.hpp"
 #include "scene.hpp"
 #include "scenes.hpp"
+#include "objects/particles/flame.hpp"
 
 
 
@@ -282,6 +284,12 @@ void Engine::run()
 
             hero_->step();
 
+            if (g_.summon_eliminator_tics_) {
+                if (g_.summon_eliminator_tics_-- == 1) {
+                    summon_eliminator();
+                }
+            }
+
             const auto hpos = hero_->position();
             if (hpos.x > Fixnum(196) and room_.has_exit_right()) {
                 load(room_.coord_.x + 1, room_.coord_.y, false);
@@ -340,6 +348,73 @@ void Engine::run()
         _platform->screen().display();
     }
 
+}
+
+
+
+void Engine::summon_eliminator()
+{
+    bool can_summon_eliminator = true;
+    for (auto& e : enemies_) {
+        if (dynamic_cast<Generator*>(e.get()) or
+            dynamic_cast<Barrier*>(e.get())) {
+            can_summon_eliminator = false;
+            break;
+        }
+    }
+    for (auto& s : generic_solids_) {
+        if (dynamic_cast<Savepoint*>(s.get())) {
+            can_summon_eliminator = false;
+            break;
+        }
+    }
+
+    for (int x = 0; x < 20; ++x) {
+        for (int y = 0; y < 20; ++y) {
+            auto t = platform().get_tile(Layer::map_0, x + 5, y);
+            if (t == 33 or t == 34 or t == 35 or t == 36 or
+                t == 37 or t == 38 or t == 39 or t == 40) {
+                // Doors in room
+                can_summon_eliminator = false;
+            }
+        }
+    }
+
+    if (p_->eliminator_defeated_) {
+        can_summon_eliminator = false;
+    }
+
+    int temprand = 0;
+    for (int i = 0; i < 10; ++i) {
+        temprand += rng::choice<100>(rng::critical_state);
+    }
+    if (temprand > 20 + 5 * p_->level_) {
+        can_summon_eliminator = false;
+    }
+
+    if (can_summon_eliminator) {
+        enemies_.clear();
+        platform().speaker().play_sound("snd_explo2", 1);
+        engine().add_object<Eliminator>(Vec2<Fixnum>{80 + 5 * 8 - 1, 80});
+        engine().add_object<GigaExplo>(Vec2<Fixnum>{80 + 5 * 8 - 8, 80 - 5});
+
+        for (int i = 0; i < 20; ++i) {
+            auto mkobj =
+                [&](int xo, int yo) {
+                    Vec2<Fixnum> p{5 * 8 + 80 + xo - 1,
+                                   80 + yo};
+                    if (auto f = engine().add_object<Flame>(p)) {
+                        f->priority_ = 0;
+                        f->counter_ = 10 + rng::choice(2 * (20 - i),
+                                                       rng::critical_state);
+                    }
+                };
+            mkobj(-i * 2.6f, -i * 2.6f);
+            mkobj(i * 2.6f, i * 2.6f);
+            mkobj(i * 2.6f, -i * 2.6f);
+            mkobj(-i * 2.6f, i * 2.6f);
+        }
+    }
 }
 
 
@@ -446,6 +521,11 @@ void Engine::load(int chunk_x, int chunk_y, bool restore)
 
     platform().sleep(1);
     room_.load(chunk_x, chunk_y, restore);
+
+    if (not restore and
+        not is_boss_level(g_.difficulty_, {u8(chunk_x), u8(chunk_y)})) {
+        g_.summon_eliminator_tics_ = 20;
+    }
 
     p_->visited_.set(chunk_x, chunk_y, true);
 }
