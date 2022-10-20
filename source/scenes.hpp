@@ -3,6 +3,7 @@
 #include "scene.hpp"
 #include "engine.hpp"
 #include "objects/particles/bigExplo.hpp"
+#include "objects/enemies/elite/barrier.hpp"
 
 
 
@@ -95,8 +96,24 @@ public:
         step_list(e.generic_solids_, [](auto&) {});
         step_list(e.player_projectiles_, [&](auto&) {--e.g_.shot_count_;});
 
-        if (enemies_destroyed and e.enemies_.empty()) {
-            e.unlock_doors();
+        if (enemies_destroyed) {
+            if (e.enemies_.empty()) {
+                e.unlock_doors();
+            } else {
+                // NOTE: I treated the barrier as an enemy within the engine,
+                // but the presence of a barrier should not keep doors from
+                // opening.
+                bool all_barriers = true;
+                for (auto& e : e.enemies_) {
+                    if (not dynamic_cast<Barrier*>(e.get())) {
+                        all_barriers = false;
+                        break;
+                    }
+                }
+                if (all_barriers) {
+                    e.unlock_doors();
+                }
+            }
         }
 
         if (key_down<Key::start>()) {
