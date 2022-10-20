@@ -135,7 +135,7 @@ void Engine::respawn_to_checkpoint()
     hero_->set_position(Vec2<Fixnum>{40 + g_.checkpoint_coords_.x,
                                          g_.checkpoint_coords_.y});
 
-    g_.hp_ = g_.max_hp_;
+    g_.hp_ = 10 + p_->level_;
     g_.invulnerable_ = 0;
     g_.shot_count_ = 0;
     g_.autofire_ = false;
@@ -154,7 +154,7 @@ void Engine::begin_game(Difficulty d)
     g_.checkpoint_coords_.x = 50;
     g_.checkpoint_coords_.y = 70;
 
-    g_.hp_ = g_.max_hp_;
+    g_.hp_ = 10 + p_->level_;
     g_.invulnerable_ = 0;
     g_.shot_count_ = 0;
     g_.autofire_ = false;
@@ -281,6 +281,8 @@ void Engine::run()
             if (key_down<Key::alt_2>()) {
                 g_.autofire_ = not g_.autofire_;
             }
+
+            rng::get(rng::critical_state);
 
             hero_->step();
 
@@ -552,7 +554,7 @@ void Engine::draw_hud()
     pf.set_tile(Layer::overlay, 26, 0, 123);
     pf.set_tile(Layer::overlay, 27, 0, 124);
 
-    Float hp_percent = g_.hp_ / Float(g_.max_hp_);
+    Float hp_percent = g_.hp_ / Float(10 + p_->level_);
     int v_tiles = 18;
     int full_tiles = hp_percent * v_tiles;
 

@@ -114,7 +114,6 @@ public:
         bool autofire_ = false;
         bool hero_jetpack_flames_ = true;
         int hp_ = 10;
-        int max_hp_ = hp_;
         int invulnerable_ = 0;
         int shot_count_ = 0;
         int heat_ = 0;
@@ -201,8 +200,7 @@ public:
     void levelup()
     {
         p_->level_++;
-        g_.max_hp_ = 10 + p_->level_;
-        g_.hp_ = g_.max_hp_;
+        g_.hp_ = 10 + p_->level_;
         draw_hud();
     }
 
