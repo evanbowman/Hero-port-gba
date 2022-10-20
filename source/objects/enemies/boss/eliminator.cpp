@@ -17,7 +17,6 @@ Eliminator::Eliminator(const Vec2<Fixnum>& pos) :
     sprite_index_ = 188;
     origin_ = {5, 0};
     hitbox_.dimension_.size_ = {6, 8};
-
 }
 
 

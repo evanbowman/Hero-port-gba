@@ -384,11 +384,9 @@ void Engine::summon_eliminator()
         can_summon_eliminator = false;
     }
 
-    int temprand = 0;
-    for (int i = 0; i < 10; ++i) {
-        temprand += rng::choice<100>(rng::critical_state);
-    }
-    if (temprand > 40 + 5 * p_->level_) {
+    int temprand = rng::choice<1000>(rng::critical_state);
+
+    if (temprand > 20 + 5 * p_->level_) {
         can_summon_eliminator = false;
     }
 
@@ -548,7 +546,7 @@ void Engine::draw_hud()
 
     pf.set_tile(Layer::overlay, 2, 0, 119);
     pf.set_tile(Layer::overlay, 3, 0, 120);
-    pf.set_tile(Layer::overlay, 4, 0, 121);
+    pf.set_tile(Layer::overlay, 4, 0, 186 + p_->level_);
 
     pf.set_tile(Layer::overlay, 25, 0, 122);
     pf.set_tile(Layer::overlay, 26, 0, 123);
@@ -596,6 +594,29 @@ void Engine::draw_hud()
                2,
                2,
                Layer::overlay);
+    pf.set_tile(Layer::overlay, 1, 1, 175 + p_->blaster_);
+
+    if (p_->blade_) {
+        draw_image(platform(),
+                   179,
+                   0,
+                   2,
+                   2,
+                   2,
+                   Layer::overlay);
+        pf.set_tile(Layer::overlay, 1, 3, 181 + p_->blade_);
+    }
+
+    if (p_->suit_) {
+        draw_image(platform(),
+                   196,
+                   0,
+                   4,
+                   2,
+                   2,
+                   Layer::overlay);
+        pf.set_tile(Layer::overlay, 1, 5, 198 + p_->suit_);
+    }
 }
 
 

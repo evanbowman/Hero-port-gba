@@ -119,7 +119,6 @@ public:
         int shot_count_ = 0;
         int heat_ = 0;
         int maxheat_ = 120;
-        int suit_ = 0;
         u8 flicker_ = 0;
         u8 summon_eliminator_tics_ = 0;
 

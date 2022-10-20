@@ -22,7 +22,7 @@ void Hero::step()
 
 
     if (engine().g_.heat_) {
-        switch (engine().g_.suit_) {
+        switch (suit_level()) {
         case 0:
             engine().g_.heat_ -= 1;
             break;
