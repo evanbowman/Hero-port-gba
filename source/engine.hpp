@@ -194,8 +194,16 @@ public:
                 return;
             }
         }
-        p_->level_++; // FIXME!
+        levelup(); // FIXME!!!
         p_->completed_bosses_.push_back(room_.coord_.cast<u8>());
+    }
+
+
+    void levelup()
+    {
+        p_->level_++;
+        g_.max_hp_ = 10 + p_->level_;
+        g_.hp_ = g_.max_hp_;
     }
 
 

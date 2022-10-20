@@ -388,7 +388,7 @@ void Engine::summon_eliminator()
     for (int i = 0; i < 10; ++i) {
         temprand += rng::choice<100>(rng::critical_state);
     }
-    if (temprand > 20 + 5 * p_->level_) {
+    if (temprand > 40 + 5 * p_->level_) {
         can_summon_eliminator = false;
     }
 
