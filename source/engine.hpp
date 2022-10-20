@@ -203,6 +203,7 @@ public:
         p_->level_++;
         g_.max_hp_ = 10 + p_->level_;
         g_.hp_ = g_.max_hp_;
+        draw_hud();
     }
 
 
