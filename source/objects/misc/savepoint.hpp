@@ -43,14 +43,15 @@ public:
 
         if (avail_ and
             hb.overlapping(engine().hero()->hitbox())) {
+            engine().p_->checkpoint_music_ = engine().g_.current_music_;
+            engine().p_->checkpoint_room_ = engine().room_.coord_.cast<u8>();
+            engine().p_->checkpoint_coords_.x = (x() - 40 + 4).as_integer();
+            engine().p_->checkpoint_coords_.y = (y() - 12).as_integer();
+            engine().g_.hp_ = 10 + engine().p_->level_;
+            engine().savegame();
             avail_ = false;
             platform().sleep(4);
             platform().speaker().play_sound("snd_save", 10);
-            engine().g_.checkpoint_music_ = engine().g_.current_music_;
-            engine().g_.checkpoint_room_ = engine().room_.coord_.cast<u8>();
-            engine().g_.checkpoint_coords_.x = (x() - 40 + 4).as_integer();
-            engine().g_.checkpoint_coords_.y = (y() - 12).as_integer();
-            engine().g_.hp_ = 10 + engine().p_->level_;
             engine().draw_hud();
             engine().add_object<ExploSpewer2>(position_);
         }

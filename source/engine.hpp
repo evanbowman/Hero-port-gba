@@ -124,10 +124,6 @@ public:
         const char* current_music_ = "";
         const char* prev_music_ = "";
 
-        const char* checkpoint_music_ = "";
-        Vec2<u8> checkpoint_room_;
-        Vec2<u8> checkpoint_coords_;
-
         void damage(int amount, int extra_invulnerable_time)
         {
             if (invulnerable_) {
@@ -174,6 +170,10 @@ public:
     void load(int chunk_x, int chunk_y, bool restore);
 
 
+    void savegame();
+    void loadgame();
+
+
     ObjectList<Enemy> enemies_;
     ObjectList<EnemyProjectile> enemy_projectiles_;
     ObjectList<Shot> player_projectiles_;
@@ -207,6 +207,9 @@ public:
 
     struct Persistence
     {
+        static const int magic_val = 0xAAAAAAAA;
+        int magic = magic_val;
+
         struct TileModify
         {
             u8 tx_;
@@ -235,6 +238,10 @@ public:
         u8 blade_ = 0;
         u8 suit_ = 0;
         u8 level_ = 0;
+
+        const char* checkpoint_music_ = "";
+        Vec2<u8> checkpoint_room_;
+        Vec2<u8> checkpoint_coords_;
     };
 
     DynamicMemory<Persistence> p_;

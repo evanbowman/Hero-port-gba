@@ -118,8 +118,8 @@ Engine::Engine(Platform& pf) :
 
 void Engine::respawn_to_checkpoint()
 {
-    if (g_.current_music_ not_eq g_.checkpoint_music_) {
-        g_.current_music_ = g_.checkpoint_music_;
+    if (g_.current_music_ not_eq p_->checkpoint_music_) {
+        g_.current_music_ = p_->checkpoint_music_;
         platform().speaker().play_music(g_.current_music_, 0);
     }
 
@@ -132,15 +132,15 @@ void Engine::respawn_to_checkpoint()
 
 
     room_.clear();
-    hero_->set_position(Vec2<Fixnum>{40 + g_.checkpoint_coords_.x,
-                                         g_.checkpoint_coords_.y});
+    hero_->set_position(Vec2<Fixnum>{40 + p_->checkpoint_coords_.x,
+                                         p_->checkpoint_coords_.y});
 
     g_.hp_ = 10 + p_->level_;
     g_.invulnerable_ = 0;
     g_.shot_count_ = 0;
     g_.autofire_ = false;
 
-    load(g_.checkpoint_room_.x, g_.checkpoint_room_.y, true);
+    load(p_->checkpoint_room_.x, p_->checkpoint_room_.y, true);
     draw_hud();
 }
 
@@ -151,16 +151,11 @@ void Engine::begin_game(Difficulty d)
     room_.clear();
 
     hero_->set_position(Vec2<Fixnum>{110, 80});
-    g_.checkpoint_coords_.x = 50;
-    g_.checkpoint_coords_.y = 70;
-
-    g_.hp_ = 10 + p_->level_;
-    g_.invulnerable_ = 0;
-    g_.shot_count_ = 0;
-    g_.autofire_ = false;
+    p_->checkpoint_coords_.x = 50;
+    p_->checkpoint_coords_.y = 70;
 
     if (d == Difficulty::hard) {
-        g_.checkpoint_room_ = {6, 0};
+        p_->checkpoint_room_ = {6, 0};
         load(6, 0, false);
         // load(11, 6, false); // hydra
         // load(13, 8, false); // silencer
@@ -172,7 +167,7 @@ void Engine::begin_game(Difficulty d)
         // load(9, 6, false); // battle door
         // load(1, 4, false); // reaper drone
     } else {
-        g_.checkpoint_room_ = {11, 14};
+        p_->checkpoint_room_ = {11, 14};
         load(11, 14, false);
         // load(11, 4, false); // silencer
         // load(9, 6, false); // reaper drone
@@ -181,6 +176,42 @@ void Engine::begin_game(Difficulty d)
         // load(5, 13, false); // elite
         // load(1, 6, false); // annihilator
     }
+
+    loadgame();
+
+    g_.hp_ = 10 + p_->level_;
+    g_.invulnerable_ = 0;
+    g_.shot_count_ = 0;
+    g_.autofire_ = false;
+}
+
+
+
+void Engine::loadgame()
+{
+    // Yeah, copying objects in this way isn't really safe. But right now, the
+    // game only targets gba, and this stuff happens to be safe to copy to sram
+    // and directly back into ram, as the addresses will be the same.
+    auto p = allocate_dynamic<Persistence>(platform());
+    platform().read_save_data(&*p, sizeof *p);
+
+    if (p->magic == Persistence::magic_val) {
+        memcpy((void*)&*p_, (void*)&*p, sizeof *p);
+        // platform().fatal(format("% %",
+        //                         p->checkpoint_room_.x,
+        //                         p->checkpoint_room_.y).c_str());
+        g_.current_music_ = "";
+        respawn_to_checkpoint();
+        platform().speaker().play_music(p_->checkpoint_music_, 0);
+    }
+
+}
+
+
+
+void Engine::savegame()
+{
+    platform().write_save_data(&*p_, sizeof *p_);
 }
 
 
@@ -303,7 +334,11 @@ void Engine::run()
                 continue;
             } else if (hpos.y > Fixnum(154) and room_.has_exit_down()) {
                 load(room_.coord_.x, room_.coord_.y + 1, false);
-                hero_->set_position({hero_->position().x, 10});
+                int y = 10;
+                hero_->set_position({hero_->position().x, y--});
+                while (not hero_->place_free(hero_->position()) and y > 0) {
+                    hero_->set_position({hero_->position().x, y--});
+                }
                 continue;
             } else if (hpos.y < 2 and room_.has_exit_up()) {
                 load(room_.coord_.x, room_.coord_.y - 1, false);

@@ -63,7 +63,7 @@ public:
                 speed_.y += Fixnum(0.025f);
             }
             if (y() > engine().hero()->y() + 4) {
-                speed_.y += Fixnum(0.025f);
+                speed_.y -= Fixnum(0.025f);
             }
 
             if (hard) {
