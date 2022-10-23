@@ -70,7 +70,8 @@ void Eliminator::step()
             }
 
             escapecyc_ += 1;
-            if (escapecyc_ == 50 - (int)engine().g_.difficulty_ * 10 +
+            if (engine().p_->level_ < 9 and
+                escapecyc_ == 50 - (int)engine().g_.difficulty_ * 10 +
                 engine().p_->level_) {
                 escape_ = true;
                 target_x_ = 250;

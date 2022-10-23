@@ -21,6 +21,15 @@ LiquidMetalProcessor::LiquidMetalProcessor(const Vec2<Fixnum>& pos,
 
 void LiquidMetalProcessor::step()
 {
+    engine().p_->objects_removed_.push_back({
+                (u8)engine().room_.coord_.x,
+                (u8)engine().room_.coord_.y,
+                spawn_x_,
+                spawn_y_
+            });
+
+    engine().boss_completed();
+
     kill();
 }
 

@@ -192,7 +192,6 @@ public:
                 return;
             }
         }
-        levelup(); // FIXME!!!
         p_->completed_bosses_.push_back(room_.coord_.cast<u8>());
     }
 

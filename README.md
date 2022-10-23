@@ -56,7 +56,7 @@ Game by Daniel Remar, music by BrotherAndroid.
 - [x] Silencer
 - [x] Plasma Hydra
 - [x] Reaper Drone
-- [x] Liquid Metal Processor
+- [ ] Liquid Metal Processor
 - [ ] Grand Mother
 - [x] Guardian
 - [ ] Star Splitter
