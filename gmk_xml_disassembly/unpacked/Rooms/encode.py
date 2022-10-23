@@ -267,6 +267,8 @@ def parse_instances(xml_list):
             rooms[rx][ry].append([40, ra_x, ra_y])
         elif objname == "obj_guardianspecial":
             rooms[rx][ry].append([41, ra_x, ra_y])
+        elif objname == "obj_processor_s":
+            rooms[rx][ry].append([42, ra_x, ra_y])
 
 
 

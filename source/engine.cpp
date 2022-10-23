@@ -34,6 +34,7 @@
 #include "objects/enemies/boss/rockSmasher.hpp"
 #include "objects/enemies/boss/elite.hpp"
 #include "objects/enemies/boss/eliminator.hpp"
+#include "objects/enemies/boss/liquidMetalProcessor.hpp"
 #include "objects/misc/savepoint.hpp"
 #include "objects/particles/weed.hpp"
 #include "objects/particles/star.hpp"
@@ -1065,6 +1066,12 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
 
             case 41:
                 engine().add_object<SoldierDormant>(Vec2<Fixnum>{40 + obj.x_, obj.y_});
+                break;
+
+            case 42:
+                engine().add_object<LiquidMetalProcessor>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
+                                                          obj.x_,
+                                                          obj.y_);
                 break;
 
             default:
