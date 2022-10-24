@@ -12,7 +12,7 @@ Game by Daniel Remar, music by BrotherAndroid.
 - [x] blade
 - [ ] burst
 - [ ] warp
-- [ ] Level up
+- [x] Level up
 - [x] overheat
 - [x] damage animation
 
