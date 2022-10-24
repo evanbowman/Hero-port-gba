@@ -573,7 +573,6 @@ void Engine::animate_tiles()
                 } else if (t == 34) {
                     t = 36;
                 } else if (t == 37) {
-                    platform().fatal("here");
                     t = 39;
                 } else if (t == 38) {
                     t = 40;

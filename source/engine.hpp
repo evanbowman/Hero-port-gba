@@ -248,7 +248,7 @@ public:
 
 private:
 
-    int animcyc_;
+    int animcyc_ = 0;
     void animate_tiles();
 
     ScenePtr<Scene> current_scene_;
