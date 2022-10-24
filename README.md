@@ -96,14 +96,14 @@ Note: boss death animations involve tons of code and I haven't finished them yet
 - [x] Waving grass/eel things
 - [x] Stars
 - [x] Checkpoints
-- [ ] Saving
+- [x] Saving
 - [x] Music
 - [ ] Sound effects
 
 
 ### Menus
 - [ ] Title screen
-- [ ] World map
+- [x] World map
 - [ ] Pause menu
 - [ ] Intro cutscene
 - [ ] Intro help text
