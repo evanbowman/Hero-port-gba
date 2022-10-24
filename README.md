@@ -6,6 +6,7 @@ Game by Daniel Remar, music by BrotherAndroid.
 Differences from the Desktop version:
  * This version is incomplete, see feature list below.
  * Certain features have been adjusted or removed, in places where implementing them would not be practical on a gameboy advance. Pixel-perfect collisions, for example, have been approximated with collections of bounding boxes.
+ * I need to fix the minimap. The game uses 10x10 pixel tiles for the map, and gba is suited to 8x8 tiles, so I have placeholder graphics in the map until I can find time to render it correctly.
 
 
 ## Implementation status:
