@@ -1,5 +1,6 @@
 #include "elite.hpp"
 #include "objects/projectile/mimicShot.hpp"
+#include "objects/misc/pickup.hpp"
 
 
 
@@ -52,6 +53,8 @@ void Elite::step()
                 });
 
             engine().boss_completed();
+
+            engine().add_object<Pickup>(position_, Pickup::suit);
 
         } else {
             ((Elite*)&**engine().enemies_.begin())->friend_spawn_x_ = spawn_x_;

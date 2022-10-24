@@ -28,7 +28,7 @@ public:
     virtual int hit_sound() const { return 1; }
 
 
-    virtual bool damage(Health dmg, Shot& s);
+    virtual bool damage(Health dmg, Object& s);
 
 
     void destroy()

@@ -2,11 +2,194 @@
 #include "engine.hpp"
 #include "objects/particles/flame.hpp"
 #include "objects/projectile/shot.hpp"
+#include "objects/projectile/missile.hpp"
+#include "objects/projectile/vortex.hpp"
+#include "objects/projectile/enemyProjectile.hpp"
+#include "objects/projectile/supershot.hpp"
+#include "objects/projectile/megashot.hpp"
+#include "objects/projectile/gigashot.hpp"
 
 
 
 namespace herocore
 {
+
+
+
+class Blade : public Object
+{
+public:
+
+    Blade(const Vec2<Fixnum>& pos, bool flip)
+    {
+        position_ = pos;
+
+        sprite_index_ = 194;
+        origin_ = {8, 8};
+        hitbox_.dimension_.size_ = {8, 8};
+        hitbox_.dimension_.origin_ = {4, 4};
+
+        hflip_ = flip;
+
+        if (flip) {
+            position_.x += 9;
+        } else {
+            position_.x -= 3;
+        }
+
+        position_.y += 4;
+
+        if (engine().p_->blade_ > 2) {
+            sprite_index_ = 195;
+            hitbox_.dimension_.size_ = {10, 16};
+
+        }
+
+    }
+
+
+    bool test_wall_collision()
+    {
+        auto pos = position_;
+
+        auto intx = pos.x.as_integer();
+        auto inty = pos.y.as_integer();
+
+        // Onscreen area starts at 0, 40.
+        intx -= 40;
+
+        const int tile_x = intx / 8;
+        const int tile_y = inty / 8;
+
+        Vec2<Fixnum> wall_pos;
+
+        Hitbox wall_hb;
+        wall_hb.dimension_.size_ = {8, 8};
+        wall_hb.position_ = &wall_pos;
+
+        auto cached_pos = hitbox_.position_;
+        hitbox_.position_ = &pos;
+
+        for (int x = -1; x < 2; ++x) {
+            for (int y = -1; y < 2; ++y) {
+                auto cx = tile_x + x;
+                auto cy = tile_y + y;
+                if (cx > -1 and cx < 20 and cy > -1 and cy < 20) {
+                    auto t = platform().get_tile(Layer::map_0, cx + 5, cy);
+                    if (engine().room_.walls_[cx][cy]) {
+                        wall_pos.x = 40 + cx * 8;
+                        wall_pos.y = cy * 8;
+
+                        if (wall_hb.overlapping(hitbox_)) {
+                            hitbox_.position_ = cached_pos;
+
+                            if (t == 6) {
+                                engine().room_.walls_[cx][cy] = false;
+                                platform().set_tile(Layer::map_0, cx + 5, cy, 0);
+                                return true;
+                            }
+                            if ((t == 7 or t == 8) and engine().p_->blade_ > 1) {
+                                engine().room_.walls_[cx][cy] = false;
+                                platform().set_tile(Layer::map_0, cx + 5, cy, 0);
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    void step()
+    {
+        cyc_ += 1;
+        switch (cyc_) {
+        case 1:
+            for (auto& e : engine().enemies_) {
+                if (e->hitbox().overlapping(hitbox_)) {
+                    e->damage(2 + 2 * engine().p_->blade_, *this);
+                    dead_ = false;
+                }
+            }
+            for (auto& s : engine().enemy_projectiles_) {
+
+                if (not s->hitbox().overlapping(hitbox_)) {
+                    continue;
+                }
+
+                auto dir = hflip_ ? Fixnum(2) : Fixnum(-2);
+
+                auto reflect_s = [&](int xo, int yo)
+                                 {
+                                     engine().add_object<Shot>(Vec2<Fixnum>
+                                                               {s->x() + xo,
+                                                                s->y() + yo},
+                                                               dir,
+                                                               1);
+                                 };
+
+                if (dynamic_cast<Missile*>(s.get())) {
+                    reflect_s(0, 3);
+                    reflect_s(0, -3);
+                    reflect_s(hflip_ ? 3 : -3, 0);
+                    engine().add_object<Explo>(Vec2<Fixnum>{s->x() - 4, s->y() - 4});
+                    s->kill();
+                } else if (dynamic_cast<Vortex*>(s.get()) and
+                           engine().p_->blade_ == 3) {
+                    reflect_s(0, 3);
+                    reflect_s(0, -3);
+                    reflect_s(hflip_ ? 3 : -3, 0);
+                    reflect_s(hflip_ ? -3 : 3, 0);
+                    engine().add_object<Explo>(Vec2<Fixnum>{s->x() - 4, s->y() - 4});
+                    s->kill();
+                } else if (dynamic_cast<Supershot*>(s.get()) and
+                           engine().p_->blade_ >= 2) {
+                    reflect_s(0, 2);
+                    reflect_s(0, -2);
+                    engine().add_object<Explo>(Vec2<Fixnum>{s->x() - 4, s->y() - 4});
+                    s->kill();
+                } else if (dynamic_cast<Megashot*>(s.get()) and
+                           engine().p_->blade_ >= 2) {
+                    reflect_s(0, 3);
+                    reflect_s(0, -3);
+                    reflect_s(hflip_ ? 3 : -3, 0);
+                    engine().add_object<Explo>(Vec2<Fixnum>{s->x() - 4, s->y() - 4});
+                    s->kill();
+                } else if (dynamic_cast<Gigashot*>(s.get()) and
+                           engine().p_->blade_ == 3) {
+                    reflect_s(0, 3);
+                    reflect_s(0, -3);
+                    reflect_s(hflip_ ? 3 : -3, 0);
+                    reflect_s(hflip_ ? -3 : 3, 0);
+                    engine().add_object<Explo>(Vec2<Fixnum>{s->x() - 4, s->y() - 4});
+                    s->kill();
+                } else if (dynamic_cast<EnemyShot*>(s.get())) {
+                    reflect_s(hflip_ ? 3 : -3, 0);
+                    s->kill();
+                }
+            }
+            break;
+
+        case 2:
+            break;
+
+        case 3:
+            this->kill();
+            break;
+        }
+
+        if (test_wall_collision()) {
+
+        }
+    }
+
+private:
+    u8 dud_ = 1;
+    u8 cyc_ = 0;
+};
 
 
 
@@ -39,6 +222,35 @@ void Hero::step()
             engine().g_.heat_ = 0;
         }
         engine().draw_hud_heat();
+    }
+
+
+    if (chargeblade_ == 21) {
+        chargeblade_ = 20;
+    }
+
+    if (blade_level() > 0) {
+        if (key_pressed<Key::action_2>()) {
+            if (not key_pressed<Key::action_1>()) {
+                chargeblade_ += 1;
+            }
+        } else if (key_pressed<Key::action_1>()) {
+            if (not key_pressed<Key::action_2>()) {
+                chargeblade_ += 1;
+            }
+        } else if (not key_pressed<Key::action_1>() and
+                   not key_pressed<Key::action_2>() and
+                   chargeblade_ == 20) {
+
+            engine().add_object<Blade>(position_, hflip_);
+
+            if (blade_level() == 3) {
+                // ... TODO, different sprite ...
+            }
+            chargeblade_ = 0;
+        } else {
+            chargeblade_ = 0;
+        }
     }
 
 
@@ -106,16 +318,17 @@ void Hero::step()
         if (jetpack_counter_ == 6) {
             jetpack_counter_ = 0;
             if (hflip_ == false) {
-                engine().add_object<Flame>(Vec2<Fixnum>{position_.x + 5,
+                engine().add_object<Flame>(Vec2<Fixnum>{position_.x + 4,
                                                         position_.y + 5});
             } else {
-                engine().add_object<Flame>(Vec2<Fixnum>{position_.x + 0,
+                engine().add_object<Flame>(Vec2<Fixnum>{position_.x - 1,
                                                         position_.y + 5});
             }
         }
     }
 
-    if (engine().g_.autofire_) {
+    if (not chargeblade_ and
+        engine().g_.autofire_) {
         autofire_index_ += 1;
         if (autofire_index_ >= 4) {
             autofire_index_ = 0;
@@ -179,7 +392,7 @@ void Hero::fireleft()
         if (not platform().speaker().is_sound_playing("snd_fireshot")) {
             platform().speaker().play_sound("snd_fireshot", 1);
         }
-        engine().add_object<Shot>(Vec2<Fixnum>{position_.x, position_.y + 3},
+        engine().add_object<Shot>(Vec2<Fixnum>{position_.x - 1, position_.y + 3},
                                   Fixnum(-2),
                                   1);
     }
@@ -196,7 +409,7 @@ void Hero::fireright()
         if (not platform().speaker().is_sound_playing("snd_fireshot")) {
             platform().speaker().play_sound("snd_fireshot", 1);
         }
-        engine().add_object<Shot>(Vec2<Fixnum>{position_.x + 3, position_.y + 3},
+        engine().add_object<Shot>(Vec2<Fixnum>{position_.x + 2, position_.y + 3},
                                   Fixnum(2),
                                   1);
     }

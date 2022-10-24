@@ -9,7 +9,7 @@ Game by Daniel Remar, music by BrotherAndroid.
 - [x] Movement
 - [x] Jetpack trail
 - [x] weapon
-- [ ] blade
+- [x] blade
 - [ ] burst
 - [ ] warp
 - [ ] Level up

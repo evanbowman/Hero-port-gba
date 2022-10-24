@@ -1,4 +1,5 @@
 #include "liquidMetalProcessor.hpp"
+#include "objects/misc/pickup.hpp"
 
 
 
@@ -31,6 +32,8 @@ void LiquidMetalProcessor::step()
     engine().boss_completed();
 
     kill();
+
+    engine().add_object<Pickup>(position_, Pickup::blade);
 }
 
 

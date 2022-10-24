@@ -14,7 +14,6 @@ namespace herocore
 
 
 
-
 class HydraHead : public Enemy
 {
 private:
@@ -57,7 +56,7 @@ public:
     void draw(Platform::Screen& s) const override;
 
 
-    bool damage(Health dmg, Shot& s) override
+    bool damage(Health dmg, Object& s) override
     {
         if (health_ == 0) {
             return false;
@@ -96,7 +95,7 @@ public:
     Hydra(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y);
 
 
-    bool damage(Health dmg, Shot& s) override
+    bool damage(Health dmg, Object& s) override
     {
         s.kill();
         return false;

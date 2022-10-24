@@ -9,7 +9,7 @@ namespace herocore
 
 
 
-bool Enemy::damage(Health dmg, Shot& s)
+bool Enemy::damage(Health dmg, Object& s)
 {
     StringBuffer<32> snd("snd_hit");
     snd += to_string<10>(hit_sound());

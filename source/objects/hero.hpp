@@ -17,9 +17,9 @@ public:
     {
         position_ = position;
         sprite_index_ = 1;
-        origin_ = {5, 0};
+        origin_ = {6, 0};
 
-        hitbox_.dimension_.size_ = {6, 8};
+        hitbox_.dimension_.size_ = {4, 8};
     }
 
 
@@ -45,6 +45,8 @@ private:
     int autofire_index_ = 0;
     u8 jetpack_counter_ = 0;
     u8 heatcyc_ = 0;
+    u8 chargeblade_ = 0;
+    u8 chargebladeprev_ = 0;
 };
 
 

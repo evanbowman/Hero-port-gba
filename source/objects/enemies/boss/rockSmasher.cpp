@@ -4,6 +4,7 @@
 #include "objects/projectile/shot.hpp"
 #include "objects/projectile/enemyShot.hpp"
 #include "objects/projectile/supershot.hpp"
+#include "objects/misc/pickup.hpp"
 
 
 
@@ -452,6 +453,7 @@ void RockSmasher::step()
 
         engine().boss_completed();
 
+        engine().add_object<Pickup>(position_, Pickup::suit);
     }
 
     platform().scroll(Layer::map_1,

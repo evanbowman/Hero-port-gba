@@ -31,7 +31,7 @@ public:
     bool flip_ = false;
 
 
-    bool damage(Health dmg, Shot& s) override;
+    bool damage(Health dmg, Object& s) override;
 
 
     int collision_damage() const override

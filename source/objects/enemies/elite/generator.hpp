@@ -344,7 +344,7 @@ public:
 
 
 
-    bool damage(Health dmg, Shot& s) override
+    bool damage(Health dmg, Object& s) override
     {
         platform().speaker().play_sound("snd_hit3", 1);
         health_ = std::max(0, health_ - dmg);

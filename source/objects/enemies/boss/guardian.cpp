@@ -8,6 +8,7 @@
 #include "objects/projectile/vortex.hpp"
 #include "objects/enemies/elite/hunter.hpp"
 #include "objects/enemies/heavy/soldier.hpp"
+#include "objects/misc/pickup.hpp"
 
 
 
@@ -223,7 +224,7 @@ public:
     }
 
 
-    bool damage(Health dmg, Shot& s) override
+    bool damage(Health dmg, Object& s) override
     {
         s.kill();
         return false;
@@ -283,7 +284,7 @@ public:
     }
 
 
-    bool damage(Health dmg, Shot& s) override
+    bool damage(Health dmg, Object& s) override
     {
         s.kill();
         return false;
@@ -368,6 +369,8 @@ public:
             for (auto& e : engine().enemies_) {
                 e->kill();
             }
+
+            engine().add_object<Pickup>(position_, Pickup::blade);
         }
 
         animcyc_ += 1;
@@ -668,7 +671,7 @@ void GuardianCore::step()
 
 
 
-bool GuardianCore::damage(Health dmg, Shot& s)
+bool GuardianCore::damage(Health dmg, Object& s)
 {
     if (health_ == -1) {
         return false;

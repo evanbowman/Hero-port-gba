@@ -90,7 +90,7 @@ public:
 
 
 
-    bool damage(Health dmg, Shot& s) override
+    bool damage(Health dmg, Object& s) override
     {
         s.kill();
 

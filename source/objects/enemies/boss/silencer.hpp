@@ -185,7 +185,7 @@ public:
 
 
 
-    bool damage(Health dmg, Shot& s)
+    bool damage(Health dmg, Object& s)
     {
         Hitbox hb;
         hb.dimension_.size_ = {32, 5};

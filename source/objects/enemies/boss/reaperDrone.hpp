@@ -8,6 +8,7 @@
 #include "number/random.hpp"
 #include "objects/particles/explo.hpp"
 #include "objects/projectile/megashot.hpp"
+#include "objects/misc/pickup.hpp"
 
 
 
@@ -530,6 +531,8 @@ public:
                     engine().add_object<Explo>(e->position());
                 }
             }
+
+            engine().add_object<Pickup>(position_, Pickup::blaster);
 
             return;
         }
