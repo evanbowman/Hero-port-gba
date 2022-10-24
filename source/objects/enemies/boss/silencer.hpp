@@ -10,6 +10,7 @@
 #include "objects/projectile/megashot.hpp"
 #include "objects/particles/explo.hpp"
 #include "objects/particles/bigExplo.hpp"
+#include "objects/misc/pickup.hpp"
 
 
 
@@ -61,7 +62,7 @@ public:
                 e->kill();
             }
 
-            engine().add_object<Explo>(position_);
+            engine().add_object<ExploSpewer>(position_);
 
             engine().p_->objects_removed_.push_back({
                     (u8)engine().room_.coord_.x,
@@ -71,6 +72,12 @@ public:
                 });
 
             engine().boss_completed();
+
+            for (auto& e : engine().enemies_) {
+                e->kill();
+            }
+
+            engine().add_object<Pickup>(position_, Pickup::blade);
         }
 
         animcyc_ += 1;

@@ -119,9 +119,8 @@ Engine::Engine(Platform& pf) :
 
 void Engine::respawn_to_checkpoint()
 {
-    if (g_.current_music_ not_eq p_->checkpoint_music_) {
-        g_.current_music_ = p_->checkpoint_music_;
-        platform().speaker().play_music(g_.current_music_, 0);
+    if (not str_cmp(platform().speaker().current_music(), p_->checkpoint_music_) == 0) {
+        platform().speaker().play_music(p_->checkpoint_music_, 0);
     }
 
     for (int x = 0; x < 64; ++x) {
@@ -188,6 +187,52 @@ void Engine::begin_game(Difficulty d)
 
 
 
+const char* load_music(int x, int y)
+{
+    const RoomData* rd;
+    if (engine().g_.difficulty_ == Difficulty::hard) {
+        rd = load_room_hard(x, y);
+    } else {
+        rd = load_room_normal(x, y);
+    }
+
+    switch (rd->zone_) {
+    case 1:
+        return "zone1";
+
+    case 2:
+        return "zone2";
+
+    case 3:
+        return "zone3";
+
+    case 4:
+        return "zone4";
+
+    case 5:
+        return "zone5";
+
+    case 6:
+        return "zone6";
+
+    case 7:
+        return "zone7";
+
+    case 8:
+        return "zone8";
+
+    case 9:
+        return "zone9";
+
+    case 10:
+        return "zone10";
+    }
+
+    return "";
+}
+
+
+
 void Engine::loadgame()
 {
     // Yeah, copying objects in this way isn't really safe. But right now, the
@@ -201,9 +246,10 @@ void Engine::loadgame()
         // platform().fatal(format("% %",
         //                         p->checkpoint_room_.x,
         //                         p->checkpoint_room_.y).c_str());
-        g_.current_music_ = "";
+        auto current_music = p_->checkpoint_music_;
         respawn_to_checkpoint();
-        platform().speaker().play_music(p_->checkpoint_music_, 0);
+
+        platform().speaker().play_music(current_music, 0);
     }
 
 }
@@ -778,61 +824,18 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
 
     if (rd) {
 
+        auto target_song = load_music(chunk_x, chunk_y);
+
         if (rd->zone_ and rd->zone_ not_eq zone_) {
             zone_ = rd->zone_;
-            const char* current_music = engine().g_.current_music_;
-            switch (zone_) {
-            case 1:
-                current_music = "zone1";
-                platform().speaker().play_music(current_music, 0);
-                break;
 
-            case 2:
-                current_music = "zone2";
-                platform().speaker().play_music(current_music, 0);
-                break;
+            platform().speaker().play_music(target_song, 0);
+        }
 
-            case 3:
-                current_music = "zone3";
-                platform().speaker().play_music(current_music, 0);
-                break;
-
-            case 4:
-                current_music = "zone4";
-                platform().speaker().play_music(current_music, 0);
-                break;
-
-            case 5:
-                current_music = "zone5";
-                platform().speaker().play_music(current_music, 0);
-                break;
-
-            case 6:
-                current_music = "zone6";
-                platform().speaker().play_music(current_music, 0);
-                break;
-
-            case 7:
-                current_music = "zone7";
-                platform().speaker().play_music(current_music, 0);
-                break;
-
-            case 8:
-                current_music = "zone8";
-                platform().speaker().play_music(current_music, 0);
-                break;
-
-            case 9:
-                current_music = "zone9";
-                platform().speaker().play_music(current_music, 0);
-                break;
-
-            case 10:
-                current_music = "zone10";
-                platform().speaker().play_music(current_music, 0);
-                break;
+        if (str_cmp("", platform().speaker().current_music()) == 0) {
+            if (not str_cmp("", engine().g_.prev_music_) == 0) {
+                platform().speaker().play_music(engine().g_.prev_music_, 0);
             }
-            engine().g_.current_music_ = current_music;
         }
 
         for (int y = 0; y < 20; ++y) {

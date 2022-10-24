@@ -27,6 +27,8 @@ public:
 private:
     u8 spawn_x_;
     u8 spawn_y_;
+    u8 friend_spawn_x_ = 0;
+    u8 friend_spawn_y_ = 0;
     u8 pain_ = 0;
     u8 gotit_ = 0;
     u8 shotcyc_ = 0;

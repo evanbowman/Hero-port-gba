@@ -2042,6 +2042,7 @@ static const AudioTrack* find_music(const char* name)
 #include "data/snd_explo2.hpp"
 #include "data/snd_explo3.hpp"
 #include "data/snd_explo4.hpp"
+#include "data/snd_pickup.hpp"
 
 
 
@@ -2062,6 +2063,7 @@ static const AudioTrack sounds[] = {
     DEF_SOUND(snd_save, snd_save),
     DEF_SOUND(snd_death, snd_death),
     DEF_SOUND(snd_herospawn, snd_herospawn),
+    DEF_SOUND(snd_pickup, snd_pickup),
 };
 
 
@@ -2218,6 +2220,40 @@ static void stop_music()
 void Platform::Speaker::stop_music()
 {
     ::stop_music();
+}
+
+
+
+const char* Platform::Speaker::current_music()
+{
+    const char* n = "";
+
+    modify_audio([&] {
+                     for (auto& track : music_tracks) {
+                         if (track.data_ == snd_ctx.music_track) {
+                             n = track.name_;
+                         }
+                     }
+                 });
+
+    return n;
+}
+
+
+
+bool Platform::Speaker::is_music_playing(const char* name)
+{
+    bool playing = false;
+
+    if (auto track = find_music(name)) {
+        modify_audio([&] {
+            if (track->data_ == snd_ctx.music_track) {
+                playing = true;
+            }
+        });
+    }
+
+    return playing;
 }
 
 

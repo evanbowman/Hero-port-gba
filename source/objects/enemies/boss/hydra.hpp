@@ -5,6 +5,7 @@
 #include "fmt.hpp"
 #include "number/random.hpp"
 #include "objects/particles/explo.hpp"
+#include "objects/misc/pickup.hpp"
 
 
 
@@ -115,9 +116,19 @@ public:
                     spawn_y_
                 });
 
+            u8 start_x = spawn_x_ / 8 + 5;
+            u8 start_y = spawn_y_ / 8;
+            for (u16 y = start_y; y < start_y + 6; ++y) {
+                for (u16 x = start_x; x < start_x + 6; ++x) {
+                    platform().set_tile(Layer::map_0, x, y, 0);
+                }
+            }
+
             engine().boss_completed();
 
             platform().speaker().stop_music();
+
+            engine().add_object<Pickup>(position_, Pickup::blaster);
 
             return;
         }

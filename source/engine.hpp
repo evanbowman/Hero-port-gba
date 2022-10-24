@@ -121,7 +121,6 @@ public:
         u8 flicker_ = 0;
         u8 summon_eliminator_tics_ = 0;
 
-        const char* current_music_ = "";
         const char* prev_music_ = "";
 
         void damage(int amount, int extra_invulnerable_time)
@@ -141,16 +140,14 @@ public:
 
     void swapsong(const char* track)
     {
-        g_.prev_music_ = g_.current_music_;
-        g_.current_music_ = track;
+        g_.prev_music_ = platform().speaker().current_music();
         platform().speaker().play_music(track, 0);
     }
 
 
     void prevsong()
     {
-        g_.current_music_ = g_.prev_music_;
-        platform().speaker().play_music(g_.current_music_, 0);
+        platform().speaker().play_music(g_.prev_music_, 0);
     }
 
 

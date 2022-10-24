@@ -27,8 +27,36 @@ void Elite::step()
     Enemy::step();
 
     if (health_ <= 0) {
+        for (auto& e : engine().enemies_) {
+            if (e->dead()) {
+                return;
+            }
+        }
         kill();
         platform().speaker().play_sound("snd_explo3", 1);
+        if (length(engine().enemies_) == 1) {
+            platform().speaker().stop_music();
+
+            engine().p_->objects_removed_.push_back({
+                    (u8)engine().room_.coord_.x,
+                    (u8)engine().room_.coord_.y,
+                    spawn_x_,
+                    spawn_y_
+                });
+
+            engine().p_->objects_removed_.push_back({
+                    (u8)engine().room_.coord_.x,
+                    (u8)engine().room_.coord_.y,
+                    friend_spawn_x_,
+                    friend_spawn_y_
+                });
+
+            engine().boss_completed();
+
+        } else {
+            ((Elite*)&**engine().enemies_.begin())->friend_spawn_x_ = spawn_x_;
+            ((Elite*)&**engine().enemies_.begin())->friend_spawn_y_ = spawn_y_;
+        }
         return;
     }
 

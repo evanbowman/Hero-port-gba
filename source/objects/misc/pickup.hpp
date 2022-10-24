@@ -71,15 +71,31 @@ public:
                     break;
                 }
                 engine().levelup();
+                platform().speaker().play_sound("snd_pickup", 10);
             }
 
             return intersect;
+        }
+        return false;
+    }
+
+
+    void draw(Platform::Screen& s) const override
+    {
+        cyc_ += 1;
+        if (cyc_ == 8) {
+            cyc_ = 0;
+        }
+
+        if (cyc_ > 4) {
+            Solid::draw(s);
         }
     }
 
 
 private:
     Type type_;
+    mutable u8 cyc_ = 0;
 };
 
 

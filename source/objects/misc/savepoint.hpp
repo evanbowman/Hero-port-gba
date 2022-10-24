@@ -43,7 +43,7 @@ public:
 
         if (avail_ and
             hb.overlapping(engine().hero()->hitbox())) {
-            engine().p_->checkpoint_music_ = engine().g_.current_music_;
+            engine().p_->checkpoint_music_ = platform().speaker().current_music();
             engine().p_->checkpoint_room_ = engine().room_.coord_.cast<u8>();
             engine().p_->checkpoint_coords_.x = (x() - 40 + 4).as_integer();
             engine().p_->checkpoint_coords_.y = (y() - 12).as_integer();

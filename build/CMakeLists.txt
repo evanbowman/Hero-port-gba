@@ -150,7 +150,8 @@ if(GAMEBOY_ADVANCE)
     ${DATA_DIR}/snd_explo1.s
     ${DATA_DIR}/snd_explo2.s
     ${DATA_DIR}/snd_explo3.s
-    ${DATA_DIR}/snd_explo4.s)
+    ${DATA_DIR}/snd_explo4.s
+    ${DATA_DIR}/snd_pickup.s)
 
 else()
   set(SOURCES
