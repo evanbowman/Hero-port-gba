@@ -3,6 +3,11 @@
 I'm porting Hero Core, a gamemaker game I used to play when I was in highschool, to Gameboy Advance in my spare time.
 Game by Daniel Remar, music by BrotherAndroid.
 
+Differences from the Desktop version:
+ * This version is incomplete, see feature list below.
+ * Certain features have been adjusted or removed, in places where implementing them would not be practical on a gameboy advance. Pixel-perfect collisions, for example, have been approximated with collections of bounding boxes.
+
+
 ## Implementation status:
 
 ### Flip Hero:

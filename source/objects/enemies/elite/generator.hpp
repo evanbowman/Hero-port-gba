@@ -43,7 +43,7 @@ public:
         hitbox_.dimension_.origin_ = {7, 7};
         origin_ = {7, 7};
         position_.x += 7;
-        position_.y += 7;
+        position_.y += 5;
     }
 
 

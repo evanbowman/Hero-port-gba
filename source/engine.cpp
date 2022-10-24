@@ -36,6 +36,7 @@
 #include "objects/enemies/boss/eliminator.hpp"
 #include "objects/enemies/boss/liquidMetalProcessor.hpp"
 #include "objects/misc/savepoint.hpp"
+#include "objects/misc/holder.hpp"
 #include "objects/particles/weed.hpp"
 #include "objects/particles/star.hpp"
 #include "maps.hpp"
@@ -1074,6 +1075,10 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                 engine().add_object<LiquidMetalProcessor>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
                                                           obj.x_,
                                                           obj.y_);
+                break;
+
+            case 43:
+                engine().add_object<Holder>(Vec2<Fixnum>{40 + obj.x_, obj.y_});
                 break;
 
             default:
