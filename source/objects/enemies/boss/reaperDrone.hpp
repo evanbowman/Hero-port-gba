@@ -463,6 +463,10 @@ public:
     {
         if (destroy_) {
             kill();
+            auto pos = position_;
+            pos.x += 4;
+            pos.y += 4;
+            engine().add_object<Pickup>(pos, Pickup::blaster);
             engine().add_object<ExploSpewer>(Vec2<Fixnum>{
                     x() + 4, y() + 4
                 });
@@ -531,8 +535,6 @@ public:
                     engine().add_object<Explo>(e->position());
                 }
             }
-
-            engine().add_object<Pickup>(position_, Pickup::blaster);
 
             return;
         }
