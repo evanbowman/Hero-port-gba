@@ -201,7 +201,7 @@ void HydraHead::step()
 
                 obj->set_speed(Vec2<Fixnum>{dir.x, dir.y});
             }
-            if (hard) {
+            // if (hard) {
                 if (auto obj = engine().add_object<EnemyShot>(Vec2<Fixnum>{
                             x() - 2, y() + 1
                                 })) {
@@ -212,7 +212,7 @@ void HydraHead::step()
 
                     obj->set_speed(Vec2<Fixnum>{dir.x, dir.y});
                 }
-            }
+                // }
         } else if (copy_ == 1) {
             if (auto b = engine().add_object<Bomb>(position_)) {
                 auto d = rotate({1, 0}, 180 - 60);
