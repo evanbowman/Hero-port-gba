@@ -140,6 +140,7 @@ if(GAMEBOY_ADVANCE)
 
     ${DATA_DIR}/snd_pain.s
     ${DATA_DIR}/snd_spot.s
+    ${DATA_DIR}/snd_blade.s
     ${DATA_DIR}/snd_fireshot.s
     ${DATA_DIR}/snd_bossroar.s
     ${DATA_DIR}/snd_death.s

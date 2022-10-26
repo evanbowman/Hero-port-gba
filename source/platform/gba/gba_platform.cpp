@@ -2015,6 +2015,7 @@ static const AudioTrack* find_music(const char* name)
 // sound to the sounds array, it's just too tedious to keep working this way...
 #include "data/sound_msg.hpp"
 #include "data/snd_fireshot.hpp"
+#include "data/snd_blade.hpp"
 #include "data/snd_spot.hpp"
 #include "data/snd_bossroar.hpp"
 #include "data/snd_save.hpp"
@@ -2045,6 +2046,7 @@ static const AudioTrack sounds[] = {
     DEF_SOUND(snd_explo2, snd_explo2),
     DEF_SOUND(snd_explo3, snd_explo3),
     DEF_SOUND(snd_explo4, snd_explo4),
+    DEF_SOUND(snd_blade, snd_blade),
     DEF_SOUND(snd_pain, snd_pain),
     DEF_SOUND(snd_bossroar, snd_bossroar),
     DEF_SOUND(snd_save, snd_save),

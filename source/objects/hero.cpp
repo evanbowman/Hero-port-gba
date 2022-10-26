@@ -244,9 +244,8 @@ void Hero::step()
 
             engine().add_object<Blade>(position_, hflip_);
 
-            if (blade_level() == 3) {
-                // ... TODO, different sprite ...
-            }
+            platform().speaker().play_sound("snd_blade", 8);
+
             chargeblade_ = 0;
         } else {
             chargeblade_ = 0;
@@ -341,7 +340,7 @@ void Hero::step()
         }
     }
 
-    if (engine().g_.heat_) {
+    if (engine().g_.heat_ or chargeblade_) {
         heatcyc_ += 1;
         if (heatcyc_ == 6) {
             heatcyc_ = 0;
@@ -360,9 +359,10 @@ void Hero::draw(Platform::Screen& screen) const
     if (engine().g_.invulnerable_ > 0 and
         engine().g_.invulnerable_ % 4 < 2) {
         Object::draw(screen);
-    } if (not engine().g_.invulnerable_) {
+    }
+    if (not engine().g_.invulnerable_ or chargeblade_ >= 20) {
         Object::draw(screen);
-        if (engine().g_.heat_) {
+        if (engine().g_.heat_ or chargeblade_ >= 20) {
             if (heatcyc_ > 3) {
                 Sprite spr_;
                 spr_.set_origin({origin_.x, origin_.y});
