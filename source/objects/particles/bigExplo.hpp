@@ -29,6 +29,8 @@ public:
 
     void step() override
     {
+        Object::step();
+
         anim_cyc_ += 1;
         if (anim_cyc_ == 3) {
             anim_cyc_ = 0;

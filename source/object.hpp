@@ -111,6 +111,12 @@ public:
     }
 
 
+    void set_speed(const Vec2<Fixnum>& speed)
+    {
+        speed_ = speed;
+    }
+
+
 protected:
 
     Vec2<Fixnum> position_;

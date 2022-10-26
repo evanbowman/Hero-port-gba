@@ -36,6 +36,29 @@ inline Value choice(Value n, LinearGenerator& gen)
 }
 
 
+template <u32 offset> Fixnum sample(Fixnum n, LinearGenerator& gen)
+{
+    if (choice<2>(gen)) {
+        return n + Fixnum(choice<offset>(gen));
+
+    } else {
+        return n - Fixnum(choice<offset>(gen));
+    }
+}
+
+
+template <u32 offset>
+Vec2<Fixnum> sample(const Vec2<Fixnum>& position, LinearGenerator& gen)
+{
+    auto result = position;
+
+    result.x = sample<offset>(result.x, gen);
+    result.y = sample<offset>(result.y, gen);
+
+    return result;
+}
+
+
 template <u32 offset> Float sample(Float n, LinearGenerator& gen)
 {
     if (choice<2>(gen)) {
