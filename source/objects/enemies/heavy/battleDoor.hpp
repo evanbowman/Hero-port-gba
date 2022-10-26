@@ -409,11 +409,26 @@ public:
     }
 
 
+    bool damage(Health dmg, Object& s) override
+    {
+        platform().speaker().play_sound("snd_hit3", 1);
+        health_ = std::max(0, health_ - dmg);
+        s.kill();
+        if (engine().g_.screenshake_ < 2) {
+            engine().g_.screenshake_ = 2;
+        }
+        return true;
+    }
+
+
     void step() override
     {
         if (health_ == 0) {
             kill();
-            platform().speaker().play_sound("snd_explo2", 1);
+            if (engine().g_.screenshake_ < 6) {
+                engine().g_.screenshake_ = 6;
+            }
+            platform().speaker().play_sound("snd_explo2", 6);
 
             engine().room_.walls_[spawn_x_ / 8][spawn_y_ / 8] = false;
             engine().room_.walls_[spawn_x_ / 8][spawn_y_ / 8 + 1] = false;

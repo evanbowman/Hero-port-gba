@@ -15,7 +15,7 @@ LiquidMetalProcessor::LiquidMetalProcessor(const Vec2<Fixnum>& pos,
     spawn_x_(spawn_x),
     spawn_y_(spawn_y)
 {
-
+    position_ = pos;
 }
 
 

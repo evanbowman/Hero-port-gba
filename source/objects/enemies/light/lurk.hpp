@@ -79,7 +79,7 @@ public:
     {
         if (health_ == 0) {
             kill();
-            platform().speaker().play_sound("snd_explo1", 1);
+            platform().speaker().play_sound("snd_explo1", 6);
             engine().add_object<Explo>(Vec2<Fixnum>{x() - 1, y()});
             for (int y = 0; y < 1 + height_ / 8; ++y) {
                 engine().add_object<Explo>(Vec2<Fixnum>{x() - 1,

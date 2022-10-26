@@ -456,9 +456,14 @@ void RockSmasher::step()
         engine().add_object<Pickup>(position_, Pickup::suit);
     }
 
+    int shake = 0;
+    if (engine().g_.screenshake_) {
+        shake = (engine().g_.screenshake_ % 2) * 2;
+    }
+
     platform().scroll(Layer::map_1,
                       -(position_.x - 40).as_integer(),
-                      -(position_.y - 40).as_integer());
+                      -(position_.y - 40).as_integer() + -shake);
 
 
     for (auto& s : engine().player_projectiles_) {

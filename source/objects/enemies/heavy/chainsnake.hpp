@@ -42,6 +42,13 @@ public:
     inline void step() override;
 
 
+    bool damage(Health dmg, Object& s)
+    {
+        s.kill();
+        return false;
+    }
+
+
     Chainsnake* owner() const
     {
         return owner_;

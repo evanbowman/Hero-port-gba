@@ -38,7 +38,7 @@ public:
     {
         if (health_ <= 0) {
             kill();
-            platform().speaker().play_sound("snd_explo1", 1);
+            platform().speaker().play_sound("snd_explo1", 6);
             engine().add_object<Explo>(position_);
             return;
         }

@@ -55,7 +55,10 @@ public:
     {
         if (health_ == 0) {
             kill();
-            platform().speaker().play_sound("snd_explo2", 1);
+            platform().speaker().play_sound("snd_explo2", 8);
+            if (engine().g_.screenshake_ < 6) {
+                engine().g_.screenshake_ = 6;
+            }
             int dx = -4;
             if (left_) {
                 dx = 4;

@@ -10,18 +10,6 @@ Sprite::Sprite()
 }
 
 
-void Sprite::set_scale(const Scale& scale)
-{
-    scale_ = scale;
-}
-
-
-void Sprite::set_rotation(Rotation rot)
-{
-    rot_ = rot;
-}
-
-
 void Sprite::set_position(const Vec2<Fixnum>& position)
 {
     position_ = position;
@@ -62,18 +50,6 @@ void Sprite::set_mix(const ColorMix& mix)
 void Sprite::set_size(Size size)
 {
     size_ = size;
-}
-
-
-Sprite::Rotation Sprite::get_rotation() const
-{
-    return rot_;
-}
-
-
-Sprite::Scale Sprite::get_scale() const
-{
-    return scale_;
 }
 
 

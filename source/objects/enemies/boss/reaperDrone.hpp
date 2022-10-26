@@ -75,7 +75,7 @@ public:
         if (health_ == 0) {
             kill();
             if (explo) {
-                platform().speaker().play_sound("snd_explo1", 1);
+                platform().speaker().play_sound("snd_explo1", 6);
                 engine().add_object<Explo>(position_);
             }
             return;
@@ -515,7 +515,7 @@ public:
                 explocyc_ += 1;
                 if (explocyc_ > 20) {
                     destroy_ = true;
-                    platform().speaker().play_sound("snd_explo4", 1);
+                    platform().speaker().play_sound("snd_explo4", 30);
                 }
             }
             return;

@@ -6,6 +6,7 @@
 #include "number/random.hpp"
 #include "objects/particles/explo.hpp"
 #include "objects/misc/pickup.hpp"
+#include "objects/projectile/missile.hpp"
 
 
 
@@ -87,6 +88,7 @@ class Hydra : public Enemy
 {
 private:
     int timeline_ = 0;
+    u16 miscyc_ = 0;
     u8 spawn_x_;
     u8 spawn_y_;
 
@@ -104,6 +106,24 @@ public:
 
     void step() override
     {
+        if (health_ > 0) {
+            miscyc_ += 1;
+            if (miscyc_ == 280) {
+                miscyc_ = 0;
+
+                Vec2<Fixnum> o{x() + 33, y() + 23};
+                if (auto m = engine().add_object<Missile>(o)) {
+                    m->set_dir(rotate({1, 0}, 360 - 75));
+                }
+                o.x = x() + (76 / 2);
+                o.y = y() + (58 / 2);
+                if (auto m = engine().add_object<Missile>(o)) {
+                    m->set_dir(rotate({1, 0}, 360 - 65));
+                }
+
+            }
+        }
+
         if (health_ <= 0 or length(engine().enemies_) == 1) {
             kill();
             engine().add_object<Explo>(position_);

@@ -29,16 +29,6 @@ public:
     Sprite();
 
 
-    using Rotation = s16;
-    using Scale = Vec2<s16>;
-
-
-    void set_rotation(Rotation rot);
-
-
-    void set_scale(const Scale& scale);
-
-
     void set_position(const Vec2<Fixnum>& position);
 
 
@@ -79,12 +69,6 @@ public:
 
 
     Size get_size() const;
-
-
-    Rotation get_rotation() const;
-
-
-    Scale get_scale() const;
 
 
     void set_priority(u8 priority)
@@ -131,13 +115,10 @@ private:
     // quite generous...
     Vec2<s16> origin_;
 
-    Vec2<s16> scale_;
-
 public:
     Vec2<Fixnum> position_;
 
 private:
-    Rotation rot_ = 0;
     TextureIndex texture_index_ = 0;
     ColorMix mix_;
 };

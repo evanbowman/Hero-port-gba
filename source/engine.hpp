@@ -120,6 +120,7 @@ public:
         int maxheat_ = 120;
         u8 flicker_ = 0;
         u8 summon_eliminator_tics_ = 0;
+        u8 screenshake_ = 0;
 
         const char* prev_music_ = "";
 
@@ -133,6 +134,7 @@ public:
 
             hp_ = std::max(0, (int)(hp_ - amount));
             invulnerable_ = 30 + extra_invulnerable_time;
+            screenshake_ = 6;
             play_sound("snd_pain", 11);
         }
     } g_;
@@ -235,7 +237,7 @@ public:
         u8 suit_ = 0;
         u8 level_ = 0;
 
-        const char* checkpoint_music_ = "";
+        StringBuffer<32> checkpoint_music_;
         Vec2<u8> checkpoint_room_;
         Vec2<u8> checkpoint_coords_;
     };

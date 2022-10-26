@@ -90,6 +90,9 @@ public:
         if (not place_free({position_.x + speed_.x, position_.y + speed_.y})) {
             engine().add_object<GigaExplo>(Vec2<Fixnum>{x() - 2, y() - 2});
             kill();
+            if (engine().g_.screenshake_ < 6) {
+                engine().g_.screenshake_ = 6;
+            }
             return;
         }
 

@@ -91,6 +91,9 @@ void HydraHead::step()
                 Fixnum x = (position_.x + xdiff_ * xfrac) + 12;
                 Fixnum y = (position_.y + ydiff_ * yfrac) + 8;
                 engine().add_object<BigExplo>(Vec2<Fixnum>{x - 6, y - 6});
+                if (engine().g_.screenshake_ < 2) {
+                    engine().g_.screenshake_ = 2;
+                }
             };
 
 
@@ -129,7 +132,10 @@ void HydraHead::step()
 
     if (deadcyc_ == 60) {
         kill();
-        platform().speaker().play_sound("snd_explo1", 1);
+        if (engine().g_.screenshake_ < 6) {
+            engine().g_.screenshake_ = 6;
+        }
+        platform().speaker().play_sound("snd_explo1", 6);
         if (copy_ == 0) {
 
             if (hard) {

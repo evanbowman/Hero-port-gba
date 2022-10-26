@@ -51,7 +51,10 @@ public:
     {
         if (health_ == 0) {
             kill();
-            platform().speaker().play_sound("snd_explo4", 1);
+            platform().speaker().play_sound("snd_explo4", 6);
+            if (engine().g_.screenshake_ < 8) {
+                engine().g_.screenshake_ = 8;
+            }
             engine().add_object<ExploSpewer>(position_);
             engine().room_.clear_adjacent_barriers();
 
@@ -349,6 +352,9 @@ public:
         platform().speaker().play_sound("snd_hit3", 1);
         health_ = std::max(0, health_ - dmg);
         s.kill();
+        if (engine().g_.screenshake_ < 3) {
+            engine().g_.screenshake_ = 3;
+        }
         return true;
     }
 

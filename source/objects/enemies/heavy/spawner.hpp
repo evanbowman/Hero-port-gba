@@ -37,7 +37,10 @@ public:
     {
         if (health_ == 0) {
             kill();
-            platform().speaker().play_sound("snd_explo2", 1);
+            platform().speaker().play_sound("snd_explo2", 6);
+            if (engine().g_.screenshake_ < 6) {
+                engine().g_.screenshake_ = 6;
+            }
             engine().add_object<BigExplo>(Vec2<Fixnum>{
                     position_.x + 8, position_.y + 5});
             return;

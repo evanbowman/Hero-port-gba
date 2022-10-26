@@ -62,8 +62,8 @@ public:
     {
         if (engine().g_.hp_ <= 0) {
             if (respawn_countdown_ == 0) {
-                platform().speaker().play_sound("snd_death", 10);
-                platform().speaker().play_sound("snd_explo3", 1);
+                platform().speaker().play_sound("snd_death", 21);
+                platform().speaker().play_sound("snd_explo3", 21);
                 respawn_countdown_ = 80;
                 engine().add_object<ExploSpewer>(engine().hero()->position());
             } else if (respawn_countdown_ == 1) {
@@ -95,6 +95,17 @@ public:
         step_list(e.generic_objects_, [](auto&) {});
         step_list(e.generic_solids_, [](auto&) {});
         step_list(e.player_projectiles_, [&](auto&) {--e.g_.shot_count_;});
+
+        int shake = 0;
+        if (engine().g_.screenshake_ > 0) {
+            engine().g_.screenshake_ -= 1;
+
+            if (engine().g_.screenshake_) {
+                shake = (engine().g_.screenshake_ % 2) * 2;
+            }
+        }
+        platform().spr_scroll(shake);
+        platform().scroll(Layer::map_0, 0, -shake);
 
         if (enemies_destroyed) {
             if (e.enemies_.empty()) {

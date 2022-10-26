@@ -59,6 +59,7 @@ set(SOURCES
   ${SOURCE_DIR}/objects/hero.cpp
   ${SOURCE_DIR}/localization.cpp
   ${SOURCE_DIR}/objects/enemies/enemy.cpp
+  ${SOURCE_DIR}/objects/enemies/heavy/eyespy.cpp
   ${SOURCE_DIR}/objects/enemies/boss/hydra.cpp
   ${SOURCE_DIR}/objects/enemies/boss/rockSmasher.cpp
   ${SOURCE_DIR}/objects/enemies/boss/elite.cpp
@@ -138,6 +139,7 @@ if(GAMEBOY_ADVANCE)
     ${DATA_DIR}/sound_msg.s
 
     ${DATA_DIR}/snd_pain.s
+    ${DATA_DIR}/snd_spot.s
     ${DATA_DIR}/snd_fireshot.s
     ${DATA_DIR}/snd_bossroar.s
     ${DATA_DIR}/snd_death.s

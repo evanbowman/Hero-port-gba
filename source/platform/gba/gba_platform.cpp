@@ -651,6 +651,11 @@ static PaletteBank color_mix(ColorConstant k, u8 amount)
 }
 
 
+
+static int spr_scroll = 0;
+
+
+
 void Platform::Screen::draw(const Sprite& spr)
 {
     if (UNLIKELY(spr.get_alpha() == Sprite::Alpha::transparent)) {
@@ -688,6 +693,8 @@ void Platform::Screen::draw(const Sprite& spr)
         //     return;
         // }
 
+        abs_position.y += ::spr_scroll;
+
         auto oa = object_attribute_back_buffer + oam_write_index;
         if (spr.get_alpha() not_eq Sprite::Alpha::translucent) {
             oa->attribute_0 = ATTR0_COLOR_16 | ATTR0_SQUARE;
@@ -698,37 +705,10 @@ void Platform::Screen::draw(const Sprite& spr)
 
         oa->attribute_0 &= (0xff00 & ~((1 << 8) | (1 << 9))); // clear attr0
 
-        if (spr.get_rotation() or spr.get_scale().x or spr.get_scale().y) {
-            if (affine_transform_write_index not_eq affine_transform_limit) {
-                auto& affine =
-                    affine_transform_back_buffer[affine_transform_write_index];
+        const auto& flip = spr.get_flip();
+        oa->attribute_1 |= ((int)flip.y << 13);
+        oa->attribute_1 |= ((int)flip.x << 12);
 
-                if (spr.get_rotation() and
-                    (spr.get_scale().x or spr.get_scale().y)) {
-                    affine.rot_scale(spr.get_rotation(),
-                                     spr.get_scale().x,
-                                     spr.get_scale().y);
-                } else if (spr.get_rotation()) {
-                    affine.rotate(spr.get_rotation());
-                } else {
-                    affine.scale(spr.get_scale().x, spr.get_scale().y);
-                }
-
-                oa->attribute_0 |= 1 << 8;
-                oa->attribute_0 |= 1 << 9;
-
-                abs_position.x -= 8;
-                abs_position.y -= 16;
-
-                oa->attribute_1 |= affine_transform_write_index << 9;
-
-                affine_transform_write_index += 1;
-            }
-        } else {
-            const auto& flip = spr.get_flip();
-            oa->attribute_1 |= ((int)flip.y << 13);
-            oa->attribute_1 |= ((int)flip.x << 12);
-        }
 
         oa->attribute_0 |= abs_position.y & 0x00ff;
 
@@ -852,6 +832,12 @@ u16 t0_scroll_x = 0;
 u16 t0_scroll_y = 0;
 u16 bg_scroll_x = 0;
 u16 bg_scroll_y = 0;
+
+
+void Platform::spr_scroll(u16 scroll)
+{
+    ::spr_scroll = scroll;
+}
 
 
 void Platform::scroll(Layer layer, u16 xscroll, u16 yscroll)
@@ -2029,6 +2015,7 @@ static const AudioTrack* find_music(const char* name)
 // sound to the sounds array, it's just too tedious to keep working this way...
 #include "data/sound_msg.hpp"
 #include "data/snd_fireshot.hpp"
+#include "data/snd_spot.hpp"
 #include "data/snd_bossroar.hpp"
 #include "data/snd_save.hpp"
 #include "data/snd_death.hpp"
@@ -2064,6 +2051,7 @@ static const AudioTrack sounds[] = {
     DEF_SOUND(snd_death, snd_death),
     DEF_SOUND(snd_herospawn, snd_herospawn),
     DEF_SOUND(snd_pickup, snd_pickup),
+    DEF_SOUND(snd_spot, snd_spot),
 };
 
 

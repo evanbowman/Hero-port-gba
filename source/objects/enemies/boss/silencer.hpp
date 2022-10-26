@@ -78,6 +78,8 @@ public:
             }
 
             engine().add_object<Pickup>(position_, Pickup::blade);
+
+            platform().speaker().play_sound("snd_explo4", 30);
         }
 
         animcyc_ += 1;

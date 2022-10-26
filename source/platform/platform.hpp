@@ -155,6 +155,7 @@ public:
 
 
     void scroll(Layer layer, u16 xscroll, u16 yscroll);
+    void spr_scroll(u16 yscroll);
 
 
     void fill_overlay(u16 TileDesc);

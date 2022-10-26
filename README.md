@@ -43,7 +43,7 @@ Differences from the Desktop version:
 - [x] Chain Snake
 - [x] Phase
 - [x] Soldier
-- [ ] Eyespy
+- [x] Eyespy
 
 
 #### Elite
@@ -80,7 +80,7 @@ Note: boss death animations involve tons of code and I haven't finished them yet
 - [x] ESupershot
 - [x] EMegashot
 - [x] EBomb
-- [ ] Eliteshot
+- [x] Eliteshot
 - [x] Missile
 - [x] Gigashot
 - [x] Laser
@@ -104,7 +104,7 @@ Note: boss death animations involve tons of code and I haven't finished them yet
 - [x] Checkpoints
 - [x] Saving
 - [x] Music
-- [ ] Sound effects
+- [x] Sound effects
 
 
 ### Menus

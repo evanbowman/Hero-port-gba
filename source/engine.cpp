@@ -20,6 +20,7 @@
 #include "objects/enemies/heavy/phaze.hpp"
 #include "objects/enemies/heavy/battleDoor.hpp"
 #include "objects/enemies/heavy/chainsnake.hpp"
+#include "objects/enemies/heavy/eyespy.hpp"
 #include "objects/enemies/elite/generator.hpp"
 #include "objects/enemies/elite/barrier.hpp"
 #include "objects/enemies/elite/mode.hpp"
@@ -120,8 +121,8 @@ Engine::Engine(Platform& pf) :
 
 void Engine::respawn_to_checkpoint()
 {
-    if (not str_cmp(platform().speaker().current_music(), p_->checkpoint_music_) == 0) {
-        platform().speaker().play_music(p_->checkpoint_music_, 0);
+    if (not str_cmp(platform().speaker().current_music(), p_->checkpoint_music_.c_str()) == 0) {
+        platform().speaker().play_music(p_->checkpoint_music_.c_str(), 0);
     }
 
     for (int x = 0; x < 64; ++x) {
@@ -170,12 +171,14 @@ void Engine::begin_game(Difficulty d)
     } else {
         p_->checkpoint_room_ = {11, 14};
         load(11, 14, false);
+        // load(6, 6, false); // eyespy
         // load(11, 4, false); // silencer
         // load(9, 6, false); // reaper drone
         // load(11, 0, false); // hydra
         // load(9, 9, false); // rock smasher
         // load(5, 13, false); // elite
         // load(1, 6, false); // annihilator
+        // load(0, 3, false); // processor
     }
 
     loadgame();
@@ -250,7 +253,7 @@ void Engine::loadgame()
         auto current_music = p_->checkpoint_music_;
         respawn_to_checkpoint();
 
-        platform().speaker().play_music(current_music, 0);
+        platform().speaker().play_music(current_music.c_str(), 0);
     }
 
 }
@@ -442,7 +445,8 @@ void Engine::summon_eliminator()
     bool can_summon_eliminator = true;
     for (auto& e : enemies_) {
         if (dynamic_cast<Generator*>(e.get()) or
-            dynamic_cast<Barrier*>(e.get())) {
+            dynamic_cast<Barrier*>(e.get()) or
+            dynamic_cast<Eyespy*>(e.get())) {
             can_summon_eliminator = false;
             break;
         }
@@ -477,7 +481,7 @@ void Engine::summon_eliminator()
 
     if (can_summon_eliminator) {
         enemies_.clear();
-        platform().speaker().play_sound("snd_explo2", 1);
+        platform().speaker().play_sound("snd_explo2", 8);
         engine().add_object<Eliminator>(Vec2<Fixnum>{80 + 5 * 8 - 1, 80});
         engine().add_object<GigaExplo>(Vec2<Fixnum>{80 + 5 * 8 - 8, 80 - 5});
 
@@ -807,6 +811,14 @@ void Engine::Room::clear_adjacent_barriers()
     barrier_clear(1, 0);
     barrier_clear(0, 1);
     barrier_clear(0, -1);
+
+    // Destroy extant barriers in current room. The above code just prevents
+    // barriers from spawning during room transitions.
+    for (auto& e : engine().enemies_) {
+        if (dynamic_cast<Barrier*>(e.get())) {
+            e->kill();
+        }
+    }
 }
 
 
@@ -851,8 +863,12 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                     rd->tiles_[y][x] == 38;
 
                 platform().set_tile(Layer::map_0, x + 5, y,
-                                        rd->tiles_[y][x]);
+                                    rd->tiles_[y][x]);
             }
+        }
+        for (int x = 0; x < 20; ++x) {
+            platform().set_tile(Layer::map_0, x + 5, 63,
+                                rd->tiles_[0][x]);
         }
 
         for (auto& obj : rd->objects_) {
@@ -1079,6 +1095,10 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
 
             case 43:
                 engine().add_object<Holder>(Vec2<Fixnum>{40 + obj.x_, obj.y_});
+                break;
+
+            case 44:
+                engine().add_object<Eyespy>(Vec2<Fixnum>{40 + obj.x_, obj.y_});
                 break;
 
             default:

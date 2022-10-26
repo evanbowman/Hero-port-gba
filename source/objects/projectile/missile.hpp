@@ -18,7 +18,7 @@ private:
     Vec2<Fixnum> dir_;
     int anim_ = 0;
     int count_ = 0;
-    int dircyc_ = 19;
+    int dircyc_ = 0;
     int ttl_ = 0;
 
 public:
@@ -37,6 +37,7 @@ public:
     {
         dir_.x = Fixnum(d.x);
         dir_.y = Fixnum(d.y);
+        speed_ = dir_ * Fixnum(1.5f / 2);
     }
 
 
@@ -52,7 +53,7 @@ public:
             if (s->hitbox().overlapping(hitbox_)) {
                 kill();
                 s->kill();
-                platform().speaker().play_sound("snd_explo1", 1);
+                platform().speaker().play_sound("snd_explo1", 6);
                 engine().add_object<Explo>(Vec2<Fixnum>{x() - 4, y() - 4});
             }
         }

@@ -34,7 +34,7 @@ void Elite::step()
             }
         }
         kill();
-        platform().speaker().play_sound("snd_explo3", 1);
+        platform().speaker().play_sound("snd_explo3", 6);
         if (length(engine().enemies_) == 1) {
             platform().speaker().stop_music();
 
