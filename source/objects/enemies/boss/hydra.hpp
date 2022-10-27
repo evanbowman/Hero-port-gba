@@ -91,6 +91,9 @@ private:
     u16 miscyc_ = 0;
     u8 spawn_x_;
     u8 spawn_y_;
+    bool dead_ = false;
+    u8 ecyc_ = 0;
+    u8 totcyc_ = 0;
 
 public:
 
@@ -104,79 +107,7 @@ public:
     }
 
 
-    void step() override
-    {
-        if (health_ > 0) {
-            miscyc_ += 1;
-            if (miscyc_ == 280) {
-                miscyc_ = 0;
-
-                Vec2<Fixnum> o{x() + 33, y() + 23};
-                if (auto m = engine().add_object<Missile>(o)) {
-                    m->set_dir(rotate({1, 0}, 360 - 75));
-                }
-                o.x = x() + (76 / 2);
-                o.y = y() + (58 / 2);
-                if (auto m = engine().add_object<Missile>(o)) {
-                    m->set_dir(rotate({1, 0}, 360 - 65));
-                }
-
-            }
-        }
-
-        if (health_ <= 0 or length(engine().enemies_) == 1) {
-            kill();
-            engine().add_object<Explo>(position_);
-
-            engine().p_->objects_removed_.push_back({
-                    (u8)engine().room_.coord_.x,
-                    (u8)engine().room_.coord_.y,
-                    spawn_x_,
-                    spawn_y_
-                });
-
-            u8 start_x = spawn_x_ / 8 + 5;
-            u8 start_y = spawn_y_ / 8;
-            for (u16 y = start_y; y < start_y + 6; ++y) {
-                for (u16 x = start_x; x < start_x + 6; ++x) {
-                    platform().set_tile(Layer::map_0, x, y, 0);
-                }
-            }
-
-            engine().boss_completed();
-
-            platform().speaker().stop_music();
-
-            engine().add_object<Pickup>(position_, Pickup::blaster);
-
-            return;
-        }
-
-        switch (timeline_++) {
-        case 0:
-            engine().swapsong("boss");
-            break;
-
-        case 10:
-            break;
-
-        case 20:
-            break;
-
-        case 30:
-            break;
-
-        case 40:
-            break;
-
-        case 75:
-            break;
-
-        case 99:
-            timeline_ = 40;
-            break;
-        }
-    }
+    void step() override;
 
 };
 

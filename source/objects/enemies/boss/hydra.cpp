@@ -337,4 +337,133 @@ Hydra::Hydra(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y) :
 
 
 
+void Hydra::step()
+{
+    if (health_ > 0) {
+        miscyc_ += 1;
+        if (miscyc_ == 280) {
+            miscyc_ = 0;
+
+            Vec2<Fixnum> o{x() + 33, y() + 23};
+            if (auto m = engine().add_object<Missile>(o)) {
+                m->set_dir(rotate({1, 0}, 360 - 75));
+            }
+            o.x = x() + (76 / 2);
+            o.y = y() + (58 / 2);
+            if (auto m = engine().add_object<Missile>(o)) {
+                m->set_dir(rotate({1, 0}, 360 - 65));
+            }
+
+        }
+    }
+
+    if ((health_ <= 0 or length(engine().enemies_) == 1) and not dead_) {
+        platform().speaker().stop_music();
+        dead_ = true;
+        return;
+    }
+
+    auto o = position_;
+    o.x += 24;
+    o.y += 24;
+
+    if (dead_) {
+
+        ecyc_ += 1;
+        if (ecyc_ >= 6) {
+            ecyc_ = 0;
+            totcyc_ += 1;
+            if (totcyc_ < 15) {
+                engine().g_.screenshake_ = 6;
+                platform().speaker().play_sound("snd_explo1", 9);
+                engine().add_object<BigExplo>(rng::sample<16>(o,
+                                                              rng::critical_state));
+            } else if (totcyc_ == 15) {
+
+                platform().speaker().play_sound("snd_explo3", 10);
+
+                engine().add_object<ExploSpewer>(Vec2<Fixnum>{o.x + 20, o.y + 25});
+
+                if (auto e = engine().add_object<ExploSpewer>(Vec2<Fixnum>{o.x - 16, o.y})) {
+                    e->set_speed({-1, 0});
+                }
+                if (auto e = engine().add_object<ExploSpewer>(Vec2<Fixnum>{o.x + 16, o.y})) {
+                    e->set_speed({1, 0});
+                }
+                if (auto e = engine().add_object<ExploSpewer>(Vec2<Fixnum>{o.x, o.y - 16})) {
+                    e->set_speed({0, -1});
+                }
+                if (auto e = engine().add_object<ExploSpewer>(Vec2<Fixnum>{o.x, o.y + 16})) {
+                    e->set_speed({0, 1});
+                }
+            } else if (totcyc_ >= 20) {
+                platform().speaker().play_sound("snd_explo4", 14);
+                for (int i = 0; i < 8; ++i) {
+                    for (int j = 0; j < 4; ++j) {
+                        if (auto exp = engine().add_object<BigExplo>(o)) {
+                            auto dir = rotate({1, 0}, j * 90 + 45 + i * 3);
+                            dir = dir * ((i + 1 / 2.f) * 1.5f);
+                            Vec2<Fixnum> spd;
+                            spd.x = Fixnum(dir.x);
+                            spd.y = Fixnum(dir.y);
+                            exp->set_speed(spd);
+                        }
+                    }
+                }
+                kill();
+                engine().add_object<Explo>(o);
+
+                engine().p_->objects_removed_.push_back({
+                                                         (u8)engine().room_.coord_.x,
+                                                         (u8)engine().room_.coord_.y,
+                                                         spawn_x_,
+                                                         spawn_y_
+                    });
+
+                u8 start_x = spawn_x_ / 8 + 5;
+                u8 start_y = spawn_y_ / 8;
+                for (u16 y = start_y; y < start_y + 6; ++y) {
+                    for (u16 x = start_x; x < start_x + 6; ++x) {
+                        platform().set_tile(Layer::map_0, x, y, 0);
+                    }
+                }
+
+                engine().boss_completed();
+
+                engine().add_object<Pickup>(o, Pickup::blaster);
+
+                return;
+            }
+        }
+        return;
+    }
+
+    switch (timeline_++) {
+    case 0:
+        engine().swapsong("boss");
+        break;
+
+    case 10:
+        break;
+
+    case 20:
+        break;
+
+    case 30:
+        break;
+
+    case 40:
+        break;
+
+    case 75:
+        break;
+
+    case 99:
+        timeline_ = 40;
+        break;
+    }
+}
+
+
+
 }
