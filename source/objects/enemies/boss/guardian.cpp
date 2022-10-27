@@ -357,6 +357,22 @@ public:
             kill();
             engine().add_object<Explo>(position_);
 
+            platform().speaker().play_sound("snd_bossroar", 12);
+            platform().speaker().play_sound("snd_explo4", 14);
+
+            for (int i = 0; i < 6; ++i) {
+                for (int j = 0; j < 8; ++j) {
+                    if (auto exp = engine().add_object<BigExplo>(position_)) {
+                        auto dir = rotate({1, 0}, j * 90 + 45 + i * 3);
+                        dir = dir * ((i + 1 / 2.f) * 1.5f);
+                        Vec2<Fixnum> spd;
+                        spd.x = Fixnum(dir.x);
+                        spd.y = Fixnum(dir.y);
+                        exp->set_speed(spd);
+                    }
+                }
+            }
+
             engine().p_->objects_removed_.push_back({
                     (u8)engine().room_.coord_.x,
                     (u8)engine().room_.coord_.y,
