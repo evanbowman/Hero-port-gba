@@ -34,9 +34,27 @@ void Elite::step()
             }
         }
         kill();
-        platform().speaker().play_sound("snd_explo3", 6);
+        auto o = position_;
+        for (int i = 0; i < 8; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                if (auto exp = engine().add_object<BigExplo>(o)) {
+                    auto dir = rotate({1, 0}, j * 90 + 45 + i * 3);
+                    dir = dir * ((i + 1 / 2.f) * 1.5f);
+                    Vec2<Fixnum> spd;
+                    spd.x = Fixnum(dir.x);
+                    spd.y = Fixnum(dir.y);
+                    exp->set_speed(spd);
+                }
+            }
+        }
+        engine().g_.screenshake_ = 12;
+
+        platform().speaker().play_sound("snd_bossroar", 9);
+
         if (length(engine().enemies_) == 1) {
             platform().speaker().stop_music();
+
+            platform().speaker().play_sound("snd_explo4", 6);
 
             engine().p_->objects_removed_.push_back({
                     (u8)engine().room_.coord_.x,
@@ -57,6 +75,7 @@ void Elite::step()
             engine().add_object<Pickup>(position_, Pickup::suit);
 
         } else {
+            platform().speaker().play_sound("snd_explo3", 6);
             ((Elite*)&**engine().enemies_.begin())->friend_spawn_x_ = spawn_x_;
             ((Elite*)&**engine().enemies_.begin())->friend_spawn_y_ = spawn_y_;
         }
@@ -134,31 +153,8 @@ void Elite::step()
             }
         }
         if (shotcyc_ == 32) {
-            if (length(engine().enemies_) == 1) {
-                speed_ = {};
-                expel_ = 1;
-            } else if (length(engine().enemies_) == 2) {
-
-                Buffer<Elite*, 2> els;
-                for (auto& e : engine().enemies_) {
-                    if (auto el = dynamic_cast<Elite*>(e.get())) {
-                        els.push_back(el);
-                    }
-                }
-
-                bool assigned = false;
-                for (auto& e : els) {
-                    if (e->expel_) {
-                        assigned = true;
-                    }
-                }
-
-                if (not assigned) {
-                    auto c = els[rng::choice<2>(rng::utility_state)];
-                    c->expel_ = 1;
-                    c->speed_ = {};
-                }
-            }
+            speed_ = {};
+            expel_ = 1;
 
             shotcyc_ = 0;
         }
