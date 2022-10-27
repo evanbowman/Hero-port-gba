@@ -330,9 +330,7 @@ class DetachedCore : public Enemy
 public:
     DetachedCore(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y)
         : Enemy(TaggedObject::Tag::ignored,
-                Health{
-                    2 // 64
-                }),
+                Health{64}),
           spawn_x_(spawn_x), spawn_y_(spawn_y)
     {
         hitbox_.dimension_.size_ = {6, 6};
@@ -520,9 +518,7 @@ private:
 
 GuardianCore::GuardianCore(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y)
     : Enemy(TaggedObject::Tag::ignored,
-            Health{
-                4 // 128
-            }),
+            Health{128}),
       spawn_x_(spawn_x), spawn_y_(spawn_y)
 {
     hitbox_.dimension_.size_ = {6, 6};
@@ -581,6 +577,8 @@ void GuardianCore::step()
         position_.y += 3;
 
         ((GuardianLower*)lower_)->stop_flame();
+
+        engine().g_.screenshake_ = 6;
 
         gravity_ = 0;
         upwards_speed_ = 0;
