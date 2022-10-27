@@ -336,7 +336,8 @@ class DetachedCore : public Enemy
 {
 public:
     DetachedCore(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y) :
-        Enemy(TaggedObject::Tag::ignored, Health{64}),
+        Enemy(TaggedObject::Tag::ignored, Health{2// 64
+            }),
         spawn_x_(spawn_x),
         spawn_y_(spawn_y)
     {
@@ -352,41 +353,70 @@ public:
 
     void step() override
     {
-        if (health_ == 0) {
+        if (health_ == 0 and not dead_) {
             platform().speaker().stop_music();
-            kill();
             engine().add_object<Explo>(position_);
+            dead_ = true;
 
-            platform().speaker().play_sound("snd_bossroar", 12);
-            platform().speaker().play_sound("snd_explo4", 14);
-
-            for (int i = 0; i < 6; ++i) {
-                for (int j = 0; j < 8; ++j) {
-                    if (auto exp = engine().add_object<BigExplo>(position_)) {
-                        auto dir = rotate({1, 0}, j * 90 + 45 + i * 3);
-                        dir = dir * ((i + 1 / 2.f) * 1.5f);
-                        Vec2<Fixnum> spd;
-                        spd.x = Fixnum(dir.x);
-                        spd.y = Fixnum(dir.y);
-                        exp->set_speed(spd);
-                    }
+            for (auto& e : engine().enemies_) {
+                if (dynamic_cast<Hunter*>(e.get()) or
+                    dynamic_cast<Soldier*>(e.get()) or
+                    dynamic_cast<Spew*>(e.get())) {
+                    e->kill();
                 }
             }
 
-            engine().p_->objects_removed_.push_back({
-                    (u8)engine().room_.coord_.x,
-                    (u8)engine().room_.coord_.y,
-                    spawn_x_,
-                    spawn_y_
-                });
+            platform().speaker().play_sound("snd_bossroar", 12);
+            platform().speaker().play_sound("snd_explo3", 14);
+            return;
+        }
 
-            engine().boss_completed();
-
-            for (auto& e : engine().enemies_) {
-                e->kill();
+        if (dead_) {
+            deadcyc_ += 1;
+            if (deadcyc_ % 4 == 0) {
+                platform().speaker().play_sound("snd_explo1", deadcyc_ / 4);
+                auto p = position_;
+                p.x -= 4;
+                p.y -= 4;
+                engine().add_object<Explo>(rng::sample<8>(p,
+                                                          rng::critical_state));
+                engine().g_.screenshake_ = 2;
             }
 
-            engine().add_object<Pickup>(position_, Pickup::blade);
+
+            if (deadcyc_ == 130) {
+                kill();
+                for (int i = 0; i < 6; ++i) {
+                    for (int j = 0; j < 8; ++j) {
+                        if (auto exp = engine().add_object<BigExplo>(position_)) {
+                            auto dir = rotate({1, 0}, j * 90 + 45 + i * 3);
+                            dir = dir * ((i + 1 / 2.f) * 1.5f);
+                            Vec2<Fixnum> spd;
+                            spd.x = Fixnum(dir.x);
+                            spd.y = Fixnum(dir.y);
+                            exp->set_speed(spd);
+                        }
+                    }
+                }
+
+                engine().p_->objects_removed_.push_back({
+                                                         (u8)engine().room_.coord_.x,
+                                                         (u8)engine().room_.coord_.y,
+                                                         spawn_x_,
+                                                         spawn_y_
+                    });
+
+                engine().boss_completed();
+
+                for (auto& e : engine().enemies_) {
+                    e->kill();
+                }
+
+                engine().g_.screenshake_ = 12;
+
+                engine().add_object<Pickup>(position_, Pickup::blade);
+                platform().speaker().play_sound("snd_explo4", 90);
+            }
         }
 
         animcyc_ += 1;
@@ -405,8 +435,15 @@ public:
                 detaching_ = false;
             }
         } else {
+            if (dead_) {
+                speed_ = {};
+                return;
+            }
             switch (timeline_++) {
             case 80:
+                if (dead_) {
+                    break;
+                }
                 if (shotcyc_ < 12) {
                     auto dir = rotate({1, 0},
                                       rng::choice<8>(rng::critical_state) * 45);
@@ -487,13 +524,17 @@ private:
     bool detaching_ = true;
     u8 shotcyc_ = 0;
     int timeline_ = 0;
+
+    bool dead_ = false;
+    u8 deadcyc_ = 0;
 };
 
 
 
 
 GuardianCore::GuardianCore(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y) :
-    Enemy(TaggedObject::Tag::ignored, Health{128}),
+    Enemy(TaggedObject::Tag::ignored, Health{4// 128
+        }),
     spawn_x_(spawn_x),
     spawn_y_(spawn_y)
 {
@@ -586,11 +627,16 @@ void GuardianCore::step()
                 shotcyc_ = 1;
             }
             downwards_speed_ = 0;
-            if (TaggedObject::get_taglist(TaggedObject::Tag::hunter)) {
-                upwards_speed_ = -2;
+            if (not upper_) {
+                upwards_speed_ = -3.f;
             } else {
-                upwards_speed_ = -2.5f;
+                if (TaggedObject::get_taglist(TaggedObject::Tag::hunter)) {
+                    upwards_speed_ = -2;
+                } else {
+                    upwards_speed_ = -2.5f;
+                }
             }
+
             speed_ = {};
             gravity_ = Fixnum(0.1f);
             if (not dir_) {
@@ -662,6 +708,8 @@ void GuardianCore::step()
             Fixnum y = rng::sample<16>(position_.y.as_integer(),
                                        rng::critical_state);
             engine().add_object<BigExplo>(Vec2<Fixnum>{x, y});
+            platform().speaker().play_sound("snd_explo1", detachcyc_ / 4);
+            engine().g_.screenshake_ = 2;
         }
         if (detachcyc_ >= 8 and speed_.y not_eq 0) {
             detachcyc_ = 0;
