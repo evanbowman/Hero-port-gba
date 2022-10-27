@@ -3,22 +3,15 @@
 #include "object.hpp"
 
 
-
 namespace herocore
 {
-
 
 
 class Shot : public Object
 {
 private:
-
 public:
-
-    Shot(const Vec2<Fixnum>& pos,
-         Fixnum speed,
-         int power) :
-        power_(power)
+    Shot(const Vec2<Fixnum>& pos, Fixnum speed, int power) : power_(power)
     {
         position_ = pos;
 
@@ -51,5 +44,4 @@ private:
 };
 
 
-
-}
+} // namespace herocore

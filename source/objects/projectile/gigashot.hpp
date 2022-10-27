@@ -1,29 +1,24 @@
 #pragma once
 
 #include "enemyProjectile.hpp"
-#include "supershot.hpp"
 #include "enemyShot.hpp"
 #include "objects/particles/bigExplo.hpp"
-
+#include "supershot.hpp"
 
 
 namespace herocore
 {
 
 
-
 class GigaExplo : public EnemyProjectile
 {
 private:
-
     int ttl_ = 0;
     int anim_ = 0;
     int count_ = 0;
 
 public:
-
-    GigaExplo(const Vec2<Fixnum>& pos) :
-        EnemyProjectile(pos, 2, engine().g_.maxheat_ / 4)
+    GigaExplo(const Vec2<Fixnum>& pos) : EnemyProjectile(pos, 2, engine().g_.maxheat_ / 4)
     {
         sprite_index_ = 114;
         hitbox_.dimension_.size_ = {16, 16};
@@ -48,19 +43,15 @@ public:
 };
 
 
-
 class Gigashot : public EnemyProjectile
 {
 private:
-
     int anim_ = 0;
     int count_ = 0;
     Vec2<Fixnum> grav_;
 
 public:
-
-    Gigashot(const Vec2<Fixnum>& pos) :
-        EnemyProjectile(pos, 4, engine().g_.maxheat_ / 2)
+    Gigashot(const Vec2<Fixnum>& pos) : EnemyProjectile(pos, 4, engine().g_.maxheat_ / 2)
     {
         sprite_index_ = 110;
         hitbox_.dimension_.size_ = {12, 12};
@@ -112,5 +103,4 @@ public:
 };
 
 
-
-}
+} // namespace herocore

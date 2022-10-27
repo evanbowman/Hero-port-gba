@@ -4,10 +4,12 @@
 #include "list.hpp"
 
 
-struct HitBox {
+struct HitBox
+{
     Vec2<Float>* position_;
 
-    struct Dimension {
+    struct Dimension
+    {
         Vec2<s16> size_;
         Vec2<s16> origin_;
     } dimension_;
@@ -41,10 +43,7 @@ class Platform;
 
 
 template <typename A, typename B, typename Pl1, typename Pl2>
-void check_collisions(Platform& pf,
-                      Game& game,
-                      List<A, Pl1>& lhs,
-                      List<B, Pl2>& rhs)
+void check_collisions(Platform& pf, Game& game, List<A, Pl1>& lhs, List<B, Pl2>& rhs)
 {
     for (auto& a : lhs) {
         if (a->visible()) {

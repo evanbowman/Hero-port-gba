@@ -1,21 +1,17 @@
 #pragma once
 
-#include "object.hpp"
 #include "number/random.hpp"
-
+#include "object.hpp"
 
 
 namespace herocore
 {
 
 
-
 class Star : public Object
 {
 private:
-
 public:
-
     Star(const Vec2<Fixnum>& pos)
     {
         position_ = pos;
@@ -26,7 +22,6 @@ public:
 
     void step() override
     {
-
     }
 
 
@@ -39,12 +34,8 @@ public:
 
 
 private:
-
     int counter_ = 20;
-
-
 };
 
 
-
-}
+} // namespace herocore

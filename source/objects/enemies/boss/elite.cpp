@@ -1,26 +1,19 @@
 #include "elite.hpp"
-#include "objects/projectile/mimicShot.hpp"
 #include "objects/misc/pickup.hpp"
-
+#include "objects/projectile/mimicShot.hpp"
 
 
 namespace herocore
 {
 
 
-
-Elite::Elite(const Vec2<Fixnum>& pos,
-             u8 spawn_x,
-             u8 spawn_y) :
-    Enemy(TaggedObject::Tag::ignored, Health{128}),
-    spawn_x_(spawn_x),
-    spawn_y_(spawn_y)
+Elite::Elite(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y)
+    : Enemy(TaggedObject::Tag::ignored, Health{128}), spawn_x_(spawn_x), spawn_y_(spawn_y)
 {
     position_ = {pos.x - 4, pos.y - 4};
     sprite_index_ = 60;
     hitbox_.dimension_.size_ = {6, 8};
 }
-
 
 
 void Elite::step()
@@ -56,19 +49,15 @@ void Elite::step()
 
             platform().speaker().play_sound("snd_explo4", 6);
 
-            engine().p_->objects_removed_.push_back({
-                    (u8)engine().room_.coord_.x,
-                    (u8)engine().room_.coord_.y,
-                    spawn_x_,
-                    spawn_y_
-                });
+            engine().p_->objects_removed_.push_back({(u8)engine().room_.coord_.x,
+                                                     (u8)engine().room_.coord_.y,
+                                                     spawn_x_,
+                                                     spawn_y_});
 
-            engine().p_->objects_removed_.push_back({
-                    (u8)engine().room_.coord_.x,
-                    (u8)engine().room_.coord_.y,
-                    friend_spawn_x_,
-                    friend_spawn_y_
-                });
+            engine().p_->objects_removed_.push_back({(u8)engine().room_.coord_.x,
+                                                     (u8)engine().room_.coord_.y,
+                                                     friend_spawn_x_,
+                                                     friend_spawn_y_});
 
             engine().boss_completed();
 
@@ -125,8 +114,7 @@ void Elite::step()
         }
 
         if (temprand > 30) {
-            auto dir = direction(fvec(position_),
-                                 fvec(engine().hero()->position()));
+            auto dir = direction(fvec(position_), fvec(engine().hero()->position()));
             // FIXME!!! floor dir s.t. divisible by 45 degrees.
             speed_.x = Fixnum(dir.x);
             speed_.y = Fixnum(dir.y);
@@ -142,14 +130,12 @@ void Elite::step()
         if (shotcyc_ % 3 == 0) {
             if (x() > engine().hero()->x()) {
                 play_sound("snd_mimicshot", 2);
-                engine().add_object<MimicShot>(Vec2<Fixnum>{position_.x,
-                                                            position_.y + 3},
-                    Fixnum(-2.5f / 2));
+                engine().add_object<MimicShot>(Vec2<Fixnum>{position_.x, position_.y + 3},
+                                               Fixnum(-2.5f / 2));
             } else {
                 play_sound("snd_mimicshot", 2);
-                engine().add_object<MimicShot>(Vec2<Fixnum>{position_.x + 3,
-                                                            position_.y + 3},
-                    Fixnum(2.5f / 2));
+                engine().add_object<MimicShot>(
+                    Vec2<Fixnum>{position_.x + 3, position_.y + 3}, Fixnum(2.5f / 2));
             }
         }
         if (shotcyc_ == 32) {
@@ -190,9 +176,7 @@ void Elite::step()
     case 160:
         speed_ = {};
         for (int i = 0; i < 28; ++i) {
-            if (auto e = engine().add_object<MimicShot>(Vec2<Fixnum>{
-                        x(), y()
-                            }, 0)) {
+            if (auto e = engine().add_object<MimicShot>(Vec2<Fixnum>{x(), y()}, 0)) {
                 auto dir = rotate({1, 0}, (Fixnum(i) * Fixnum(12.85)).as_integer());
                 dir = dir * 1.5f;
                 e->set_speed({Fixnum(dir.x), Fixnum(dir.y)});
@@ -218,14 +202,12 @@ void Elite::step()
             gotit_ = 1;
         }
 
-        if (not gotit_){
+        if (not gotit_) {
             speed_.x *= -1;
             speed_.y *= -1;
         }
     }
-
 }
 
 
-
-}
+} // namespace herocore

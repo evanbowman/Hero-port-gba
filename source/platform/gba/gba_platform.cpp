@@ -10,6 +10,7 @@
 #ifdef __GBA__
 
 #include "bulkAllocator.hpp"
+#include "fmt.hpp"
 #include "graphics/overlay.hpp"
 #include "images.cpp"
 #include "number/random.hpp"
@@ -17,14 +18,13 @@
 #include "string.hpp"
 #include "util.hpp"
 #include <algorithm>
-#include "fmt.hpp"
-
 
 
 #include "gba.h"
 
 
-struct BiosVersion {
+struct BiosVersion
+{
     enum {
         NDS = static_cast<long unsigned int>(-1162995584),
         GBA = static_cast<long unsigned int>(-1162995585)
@@ -47,12 +47,10 @@ Platform::DeviceName Platform::device_name() const
 }
 
 
-
 extern char __iwram_overlay_end;
 
 
 static const char* stack_canary_value = "（・θ・）";
-
 
 
 static void canary_init()
@@ -65,7 +63,6 @@ static void canary_init()
 
 #pragma GCC diagnostic pop
 }
-
 
 
 void* stack_end()
@@ -84,7 +81,6 @@ static inline bool canary_check()
 
 #pragma GCC diagnostic pop
 }
-
 
 
 void Platform::enable_feature(const char* feature_name, bool enabled)
@@ -142,8 +138,7 @@ static constexpr const int sbb_t0_texture = 0;
 static constexpr const int sbb_t1_texture = 8;
 static constexpr const int sbb_bg_texture = sbb_t0_texture;
 
-static constexpr const int cbb_overlay_texture =
-    sbb_overlay_texture / sbb_per_cbb;
+static constexpr const int cbb_overlay_texture = sbb_overlay_texture / sbb_per_cbb;
 
 static constexpr const int cbb_t0_texture = sbb_t0_texture / sbb_per_cbb;
 static constexpr const int cbb_t1_texture = sbb_t1_texture / sbb_per_cbb;
@@ -159,7 +154,6 @@ void start(Platform&);
 
 
 static Platform* platform;
-
 
 
 int main(int argc, char** argv)
@@ -292,7 +286,8 @@ void Platform::Keyboard::poll()
 ////////////////////////////////////////////////////////////////////////////////
 
 
-struct alignas(4) ObjectAttributes {
+struct alignas(4) ObjectAttributes
+{
     u16 attribute_0;
     u16 attribute_1;
     u16 attribute_2;
@@ -303,7 +298,8 @@ struct alignas(4) ObjectAttributes {
 
 // See documentation. Object memory provides thirty-two matrices for affine
 // transformation; the parameters nestled between every four objects.
-struct alignas(4) ObjectAffineMatrix {
+struct alignas(4) ObjectAffineMatrix
+{
     ObjectAttributes o0;
     ObjectAttributes o1;
     ObjectAttributes o2;
@@ -371,7 +367,8 @@ struct alignas(4) ObjectAffineMatrix {
 };
 
 
-namespace attr0_mask {
+namespace attr0_mask
+{
 constexpr u16 disabled{2 << 8};
 }
 
@@ -379,11 +376,9 @@ constexpr u16 disabled{2 << 8};
 constexpr u32 oam_count = Platform::Screen::sprite_limit;
 
 
-static ObjectAttributes* const object_attribute_memory = {
-    (ObjectAttributes*)0x07000000};
+static ObjectAttributes* const object_attribute_memory = {(ObjectAttributes*)0x07000000};
 
-static ObjectAttributes
-    object_attribute_back_buffer[Platform::Screen::sprite_limit];
+static ObjectAttributes object_attribute_back_buffer[Platform::Screen::sprite_limit];
 
 
 static auto affine_transform_back_buffer =
@@ -419,8 +414,7 @@ static bool last_fade_include_sprites;
 static volatile u16* reg_blendcnt = (volatile u16*)0x04000050;
 static volatile u16* reg_blendalpha = (volatile u16*)0x04000052;
 
-#define BLD_BUILD(top, bot, mode)                                              \
-    ((((bot)&63) << 8) | (((mode)&3) << 6) | ((top)&63))
+#define BLD_BUILD(top, bot, mode) ((((bot)&63) << 8) | (((mode)&3) << 6) | ((top)&63))
 #define BLD_OBJ 0x0010
 #define BLD_BG0 0x0001
 #define BLD_BG1 0x0002
@@ -444,17 +438,15 @@ void Platform::set_priorities(int sprite_prior,
 }
 
 
-void Platform::Screen::init_layers(int background_prior,
-                                   int tile0_prior,
-                                   int tile1_prior)
+void Platform::Screen::init_layers(int background_prior, int tile0_prior, int tile1_prior)
 {
     // Tilemap layer 0
-    *bg0_control = BG_CBB(cbb_t0_texture) | BG_SBB(sbb_t0_tiles) |
-                   BG_REG_64x64 | BG_PRIORITY(tile0_prior) | BG_MOSAIC;
+    *bg0_control = BG_CBB(cbb_t0_texture) | BG_SBB(sbb_t0_tiles) | BG_REG_64x64 |
+                   BG_PRIORITY(tile0_prior) | BG_MOSAIC;
 
     // Tilemap layer 1
-    *bg3_control = BG_CBB(cbb_t1_texture) | BG_SBB(sbb_t1_tiles) |
-                   BG_REG_64x64 | BG_PRIORITY(tile1_prior) | BG_MOSAIC;
+    *bg3_control = BG_CBB(cbb_t1_texture) | BG_SBB(sbb_t1_tiles) | BG_REG_64x64 |
+                   BG_PRIORITY(tile1_prior) | BG_MOSAIC;
 
     // The starfield background
     *bg1_control = BG_CBB(cbb_bg_texture) | BG_SBB(sbb_bg_tiles) |
@@ -572,8 +564,7 @@ static Color nightmode_adjust(const Color& c)
     if (not night_mode) {
         return c;
     } else {
-        return adjust_warmth(
-            Color::from_bgr_hex_555(blend(c, c.grayscale(), 190)), 2);
+        return adjust_warmth(Color::from_bgr_hex_555(blend(c, c.grayscale(), 190)), 2);
     }
 }
 
@@ -582,7 +573,8 @@ static Color nightmode_adjust(const Color& c)
 // previous results, and if one matches the current blend parameters, the caller
 // will set the locked_ field to true, and return the index of the existing
 // palette bank. Each call to display() unlocks all of the palette infos.
-static struct PaletteInfo {
+static struct PaletteInfo
+{
     ColorConstant color_ = ColorConstant::null;
     u8 blend_amount_ = 0;
     bool locked_ = false;
@@ -651,9 +643,7 @@ static PaletteBank color_mix(ColorConstant k, u8 amount)
 }
 
 
-
 static int spr_scroll = 0;
-
 
 
 void Platform::Screen::draw(const Sprite& spr)
@@ -680,8 +670,7 @@ void Platform::Screen::draw(const Sprite& spr)
         if (UNLIKELY(oam_write_index == oam_count)) {
             return;
         }
-        const auto position =
-            ivec(spr.get_position()) - spr.get_origin().cast<s32>();
+        const auto position = ivec(spr.get_position()) - spr.get_origin().cast<s32>();
 
         auto abs_position = position;
 
@@ -813,8 +802,8 @@ static void key_wake_isr()
 
 static void key_standby_isr()
 {
-    REG_KEYCNT = KEY_SELECT | KEY_START | KEY_A | KEY_B | DPAD | KEYIRQ_ENABLE |
-                 KEYIRQ_OR;
+    REG_KEYCNT =
+        KEY_SELECT | KEY_START | KEY_A | KEY_B | DPAD | KEYIRQ_ENABLE | KEYIRQ_OR;
 
     irqSet(IRQ_KEYPAD, key_wake_isr);
 
@@ -894,8 +883,7 @@ void Platform::Screen::display()
         object_attribute_back_buffer[i].attribute_0 |= attr0_mask::disabled;
     }
 
-    for (u32 i = affine_transform_write_index;
-         i < last_affine_transform_write_index;
+    for (u32 i = affine_transform_write_index; i < last_affine_transform_write_index;
          ++i) {
 
         auto& affine = affine_transform_back_buffer[i];
@@ -1000,8 +988,7 @@ Contrast Platform::Screen::get_contrast() const
 }
 
 
-static void
-init_palette(const TextureData* td, u16* palette, bool skip_contrast)
+static void init_palette(const TextureData* td, u16* palette, bool skip_contrast)
 {
     const auto adj_cr = contrast + base_contrast;
 
@@ -1011,22 +998,17 @@ init_palette(const TextureData* td, u16* palette, bool skip_contrast)
             const auto c =
                 nightmode_adjust(Color::from_bgr_hex_555(td->palette_data_[i]));
 
-            const auto r =
-                clamp(f * (Color::upsample(c.r_) - 128) + 128, 0.f, 255.f);
-            const auto g =
-                clamp(f * (Color::upsample(c.g_) - 128) + 128, 0.f, 255.f);
-            const auto b =
-                clamp(f * (Color::upsample(c.b_) - 128) + 128, 0.f, 255.f);
+            const auto r = clamp(f * (Color::upsample(c.r_) - 128) + 128, 0.f, 255.f);
+            const auto g = clamp(f * (Color::upsample(c.g_) - 128) + 128, 0.f, 255.f);
+            const auto b = clamp(f * (Color::upsample(c.b_) - 128) + 128, 0.f, 255.f);
 
-            palette[i] = Color(Color::downsample(r),
-                               Color::downsample(g),
-                               Color::downsample(b))
-                             .bgr_hex_555();
+            palette[i] =
+                Color(Color::downsample(r), Color::downsample(g), Color::downsample(b))
+                    .bgr_hex_555();
 
         } else {
-            palette[i] =
-                nightmode_adjust(Color::from_bgr_hex_555(td->palette_data_[i]))
-                    .bgr_hex_555();
+            palette[i] = nightmode_adjust(Color::from_bgr_hex_555(td->palette_data_[i]))
+                             .bgr_hex_555();
         }
     }
 }
@@ -1155,8 +1137,7 @@ void Platform::fatal(const char* msg)
     ::platform->load_overlay_texture("overlay");
     ::platform->enable_glyph_mode(true);
 
-    static const Text::OptColors text_colors{
-        {custom_color(0xffffff), bkg_color}};
+    static const Text::OptColors text_colors{{custom_color(0xffffff), bkg_color}};
 
     static const Text::OptColors text_colors_inv{
         {text_colors->background_, text_colors->foreground_}};
@@ -1198,13 +1179,11 @@ void Platform::fatal(const char* msg)
 
         int offset = 0;
 
-        auto render_line =
-            [&](const char* line, int spacing, Text::OptColors colors) {
-                line_buffer.emplace_back(*::platform,
-                                         OverlayCoord{1, u8(6 + offset)});
-                line_buffer.back().append(line, colors);
-                offset += spacing;
-            };
+        auto render_line = [&](const char* line, int spacing, Text::OptColors colors) {
+            line_buffer.emplace_back(*::platform, OverlayCoord{1, u8(6 + offset)});
+            line_buffer.back().append(line, colors);
+            offset += spacing;
+        };
 
         render_line("uart console available", 2, text_colors);
         render_line("link port        rs232 cable", 2, text_colors_inv);
@@ -1311,8 +1290,7 @@ void Platform::Screen::fade(float amount,
         if (include_overlay or overlay_was_faded) {
             for (int i = 0; i < 16; ++i) {
                 auto from = Color::from_bgr_hex_555(overlay_palette[i]);
-                MEM_BG_PALETTE[16 + i] =
-                    blend(from, c, include_overlay ? amt : 0);
+                MEM_BG_PALETTE[16 + i] = blend(from, c, include_overlay ? amt : 0);
             }
         }
         overlay_was_faded = include_overlay;
@@ -1402,8 +1380,7 @@ push_spritesheet_texture(const TextureData& info)
 
     // NOTE: There are four tile blocks, so index four points to the
     // end of the tile memory.
-    memcpy16(
-        (void*)&MEM_TILE[4][1], info.tile_data_, info.tile_data_length_ / 2);
+    memcpy16((void*)&MEM_TILE[4][1], info.tile_data_, info.tile_data_length_ / 2);
 
     // We need to do this, otherwise whatever screen fade is currently
     // active will be overwritten by the copy.
@@ -1417,8 +1394,7 @@ push_spritesheet_texture(const TextureData& info)
 }
 
 
-std::optional<Platform::FailureReason>
-Platform::load_sprite_texture(const char* name)
+std::optional<Platform::FailureReason> Platform::load_sprite_texture(const char* name)
 {
     StringBuffer<48> palette_file(name);
     palette_file += ".pal";
@@ -1427,9 +1403,7 @@ Platform::load_sprite_texture(const char* name)
     const auto palette = fs().get_file(palette_file.c_str());
 
     if (img.data_ and palette.data_) {
-        memcpy(spritesheet_source_pal,
-               palette.data_,
-               sizeof spritesheet_source_pal);
+        memcpy(spritesheet_source_pal, palette.data_, sizeof spritesheet_source_pal);
 
         TextureData& info = spritesheet_file_data;
         info.name_ = name;
@@ -1464,8 +1438,8 @@ static u16 tile0_source_pal[16];
 static TextureData tile0_file_data;
 
 
-static std::optional<Platform::FailureReason>
-push_tile0_texture(const char* name, const TextureData& info)
+static std::optional<Platform::FailureReason> push_tile0_texture(const char* name,
+                                                                 const TextureData& info)
 {
     current_tilesheet0 = &info;
 
@@ -1506,8 +1480,7 @@ push_tile0_texture(const char* name, const TextureData& info)
 }
 
 
-std::optional<Platform::FailureReason>
-Platform::load_tile0_texture(const char* name)
+std::optional<Platform::FailureReason> Platform::load_tile0_texture(const char* name)
 {
     StringBuffer<48> palette_file(name);
     palette_file += ".pal";
@@ -1552,8 +1525,8 @@ static u16 tile1_source_pal[16];
 static TextureData tile1_file_data;
 
 
-static std::optional<Platform::FailureReason>
-push_tile1_texture(const char* name, const TextureData& info)
+static std::optional<Platform::FailureReason> push_tile1_texture(const char* name,
+                                                                 const TextureData& info)
 {
     current_tilesheet1 = &info;
 
@@ -1593,8 +1566,7 @@ push_tile1_texture(const char* name, const TextureData& info)
 }
 
 
-std::optional<Platform::FailureReason>
-Platform::load_tile1_texture(const char* name)
+std::optional<Platform::FailureReason> Platform::load_tile1_texture(const char* name)
 {
     StringBuffer<48> palette_file(name);
     palette_file += ".pal";
@@ -1664,8 +1636,7 @@ bool Platform::is_running() const
 static byte* const cartridge_ram = (byte*)0x0E000000;
 
 
-static bool
-flash_byteverify(void* in_dst, const void* in_src, unsigned int length)
+static bool flash_byteverify(void* in_dst, const void* in_src, unsigned int length)
 {
     unsigned char* src = (unsigned char*)in_src;
     unsigned char* dst = (unsigned char*)in_dst;
@@ -1725,8 +1696,7 @@ COLD static bool flash_save(const void* data, u32 flash_offset, u32 length)
 
     flash_bytecpy((void*)(cartridge_ram + flash_offset), data, length, true);
 
-    return flash_byteverify(
-        (void*)(cartridge_ram + flash_offset), data, length);
+    return flash_byteverify((void*)(cartridge_ram + flash_offset), data, length);
 }
 
 
@@ -1738,8 +1708,7 @@ static void flash_load(void* dest, u32 flash_offset, u32 length)
         set_flash_bank(0);
     }
 
-    flash_bytecpy(
-        dest, (const void*)(cartridge_ram + flash_offset), length, false);
+    flash_bytecpy(dest, (const void*)(cartridge_ram + flash_offset), length, false);
 }
 
 
@@ -1824,7 +1793,6 @@ SynchronizedBase::~SynchronizedBase()
 ////////////////////////////////////////////////////////////////////////////////
 
 
-
 // NOTE: PersistentData goes first into flash memory, followed by the game's
 // logs. The platform implementation isn't supposed to need to know about the
 // layout of the game's save data, but, in this particular implementation, we're
@@ -1898,9 +1866,7 @@ void Platform::Logger::log(Severity level, const char* msg)
     }
 
 
-    for (i = 0;
-         i < std::min(size_t(msg_size), buffer.size() - (prefix_size + 1));
-         ++i) {
+    for (i = 0; i < std::min(size_t(msg_size), buffer.size() - (prefix_size + 1)); ++i) {
         buffer[i + prefix_size] = msg[i];
     }
     buffer[i + prefix_size] = '\n';
@@ -1938,63 +1904,58 @@ void Platform::Logger::read(void* buffer, u32 start_offset, u32 num_bytes)
 ////////////////////////////////////////////////////////////////////////////////
 
 
-
 static const int null_music_len = 8;
 static const u32 null_music[null_music_len] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 
-#define DEF_AUDIO(__STR_NAME__, __TRACK_NAME__, __DIV__)                       \
-    {                                                                          \
-        STR(__STR_NAME__), (AudioSample*)__TRACK_NAME__,                       \
-            __TRACK_NAME__##Len / __DIV__                                      \
+#define DEF_AUDIO(__STR_NAME__, __TRACK_NAME__, __DIV__)                                 \
+    {                                                                                    \
+        STR(__STR_NAME__), (AudioSample*)__TRACK_NAME__, __TRACK_NAME__##Len / __DIV__   \
     }
 
 
-#define DEF_MUSIC(__STR_NAME__, __TRACK_NAME__)                                \
-    DEF_AUDIO(__STR_NAME__, __TRACK_NAME__, 4)
+#define DEF_MUSIC(__STR_NAME__, __TRACK_NAME__) DEF_AUDIO(__STR_NAME__, __TRACK_NAME__, 4)
 
 
-#define DEF_SOUND(__STR_NAME__, __TRACK_NAME__)                                \
-    DEF_AUDIO(__STR_NAME__, __TRACK_NAME__, 1)
+#define DEF_SOUND(__STR_NAME__, __TRACK_NAME__) DEF_AUDIO(__STR_NAME__, __TRACK_NAME__, 1)
 
 
-#include "gba_platform_soundcontext.hpp"
 #include "data/boss.hpp"
 #include "data/tetron.hpp"
-#include "data/zone10.hpp"
-#include "data/zone9.hpp"
-#include "data/zone8.hpp"
-#include "data/zone7.hpp"
-#include "data/zone6.hpp"
-#include "data/zone5.hpp"
-#include "data/zone4.hpp"
-#include "data/zone3.hpp"
-#include "data/zone2.hpp"
 #include "data/zone1.hpp"
+#include "data/zone10.hpp"
+#include "data/zone2.hpp"
+#include "data/zone3.hpp"
+#include "data/zone4.hpp"
+#include "data/zone5.hpp"
+#include "data/zone6.hpp"
+#include "data/zone7.hpp"
+#include "data/zone8.hpp"
+#include "data/zone9.hpp"
+#include "gba_platform_soundcontext.hpp"
 
 
 SoundContext snd_ctx;
 
 
-static const struct AudioTrack {
+static const struct AudioTrack
+{
     const char* name_;
     const AudioSample* data_;
     int length_; // NOTE: For music, this is the track length in 32 bit words,
                  // but for sounds, length_ reprepresents bytes.
-} music_tracks[] = {
-      DEF_MUSIC(boss, boss),
-      DEF_MUSIC(tetron, tetron),
-      DEF_MUSIC(zone10, zone10),
-      DEF_MUSIC(zone9, zone9),
-      DEF_MUSIC(zone8, zone8),
-      DEF_MUSIC(zone7, zone7),
-      DEF_MUSIC(zone6, zone6),
-      DEF_MUSIC(zone5, zone5),
-      DEF_MUSIC(zone4, zone4),
-      DEF_MUSIC(zone3, zone3),
-      DEF_MUSIC(zone2, zone2),
-      DEF_MUSIC(zone1, zone1)
-};
+} music_tracks[] = {DEF_MUSIC(boss, boss),
+                    DEF_MUSIC(tetron, tetron),
+                    DEF_MUSIC(zone10, zone10),
+                    DEF_MUSIC(zone9, zone9),
+                    DEF_MUSIC(zone8, zone8),
+                    DEF_MUSIC(zone7, zone7),
+                    DEF_MUSIC(zone6, zone6),
+                    DEF_MUSIC(zone5, zone5),
+                    DEF_MUSIC(zone4, zone4),
+                    DEF_MUSIC(zone3, zone3),
+                    DEF_MUSIC(zone2, zone2),
+                    DEF_MUSIC(zone1, zone1)};
 
 
 static const AudioTrack* find_music(const char* name)
@@ -2013,25 +1974,24 @@ static const AudioTrack* find_music(const char* name)
 // NOTE: Between remixing the audio track down to 8-bit 16kHz signed, generating
 // assembly output, adding the file to CMake, adding the include, and adding the
 // sound to the sounds array, it's just too tedious to keep working this way...
-#include "data/sound_msg.hpp"
-#include "data/snd_fireshot.hpp"
 #include "data/snd_blade.hpp"
-#include "data/snd_spot.hpp"
 #include "data/snd_bossroar.hpp"
-#include "data/snd_save.hpp"
 #include "data/snd_death.hpp"
+#include "data/snd_explo1.hpp"
+#include "data/snd_explo2.hpp"
+#include "data/snd_explo3.hpp"
+#include "data/snd_explo4.hpp"
+#include "data/snd_fireshot.hpp"
 #include "data/snd_herospawn.hpp"
 #include "data/snd_hit1.hpp"
 #include "data/snd_hit2.hpp"
 #include "data/snd_hit3.hpp"
 #include "data/snd_hit4.hpp"
 #include "data/snd_pain.hpp"
-#include "data/snd_explo1.hpp"
-#include "data/snd_explo2.hpp"
-#include "data/snd_explo3.hpp"
-#include "data/snd_explo4.hpp"
 #include "data/snd_pickup.hpp"
-
+#include "data/snd_save.hpp"
+#include "data/snd_spot.hpp"
+#include "data/sound_msg.hpp"
 
 
 static const AudioTrack sounds[] = {
@@ -2092,9 +2052,7 @@ static std::optional<ActiveSoundInfo> make_sound(const char* name)
 }
 
 
-
 volatile bool user_sound_lock = false;
-
 
 
 template <typename F> auto modify_sounds(F&& callback)
@@ -2103,7 +2061,6 @@ template <typename F> auto modify_sounds(F&& callback)
     callback();
     user_sound_lock = false;
 }
-
 
 
 // If you're going to edit any of the variables used by the interrupt handler
@@ -2213,22 +2170,20 @@ void Platform::Speaker::stop_music()
 }
 
 
-
 const char* Platform::Speaker::current_music()
 {
     const char* n = "";
 
     modify_audio([&] {
-                     for (auto& track : music_tracks) {
-                         if (track.data_ == snd_ctx.music_track) {
-                             n = track.name_;
-                         }
-                     }
-                 });
+        for (auto& track : music_tracks) {
+            if (track.data_ == snd_ctx.music_track) {
+                n = track.name_;
+            }
+        }
+    });
 
     return n;
 }
-
 
 
 bool Platform::Speaker::is_music_playing(const char* name)
@@ -2245,7 +2200,6 @@ bool Platform::Speaker::is_music_playing(const char* name)
 
     return playing;
 }
-
 
 
 static void play_music(const char* name, Microseconds offset)
@@ -2372,7 +2326,6 @@ static Microseconds watchdog_counter;
 static std::optional<Platform::WatchdogCallback> watchdog_callback;
 
 
-
 void Platform::feed_watchdog()
 {
     ::watchdog_counter = 0;
@@ -2385,8 +2338,7 @@ void Platform::on_watchdog_timeout(WatchdogCallback callback)
 }
 
 
-__attribute__((section(".iwram"), long_call)) void
-cartridge_interrupt_handler();
+__attribute__((section(".iwram"), long_call)) void cartridge_interrupt_handler();
 
 
 void enable_watchdog()
@@ -2401,11 +2353,10 @@ bool use_optimized_waitstates = false;
 // EWRAM, called scratch space, for non-essential stuff. Right now, I am setting
 // the buffer to ~100K in size. One could theoretically make the buffer almost
 // 256kB, because I am using none of EWRAM as far as I know...
-static EWRAM_DATA
-    ObjectPool<RcBase<Platform::ScratchBuffer,
-                      Platform::scratch_buffer_count>::ControlBlock,
-               Platform::scratch_buffer_count>
-scratch_buffer_pool("scratch-buffer-pool");
+static EWRAM_DATA ObjectPool<
+    RcBase<Platform::ScratchBuffer, Platform::scratch_buffer_count>::ControlBlock,
+    Platform::scratch_buffer_count>
+    scratch_buffer_pool("scratch-buffer-pool");
 
 
 static int scratch_buffers_in_use = 0;
@@ -2414,14 +2365,14 @@ static int scratch_buffer_highwater = 0;
 
 Platform::ScratchBufferPtr Platform::make_scratch_buffer()
 {
-    auto finalizer = [](RcBase<Platform::ScratchBuffer,
-                               scratch_buffer_count>::ControlBlock* ctrl) {
-        --scratch_buffers_in_use;
-        ctrl->pool_->free(ctrl);
-    };
+    auto finalizer =
+        [](RcBase<Platform::ScratchBuffer, scratch_buffer_count>::ControlBlock* ctrl) {
+            --scratch_buffers_in_use;
+            ctrl->pool_->free(ctrl);
+        };
 
-    auto maybe_buffer = Rc<ScratchBuffer, scratch_buffer_count>::create(
-        &scratch_buffer_pool, finalizer);
+    auto maybe_buffer =
+        Rc<ScratchBuffer, scratch_buffer_count>::create(&scratch_buffer_pool, finalizer);
     if (maybe_buffer) {
         ++scratch_buffers_in_use;
         if (scratch_buffers_in_use > scratch_buffer_highwater) {
@@ -2455,7 +2406,8 @@ Platform::~Platform()
 }
 
 
-struct GlyphMapping {
+struct GlyphMapping
+{
     utf8::Codepoint character_;
 
     // -1 represents unassigned. Mapping a tile into memory sets the reference
@@ -2474,7 +2426,8 @@ struct GlyphMapping {
 static constexpr const auto glyph_start_offset = 1;
 static constexpr const auto glyph_mapping_count = 78;
 
-struct GlyphTable {
+struct GlyphTable
+{
     GlyphMapping mappings_[glyph_mapping_count];
 };
 
@@ -2485,8 +2438,7 @@ void audio_start()
 {
     clear_music();
 
-    REG_SOUNDCNT_H =
-        0x0B0F; //DirectSound A + fifo reset + max volume to L and R
+    REG_SOUNDCNT_H = 0x0B0F; //DirectSound A + fifo reset + max volume to L and R
     REG_SOUNDCNT_X = 0x0080; //turn sound chip on
 
     irqEnable(IRQ_TIMER1);
@@ -2506,19 +2458,15 @@ void audio_start()
 }
 
 
-
-
 namespace
 {
 __attribute__((section(".ewram"))) int _ewram_static_data = 0;
 }
 
 
-
 bool ram_overclock()
 {
-    volatile unsigned& memctrl_register =
-        *reinterpret_cast<unsigned*>(0x4000800);
+    volatile unsigned& memctrl_register = *reinterpret_cast<unsigned*>(0x4000800);
     memctrl_register = 0x0E000020;
 
     volatile int& ewram_static_data = _ewram_static_data;
@@ -2531,8 +2479,6 @@ bool ram_overclock()
         return true;
     }
 }
-
-
 
 
 Platform::Platform()
@@ -2647,8 +2593,7 @@ push_overlay_texture(const TextureData& info)
         if (str_cmp(prefix.name_, "overlay") == 0) {
 
             auto consume = info.tile_data_length_ + prefix.tile_data_length_;
-            auto exceeded_bytes =
-                validate_overlay_texture_size(*platform, consume);
+            auto exceeded_bytes = validate_overlay_texture_size(*platform, consume);
 
             if (not exceeded_bytes) {
                 memcpy16((char*)&MEM_SCREENBLOCKS[sbb_overlay_texture][0] +
@@ -2676,8 +2621,7 @@ push_overlay_texture(const TextureData& info)
 }
 
 
-std::optional<Platform::FailureReason>
-Platform::load_overlay_texture(const char* name)
+std::optional<Platform::FailureReason> Platform::load_overlay_texture(const char* name)
 {
     StringBuffer<48> palette_file(name);
     palette_file += ".pal";
@@ -2735,12 +2679,12 @@ static constexpr int vram_tile_size()
 // to use when mapping glyphs into vram.
 static u8* font_index_tile()
 {
-    return (u8*)&MEM_SCREENBLOCKS[sbb_overlay_texture][0] +
-           ((81) * vram_tile_size());
+    return (u8*)&MEM_SCREENBLOCKS[sbb_overlay_texture][0] + ((81) * vram_tile_size());
 }
 
 
-struct FontColorIndices {
+struct FontColorIndices
+{
     int fg_;
     int bg_;
 };
@@ -2757,8 +2701,7 @@ static FontColorIndices font_color_indices()
 // table, potentially could be sped up, but we don't want to use any extra
 // memory, we've only got 256K to work with, and the table is big enough as it
 // is.
-TileDesc Platform::map_glyph(const utf8::Codepoint& glyph,
-                             TextureCpMapper mapper)
+TileDesc Platform::map_glyph(const utf8::Codepoint& glyph, TextureCpMapper mapper)
 {
     if (not glyph_mode) {
         return bad_glyph;
@@ -2837,9 +2780,8 @@ TileDesc Platform::map_glyph(const utf8::Codepoint& glyph,
                     u8 buffer[tile_size] = {0};
 
 
-                    auto k_src =
-                        info.tile_data_ + (adjusted_offset * tile_size) /
-                                              sizeof(decltype(info.tile_data_));
+                    auto k_src = info.tile_data_ + (adjusted_offset * tile_size) /
+                                                       sizeof(decltype(info.tile_data_));
 
                     memcpy16(buffer, k_src, tile_size / 2);
 
@@ -2880,8 +2822,7 @@ TileDesc Platform::map_glyph(const utf8::Codepoint& glyph,
 
 static bool is_glyph(u16 t)
 {
-    return t >= glyph_start_offset and
-           t - glyph_start_offset < glyph_mapping_count;
+    return t >= glyph_start_offset and t - glyph_start_offset < glyph_mapping_count;
 }
 
 
@@ -2923,8 +2864,7 @@ static void set_overlay_tile(Platform& pfrm, u16 x, u16 y, u16 val, int palette)
         const auto old_tile = pfrm.get_tile(Layer::overlay, x, y);
         if (old_tile not_eq val) {
             if (is_glyph(old_tile)) {
-                auto& gm = ::glyph_table->obj_
-                               ->mappings_[old_tile - glyph_start_offset];
+                auto& gm = ::glyph_table->obj_->mappings_[old_tile - glyph_start_offset];
                 if (gm.valid()) {
                     gm.reference_count_ -= 1;
 
@@ -2940,8 +2880,7 @@ static void set_overlay_tile(Platform& pfrm, u16 x, u16 y, u16 val, int palette)
             }
 
             if (is_glyph(val)) {
-                auto& gm =
-                    ::glyph_table->obj_->mappings_[val - glyph_start_offset];
+                auto& gm = ::glyph_table->obj_->mappings_[val - glyph_start_offset];
                 if (not gm.valid()) {
                     // Not clear exactly what to do here... Somehow we've
                     // gotten into an erroneous state, but not a permanently
@@ -3007,8 +2946,7 @@ void Platform::set_tile(u16 x, u16 y, TileDesc glyph, const FontColors& colors)
         nightmode_adjust(real_color(colors.background_)).bgr_hex_555();
 
     auto existing_mapping = [&]() -> std::optional<PaletteBank> {
-        for (auto i = custom_text_palette_begin; i < custom_text_palette_end;
-             ++i) {
+        for (auto i = custom_text_palette_begin; i < custom_text_palette_end; ++i) {
             if (MEM_BG_PALETTE[i * 16 + default_colors.fg_] == fg_color_hash and
                 MEM_BG_PALETTE[i * 16 + default_colors.bg_] == bg_color_hash) {
 
@@ -3029,8 +2967,7 @@ void Platform::set_tile(u16 x, u16 y, TileDesc glyph, const FontColors& colors)
         set_overlay_tile(*this, x, y, glyph, target);
 
         custom_text_palette_write_ptr =
-            ((target + 1) - custom_text_palette_begin) %
-                custom_text_palette_count +
+            ((target + 1) - custom_text_palette_begin) % custom_text_palette_count +
             custom_text_palette_begin;
 
         if (custom_text_palette_write_ptr == custom_text_palette_begin) {
@@ -3057,11 +2994,9 @@ void Platform::set_tile(Layer layer, u16 x, u16 y, u16 val)
         if (x < 32 and y < 32) {
             MEM_SCREENBLOCKS[sbb_t1_tiles][x + y * 32] = val | SE_PALBANK(2);
         } else if (y < 32) {
-            MEM_SCREENBLOCKS[sbb_t1_tiles + 1][(x - 32) + y * 32] =
-                val | SE_PALBANK(2);
+            MEM_SCREENBLOCKS[sbb_t1_tiles + 1][(x - 32) + y * 32] = val | SE_PALBANK(2);
         } else if (x < 32) {
-            MEM_SCREENBLOCKS[sbb_t1_tiles + 2][x + (y - 32) * 32] =
-                val | SE_PALBANK(2);
+            MEM_SCREENBLOCKS[sbb_t1_tiles + 2][x + (y - 32) * 32] = val | SE_PALBANK(2);
         } else {
             MEM_SCREENBLOCKS[sbb_t1_tiles + 3][(x - 32) + (y - 32) * 32] =
                 val | SE_PALBANK(2);
@@ -3148,11 +3083,11 @@ static bool multiplayer_validate()
 // needs ignore messages that are all zeroes. Accomplished easily enough by
 // prefixing the sent message with an enum, where the zeroth enumeration is
 // unused.
-static const int message_iters =
-    Platform::NetworkPeer::max_message_size / sizeof(u16);
+static const int message_iters = Platform::NetworkPeer::max_message_size / sizeof(u16);
 
 
-struct WireMessage {
+struct WireMessage
+{
     u16 data_[message_iters] = {};
 };
 
@@ -3164,7 +3099,8 @@ using RxInfo = WireMessage;
 static bool multiplayer_connected;
 
 
-struct MultiplayerComms {
+struct MultiplayerComms
+{
     int rx_loss = 0;
     int tx_loss = 0;
 
@@ -3172,10 +3108,8 @@ struct MultiplayerComms {
     int tx_message_count = 0;
 
 
-    MultiplayerComms() : tx_message_pool("tx-msg"),
-                         rx_message_pool("rx-msg")
+    MultiplayerComms() : tx_message_pool("tx-msg"), rx_message_pool("rx-msg")
     {
-
     }
 
 
@@ -3230,8 +3164,7 @@ static TxInfo* tx_ring_pop()
 
     TxInfo* msg = nullptr;
 
-    for (int i = mc.tx_ring_read_pos; i < mc.tx_ring_read_pos + mc.tx_ring_size;
-         ++i) {
+    for (int i = mc.tx_ring_read_pos; i < mc.tx_ring_read_pos + mc.tx_ring_size; ++i) {
         auto index = i % mc.tx_ring_size;
         if (mc.tx_ring[index]) {
             msg = mc.tx_ring[index];
@@ -3277,8 +3210,7 @@ static RxInfo* rx_ring_pop()
 
     RxInfo* msg = nullptr;
 
-    for (int i = mc.rx_ring_read_pos; i < mc.rx_ring_read_pos + mc.rx_ring_size;
-         ++i) {
+    for (int i = mc.rx_ring_read_pos; i < mc.rx_ring_read_pos + mc.rx_ring_size; ++i) {
         auto index = i % mc.rx_ring_size;
 
         if (mc.rx_ring[index]) {
@@ -3320,8 +3252,7 @@ static void multiplayer_rx_receive()
     }
 
     if (mc.rx_current_message) {
-        const auto val =
-            multiplayer_is_master() ? REG_SIOMULTI1 : REG_SIOMULTI0;
+        const auto val = multiplayer_is_master() ? REG_SIOMULTI1 : REG_SIOMULTI0;
         if (mc.rx_current_all_zeroes and val) {
             mc.rx_current_all_zeroes = false;
         }
@@ -3473,8 +3404,7 @@ static void multiplayer_serial_isr()
 }
 
 
-std::optional<Platform::NetworkPeer::Message>
-Platform::NetworkPeer::poll_message()
+std::optional<Platform::NetworkPeer::Message> Platform::NetworkPeer::poll_message()
 {
     auto& mc = multiplayer_comms;
 
@@ -3582,8 +3512,7 @@ MASTER_RETRY:
 
     multiplayer_connected = true;
 
-    ::platform->network_peer().send_message(
-        {(byte*)handshake, sizeof handshake});
+    ::platform->network_peer().send_message({(byte*)handshake, sizeof handshake});
 
     multiplayer_schedule_tx();
 
@@ -3591,8 +3520,7 @@ MASTER_RETRY:
         ::platform->feed_watchdog();
         delta += ::platform->delta_clock().reset();
         if (delta > seconds(20)) {
-            error(*::platform,
-                  "no valid handshake received within a reasonable window");
+            error(*::platform, "no valid handshake received within a reasonable window");
             ::platform->network_peer().disconnect();
             return;
         } else if (auto msg = ::platform->network_peer().poll_message()) {
@@ -3784,12 +3712,9 @@ Platform::NetworkPeer::~NetworkPeer()
 ////////////////////////////////////////////////////////////////////////////////
 
 
-
-
 Platform::SystemClock::SystemClock()
 {
 }
-
 
 
 void Platform::SystemClock::init(Platform& pfrm)

@@ -60,7 +60,8 @@ bool Filesystem::init(Platform& pfrm)
 }
 
 
-struct FileInfo {
+struct FileInfo
+{
     char name_[32];
     char size_[16];
     // data[]...
@@ -96,8 +97,8 @@ Filesystem::FileData Filesystem::get_file(const char* name)
             auto skip = tonum(current->size_) + 1; // +1 for null terminator
             skip += skip % 4;                      // word padding
 
-            const char* next_addr = reinterpret_cast<const char*>(current) +
-                                    sizeof(FileInfo) + skip;
+            const char* next_addr =
+                reinterpret_cast<const char*>(current) + sizeof(FileInfo) + skip;
 
             current = reinterpret_cast<const FileInfo*>(next_addr);
 

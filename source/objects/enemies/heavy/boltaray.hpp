@@ -1,25 +1,21 @@
 #pragma once
 
-#include "objects/enemies/enemy.hpp"
 #include "engine.hpp"
 #include "fmt.hpp"
 #include "number/random.hpp"
+#include "objects/enemies/enemy.hpp"
 #include "objects/particles/bigExplo.hpp"
 #include "objects/projectile/vortex.hpp"
-
 
 
 namespace herocore
 {
 
 
-
 class Boltaray : public Enemy
 {
 public:
-
-    Boltaray(const Vec2<Fixnum>& pos) :
-        Enemy(TaggedObject::Tag::drone, Health{8})
+    Boltaray(const Vec2<Fixnum>& pos) : Enemy(TaggedObject::Tag::drone, Health{8})
     {
         position_ = pos;
 
@@ -34,8 +30,7 @@ public:
         if (health_ == 0) {
             kill();
             platform().speaker().play_sound("snd_explo2", 6);
-            engine().add_object<BigExplo>(Vec2<Fixnum>{position_.x + 6,
-                                                       position_.y + 7});
+            engine().add_object<BigExplo>(Vec2<Fixnum>{position_.x + 6, position_.y + 7});
             return;
         }
 
@@ -160,7 +155,6 @@ public:
 
                 screen.draw(spr_);
             }
-
         }
 
         Sprite spr_;
@@ -191,5 +185,4 @@ private:
 };
 
 
-
-}
+} // namespace herocore

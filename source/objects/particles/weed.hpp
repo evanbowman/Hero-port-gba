@@ -3,24 +3,20 @@
 
 #pragma once
 
-#include "object.hpp"
 #include "number/random.hpp"
-
+#include "object.hpp"
 
 
 namespace herocore
 {
 
 
-
 class Weed : public Object
 {
 private:
-
     int anim_cyc_ = 0;
 
 public:
-
     Weed(const Vec2<Fixnum>& pos, bool yflip)
     {
         position_ = pos;
@@ -54,12 +50,8 @@ public:
 
 
 private:
-
     int counter_ = 20;
-
-
 };
 
 
-
-}
+} // namespace herocore

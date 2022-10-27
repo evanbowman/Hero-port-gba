@@ -1,17 +1,15 @@
 #pragma once
 
-#include "objects/enemies/enemy.hpp"
-#include "objects/projectile/enemyShot.hpp"
-#include "objects/projectile/supershot.hpp"
-#include "objects/projectile/megashot.hpp"
 #include "engine.hpp"
+#include "objects/enemies/enemy.hpp"
 #include "objects/particles/bigExplo.hpp"
-
+#include "objects/projectile/enemyShot.hpp"
+#include "objects/projectile/megashot.hpp"
+#include "objects/projectile/supershot.hpp"
 
 
 namespace herocore
 {
-
 
 
 class Turret : public Enemy
@@ -21,9 +19,7 @@ private:
     bool left_ = false;
 
 public:
-
-    Turret(const Vec2<Fixnum>& pos) :
-        Enemy(TaggedObject::Tag::spew, Health{8})
+    Turret(const Vec2<Fixnum>& pos) : Enemy(TaggedObject::Tag::spew, Health{8})
     {
         position_ = pos;
 
@@ -52,8 +48,11 @@ public:
             if (left_) {
                 dx = 4;
             }
-            engine().add_object<BigExplo>(Vec2<Fixnum>{position_.x - dx, position_.y + 0});
-            engine().add_object<BigExplo>(Vec2<Fixnum>{position_.x - dx, position_.y + 16});;
+            engine().add_object<BigExplo>(
+                Vec2<Fixnum>{position_.x - dx, position_.y + 0});
+            engine().add_object<BigExplo>(
+                Vec2<Fixnum>{position_.x - dx, position_.y + 16});
+            ;
             return;
         }
 
@@ -304,16 +303,12 @@ public:
             timeline_ = 40;
             break;
         }
-
     }
 
 
 private:
-
     int timeline_ = 0;
-
 };
 
 
-
-}
+} // namespace herocore

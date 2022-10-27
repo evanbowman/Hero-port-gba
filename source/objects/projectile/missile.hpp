@@ -5,16 +5,13 @@
 #include "objects/particles/explo.hpp"
 
 
-
 namespace herocore
 {
-
 
 
 class Missile : public EnemyProjectile
 {
 private:
-
     Vec2<Fixnum> dir_;
     int anim_ = 0;
     int count_ = 0;
@@ -22,7 +19,6 @@ private:
     int ttl_ = 0;
 
 public:
-
     Missile(const Vec2<Fixnum>& pos) : EnemyProjectile(pos, 3, 0)
     {
         sprite_index_ = 117;
@@ -63,8 +59,8 @@ public:
             dircyc_ = 0;
             // direction() is expensive, we can't call it every frame like the
             // original game does.
-            auto dir = direction(fvec({x() + 4, y() + 4}),
-                                 fvec(engine().hero()->position()));
+            auto dir =
+                direction(fvec({x() + 4, y() + 4}), fvec(engine().hero()->position()));
             Vec2<Fixnum> fd;
             fd.x = Fixnum(dir.x);
             fd.y = Fixnum(dir.y);
@@ -106,9 +102,7 @@ public:
             sprite_index_ = 117;
         }
     }
-
 };
 
 
-
-}
+} // namespace herocore

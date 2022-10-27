@@ -44,8 +44,7 @@ public:
 
     using Pool = typename Data::Pool;
 
-    template <typename... Args>
-    List(Args&&... args) : data_(std::forward<Args>(args)...)
+    template <typename... Args> List(Args&&... args) : data_(std::forward<Args>(args)...)
     {
         data_.begin_ = nullptr;
 

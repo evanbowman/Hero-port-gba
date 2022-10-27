@@ -3,14 +3,12 @@
 #pragma once
 
 #include "function.hpp"
+#include "memory/pool.hpp"
 #include "number/numeric.hpp"
 #include <memory>
-#include "memory/pool.hpp"
-
 
 
 class Platform;
-
 
 
 namespace herocore
@@ -53,7 +51,6 @@ public:
 using DeferredScene = Function<16, ScenePtr<Scene>()>;
 
 
-
 namespace scene_pool
 {
 
@@ -66,11 +63,9 @@ static constexpr const int max_scene_size = 700;
 static constexpr const int pool_capacity = 3;
 
 
-
 using _Pool = Pool<max_scene_size, pool_capacity, 8>;
 
 extern _Pool pool_;
-
 
 
 inline void deleter(Scene* scene)
@@ -80,7 +75,6 @@ inline void deleter(Scene* scene)
         pool_.free(reinterpret_cast<u8*>(scene));
     }
 }
-
 
 
 template <typename T, typename... Args> ScenePtr<T> alloc(Args&&... args)
@@ -98,9 +92,7 @@ template <typename T, typename... Args> ScenePtr<T> alloc(Args&&... args)
 }
 
 
-
-template <typename S, typename... Args>
-DeferredScene make_deferred_scene(Args&&... args)
+template <typename S, typename... Args> DeferredScene make_deferred_scene(Args&&... args)
 {
     return [args = std::make_tuple(std::forward<Args>(args)...)] {
         return std::apply([](auto&&... args) { return alloc<S>(args...); },
@@ -109,10 +101,7 @@ DeferredScene make_deferred_scene(Args&&... args)
 }
 
 
-
 } // namespace scene_pool
 
 
-
-
-}
+} // namespace herocore

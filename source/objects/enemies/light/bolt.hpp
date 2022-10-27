@@ -1,18 +1,16 @@
 #pragma once
 
-#include "objects/enemies/enemy.hpp"
-#include "objects/projectile/enemyShot.hpp"
-#include "objects/projectile/supershot.hpp"
-#include "objects/particles/bigExplo.hpp"
 #include "engine.hpp"
 #include "fmt.hpp"
 #include "number/random.hpp"
-
+#include "objects/enemies/enemy.hpp"
+#include "objects/particles/bigExplo.hpp"
+#include "objects/projectile/enemyShot.hpp"
+#include "objects/projectile/supershot.hpp"
 
 
 namespace herocore
 {
-
 
 
 class Bolt : public Enemy
@@ -22,9 +20,7 @@ private:
     int timeline_ = 0;
 
 public:
-
-    Bolt(const Vec2<Fixnum>& pos) :
-        Enemy(TaggedObject::Tag::bolt, Health{1})
+    Bolt(const Vec2<Fixnum>& pos) : Enemy(TaggedObject::Tag::bolt, Health{1})
     {
         position_ = pos;
 
@@ -117,9 +113,7 @@ public:
             break;
         }
     }
-
 };
 
 
-
-}
+} // namespace herocore

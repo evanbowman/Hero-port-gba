@@ -1,21 +1,19 @@
 #pragma once
 
-#include "objects/enemies/enemy.hpp"
 #include "engine.hpp"
 #include "fmt.hpp"
 #include "number/random.hpp"
-#include "objects/particles/bigExplo.hpp"
-#include "objects/projectile/vortex.hpp"
-#include "objects/projectile/supershot.hpp"
-#include "objects/projectile/megashot.hpp"
-#include "objects/projectile/enemyShot.hpp"
+#include "objects/enemies/enemy.hpp"
 #include "objects/enemies/light/spew.hpp"
-
+#include "objects/particles/bigExplo.hpp"
+#include "objects/projectile/enemyShot.hpp"
+#include "objects/projectile/megashot.hpp"
+#include "objects/projectile/supershot.hpp"
+#include "objects/projectile/vortex.hpp"
 
 
 namespace herocore
 {
-
 
 
 class HunterDormant : public Solid
@@ -32,7 +30,6 @@ public:
 };
 
 
-
 class Hunter : public Enemy
 {
 private:
@@ -40,9 +37,7 @@ private:
     u16 fireoffset_ = 0;
 
 public:
-
-    Hunter(const Vec2<Fixnum>& pos) :
-        Enemy(TaggedObject::Tag::hunter, Health{32})
+    Hunter(const Vec2<Fixnum>& pos) : Enemy(TaggedObject::Tag::hunter, Health{32})
     {
         position_ = pos;
 
@@ -64,8 +59,7 @@ public:
                 engine().g_.screenshake_ = 6;
             }
             platform().speaker().play_sound("snd_explo3", 6);
-            engine().add_object<BigExplo>(Vec2<Fixnum>{position_.x,
-                                                       position_.y});
+            engine().add_object<BigExplo>(Vec2<Fixnum>{position_.x, position_.y});
             return;
         }
 
@@ -95,44 +89,41 @@ public:
                 }
             }
             {
-                auto dir = direction(fvec(position_),
-                                     fvec(engine().hero()->position()));
+                auto dir = direction(fvec(position_), fvec(engine().hero()->position()));
                 dir = dir * 0.5f;
                 speed_.x = Fixnum(dir.x);
                 speed_.y = Fixnum(dir.y);
             }
-            if (auto s = engine().add_object<Supershot>(Vec2<Fixnum>{x() - 4,
-                                                                     y() - 4})) {
-                auto dir = direction(fvec(position_),
-                                     fvec(engine().hero()->position()));
+            if (auto s = engine().add_object<Supershot>(Vec2<Fixnum>{x() - 4, y() - 4})) {
+                auto dir = direction(fvec(position_), fvec(engine().hero()->position()));
                 dir = dir * 1.5f;
                 s->set_speed({Fixnum(dir.x), Fixnum(dir.y)});
             }
             if (engine().g_.difficulty_ == Difficulty::hard) {
-                if (auto s = engine().add_object<Supershot>(Vec2<Fixnum>{x() - 4,
-                                                                         y() - 4})) {
-                    auto dir = direction(fvec(position_),
-                                         fvec(engine().hero()->position()));
+                if (auto s =
+                        engine().add_object<Supershot>(Vec2<Fixnum>{x() - 4, y() - 4})) {
+                    auto dir =
+                        direction(fvec(position_), fvec(engine().hero()->position()));
                     dir = rotate(dir, 30);
                     s->set_speed({Fixnum(dir.x), Fixnum(dir.y)});
                 }
-                if (auto s = engine().add_object<Supershot>(Vec2<Fixnum>{x() - 4,
-                                                                         y() - 4})) {
-                    auto dir = direction(fvec(position_),
-                                         fvec(engine().hero()->position()));
+                if (auto s =
+                        engine().add_object<Supershot>(Vec2<Fixnum>{x() - 4, y() - 4})) {
+                    auto dir =
+                        direction(fvec(position_), fvec(engine().hero()->position()));
                     dir = rotate(dir, 330);
                     s->set_speed({Fixnum(dir.x), Fixnum(dir.y)});
                 }
             } else {
                 if (auto s = engine().add_object<EnemyShot>(position_)) {
-                    auto dir = direction(fvec(position_),
-                                         fvec(engine().hero()->position()));
+                    auto dir =
+                        direction(fvec(position_), fvec(engine().hero()->position()));
                     dir = rotate(dir, 30);
                     s->set_speed({Fixnum(dir.x), Fixnum(dir.y)});
                 }
                 if (auto s = engine().add_object<EnemyShot>(position_)) {
-                    auto dir = direction(fvec(position_),
-                                         fvec(engine().hero()->position()));
+                    auto dir =
+                        direction(fvec(position_), fvec(engine().hero()->position()));
                     dir = rotate(dir, 330);
                     s->set_speed({Fixnum(dir.x), Fixnum(dir.y)});
                 }
@@ -147,20 +138,17 @@ public:
             } else {
                 sprite_subimage_ = 3;
             }
-            auto dir = direction(fvec(position_),
-                                 fvec(engine().hero()->position()));
+            auto dir = direction(fvec(position_), fvec(engine().hero()->position()));
             auto dir2 = dir;
             dir = rotate(dir, 135 + rng::choice<90>(rng::utility_state));
             speed_.x = Fixnum(0.75f * dir.x);
             speed_.y = Fixnum(0.75f * dir.y);
             EnemyProjectile* p = nullptr;
             if (engine().g_.difficulty_ == Difficulty::hard) {
-                p = engine().add_object<Megashot>(Vec2<Fixnum>{x() - 8,
-                                                               y() - 8});
+                p = engine().add_object<Megashot>(Vec2<Fixnum>{x() - 8, y() - 8});
                 p->set_speed({Fixnum(dir2.x), Fixnum(dir2.y)});
             } else {
-                p = engine().add_object<Supershot>(Vec2<Fixnum>{x() - 4,
-                                                                y() - 4});
+                p = engine().add_object<Supershot>(Vec2<Fixnum>{x() - 4, y() - 4});
                 p->set_speed({Fixnum(dir2.x * 0.25f), Fixnum(dir2.y * 0.25f)});
             }
             break;
@@ -206,8 +194,8 @@ public:
 
             if (engine().g_.difficulty_ == Difficulty::hard) {
                 for (int i = 0; i < 4; ++i) {
-                    if (auto e = engine().add_object<Supershot>(Vec2<Fixnum>{x() - 4,
-                                                                             y() - 4})) {
+                    if (auto e = engine().add_object<Supershot>(
+                            Vec2<Fixnum>{x() - 4, y() - 4})) {
                         int d = i * 90 + fireoffset_;
                         if (d > 360) {
                             d -= 360;
@@ -219,8 +207,8 @@ public:
             }
 
             if (x() > engine().hero()->x()) {
-                if (auto v = engine().add_object<Vortex>(Vec2<Fixnum>{x() + 4,
-                                                                      y() - 4})) {
+                if (auto v =
+                        engine().add_object<Vortex>(Vec2<Fixnum>{x() + 4, y() - 4})) {
                     v->set_left();
                 }
             } else {
@@ -233,8 +221,7 @@ public:
             break;
         }
 
-        if (not place_free({position_.x + speed_.x,
-                            position_.y + speed_.y})) {
+        if (not place_free({position_.x + speed_.x, position_.y + speed_.y})) {
             auto x = position_.x;
             auto y = position_.y;
             if (not place_free({x + 2, y}) or not place_free({x - 2, y})) {
@@ -276,7 +263,6 @@ public:
 
                 screen.draw(spr_);
             }
-
         }
 
         Enemy::draw(screen);
@@ -302,5 +288,4 @@ private:
 };
 
 
-
-}
+} // namespace herocore

@@ -1,18 +1,16 @@
 #pragma once
 
-#include "objects/enemies/enemy.hpp"
 #include "engine.hpp"
 #include "number/random.hpp"
-#include "objects/projectile/enemyShot.hpp"
-#include "objects/projectile/supershot.hpp"
-#include "objects/projectile/megashot.hpp"
+#include "objects/enemies/enemy.hpp"
 #include "objects/particles/bigExplo.hpp"
-
+#include "objects/projectile/enemyShot.hpp"
+#include "objects/projectile/megashot.hpp"
+#include "objects/projectile/supershot.hpp"
 
 
 namespace herocore
 {
-
 
 
 class SoldierDormant : public Solid
@@ -29,13 +27,10 @@ public:
 };
 
 
-
 class Soldier : public Enemy
 {
 public:
-
-    Soldier(const Vec2<Fixnum>& pos) :
-        Enemy(TaggedObject::Tag::soldier, Health{16})
+    Soldier(const Vec2<Fixnum>& pos) : Enemy(TaggedObject::Tag::soldier, Health{16})
     {
         position_ = pos;
 
@@ -50,8 +45,7 @@ public:
         if (health_ == 0) {
             kill();
             platform().speaker().play_sound("snd_explo2", 6);
-            engine().add_object<BigExplo>(Vec2<Fixnum>{
-                    position_.x + 3, position_.y + 4});
+            engine().add_object<BigExplo>(Vec2<Fixnum>{position_.x + 3, position_.y + 4});
             return;
         }
 
@@ -112,9 +106,9 @@ public:
                 movecyc_ = 0;
                 speed_.x = 0;
                 speed_.y = 0;
-                if (auto m = engine().add_object<Megashot>(Vec2<Fixnum>{x(),
-                                                                        y()})) {
-                    auto dir = direction(fvec(position_), fvec(engine().hero()->position()));
+                if (auto m = engine().add_object<Megashot>(Vec2<Fixnum>{x(), y()})) {
+                    auto dir =
+                        direction(fvec(position_), fvec(engine().hero()->position()));
                     Vec2<Fixnum> spd;
                     spd.x = Fixnum(dir.x);
                     spd.y = Fixnum(dir.y);
@@ -134,7 +128,8 @@ public:
 
 
                 if (auto s = engine().add_object<EnemyShot>(position_)) {
-                    auto dir = direction(fvec(position_), fvec(engine().hero()->position()));
+                    auto dir =
+                        direction(fvec(position_), fvec(engine().hero()->position()));
                     auto angle = rng::choice<90>(rng::utility_state);
                     if (angle < 45) {
                         angle = 360 - angle;
@@ -156,8 +151,7 @@ public:
             break;
         }
 
-        if (not place_free({position_.x + speed_.x,
-                            position_.y + speed_.y})) {
+        if (not place_free({position_.x + speed_.x, position_.y + speed_.y})) {
             auto x = position_.x;
             auto y = position_.y;
             if (not place_free({x + 2, y}) or not place_free({x - 2, y})) {
@@ -182,5 +176,4 @@ private:
 };
 
 
-
-}
+} // namespace herocore

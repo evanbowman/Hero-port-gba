@@ -1,23 +1,20 @@
 #pragma once
 
-#include "objects/enemies/enemy.hpp"
 #include "engine.hpp"
 #include "fmt.hpp"
 #include "number/random.hpp"
+#include "objects/enemies/enemy.hpp"
 #include "objects/particles/explo.hpp"
 #include "objects/projectile/enemyShot.hpp"
-
 
 
 namespace herocore
 {
 
 
-
 class Lurk : public Enemy
 {
 private:
-
     int timeline_ = 0;
     int animcyc_ = 0;
     int y_start_ = 0;
@@ -25,9 +22,7 @@ private:
     int height_ = 0;
 
 public:
-
-    Lurk(const Vec2<Fixnum>& pos) :
-        Enemy(TaggedObject::Tag::lurk, Health{8})
+    Lurk(const Vec2<Fixnum>& pos) : Enemy(TaggedObject::Tag::lurk, Health{8})
     {
         position_ = pos;
 
@@ -82,8 +77,7 @@ public:
             platform().speaker().play_sound("snd_explo1", 6);
             engine().add_object<Explo>(Vec2<Fixnum>{x() - 1, y()});
             for (int y = 0; y < 1 + height_ / 8; ++y) {
-                engine().add_object<Explo>(Vec2<Fixnum>{x() - 1,
-                                                        this->y() + y * 8});
+                engine().add_object<Explo>(Vec2<Fixnum>{x() - 1, this->y() + y * 8});
             }
             return;
         }
@@ -97,14 +91,12 @@ public:
                     sprite_subimage_ = 0;
                 }
 
-                if (y() + 16 > engine().hero()->y()
-                    and place_free({x(), y() - 1})
-                    and y() > 0) {
+                if (y() + 16 > engine().hero()->y() and place_free({x(), y() - 1}) and
+                    y() > 0) {
                     position_.y -= 1;
                     height_ += 1;
-                } else if (y() + 16 < engine().hero()->y()
-                           and place_free({x(), y() + 1})
-                           and height_ > 0) {
+                } else if (y() + 16 < engine().hero()->y() and
+                           place_free({x(), y() + 1}) and height_ > 0) {
                     position_.y += 1;
                     height_ -= 1;
                 }
@@ -167,9 +159,7 @@ public:
             break;
         }
     }
-
 };
 
 
-
-}
+} // namespace herocore

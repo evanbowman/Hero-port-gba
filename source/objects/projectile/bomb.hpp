@@ -1,28 +1,23 @@
 #pragma once
 
 #include "enemyProjectile.hpp"
-#include "objects/particles/explo.hpp"
 #include "engine.hpp"
-
+#include "objects/particles/explo.hpp"
 
 
 namespace herocore
 {
 
 
-
 class Bomb : public EnemyProjectile
 {
 private:
-
     int anim_ = 0;
     int count_ = 0;
     int bounce_ = 0;
 
 public:
-
-    Bomb(const Vec2<Fixnum>& pos) :
-        EnemyProjectile(pos, 2, engine().g_.maxheat_ / 4)
+    Bomb(const Vec2<Fixnum>& pos) : EnemyProjectile(pos, 2, engine().g_.maxheat_ / 4)
     {
         sprite_index_ = 32;
         hitbox_.dimension_.size_ = {2, 2};
@@ -68,7 +63,6 @@ public:
                 while (not place_free({position_.x + speed_.x, position_.y})) {
                     position_.x += speed_.x;
                 }
-
             }
 
             if (not place_free({position_.x, position_.y + prev_speed.y})) {
@@ -89,8 +83,6 @@ public:
         hitbox_.dimension_.origin_ = {-1, -1};
 
 
-
-
         if (speed_.y > Fixnum(2.5f)) {
             speed_.y = Fixnum(2.5f);
         }
@@ -101,9 +93,9 @@ public:
             sprite_subimage_ = not sprite_subimage_;
         }
 
-        speed_.y = speed_.y + Fixnum(0.06f);}
+        speed_.y = speed_.y + Fixnum(0.06f);
+    }
 };
 
 
-
-}
+} // namespace herocore

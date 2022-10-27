@@ -3,18 +3,14 @@
 #include "object.hpp"
 
 
-
 namespace herocore
 {
-
 
 
 class Flame : public Object
 {
 private:
-
 public:
-
     Flame(const Vec2<Fixnum>& pos)
     {
         position_ = pos;
@@ -43,11 +39,9 @@ public:
 
 
 public:
-
     int counter_ = 20;
     u8 priority_ = 1;
 };
 
 
-
-}
+} // namespace herocore

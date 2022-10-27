@@ -1,24 +1,20 @@
 #pragma once
 
-#include "objects/enemies/enemy.hpp"
 #include "engine.hpp"
 #include "fmt.hpp"
 #include "number/random.hpp"
+#include "objects/enemies/enemy.hpp"
 #include "objects/particles/explo.hpp"
-
 
 
 namespace herocore
 {
 
 
-
 class Drone : public Enemy
 {
 public:
-
-    Drone(const Vec2<Fixnum>& pos) :
-        Enemy(TaggedObject::Tag::drone, Health{2})
+    Drone(const Vec2<Fixnum>& pos) : Enemy(TaggedObject::Tag::drone, Health{2})
     {
         position_ = pos;
 
@@ -65,8 +61,7 @@ public:
 
         case 40:
             if (engine().g_.hp_ > 0) {
-                auto dir = direction(fvec(position_),
-                                     fvec(engine().hero()->position()));
+                auto dir = direction(fvec(position_), fvec(engine().hero()->position()));
 
                 if (engine().g_.difficulty_ == Difficulty::hard) {
                     dir = rotate(dir, -20 + rng::choice<40>(rng::utility_state));
@@ -91,8 +86,7 @@ public:
             break;
         }
 
-        if (not place_free({position_.x + speed_.x,
-                            position_.y + speed_.y})) {
+        if (not place_free({position_.x + speed_.x, position_.y + speed_.y})) {
             auto x = position_.x;
             auto y = position_.y;
             if (not place_free({x + 2, y}) or not place_free({x - 2, y})) {
@@ -106,11 +100,8 @@ public:
 
 
 private:
-
     int timeline_ = 0;
-
 };
 
 
-
-}
+} // namespace herocore

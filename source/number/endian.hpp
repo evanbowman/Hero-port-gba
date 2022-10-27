@@ -14,21 +14,18 @@
 #ifdef __bswap_constant_32
 #undef __bswap_constant_32
 #endif
-#define __bswap_constant_32(x)                                                 \
-    ((((x)&0xff000000) >> 24) | (((x)&0x00ff0000) >> 8) |                      \
-     (((x)&0x0000ff00) << 8) | (((x)&0x000000ff) << 24))
+#define __bswap_constant_32(x)                                                           \
+    ((((x)&0xff000000) >> 24) | (((x)&0x00ff0000) >> 8) | (((x)&0x0000ff00) << 8) |      \
+     (((x)&0x000000ff) << 24))
 
 #ifdef __bswap_constant_64
 #undef __bswap_constant_64
 #endif
-#define __bswap_constant_64(x)                                                 \
-    ((((x)&0xff00000000000000ull) >> 56) |                                     \
-     (((x)&0x00ff000000000000ull) >> 40) |                                     \
-     (((x)&0x0000ff0000000000ull) >> 24) |                                     \
-     (((x)&0x000000ff00000000ull) >> 8) | (((x)&0x00000000ff000000ull) << 8) | \
-     (((x)&0x0000000000ff0000ull) << 24) |                                     \
-     (((x)&0x000000000000ff00ull) << 40) |                                     \
-     (((x)&0x00000000000000ffull) << 56))
+#define __bswap_constant_64(x)                                                           \
+    ((((x)&0xff00000000000000ull) >> 56) | (((x)&0x00ff000000000000ull) >> 40) |         \
+     (((x)&0x0000ff0000000000ull) >> 24) | (((x)&0x000000ff00000000ull) >> 8) |          \
+     (((x)&0x00000000ff000000ull) << 8) | (((x)&0x0000000000ff0000ull) << 24) |          \
+     (((x)&0x000000000000ff00ull) << 40) | (((x)&0x00000000000000ffull) << 56))
 
 
 #ifdef __GBA__
@@ -114,7 +111,8 @@ template <> inline s64 to_host_order(s64 val)
 }
 
 
-template <typename T> class HostInteger {
+template <typename T> class HostInteger
+{
 public:
     // NOTE: I could overload the cast operator and assignment operators to make
     // this class behave similarly to a plain integer. But then I get

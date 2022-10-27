@@ -5,7 +5,6 @@
 #include "objects/particles/bigExplo.hpp"
 
 
-
 namespace herocore
 {
 
@@ -13,12 +12,10 @@ namespace herocore
 class Vortex2 : public EnemyProjectile
 {
 private:
-
     int count_ = 0;
     int cyc_ = 0;
 
 public:
-
     Vortex2(const Vec2<Fixnum>& pos) : EnemyProjectile(pos, 4, engine().g_.maxheat_)
     {
         sprite_index_ = 54;
@@ -49,19 +46,15 @@ public:
     {
         // Passes through fliphero.
     }
-
 };
-
 
 
 class Vortex : public EnemyProjectile
 {
 private:
-
     int cyc_ = 0;
 
 public:
-
     Vortex(const Vec2<Fixnum>& pos) : EnemyProjectile(pos, 0, 0)
     {
         sprite_index_ = 54;
@@ -89,14 +82,14 @@ public:
     {
         if (not place_free({position_.x + speed_.x, position_.y + speed_.y})) {
             kill();
-            engine().add_object<BigExplo>(Vec2<Fixnum>{position_.x + 8 - 4,
-                                                       position_.y + 4});
-            engine().add_object<BigExplo>(Vec2<Fixnum>{position_.x + 8 + 4,
-                                                       position_.y + 4});
-            engine().add_object<BigExplo>(Vec2<Fixnum>{position_.x + 8 - 8,
-                                                       position_.y + 4});
-            engine().add_object<BigExplo>(Vec2<Fixnum>{position_.x + 8 + 8,
-                                                       position_.y + 4});
+            engine().add_object<BigExplo>(
+                Vec2<Fixnum>{position_.x + 8 - 4, position_.y + 4});
+            engine().add_object<BigExplo>(
+                Vec2<Fixnum>{position_.x + 8 + 4, position_.y + 4});
+            engine().add_object<BigExplo>(
+                Vec2<Fixnum>{position_.x + 8 - 8, position_.y + 4});
+            engine().add_object<BigExplo>(
+                Vec2<Fixnum>{position_.x + 8 + 8, position_.y + 4});
             return;
         }
 
@@ -108,9 +101,7 @@ public:
             engine().add_object<Vortex2>(position_);
         }
     }
-
 };
 
 
-
-}
+} // namespace herocore

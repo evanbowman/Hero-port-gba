@@ -1,24 +1,21 @@
 #pragma once
 
-#include "objects/enemies/enemy.hpp"
 #include "engine.hpp"
 #include "fmt.hpp"
 #include "number/random.hpp"
-#include "objects/particles/explo.hpp"
+#include "objects/enemies/enemy.hpp"
 #include "objects/misc/pickup.hpp"
+#include "objects/particles/explo.hpp"
 #include "objects/projectile/missile.hpp"
-
 
 
 namespace herocore
 {
 
 
-
 class HydraHead : public Enemy
 {
 private:
-
     Fixnum x_start_ = 0;
     Fixnum y_start_ = 0;
     int timeline_ = 0;
@@ -36,10 +33,8 @@ private:
     mutable u8 flashcyc_ = 0;
 
 public:
-
-    HydraHead(const Vec2<Fixnum>& pos, int timeline) :
-        Enemy(TaggedObject::Tag::ignored, Health{16}),
-        timeline_(timeline)
+    HydraHead(const Vec2<Fixnum>& pos, int timeline)
+        : Enemy(TaggedObject::Tag::ignored, Health{16}), timeline_(timeline)
     {
         position_ = pos;
 
@@ -82,8 +77,6 @@ public:
 };
 
 
-
-
 class Hydra : public Enemy
 {
 private:
@@ -96,7 +89,6 @@ private:
     u8 totcyc_ = 0;
 
 public:
-
     Hydra(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y);
 
 
@@ -108,9 +100,7 @@ public:
 
 
     void step() override;
-
 };
 
 
-
-}
+} // namespace herocore

@@ -6,13 +6,15 @@
 class Platform;
 
 
-class Filesystem {
+class Filesystem
+{
 public:
     Filesystem();
 
     bool init(Platform&);
 
-    struct FileData {
+    struct FileData
+    {
         const char* data_;
         u32 size_;
     };

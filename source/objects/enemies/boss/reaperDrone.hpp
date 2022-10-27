@@ -1,20 +1,18 @@
 #pragma once
 
-#include "objects/enemies/enemy.hpp"
-#include "objects/enemies/light/drone.hpp"
-#include "objects/enemies/light/reaver.hpp"
 #include "engine.hpp"
 #include "fmt.hpp"
 #include "number/random.hpp"
+#include "objects/enemies/enemy.hpp"
+#include "objects/enemies/light/drone.hpp"
+#include "objects/enemies/light/reaver.hpp"
+#include "objects/misc/pickup.hpp"
 #include "objects/particles/explo.hpp"
 #include "objects/projectile/megashot.hpp"
-#include "objects/misc/pickup.hpp"
-
 
 
 namespace herocore
 {
-
 
 
 class ReaperDroneNeck : public Enemy
@@ -30,18 +28,14 @@ private:
     u8 rot_cycle_ = 0;
 
 public:
-
     ReaperDroneNeck(const Vec2<Fixnum>& pos,
                     float rot,
                     float rot_speed,
                     float dmax,
                     Enemy* owner,
-                    bool reaver = false) :
-        Enemy(TaggedObject::Tag::drone, Health{2}),
-        dmax_(dmax),
-        rot_speed_(rot_speed),
-        rot_(rot),
-        owner_(owner)
+                    bool reaver = false)
+        : Enemy(TaggedObject::Tag::drone, Health{2}), dmax_(dmax), rot_speed_(rot_speed),
+          rot_(rot), owner_(owner)
     {
         position_ = pos;
 
@@ -111,12 +105,8 @@ public:
 
 
 private:
-
     int timeline_ = 0;
-
 };
-
-
 
 
 class ReaperDrone : public Enemy
@@ -129,16 +119,13 @@ private:
     int explo_ = 0;
     int superexplo_ = 0;
     bool dead_ = false;
-    bool destroy_ = false;;
+    bool destroy_ = false;
+    ;
 
 public:
-
-    ReaperDrone(const Vec2<Fixnum>& pos,
-                u8 spawn_x,
-                u8 spawn_y) :
-        Enemy(TaggedObject::Tag::drone, Health{64}),
-        spawn_x_(spawn_x),
-        spawn_y_(spawn_y)
+    ReaperDrone(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y)
+        : Enemy(TaggedObject::Tag::drone, Health{64}), spawn_x_(spawn_x),
+          spawn_y_(spawn_y)
     {
         position_ = pos;
 
@@ -173,45 +160,33 @@ public:
             neck_ += 1;
             if (neck_ == 1) {
                 for (int i = 0; i < 15; ++i) {
-                    engine().add_object<ReaperDroneNeck>(position_,
-                                                         i * 24.f,
-                                                         2.f,
-                                                         24.f,
-                                                         this);
+                    engine().add_object<ReaperDroneNeck>(
+                        position_, i * 24.f, 2.f, 24.f, this);
                 }
                 for (int i = 0; i < 15; ++i) {
-                    engine().add_object<ReaperDroneNeck>(position_,
-                                                         i * 24.f + 14,
-                                                         -1.5f,
-                                                         12.f,
-                                                         this);
+                    engine().add_object<ReaperDroneNeck>(
+                        position_, i * 24.f + 14, -1.5f, 12.f, this);
                 }
             } else if (neck_ == 2) {
-                for (int i = 0; i < 5; ++i){
-                    for (int j = 0; j < 5; ++j){
-                        engine().add_object<ReaperDroneNeck>(position_,
-                                                             i * 72.f + j * 15,
-                                                             -2.f,
-                                                             j == 4 ? 128.f :
-                                                             0.5f * (10.f + j * 10),
-                                                             this);
+                for (int i = 0; i < 5; ++i) {
+                    for (int j = 0; j < 5; ++j) {
+                        engine().add_object<ReaperDroneNeck>(
+                            position_,
+                            i * 72.f + j * 15,
+                            -2.f,
+                            j == 4 ? 128.f : 0.5f * (10.f + j * 10),
+                            this);
                     }
                 }
             } else if (neck_ == 3) {
-                for (int i = 0; i < 3; i+=1){
+                for (int i = 0; i < 3; i += 1) {
                     for (int j = 0; j < 5; j += 1) {
-                        engine().add_object<ReaperDroneNeck>(position_,
-                                                             i * 120.f,
-                                                             2.f,
-                                                             0.5f * (10.f + j * 10),
-                                                             this);
+                        engine().add_object<ReaperDroneNeck>(
+                            position_, i * 120.f, 2.f, 0.5f * (10.f + j * 10), this);
                     }
                     for (int j = 0; j < 5; j += 1) {
-                        engine().add_object<ReaperDroneNeck>(position_,
-                                                             i * 120.f,
-                                                             -3.5f,
-                                                             0.5f * (10.f + j * 10),
-                                                             this);
+                        engine().add_object<ReaperDroneNeck>(
+                            position_, i * 120.f, -3.5f, 0.5f * (10.f + j * 10), this);
                     }
                 }
             } else if (neck_ == 4) {
@@ -222,7 +197,6 @@ public:
                                                          0.5f * (16.f + i * 4),
                                                          this,
                                                          true);
-
                 }
                 for (int i = 6; i < 8; i++) {
                     engine().add_object<ReaperDroneNeck>(position_,
@@ -230,7 +204,6 @@ public:
                                                          0.5f * (2.f + i),
                                                          0.5f * (16.f + i * 4),
                                                          this);
-
                 }
                 neck_ = 0;
             }
@@ -239,13 +212,11 @@ public:
         case 80:
         case 120:
         case 160: {
-            auto dir = direction(fvec(position_),
-                                 fvec(engine().hero()->position()));
+            auto dir = direction(fvec(position_), fvec(engine().hero()->position()));
 
             speed_.x = Fixnum((2.f / 2) * dir.x);
             speed_.y = Fixnum((2.f / 2) * dir.y);
             break;
-
         }
 
         case 200: {
@@ -274,8 +245,7 @@ public:
         }
 
         case 300: {
-            auto dir = direction(fvec(position_),
-                                 fvec(engine().hero()->position()));
+            auto dir = direction(fvec(position_), fvec(engine().hero()->position()));
             rotate(dir, 90);
             speed_.x = Fixnum((1.8f / 2) * dir.x);
             speed_.y = Fixnum((1.8f / 2) * dir.y);
@@ -283,8 +253,7 @@ public:
         }
 
         case 340: {
-            auto dir = direction(fvec(position_),
-                                 fvec(engine().hero()->position()));
+            auto dir = direction(fvec(position_), fvec(engine().hero()->position()));
             rotate(dir, 360 - 90);
             speed_.x = Fixnum((1.8f / 2) * dir.x);
             speed_.y = Fixnum((1.8f / 2) * dir.y);
@@ -292,8 +261,7 @@ public:
         }
 
         case 380: {
-            auto dir = direction(fvec(position_),
-                                 fvec(engine().hero()->position()));
+            auto dir = direction(fvec(position_), fvec(engine().hero()->position()));
             rotate(dir, rng::choice<360>(rng::utility_state));
             speed_.x = Fixnum((1.8f / 2) * dir.x);
             speed_.y = Fixnum((1.8f / 2) * dir.y);
@@ -340,22 +308,16 @@ public:
             neck_ += 1;
             if (neck_ == 1) {
                 for (int i = 0; i < 15; ++i) {
-                    engine().add_object<ReaperDroneNeck>(position_,
-                                                         i * 24.f,
-                                                         2.f,
-                                                         16.f,
-                                                         this);
+                    engine().add_object<ReaperDroneNeck>(
+                        position_, i * 24.f, 2.f, 16.f, this);
                 }
                 for (int i = 0; i < 15; ++i) {
-                    engine().add_object<ReaperDroneNeck>(position_,
-                                                         i * 24.f + 14,
-                                                         -1.5f,
-                                                         10.f,
-                                                         this);
+                    engine().add_object<ReaperDroneNeck>(
+                        position_, i * 24.f + 14, -1.5f, 10.f, this);
                 }
             } else if (neck_ == 2) {
-                for (int i = 0; i < 5; ++i){
-                    for (int j = 0; j < 4; ++j){
+                for (int i = 0; i < 5; ++i) {
+                    for (int j = 0; j < 4; ++j) {
                         engine().add_object<ReaperDroneNeck>(position_,
                                                              i * 72.f + j * 15,
                                                              -2.f,
@@ -364,20 +326,14 @@ public:
                     }
                 }
             } else if (neck_ == 3) {
-                for (int i = 0; i < 3; i+=1){
+                for (int i = 0; i < 3; i += 1) {
                     for (int j = 0; j < 4; j += 1) {
-                        engine().add_object<ReaperDroneNeck>(position_,
-                                                             i * 120.f,
-                                                             2.f,
-                                                             0.5f * (10.f + j * 10),
-                                                             this);
+                        engine().add_object<ReaperDroneNeck>(
+                            position_, i * 120.f, 2.f, 0.5f * (10.f + j * 10), this);
                     }
                     for (int j = 0; j < 4; j += 1) {
-                        engine().add_object<ReaperDroneNeck>(position_,
-                                                             i * 120.f,
-                                                             -3.5f,
-                                                             0.5f * (10.f + j * 10),
-                                                             this);
+                        engine().add_object<ReaperDroneNeck>(
+                            position_, i * 120.f, -3.5f, 0.5f * (10.f + j * 10), this);
                     }
                 }
             } else if (neck_ == 4) {
@@ -388,7 +344,6 @@ public:
                                                          0.5f * (16.f + i * 4),
                                                          this,
                                                          true);
-
                 }
                 neck_ = 0;
             }
@@ -397,13 +352,11 @@ public:
         case 80:
         case 120:
         case 160: {
-            auto dir = direction(fvec(position_),
-                                 fvec(engine().hero()->position()));
+            auto dir = direction(fvec(position_), fvec(engine().hero()->position()));
 
             speed_.x = Fixnum((1.4f / 2) * dir.x);
             speed_.y = Fixnum((1.4f / 2) * dir.y);
             break;
-
         }
 
         case 200: {
@@ -417,8 +370,7 @@ public:
         }
 
         case 330: {
-            auto dir = direction(fvec(position_),
-                                 fvec(engine().hero()->position()));
+            auto dir = direction(fvec(position_), fvec(engine().hero()->position()));
             rotate(dir, 90);
             speed_.x = Fixnum((1.9f / 2) * dir.x);
             speed_.y = Fixnum((1.9f / 2) * dir.y);
@@ -426,8 +378,7 @@ public:
         }
 
         case 370: {
-            auto dir = direction(fvec(position_),
-                                 fvec(engine().hero()->position()));
+            auto dir = direction(fvec(position_), fvec(engine().hero()->position()));
             rotate(dir, 360 - 90);
             speed_.x = Fixnum((1.9f / 2) * dir.x);
             speed_.y = Fixnum((1.9f / 2) * dir.y);
@@ -435,8 +386,7 @@ public:
         }
 
         case 410: {
-            auto dir = direction(fvec(position_),
-                                 fvec(engine().hero()->position()));
+            auto dir = direction(fvec(position_), fvec(engine().hero()->position()));
             rotate(dir, rng::choice<360>(rng::utility_state));
             speed_.x = Fixnum((1.9f / 2) * dir.x);
             speed_.y = Fixnum((1.9f / 2) * dir.y);
@@ -467,16 +417,12 @@ public:
             pos.x += 4;
             pos.y += 4;
             engine().add_object<Pickup>(pos, Pickup::blaster);
-            engine().add_object<ExploSpewer>(Vec2<Fixnum>{
-                    x() + 4, y() + 4
-                });
+            engine().add_object<ExploSpewer>(Vec2<Fixnum>{x() + 4, y() + 4});
 
-            engine().p_->objects_removed_.push_back({
-                    (u8)engine().room_.coord_.x,
-                    (u8)engine().room_.coord_.y,
-                    spawn_x_,
-                    spawn_y_
-                });
+            engine().p_->objects_removed_.push_back({(u8)engine().room_.coord_.x,
+                                                     (u8)engine().room_.coord_.y,
+                                                     spawn_x_,
+                                                     spawn_y_});
 
             engine().boss_completed();
 
@@ -547,8 +493,7 @@ public:
             timeline_easy_mode();
         }
 
-        if (not place_free({position_.x + speed_.x,
-                            position_.y + speed_.y})) {
+        if (not place_free({position_.x + speed_.x, position_.y + speed_.y})) {
             auto x = position_.x;
             auto y = position_.y;
             if (not place_free({x + 2, y}) or not place_free({x - 2, y})) {
@@ -562,11 +507,8 @@ public:
 
 
 private:
-
     int timeline_ = 0;
-
 };
 
 
-
-}
+} // namespace herocore

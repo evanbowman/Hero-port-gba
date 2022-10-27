@@ -1,10 +1,8 @@
 #include "taggedObject.hpp"
 
 
-
 namespace herocore
 {
-
 
 
 int TaggedObject::count(Tag tag)
@@ -21,7 +19,6 @@ int TaggedObject::count(Tag tag)
 }
 
 
-
 TaggedObject*& TaggedObject::get_taglist(Tag tag)
 {
     static Buffer<TaggedObject*, (int)Tag::count> tag_lists_;
@@ -33,5 +30,4 @@ TaggedObject*& TaggedObject::get_taglist(Tag tag)
 }
 
 
-
-}
+} // namespace herocore

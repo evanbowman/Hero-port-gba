@@ -8,7 +8,8 @@
 #include <optional>
 
 
-namespace utf8 {
+namespace utf8
+{
 
 using Codepoint = u32;
 
@@ -100,9 +101,7 @@ inline Codepoint getc(const char* data, int* consumed = nullptr)
 inline size_t len(const char* data)
 {
     size_t ret = 0;
-    scan([&ret](const Codepoint&, const char*, int) { ++ret; },
-         data,
-         str_len(data));
+    scan([&ret](const Codepoint&, const char*, int) { ++ret; }, data, str_len(data));
     return ret;
 }
 
@@ -114,7 +113,8 @@ inline size_t len(const char* data)
 // large utf-8 string in memory, so we have this adapter class, which loads
 // small chunks of codepoints from the encoded string.
 //
-class BufferedStr {
+class BufferedStr
+{
 private:
     const char* const str_;
 
@@ -150,8 +150,7 @@ public:
 
     inline utf8::Codepoint get(int index)
     {
-        if (not(index >= index_start_ and
-                index < index_start_ + index_count_)) {
+        if (not(index >= index_start_ and index < index_start_ + index_count_)) {
             load_chunk(index);
         }
 

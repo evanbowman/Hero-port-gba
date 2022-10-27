@@ -3,21 +3,17 @@
 #include "enemyProjectile.hpp"
 
 
-
 namespace herocore
 {
-
 
 
 class Supershot : public EnemyProjectile
 {
 private:
-
     int anim_ = 0;
     int count_ = 0;
 
 public:
-
     Supershot(const Vec2<Fixnum>& pos) : EnemyProjectile(pos, 2, 0)
     {
         sprite_index_ = 14;
@@ -53,5 +49,4 @@ public:
 };
 
 
-
-}
+} // namespace herocore

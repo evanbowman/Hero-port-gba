@@ -19,7 +19,8 @@
 using TileDesc = u16;
 
 
-struct FontColors {
+struct FontColors
+{
     ColorConstant foreground_;
     ColorConstant background_;
 };
@@ -36,7 +37,8 @@ struct FontColors {
 enum class Layer { overlay, map_1, map_0, background };
 
 
-class Platform {
+class Platform
+{
 public:
     class Screen;
     class Keyboard;
@@ -117,15 +119,15 @@ public:
     // Enable platform specific features. NOP if unsupported.
     void enable_feature(const char* feature_name, bool enabled);
 
-    struct TextureMapping {
+    struct TextureMapping
+    {
         const char* texture_name_;
         u16 offset_;
     };
 
     // Supplied with a unicode codepoint, this function should provide an offset
     // into a texture image from which to load a glyph image.
-    using TextureCpMapper =
-        std::optional<TextureMapping> (*)(const utf8::Codepoint&);
+    using TextureCpMapper = std::optional<TextureMapping> (*)(const utf8::Codepoint&);
 
     // Map a glyph into the vram space reserved for the overlay tile layer.
     TileDesc map_glyph(const utf8::Codepoint& glyph, TextureCpMapper);
@@ -204,7 +206,8 @@ public:
 #define SCRATCH_BUFFER_SIZE 4000
 #endif // __GBA__
 
-    struct ScratchBuffer {
+    struct ScratchBuffer
+    {
         // NOTE: do not make any assumptions about the alignment of the data_
         // member.
         char data_[SCRATCH_BUFFER_SIZE];
@@ -231,7 +234,8 @@ public:
     ////////////////////////////////////////////////////////////////////////////
 
 
-    class DeltaClock {
+    class DeltaClock
+    {
     public:
         ~DeltaClock();
 
@@ -260,9 +264,9 @@ public:
     ////////////////////////////////////////////////////////////////////////////
 
 
-    class SystemClock {
+    class SystemClock
+    {
     public:
-
     private:
         friend class Platform;
 
@@ -277,7 +281,8 @@ public:
     ////////////////////////////////////////////////////////////////////////////
 
 
-    class Screen {
+    class Screen
+    {
     public:
         static constexpr u32 sprite_limit = 128;
 
@@ -322,9 +327,7 @@ public:
     private:
         Screen();
 
-        void init_layers(int background_priority,
-                         int tile0_priority,
-                         int tile1_priority);
+        void init_layers(int background_priority, int tile0_priority, int tile1_priority);
 
         friend class Platform;
 
@@ -338,7 +341,8 @@ public:
     ////////////////////////////////////////////////////////////////////////////
 
 
-    class Keyboard {
+    class Keyboard
+    {
     private:
         using KeyStates = std::array<bool, int(Key::count)>;
 
@@ -404,7 +408,8 @@ public:
         }
 
 
-        struct ControllerInfo {
+        struct ControllerInfo
+        {
             int vendor_id;
             int product_id;
             int action_1_key;
@@ -442,7 +447,8 @@ public:
     ////////////////////////////////////////////////////////////////////////////
 
 
-    class Logger {
+    class Logger
+    {
     public:
         void log(Severity severity, const char* msg);
 
@@ -462,7 +468,8 @@ public:
     ////////////////////////////////////////////////////////////////////////////
 
 
-    class Speaker {
+    class Speaker
+    {
     public:
         using Channel = int;
 
@@ -506,7 +513,8 @@ public:
     ////////////////////////////////////////////////////////////////////////////
 
 
-    class NetworkPeer {
+    class NetworkPeer
+    {
     public:
         NetworkPeer();
         NetworkPeer(const NetworkPeer&) = delete;
@@ -520,7 +528,8 @@ public:
         bool is_connected() const;
         bool is_host() const;
 
-        struct Message {
+        struct Message
+        {
             const byte* data_;
             u32 length_;
         };
@@ -557,7 +566,8 @@ public:
         // multiplayer.
         static bool supported_by_device();
 
-        struct Stats {
+        struct Stats
+        {
             int transmit_count_;
             int receive_count_;
             int transmit_loss_;
@@ -581,7 +591,8 @@ public:
     ////////////////////////////////////////////////////////////////////////////
 
 
-    class RemoteConsole {
+    class RemoteConsole
+    {
     public:
         bool supported_by_device();
 
@@ -597,7 +608,8 @@ public:
     // Task
     ////////////////////////////////////////////////////////////////////////////
 
-    class Task {
+    class Task
+    {
     public:
         virtual void run() = 0;
 
@@ -666,7 +678,8 @@ private:
 };
 
 
-class SynchronizedBase {
+class SynchronizedBase
+{
 protected:
     void init(Platform& pf);
     void lock();
@@ -681,11 +694,11 @@ private:
 };
 
 
-template <typename T> class Synchronized : SynchronizedBase {
+template <typename T> class Synchronized : SynchronizedBase
+{
 public:
     template <typename... Args>
-    Synchronized(Platform& pf, Args&&... args)
-        : data_(std::forward<Args>(args)...)
+    Synchronized(Platform& pf, Args&&... args) : data_(std::forward<Args>(args)...)
     {
         init(pf);
     }

@@ -1,33 +1,27 @@
 #pragma once
 
-#include "scene.hpp"
 #include "engine.hpp"
-#include "objects/particles/bigExplo.hpp"
 #include "objects/enemies/elite/barrier.hpp"
-
+#include "objects/particles/bigExplo.hpp"
+#include "scene.hpp"
 
 
 namespace herocore
 {
 
 
-
 bool is_boss_level(Difficulty d, Vec2<u8> room);
-
 
 
 class DiffSelScene : public Scene
 {
 public:
-
 };
-
 
 
 class MapScene : public Scene
 {
 public:
-
     ScenePtr<Scene> step() override;
 
 
@@ -37,7 +31,6 @@ public:
     void enter(Scene& prev_scene) override;
 
 private:
-
     void show_worldmap();
     void show_zoomedmap();
 
@@ -51,13 +44,11 @@ private:
 };
 
 
-
 class OverworldScene : public Scene
 {
     int respawn_countdown_ = 0;
 
 public:
-
     ScenePtr<Scene> step() override
     {
         if (engine().g_.hp_ <= 0) {
@@ -73,18 +64,17 @@ public:
             --respawn_countdown_;
         }
 
-        auto step_list =
-                [&](auto& objects, auto on_destroy) {
-                    for (auto it = objects.begin(); it not_eq objects.end();) {
-                        if ((*it)->dead()) {
-                            on_destroy(*it);
-                            it = objects.erase(it);
-                        } else {
-                            (*it)->step();
-                            ++it;
-                        }
-                    }
-                };
+        auto step_list = [&](auto& objects, auto on_destroy) {
+            for (auto it = objects.begin(); it not_eq objects.end();) {
+                if ((*it)->dead()) {
+                    on_destroy(*it);
+                    it = objects.erase(it);
+                } else {
+                    (*it)->step();
+                    ++it;
+                }
+            }
+        };
 
         auto& e = engine();
 
@@ -94,7 +84,7 @@ public:
         step_list(e.enemy_projectiles_, [](auto&) {});
         step_list(e.generic_objects_, [](auto&) {});
         step_list(e.generic_solids_, [](auto&) {});
-        step_list(e.player_projectiles_, [&](auto&) {--e.g_.shot_count_;});
+        step_list(e.player_projectiles_, [&](auto&) { --e.g_.shot_count_; });
 
         int shake = 0;
         if (engine().g_.screenshake_ > 0) {
@@ -138,15 +128,14 @@ public:
 
     void display() override
     {
-        auto draw_list =
-            [&](auto& objects) {
-                for (auto& obj : objects) {
+        auto draw_list = [&](auto& objects) {
+            for (auto& obj : objects) {
 
-                    if (not obj->dead()) {
-                        obj->draw(platform().screen());
-                    }
+                if (not obj->dead()) {
+                    obj->draw(platform().screen());
                 }
-            };
+            }
+        };
 
         auto& e = engine();
 
@@ -158,10 +147,7 @@ public:
         draw_list(e.generic_solids_);
         draw_list(e.generic_objects_);
     }
-
 };
 
 
-
-
-}
+} // namespace herocore

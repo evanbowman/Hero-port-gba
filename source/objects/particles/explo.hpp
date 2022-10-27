@@ -1,23 +1,19 @@
 #pragma once
 
-#include "object.hpp"
 #include "engine.hpp"
-
+#include "object.hpp"
 
 
 namespace herocore
 {
 
 
-
 class Explo : public Object
 {
 private:
-
     int anim_cyc_ = 0;
 
 public:
-
     Explo(const Vec2<Fixnum>& pos)
     {
         position_ = pos;
@@ -48,12 +44,8 @@ public:
 
 
 private:
-
     int counter_ = 20;
-
-
 };
-
 
 
 class ExploSpewer2 : public Object
@@ -62,7 +54,6 @@ private:
     int cyc_ = 0;
 
 public:
-
     ExploSpewer2(const Vec2<Fixnum>& pos)
     {
         position_ = pos;
@@ -106,7 +97,6 @@ public:
                 }
                 position_ = cached;
             }
-
         }
 
         if (cyc_ == 25) {
@@ -116,5 +106,4 @@ public:
 };
 
 
-
-}
+} // namespace herocore

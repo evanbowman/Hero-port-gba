@@ -1,25 +1,22 @@
 #include "guardian.hpp"
 #include "fmt.hpp"
-#include "objects/projectile/enemyShot.hpp"
-#include "objects/projectile/bomb.hpp"
-#include "objects/projectile/supershot.hpp"
-#include "objects/projectile/megashot.hpp"
-#include "objects/projectile/gigashot.hpp"
-#include "objects/projectile/vortex.hpp"
 #include "objects/enemies/elite/hunter.hpp"
 #include "objects/enemies/heavy/soldier.hpp"
 #include "objects/misc/pickup.hpp"
-
+#include "objects/projectile/bomb.hpp"
+#include "objects/projectile/enemyShot.hpp"
+#include "objects/projectile/gigashot.hpp"
+#include "objects/projectile/megashot.hpp"
+#include "objects/projectile/supershot.hpp"
+#include "objects/projectile/vortex.hpp"
 
 
 namespace herocore
 {
 
 
-
 // obj_guardianneck == GuardianUpper and GuardianLower
 // obj_guardian == GuardianCore
-
 
 
 class GuardianUpper : public Enemy
@@ -30,10 +27,8 @@ private:
     int timeline_ = 0;
 
 public:
-
-    GuardianUpper(GuardianCore* core) :
-        Enemy(TaggedObject::Tag::ignored, Health{9999}),
-        core_(core)
+    GuardianUpper(GuardianCore* core)
+        : Enemy(TaggedObject::Tag::ignored, Health{9999}), core_(core)
     {
         hitbox_.dimension_.size_ = {26, 18};
         hitbox_.dimension_.origin_ = {-3, 0};
@@ -67,8 +62,8 @@ public:
                         flip_ = true;
                     }
                     {
-                        auto dir = rotate({1, 0},
-                                          rng::choice<8>(rng::critical_state) * 45);
+                        auto dir =
+                            rotate({1, 0}, rng::choice<8>(rng::critical_state) * 45);
                         speed_.x = Fixnum(dir.x);
                         speed_.y = Fixnum(dir.y);
                     }
@@ -84,18 +79,21 @@ public:
                     shotcyc_ += 1;
                     if (shotcyc_ == 4) {
                         int xo = (not flip_) ? -2 : 24;
-                        if (auto e = engine().add_object<Megashot>(Vec2<Fixnum>{x() + xo, y() + 7})) {
+                        if (auto e = engine().add_object<Megashot>(
+                                Vec2<Fixnum>{x() + xo, y() + 7})) {
                             auto dir = direction(fvec(position_),
                                                  fvec(engine().hero()->position()));
                             e->set_speed({Fixnum(dir.x), Fixnum(dir.y)});
                         }
-                        if (auto e = engine().add_object<EnemyShot>(Vec2<Fixnum>{x() + xo, y() + 7})) {
+                        if (auto e = engine().add_object<EnemyShot>(
+                                Vec2<Fixnum>{x() + xo, y() + 7})) {
                             auto dir = direction(fvec(position_),
                                                  fvec(engine().hero()->position()));
                             dir = rotate(dir, 340);
                             e->set_speed({Fixnum(dir.x), Fixnum(dir.y)});
                         }
-                        if (auto e = engine().add_object<EnemyShot>(Vec2<Fixnum>{x() + xo, y() + 7})) {
+                        if (auto e = engine().add_object<EnemyShot>(
+                                Vec2<Fixnum>{x() + xo, y() + 7})) {
                             auto dir = direction(fvec(position_),
                                                  fvec(engine().hero()->position()));
                             dir = rotate(dir, 20);
@@ -103,7 +101,8 @@ public:
                         }
                     } else if (shotcyc_ == 8) {
                         int xo = (not flip_) ? -2 : 24;
-                        if (auto e = engine().add_object<Megashot>(Vec2<Fixnum>{x() + xo, y() + 7})) {
+                        if (auto e = engine().add_object<Megashot>(
+                                Vec2<Fixnum>{x() + xo, y() + 7})) {
                             auto dir = direction(fvec(position_),
                                                  fvec(engine().hero()->position()));
                             dir = dir * (2.5f / 2);
@@ -111,7 +110,8 @@ public:
                         }
                     } else {
                         int xo = (not flip_) ? -2 : 24;
-                        if (auto e = engine().add_object<Supershot>(Vec2<Fixnum>{x() + xo, y() + 7})) {
+                        if (auto e = engine().add_object<Supershot>(
+                                Vec2<Fixnum>{x() + xo, y() + 7})) {
                             if (flip_) {
                                 e->set_speed({1, 0});
                             } else {
@@ -129,8 +129,7 @@ public:
                     break;
                 }
             }
-            if (not place_free({position_.x + speed_.x,
-                                position_.y + speed_.y}, 3)) {
+            if (not place_free({position_.x + speed_.x, position_.y + speed_.y}, 3)) {
                 auto x = position_.x;
                 auto y = position_.y;
                 if (not place_free({x + 2, y}, 3) or not place_free({x - 2, y}, 3)) {
@@ -170,8 +169,7 @@ public:
         for (int i = 0; i < 3; ++i) {
             int xo = (not flip_) ? -2 : 24;
             if (auto e = engine().add_object<Gigashot>(Vec2<Fixnum>{x() + xo, y() + 7})) {
-                auto dir = direction(fvec(position_),
-                                     fvec(engine().hero()->position()));
+                auto dir = direction(fvec(position_), fvec(engine().hero()->position()));
                 auto d = dir * 0.25f;
                 auto g = dir * (0.04f + i * 0.01f);
                 e->set_speed({Fixnum(d.x), Fixnum(d.y)});
@@ -237,13 +235,11 @@ private:
 };
 
 
-
 class GuardianLower : public Enemy
 {
 public:
-    GuardianLower(GuardianCore* core) :
-        Enemy(TaggedObject::Tag::ignored, Health{9999}),
-        core_(core)
+    GuardianLower(GuardianCore* core)
+        : Enemy(TaggedObject::Tag::ignored, Health{9999}), core_(core)
     {
         hitbox_.dimension_.size_ = {26, 18};
         hitbox_.dimension_.origin_ = {-3, -5};
@@ -318,7 +314,6 @@ public:
         spr_.set_position(pos);
         spr_.set_texture_index(flip_ ? 187 : 186);
         screen.draw(spr_);
-
     }
 
 
@@ -330,16 +325,15 @@ private:
 };
 
 
-
-
 class DetachedCore : public Enemy
 {
 public:
-    DetachedCore(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y) :
-        Enemy(TaggedObject::Tag::ignored, Health{2// 64
-            }),
-        spawn_x_(spawn_x),
-        spawn_y_(spawn_y)
+    DetachedCore(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y)
+        : Enemy(TaggedObject::Tag::ignored,
+                Health{
+                    2 // 64
+                }),
+          spawn_x_(spawn_x), spawn_y_(spawn_y)
     {
         hitbox_.dimension_.size_ = {6, 6};
         hitbox_.dimension_.origin_ = {3, 3};
@@ -359,8 +353,7 @@ public:
             dead_ = true;
 
             for (auto& e : engine().enemies_) {
-                if (dynamic_cast<Hunter*>(e.get()) or
-                    dynamic_cast<Soldier*>(e.get()) or
+                if (dynamic_cast<Hunter*>(e.get()) or dynamic_cast<Soldier*>(e.get()) or
                     dynamic_cast<Spew*>(e.get())) {
                     e->kill();
                 }
@@ -378,8 +371,7 @@ public:
                 auto p = position_;
                 p.x -= 4;
                 p.y -= 4;
-                engine().add_object<Explo>(rng::sample<8>(p,
-                                                          rng::critical_state));
+                engine().add_object<Explo>(rng::sample<8>(p, rng::critical_state));
                 engine().g_.screenshake_ = 2;
             }
 
@@ -399,12 +391,10 @@ public:
                     }
                 }
 
-                engine().p_->objects_removed_.push_back({
-                                                         (u8)engine().room_.coord_.x,
+                engine().p_->objects_removed_.push_back({(u8)engine().room_.coord_.x,
                                                          (u8)engine().room_.coord_.y,
                                                          spawn_x_,
-                                                         spawn_y_
-                    });
+                                                         spawn_y_});
 
                 engine().boss_completed();
 
@@ -445,8 +435,7 @@ public:
                     break;
                 }
                 if (shotcyc_ < 12) {
-                    auto dir = rotate({1, 0},
-                                      rng::choice<8>(rng::critical_state) * 45);
+                    auto dir = rotate({1, 0}, rng::choice<8>(rng::critical_state) * 45);
                     dir = dir * (1.4f / 2);
                     speed_.x = Fixnum(dir.x);
                     speed_.y = Fixnum(dir.y);
@@ -503,8 +492,7 @@ public:
 
         Enemy::step();
 
-        if (not place_free({position_.x + speed_.x,
-                            position_.y + speed_.y})) {
+        if (not place_free({position_.x + speed_.x, position_.y + speed_.y})) {
             auto x = position_.x;
             auto y = position_.y;
             if (not place_free({x + 2, y}) or not place_free({x - 2, y})) {
@@ -530,13 +518,12 @@ private:
 };
 
 
-
-
-GuardianCore::GuardianCore(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y) :
-    Enemy(TaggedObject::Tag::ignored, Health{4// 128
-        }),
-    spawn_x_(spawn_x),
-    spawn_y_(spawn_y)
+GuardianCore::GuardianCore(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y)
+    : Enemy(TaggedObject::Tag::ignored,
+            Health{
+                4 // 128
+            }),
+      spawn_x_(spawn_x), spawn_y_(spawn_y)
 {
     hitbox_.dimension_.size_ = {6, 6};
     hitbox_.dimension_.origin_ = {3, 3};
@@ -549,15 +536,13 @@ GuardianCore::GuardianCore(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y) :
     position_.x -= 2;
 
 
-
-    if (not (lower_ = engine().add_object<GuardianLower>(this))) {
+    if (not(lower_ = engine().add_object<GuardianLower>(this))) {
         platform().fatal("failed to alloc guardian segment");
     }
-    if (not (upper_ = engine().add_object<GuardianUpper>(this))) {
+    if (not(upper_ = engine().add_object<GuardianUpper>(this))) {
         platform().fatal("failed to alloc guardian segment");
     }
 }
-
 
 
 void GuardianCore::step()
@@ -575,10 +560,9 @@ void GuardianCore::step()
 
 
     auto inside_floor = [this] {
-                            return not place_free({x(), y() + 21}) and
-                                (not place_free({x() - 6, y() + 21}) or
-                                 not place_free({x() + 10, y() + 21}));
-                        };
+        return not place_free({x(), y() + 21}) and (not place_free({x() - 6, y() + 21}) or
+                                                    not place_free({x() + 10, y() + 21}));
+    };
 
     // Hit wall
     if (speed_.x < 0 and not place_free({x() - 10, y()})) {
@@ -703,10 +687,8 @@ void GuardianCore::step()
     if (health_ == -1 and detachcyc_ < 60) {
         detachcyc_ += 1;
         if (detachcyc_ % 4 == 0) {
-            Fixnum x = rng::sample<16>(position_.x.as_integer(),
-                                       rng::critical_state);
-            Fixnum y = rng::sample<16>(position_.y.as_integer(),
-                                       rng::critical_state);
+            Fixnum x = rng::sample<16>(position_.x.as_integer(), rng::critical_state);
+            Fixnum y = rng::sample<16>(position_.y.as_integer(), rng::critical_state);
             engine().add_object<BigExplo>(Vec2<Fixnum>{x, y});
             platform().speaker().play_sound("snd_explo1", detachcyc_ / 4);
             engine().g_.screenshake_ = 2;
@@ -719,9 +701,7 @@ void GuardianCore::step()
             sprite_subimage_ = 0;
             ((GuardianUpper*)upper_)->detach();
             upper_ = nullptr;
-            engine().add_object<DetachedCore>(position_,
-                                              spawn_x_,
-                                              spawn_y_);
+            engine().add_object<DetachedCore>(position_, spawn_x_, spawn_y_);
         }
     }
 
@@ -734,7 +714,6 @@ void GuardianCore::step()
 }
 
 
-
 bool GuardianCore::damage(Health dmg, Object& s)
 {
     if (health_ == -1) {
@@ -745,5 +724,4 @@ bool GuardianCore::damage(Health dmg, Object& s)
 }
 
 
-
-}
+} // namespace herocore

@@ -37,11 +37,10 @@ std::string resource_path()
     }
     pool = ((id(*)(id, SEL))objc_msgSend)(pool, sel_registerName("init"));
     id bundle = ((id(*)(id, SEL))objc_msgSend)(
-        reinterpret_cast<id>(objc_getClass("NSBundle")),
-        sel_registerName("mainBundle"));
+        reinterpret_cast<id>(objc_getClass("NSBundle")), sel_registerName("mainBundle"));
     if (bundle) {
-        id path = ((id(*)(id, SEL))objc_msgSend)(
-            bundle, sel_registerName("resourcePath"));
+        id path =
+            ((id(*)(id, SEL))objc_msgSend)(bundle, sel_registerName("resourcePath"));
         rpath = reinterpret_cast<const char*>(((id(*)(id, SEL))objc_msgSend)(
                     path, sel_registerName("UTF8String"))) +
                 std::string("/");

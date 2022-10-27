@@ -1,15 +1,13 @@
 #pragma once
 
-#include "objects/enemies/enemy.hpp"
 #include "engine.hpp"
 #include "fmt.hpp"
 #include "number/random.hpp"
-
+#include "objects/enemies/enemy.hpp"
 
 
 namespace herocore
 {
-
 
 
 class Barrier : public Enemy
@@ -20,10 +18,8 @@ private:
     bool wide_;
 
 public:
-
-    Barrier(const Vec2<Fixnum>& pos, bool wide) :
-        Enemy(TaggedObject::Tag::ignored, Health{32}),
-        wide_(wide)
+    Barrier(const Vec2<Fixnum>& pos, bool wide)
+        : Enemy(TaggedObject::Tag::ignored, Health{32}), wide_(wide)
     {
         position_ = pos;
 
@@ -36,7 +32,6 @@ public:
             sprite_index_ = 100;
             hitbox_.dimension_.size_ = {32, 16};
         }
-
     }
 
 
@@ -84,10 +79,7 @@ public:
     {
         return 4;
     }
-
-
 };
 
 
-
-}
+} // namespace herocore

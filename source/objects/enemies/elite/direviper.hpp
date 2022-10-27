@@ -1,24 +1,21 @@
 #pragma once
 
-#include "objects/enemies/enemy.hpp"
+#include "bulkAllocator.hpp"
 #include "engine.hpp"
 #include "number/random.hpp"
-#include "objects/projectile/enemyShot.hpp"
-#include "objects/projectile/supershot.hpp"
-#include "objects/projectile/gigashot.hpp"
-#include "objects/particles/bigExplo.hpp"
+#include "objects/enemies/enemy.hpp"
 #include "objects/enemies/light/bolt.hpp"
-#include "bulkAllocator.hpp"
-
+#include "objects/particles/bigExplo.hpp"
+#include "objects/projectile/enemyShot.hpp"
+#include "objects/projectile/gigashot.hpp"
+#include "objects/projectile/supershot.hpp"
 
 
 namespace herocore
 {
 
 
-
 class Direviper;
-
 
 
 class DireviperNeck : public Enemy
@@ -28,10 +25,8 @@ private:
     int offset_;
 
 public:
-
-    DireviperNeck(Direviper* owner, int offset) :
-        Enemy(Tag::chainsnake_neck, Health{200}),
-        owner_(owner), offset_(offset)
+    DireviperNeck(Direviper* owner, int offset)
+        : Enemy(Tag::chainsnake_neck, Health{200}), owner_(owner), offset_(offset)
     {
         sprite_index_ = 125;
         origin_ = {4, 4};
@@ -47,9 +42,7 @@ public:
     {
         return owner_;
     }
-
 };
-
 
 
 class Direviper : public Enemy
@@ -67,13 +60,12 @@ private:
     int shotcyc_ = 0;
 
 public:
-
     DynamicMemory<HistoryBuffer> hist_;
 
 
-    Direviper(const Vec2<Fixnum>& pos) :
-        Enemy(TaggedObject::Tag::chainsnake_neck, Health{32}),
-        hist_(allocate_dynamic<HistoryBuffer>(platform()))
+    Direviper(const Vec2<Fixnum>& pos)
+        : Enemy(TaggedObject::Tag::chainsnake_neck, Health{32}),
+          hist_(allocate_dynamic<HistoryBuffer>(platform()))
     {
         position_ = pos;
 
@@ -100,8 +92,7 @@ public:
                     }
                 }
             }
-            engine().add_object<BigExplo>(Vec2<Fixnum>{
-                    position_.x, position_.y});
+            engine().add_object<BigExplo>(Vec2<Fixnum>{position_.x, position_.y});
             return;
         }
 
@@ -134,18 +125,15 @@ public:
             if (shotcyc_ == 6) {
 
                 if (TaggedObject::count(Tag::bolt) < 2) {
-                    engine().add_object<Bolt>(Vec2<Fixnum>{
-                                x() - 4, y() - 4
-                                    });
+                    engine().add_object<Bolt>(Vec2<Fixnum>{x() - 4, y() - 4});
                 }
 
                 shotcyc_ = 0;
             }
 
             if (shotcyc_ % 4 == 0) {
-                if (auto e = engine().add_object<Gigashot>(Vec2<Fixnum>{
-                            x() - 6, y() - 6
-                        })) {
+                if (auto e =
+                        engine().add_object<Gigashot>(Vec2<Fixnum>{x() - 6, y() - 6})) {
                     auto d = rotate({1, 0}, dir_);
                     e->set_speed({Fixnum(d.x * 1.5f), Fixnum(d.y * 1.5f)});
                 }
@@ -189,8 +177,7 @@ public:
                     firsthome_ = true;
                     prevdir_ = dir_;
                 }
-                if ((dir_ == 0 and prevdir_ == 180) or
-                    (dir_ == 180 and prevdir_ == 0) or
+                if ((dir_ == 0 and prevdir_ == 180) or (dir_ == 180 and prevdir_ == 0) or
                     (dir_ == 90 and prevdir_ == 270) or
                     (dir_ == 270 and prevdir_ == 90)) {
                     dir_ = prevdir_;
@@ -285,7 +272,6 @@ public:
 };
 
 
-
 inline void DireviperNeck::step()
 {
     position_.x = (*owner()->hist_)[offset_].x;
@@ -293,5 +279,4 @@ inline void DireviperNeck::step()
 }
 
 
-
-}
+} // namespace herocore

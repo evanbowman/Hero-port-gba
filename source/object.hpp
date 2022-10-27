@@ -1,23 +1,20 @@
 #pragma once
 
-#include "number/fixnum.hpp"
 #include "graphics/sprite.hpp"
-#include "platform/platform.hpp"
 #include "hitbox.hpp"
 #include "list.hpp"
+#include "number/fixnum.hpp"
+#include "platform/platform.hpp"
 #include <memory>
-
 
 
 namespace herocore
 {
 
 
-
 class Object
 {
 public:
-
     Object() : hitbox_{&position_, {0, 0, 0, 0}}
     {
     }
@@ -118,7 +115,6 @@ public:
 
 
 protected:
-
     Vec2<Fixnum> position_;
 
     Hitbox hitbox_;
@@ -135,17 +131,13 @@ protected:
 };
 
 
-
 static constexpr const int object_pool_size = 128;
-
 
 
 template <typename T> using ObjectRef = std::unique_ptr<T, void (*)(Object*)>;
 
 
-
 using ObjectNode = BinaryNode<ObjectRef<Object>>;
-
 
 
 struct GlobalObjectListData
@@ -156,32 +148,26 @@ struct GlobalObjectListData
 };
 
 
-
 template <typename T> struct GlobalObjectListDataImpl : GlobalObjectListData
 {
     BinaryNode<T>* begin_;
 };
 
 
-
 template <u32 Capacity>
 using ObjectNodePool = Pool<sizeof(ObjectNode), Capacity, alignof(Object)>;
-
 
 
 template <typename T>
 using EntityListData = ListData<T, ObjectNodePool<object_pool_size>>;
 
 
-
 template <typename T>
 using ObjectList = List<ObjectRef<T>, GlobalObjectListDataImpl<ObjectRef<T>>>;
 
 
-
 using ObjectPool = Pool<128, object_pool_size, alignof(Object)>;
 ObjectPool& object_pool();
-
 
 
 inline void object_deleter(Object* obj)
@@ -193,16 +179,13 @@ inline void object_deleter(Object* obj)
 }
 
 
-
 inline ObjectRef<Object> null_object()
 {
     return {nullptr, object_deleter};
 }
 
 
-
-template <typename T, typename... Args>
-ObjectRef<T> alloc_object(Args&&... args)
+template <typename T, typename... Args> ObjectRef<T> alloc_object(Args&&... args)
 {
     static_assert(sizeof(T) <= 128);
     static_assert(alignof(T) <= alignof(Object));
@@ -217,6 +200,4 @@ ObjectRef<T> alloc_object(Args&&... args)
 }
 
 
-
-
-}
+} // namespace herocore

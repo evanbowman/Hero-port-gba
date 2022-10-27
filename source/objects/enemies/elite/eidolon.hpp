@@ -1,24 +1,21 @@
 #pragma once
 
-#include "objects/enemies/enemy.hpp"
 #include "engine.hpp"
 #include "number/random.hpp"
-#include "objects/projectile/enemyShot.hpp"
-#include "objects/projectile/supershot.hpp"
-#include "objects/projectile/megashot.hpp"
-#include "objects/particles/bigExplo.hpp"
+#include "objects/enemies/enemy.hpp"
 #include "objects/enemies/heavy/phaze.hpp"
+#include "objects/particles/bigExplo.hpp"
+#include "objects/projectile/enemyShot.hpp"
+#include "objects/projectile/megashot.hpp"
+#include "objects/projectile/supershot.hpp"
 #include "objects/projectile/vortex.hpp"
-
 
 
 namespace herocore
 {
 
 
-
 class Eidolon;
-
 
 
 class EidolonGun : public Enemy
@@ -31,12 +28,9 @@ private:
     mutable u8 flashcyc_ = 0;
 
 public:
-
-    EidolonGun(Eidolon* owner, int offset) :
-        Enemy(TaggedObject::Tag::ignored, Health{8}),
-        owner_(owner),
-        offset_(offset),
-        firecyc_(offset)
+    EidolonGun(Eidolon* owner, int offset)
+        : Enemy(TaggedObject::Tag::ignored, Health{8}), owner_(owner), offset_(offset),
+          firecyc_(offset)
     {
         sprite_index_ = 136;
     }
@@ -79,14 +73,11 @@ public:
     }
 
 
-
     Eidolon* owner() const
     {
         return owner_;
     }
-
 };
-
 
 
 class Eidolon : public Enemy
@@ -101,7 +92,6 @@ private:
     u8 dir_ = 1;
 
 public:
-
     using HistoryBuffer = std::array<Vec2<s16>, 80>;
 
     DynamicMemory<HistoryBuffer> hist_;
@@ -113,9 +103,9 @@ public:
     }
 
 
-    Eidolon(const Vec2<Fixnum>& pos) :
-        Enemy(TaggedObject::Tag::ignored, Health{32}),
-        hist_(allocate_dynamic<HistoryBuffer>(platform()))
+    Eidolon(const Vec2<Fixnum>& pos)
+        : Enemy(TaggedObject::Tag::ignored, Health{32}),
+          hist_(allocate_dynamic<HistoryBuffer>(platform()))
     {
         position_ = pos;
 
@@ -124,8 +114,8 @@ public:
         hitbox_.dimension_.size_ = {24, 16};
 
         for (u32 i = 0; i < hist_->size(); ++i) {
-            (*hist_)[i] = Vec2<s16>{(s16)position_.x.as_integer(),
-                                    (s16)position_.y.as_integer()};
+            (*hist_)[i] =
+                Vec2<s16>{(s16)position_.x.as_integer(), (s16)position_.y.as_integer()};
         }
     }
 
@@ -138,30 +128,20 @@ public:
             if (engine().g_.screenshake_ < 6) {
                 engine().g_.screenshake_ = 6;
             }
-            engine().add_object<BigExplo>(Vec2<Fixnum>{
-                        position_.x + 12,
-                        position_.y + 8
-                    });
+            engine().add_object<BigExplo>(
+                Vec2<Fixnum>{position_.x + 12, position_.y + 8});
 
-            engine().add_object<BigExplo>(Vec2<Fixnum>{
-                        position_.x + 12 - 7,
-                        position_.y + 8 - 4
-                    });
+            engine().add_object<BigExplo>(
+                Vec2<Fixnum>{position_.x + 12 - 7, position_.y + 8 - 4});
 
-            engine().add_object<BigExplo>(Vec2<Fixnum>{
-                        position_.x + 12 - 7,
-                        position_.y + 8 + 4
-                    });
+            engine().add_object<BigExplo>(
+                Vec2<Fixnum>{position_.x + 12 - 7, position_.y + 8 + 4});
 
-            engine().add_object<BigExplo>(Vec2<Fixnum>{
-                        position_.x + 12 + 7,
-                        position_.y + 8 + 4
-                    });
+            engine().add_object<BigExplo>(
+                Vec2<Fixnum>{position_.x + 12 + 7, position_.y + 8 + 4});
 
-            engine().add_object<BigExplo>(Vec2<Fixnum>{
-                        position_.x + 12 + 7,
-                        position_.y + 8 - 4
-                    });
+            engine().add_object<BigExplo>(
+                Vec2<Fixnum>{position_.x + 12 + 7, position_.y + 8 - 4});
 
             for (auto& e : engine().enemies_) {
                 if (auto eg = dynamic_cast<EidolonGun*>(e.get())) {
@@ -215,7 +195,6 @@ public:
                     engine().add_object<EidolonGun>(this, 30);
                     engine().add_object<EidolonGun>(this, 40);
                 }
-
             }
 
             if (engine().g_.difficulty_ == Difficulty::hard) {
@@ -327,9 +306,7 @@ public:
     {
         return 4;
     }
-
 };
-
 
 
 inline void EidolonGun::step()
@@ -354,8 +331,7 @@ inline void EidolonGun::step()
         flash_ = false;
 
         if (x() > engine().hero()->x()) {
-            if (auto v = engine().add_object<Vortex>(Vec2<Fixnum>{x(),
-                                                                  y() + 4})) {
+            if (auto v = engine().add_object<Vortex>(Vec2<Fixnum>{x(), y() + 4})) {
                 v->set_left();
             }
         } else {
@@ -365,6 +341,4 @@ inline void EidolonGun::step()
 }
 
 
-
-
-}
+} // namespace herocore

@@ -4,8 +4,8 @@
 #include "sprite.hpp"
 
 
-template <TextureIndex InitialTexture, u32 Length, Microseconds Interval>
-class Animation {
+template <TextureIndex InitialTexture, u32 Length, Microseconds Interval> class Animation
+{
 public:
     Animation() : timer_(0)
     {

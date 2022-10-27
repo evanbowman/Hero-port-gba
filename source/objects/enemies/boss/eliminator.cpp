@@ -2,14 +2,12 @@
 #include "objects/particles/flame.hpp"
 
 
-
 namespace herocore
 {
 
 
-
-Eliminator::Eliminator(const Vec2<Fixnum>& pos) :
-    Enemy(TaggedObject::Tag::ignored, Health{64})
+Eliminator::Eliminator(const Vec2<Fixnum>& pos)
+    : Enemy(TaggedObject::Tag::ignored, Health{64})
 {
     position_ = pos;
     position_.x -= 2;
@@ -18,7 +16,6 @@ Eliminator::Eliminator(const Vec2<Fixnum>& pos) :
     origin_ = {5, 0};
     hitbox_.dimension_.size_ = {6, 8};
 }
-
 
 
 void Eliminator::step()
@@ -71,8 +68,8 @@ void Eliminator::step()
 
             escapecyc_ += 1;
             if (engine().p_->level_ < 9 and
-                escapecyc_ == 50 - (int)engine().g_.difficulty_ * 10 +
-                engine().p_->level_) {
+                escapecyc_ ==
+                    50 - (int)engine().g_.difficulty_ * 10 + engine().p_->level_) {
                 escape_ = true;
                 target_x_ = 250;
                 target_y_ = 250;
@@ -122,17 +119,19 @@ void Eliminator::step()
             rfire_ -= 1;
             if (rfire_ == 3) {
                 int xo = -2;
-                if (auto e = engine().add_object<Supershot>(Vec2<Fixnum>{x() + xo, y() - 1})) {
-                    auto dir = direction(fvec(position_),
-                                         fvec(engine().hero()->position()));
+                if (auto e =
+                        engine().add_object<Supershot>(Vec2<Fixnum>{x() + xo, y() - 1})) {
+                    auto dir =
+                        direction(fvec(position_), fvec(engine().hero()->position()));
                     dir = dir * ((1.5f / 2) + rfire_ * 0.15f);
                     e->set_speed({Fixnum(dir.x), Fixnum(dir.y)});
                 }
             } else {
                 int xo = -1;
-                if (auto e = engine().add_object<EnemyShot>(Vec2<Fixnum>{x() + xo, y() - 1})) {
-                    auto dir = direction(fvec(position_),
-                                         fvec(engine().hero()->position()));
+                if (auto e =
+                        engine().add_object<EnemyShot>(Vec2<Fixnum>{x() + xo, y() - 1})) {
+                    auto dir =
+                        direction(fvec(position_), fvec(engine().hero()->position()));
                     dir = dir * ((1.f / 2) + rfire_ * 0.15f);
                     e->set_speed({Fixnum(dir.x), Fixnum(dir.y)});
                 }
@@ -140,32 +139,28 @@ void Eliminator::step()
         }
     }
 
-    if (timeline_ > 40 and
-        --flamecyc_ == 0) {
+    if (timeline_ > 40 and --flamecyc_ == 0) {
         flamecyc_ = 1 + rng::choice<3>(rng::critical_state);
         int xo = 1;
         int yo = 2;
         if (hflip_) {
             xo = 4;
         }
-        if (auto f = engine().add_object<Flame>(Vec2<Fixnum>{position_.x + xo,
-                                                             position_.y + yo})) {
+        if (auto f = engine().add_object<Flame>(
+                Vec2<Fixnum>{position_.x + xo, position_.y + yo})) {
             f->priority_ = 0;
             f->counter_ = 16;
         }
-
     }
 
     Enemy::step();
 }
 
 
-
 Eliminator::~Eliminator()
 {
     engine().prevsong();
 }
-
 
 
 void Eliminator::draw(Platform::Screen& screen) const
@@ -176,5 +171,4 @@ void Eliminator::draw(Platform::Screen& screen) const
 }
 
 
-
-}
+} // namespace herocore

@@ -10,9 +10,7 @@
 #endif
 
 
-
 class Platform;
-
 
 
 class GenericPool
@@ -72,7 +70,6 @@ private:
 
     static GenericPool* instances_;
 };
-
 
 
 template <u32 size, u32 count, u32 align = size> class Pool : public GenericPool

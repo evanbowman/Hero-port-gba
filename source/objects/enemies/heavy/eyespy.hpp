@@ -1,25 +1,22 @@
 #pragma once
 
-#include "objects/enemies/enemy.hpp"
 #include "engine.hpp"
 #include "number/random.hpp"
-#include "objects/projectile/enemyShot.hpp"
-#include "objects/projectile/supershot.hpp"
-#include "objects/projectile/megashot.hpp"
-#include "objects/projectile/gigashot.hpp"
+#include "objects/enemies/enemy.hpp"
 #include "objects/particles/bigExplo.hpp"
-
+#include "objects/projectile/enemyShot.hpp"
+#include "objects/projectile/gigashot.hpp"
+#include "objects/projectile/megashot.hpp"
+#include "objects/projectile/supershot.hpp"
 
 
 namespace herocore
 {
 
 
-
 class Eyespy : public Enemy
 {
 public:
-
     Eyespy(const Vec2<Fixnum>& pos);
 
 
@@ -37,10 +34,10 @@ private:
     int movecyc_ = 0;
     u16 gigacyc_ = 0;
     u16 gigacyc2_ = 0;
+
 public:
     bool wake_ = false;
 };
 
 
-
-}
+} // namespace herocore

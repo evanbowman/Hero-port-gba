@@ -1,19 +1,17 @@
 #pragma once
 
-#include "objects/enemies/enemy.hpp"
-#include "objects/projectile/enemyShot.hpp"
-#include "objects/projectile/supershot.hpp"
-#include "objects/projectile/bomb.hpp"
-#include "objects/particles/bigExplo.hpp"
 #include "engine.hpp"
 #include "fmt.hpp"
 #include "number/random.hpp"
-
+#include "objects/enemies/enemy.hpp"
+#include "objects/particles/bigExplo.hpp"
+#include "objects/projectile/bomb.hpp"
+#include "objects/projectile/enemyShot.hpp"
+#include "objects/projectile/supershot.hpp"
 
 
 namespace herocore
 {
-
 
 
 class Generator : public Enemy
@@ -28,12 +26,9 @@ private:
 
 
 public:
-
-    Generator(const Vec2<Fixnum>& pos,
-              u8 spawn_x, u8 spawn_y) :
-        Enemy(TaggedObject::Tag::ignored, Health{32}),
-        spawn_x_(spawn_x),
-        spawn_y_(spawn_y)
+    Generator(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y)
+        : Enemy(TaggedObject::Tag::ignored, Health{32}), spawn_x_(spawn_x),
+          spawn_y_(spawn_y)
     {
         position_ = pos;
 
@@ -58,12 +53,10 @@ public:
             engine().add_object<ExploSpewer>(position_);
             engine().room_.clear_adjacent_barriers();
 
-            engine().p_->objects_removed_.push_back({
-                    (u8)engine().room_.coord_.x,
-                    (u8)engine().room_.coord_.y,
-                    spawn_x_,
-                    spawn_y_
-                });
+            engine().p_->objects_removed_.push_back({(u8)engine().room_.coord_.x,
+                                                     (u8)engine().room_.coord_.y,
+                                                     spawn_x_,
+                                                     spawn_y_});
         }
 
         anim_ += 1;
@@ -129,44 +122,37 @@ public:
                 }
 
                 if (timcyc_ % 8 == 0) {
-                    auto dir =
-                        direction(fvec(o), fvec(engine().hero()->position()));
+                    auto dir = direction(fvec(o), fvec(engine().hero()->position()));
 
                     if (auto s = engine().add_object<Supershot>(o)) {
                         auto d = rotate(dir, 300);
-                        s->set_speed({Fixnum(d.x * 0.25f),
-                                      Fixnum(d.y * 0.25f)});
+                        s->set_speed({Fixnum(d.x * 0.25f), Fixnum(d.y * 0.25f)});
                     }
                     if (auto s = engine().add_object<Supershot>(o)) {
                         auto d = rotate(dir, 60);
-                        s->set_speed({Fixnum(d.x * 0.25f),
-                                      Fixnum(d.y * 0.25f)});
+                        s->set_speed({Fixnum(d.x * 0.25f), Fixnum(d.y * 0.25f)});
                     }
                     if (auto s = engine().add_object<Supershot>(o)) {
                         auto d = rotate(dir, 320);
-                        s->set_speed({Fixnum(d.x * 0.5f),
-                                      Fixnum(d.y * 0.5f)});
+                        s->set_speed({Fixnum(d.x * 0.5f), Fixnum(d.y * 0.5f)});
                     }
                     if (auto s = engine().add_object<Supershot>(o)) {
                         auto d = rotate(dir, 40);
-                        s->set_speed({Fixnum(d.x * 0.5f),
-                                      Fixnum(d.y * 0.5f)});
+                        s->set_speed({Fixnum(d.x * 0.5f), Fixnum(d.y * 0.5f)});
                     }
                     if (auto s = engine().add_object<Supershot>(o)) {
                         auto d = rotate(dir, 340);
-                        s->set_speed({Fixnum(d.x * 0.75f),
-                                      Fixnum(d.y * 0.75f)});
+                        s->set_speed({Fixnum(d.x * 0.75f), Fixnum(d.y * 0.75f)});
                     }
                     if (auto s = engine().add_object<Supershot>(o)) {
-                        s->set_speed({Fixnum(dir.x * 1.f),
-                                      Fixnum(dir.y * 1.f)});
+                        s->set_speed({Fixnum(dir.x * 1.f), Fixnum(dir.y * 1.f)});
                     }
 
                 } else if (timcyc_ % 4 == 0) {
                     auto o = position_;
                     o.x -= 2;
                     o.y -= 2;
-                    for (int i = 1;  i < 10; ++i) {
+                    for (int i = 1; i < 10; ++i) {
                         if (auto s = engine().add_object<Supershot>(o)) {
                             Vec2<Float> dir;
                             if (x() < engine().hero()->x()) {
@@ -183,8 +169,7 @@ public:
                                 dir = rotate({1, 0}, v);
                             }
                             auto spd = 0.5f * (1 + (i % 2));
-                            s->set_speed({Fixnum(dir.x * spd),
-                                          Fixnum(dir.y * spd)});
+                            s->set_speed({Fixnum(dir.x * spd), Fixnum(dir.y * spd)});
                         }
                     }
                 } else {
@@ -207,15 +192,12 @@ public:
                             dir = rotate({1, 0}, v);
                         }
                         auto d = rotate(dir, 20);
-                        s->set_speed({Fixnum(d.x * 0.5f),
-                                      Fixnum(d.y * 0.5f)});
+                        s->set_speed({Fixnum(d.x * 0.5f), Fixnum(d.y * 0.5f)});
                     }
 
                     if (auto s = engine().add_object<EnemyShot>(o)) {
-                        auto dir =
-                            direction(fvec(o), fvec(engine().hero()->position()));
-                        s->set_speed({Fixnum(dir.x * 0.75f),
-                                      Fixnum(dir.y * 0.75f)});
+                        auto dir = direction(fvec(o), fvec(engine().hero()->position()));
+                        s->set_speed({Fixnum(dir.x * 0.75f), Fixnum(dir.y * 0.75f)});
                     }
                 }
             } else {
@@ -247,44 +229,37 @@ public:
                 o.y -= 2;
 
                 if (timcyc_ % 8 == 0) {
-                    auto dir =
-                        direction(fvec(o), fvec(engine().hero()->position()));
+                    auto dir = direction(fvec(o), fvec(engine().hero()->position()));
 
                     if (auto s = engine().add_object<Supershot>(o)) {
                         auto d = rotate(dir, 300);
-                        s->set_speed({Fixnum(d.x * 0.25f),
-                                      Fixnum(d.y * 0.25f)});
+                        s->set_speed({Fixnum(d.x * 0.25f), Fixnum(d.y * 0.25f)});
                     }
                     if (auto s = engine().add_object<Supershot>(o)) {
                         auto d = rotate(dir, 60);
-                        s->set_speed({Fixnum(d.x * 0.25f),
-                                      Fixnum(d.y * 0.25f)});
+                        s->set_speed({Fixnum(d.x * 0.25f), Fixnum(d.y * 0.25f)});
                     }
                     if (auto s = engine().add_object<Supershot>(o)) {
                         auto d = rotate(dir, 320);
-                        s->set_speed({Fixnum(d.x * 0.5f),
-                                      Fixnum(d.y * 0.5f)});
+                        s->set_speed({Fixnum(d.x * 0.5f), Fixnum(d.y * 0.5f)});
                     }
                     if (auto s = engine().add_object<Supershot>(o)) {
                         auto d = rotate(dir, 40);
-                        s->set_speed({Fixnum(d.x * 0.5f),
-                                      Fixnum(d.y * 0.5f)});
+                        s->set_speed({Fixnum(d.x * 0.5f), Fixnum(d.y * 0.5f)});
                     }
                     if (auto s = engine().add_object<Supershot>(o)) {
                         auto d = rotate(dir, 340);
-                        s->set_speed({Fixnum(d.x * 0.75f),
-                                      Fixnum(d.y * 0.75f)});
+                        s->set_speed({Fixnum(d.x * 0.75f), Fixnum(d.y * 0.75f)});
                     }
                     if (auto s = engine().add_object<Supershot>(o)) {
                         auto d = rotate(dir, 20);
-                        s->set_speed({Fixnum(d.x * 0.75f),
-                                      Fixnum(d.y * 0.75f)});
+                        s->set_speed({Fixnum(d.x * 0.75f), Fixnum(d.y * 0.75f)});
                     }
                 } else if (timcyc_ % 4 == 0) {
                     auto o = position_;
                     o.x -= 2;
                     o.y -= 2;
-                    for (int i = 1;  i < 10; ++i) {
+                    for (int i = 1; i < 10; ++i) {
                         if (auto s = engine().add_object<Supershot>(o)) {
                             Vec2<Float> dir;
                             if (x() < engine().hero()->x()) {
@@ -301,8 +276,7 @@ public:
                                 dir = rotate({1, 0}, v);
                             }
                             auto spd = 0.5f * (1 + (i % 2));
-                            s->set_speed({Fixnum(dir.x * spd),
-                                          Fixnum(dir.y * spd)});
+                            s->set_speed({Fixnum(dir.x * spd), Fixnum(dir.y * spd)});
                         }
                     }
                 } else {
@@ -325,15 +299,12 @@ public:
                             dir = rotate({1, 0}, v);
                         }
                         auto d = rotate(dir, 20);
-                        s->set_speed({Fixnum(d.x * 0.5f),
-                                      Fixnum(d.y * 0.5f)});
+                        s->set_speed({Fixnum(d.x * 0.5f), Fixnum(d.y * 0.5f)});
                     }
 
                     if (auto s = engine().add_object<EnemyShot>(o)) {
-                        auto dir =
-                            direction(fvec(o), fvec(engine().hero()->position()));
-                        s->set_speed({Fixnum(dir.x * 0.75f),
-                                      Fixnum(dir.y * 0.75f)});
+                        auto dir = direction(fvec(o), fvec(engine().hero()->position()));
+                        s->set_speed({Fixnum(dir.x * 0.75f), Fixnum(dir.y * 0.75f)});
                     }
                 }
             }
@@ -344,7 +315,6 @@ public:
             break;
         }
     }
-
 
 
     bool damage(Health dmg, Object& s) override
@@ -359,16 +329,11 @@ public:
     }
 
 
-
     int collision_damage() const override
     {
         return 4;
     }
-
-
-
 };
 
 
-
-}
+} // namespace herocore

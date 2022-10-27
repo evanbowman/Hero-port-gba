@@ -1,18 +1,16 @@
 #pragma once
 
-#include "objects/enemies/enemy.hpp"
 #include "engine.hpp"
 #include "number/random.hpp"
-#include "objects/projectile/enemyShot.hpp"
-#include "objects/projectile/supershot.hpp"
-#include "objects/projectile/megashot.hpp"
+#include "objects/enemies/enemy.hpp"
 #include "objects/particles/bigExplo.hpp"
-
+#include "objects/projectile/enemyShot.hpp"
+#include "objects/projectile/megashot.hpp"
+#include "objects/projectile/supershot.hpp"
 
 
 namespace herocore
 {
-
 
 
 class Phaze : public Enemy
@@ -22,9 +20,7 @@ private:
     bool shoot_ = false;
 
 public:
-
-    Phaze(const Vec2<Fixnum>& pos) :
-        Enemy(TaggedObject::Tag::phaze, Health{8})
+    Phaze(const Vec2<Fixnum>& pos) : Enemy(TaggedObject::Tag::phaze, Health{8})
     {
         position_ = pos;
 
@@ -39,8 +35,7 @@ public:
         if (health_ == 0) {
             kill();
             platform().speaker().play_sound("snd_explo2", 6);
-            engine().add_object<BigExplo>(Vec2<Fixnum>{
-                    position_.x + 6, position_.y + 6});
+            engine().add_object<BigExplo>(Vec2<Fixnum>{position_.x + 6, position_.y + 6});
             return;
         }
 
@@ -166,5 +161,4 @@ private:
 };
 
 
-
-}
+} // namespace herocore

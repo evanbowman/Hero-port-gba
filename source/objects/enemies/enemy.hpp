@@ -1,31 +1,29 @@
 
 #pragma once
 
-#include "taggedObject.hpp"
 #include "objects/projectile/shot.hpp"
-
+#include "taggedObject.hpp"
 
 
 namespace herocore
 {
 
 
-
 class Enemy : public TaggedObject
 {
 public:
-
     using Health = s16;
 
 
-    Enemy(Tag tag, Health health) :
-        TaggedObject(tag),
-        health_(health)
+    Enemy(Tag tag, Health health) : TaggedObject(tag), health_(health)
     {
     }
 
 
-    virtual int hit_sound() const { return 1; }
+    virtual int hit_sound() const
+    {
+        return 1;
+    }
 
 
     virtual bool damage(Health dmg, Object& s);
@@ -76,5 +74,4 @@ protected:
 };
 
 
-
-}
+} // namespace herocore

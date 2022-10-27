@@ -3,16 +3,13 @@
 #include "object.hpp"
 
 
-
 namespace herocore
 {
-
 
 
 class Hero : public Object
 {
 public:
-
     Hero(const Vec2<Fixnum>& position)
     {
         position_ = position;
@@ -23,7 +20,9 @@ public:
     }
 
 
-    void damage() {}
+    void damage()
+    {
+    }
 
 
     void step() override;
@@ -50,5 +49,4 @@ private:
 };
 
 
-
-}
+} // namespace herocore

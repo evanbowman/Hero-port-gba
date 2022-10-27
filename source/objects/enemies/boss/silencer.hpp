@@ -1,22 +1,20 @@
 #pragma once
 
-#include "objects/enemies/enemy.hpp"
 #include "engine.hpp"
 #include "fmt.hpp"
 #include "number/random.hpp"
+#include "objects/enemies/enemy.hpp"
 #include "objects/enemies/light/drone.hpp"
 #include "objects/enemies/light/spew.hpp"
+#include "objects/misc/pickup.hpp"
+#include "objects/particles/bigExplo.hpp"
+#include "objects/particles/explo.hpp"
 #include "objects/projectile/enemyShot.hpp"
 #include "objects/projectile/megashot.hpp"
-#include "objects/particles/explo.hpp"
-#include "objects/particles/bigExplo.hpp"
-#include "objects/misc/pickup.hpp"
-
 
 
 namespace herocore
 {
-
 
 
 class SilencerCore : public Enemy
@@ -28,12 +26,9 @@ private:
     u8 spawn_y_;
 
 public:
-
-    SilencerCore(Enemy* owner, u8 spawn_x, u8 spawn_y) :
-        Enemy(TaggedObject::Tag::ignored, Health{32}),
-        owner_(owner),
-        spawn_x_(spawn_x),
-        spawn_y_(spawn_y)
+    SilencerCore(Enemy* owner, u8 spawn_x, u8 spawn_y)
+        : Enemy(TaggedObject::Tag::ignored, Health{32}), owner_(owner), spawn_x_(spawn_x),
+          spawn_y_(spawn_y)
     {
         hitbox_.dimension_.size_ = {4, 4};
         hitbox_.dimension_.origin_ = {3, 3};
@@ -52,9 +47,7 @@ public:
     void step() override
     {
         if (health_ <= 0) {
-            engine().add_object<ExploSpewer>(Vec2<Fixnum>{
-                        x(), y()
-                            });
+            engine().add_object<ExploSpewer>(Vec2<Fixnum>{x(), y()});
             kill();
             owner_->destroy();
             platform().speaker().play_sound("snd_bossroar", 9);
@@ -79,7 +72,6 @@ public:
 };
 
 
-
 class Silencer : public Enemy
 {
 private:
@@ -92,8 +84,8 @@ private:
 public:
     u8 spawn_x_;
     u8 spawn_y_;
-private:
 
+private:
     struct Shield
     {
         u8 health_ = 2;
@@ -105,15 +97,9 @@ private:
 
 
 public:
-
-
-    Silencer(const Vec2<Fixnum>& pos,
-             u8 spawn_x,
-             u8 spawn_y) :
-        Enemy(TaggedObject::Tag::ignored, Health{32}),
-        spawn_x_(spawn_x),
-        spawn_y_(spawn_y),
-        shields_(allocate_dynamic<Shields>(platform()))
+    Silencer(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y)
+        : Enemy(TaggedObject::Tag::ignored, Health{32}), spawn_x_(spawn_x),
+          spawn_y_(spawn_y), shields_(allocate_dynamic<Shields>(platform()))
     {
         position_ = pos;
 
@@ -142,7 +128,6 @@ public:
     }
 
 
-
     void draw(Platform::Screen& screen) const override
     {
         Sprite spr_;
@@ -169,7 +154,6 @@ public:
             }
         }
     }
-
 
 
     bool damage(Health dmg, Object& s)
@@ -224,8 +208,8 @@ public:
                 y() += 1;
                 if (deadcyc_ % 6 == 0 and deadcyc_ < 80) {
                     engine().g_.screenshake_ = 6;
-                    if (auto exp = engine().add_object<BigExplo>(rng::sample<16>(position_,
-                                                                                 rng::critical_state))) {
+                    if (auto exp = engine().add_object<BigExplo>(
+                            rng::sample<16>(position_, rng::critical_state))) {
                         exp->set_speed({0, -rng::choice<3>(rng::utility_state)});
                         engine().g_.screenshake_ = 6;
                         platform().speaker().play_sound("snd_explo2", deadcyc_ / 8);
@@ -254,12 +238,10 @@ public:
 
                 engine().add_object<ExploSpewer>(position_);
 
-                engine().p_->objects_removed_.push_back({
-                                                         (u8)engine().room_.coord_.x,
+                engine().p_->objects_removed_.push_back({(u8)engine().room_.coord_.x,
                                                          (u8)engine().room_.coord_.y,
                                                          spawn_x_,
-                                                         spawn_y_
-                    });
+                                                         spawn_y_});
 
                 engine().boss_completed();
 
@@ -321,16 +303,16 @@ public:
             speed_ = {};
             move_ = 0;
             for (int i = 0; i < 4; ++i) {
-                if (auto e = engine().add_object<Megashot>(Vec2<Fixnum>{x() - 4,
-                                                                        y() - 4})) {
+                if (auto e =
+                        engine().add_object<Megashot>(Vec2<Fixnum>{x() - 4, y() - 4})) {
                     e->set_speed(0.5f, i * 90 + 45);
                 }
-                if (auto e = engine().add_object<EnemyShot>(Vec2<Fixnum>{x() - 2,
-                                                                         y() - 2})) {
+                if (auto e =
+                        engine().add_object<EnemyShot>(Vec2<Fixnum>{x() - 2, y() - 2})) {
                     e->set_speed(0.5f, i * 90);
                 }
-                if (auto e = engine().add_object<EnemyShot>(Vec2<Fixnum>{x() - 2,
-                                                                         y() - 2})) {
+                if (auto e =
+                        engine().add_object<EnemyShot>(Vec2<Fixnum>{x() - 2, y() - 2})) {
                     e->set_speed(1.f, i * 90);
                 }
             }
@@ -346,24 +328,24 @@ public:
             move_ = 0;
             if (hard) {
                 for (int i = 0; i < 5; ++i) {
-                    if (auto e = engine().add_object<EnemyShot>(Vec2<Fixnum>{x() - 2,
-                                                                                 y() - 2})) {
+                    if (auto e = engine().add_object<EnemyShot>(
+                            Vec2<Fixnum>{x() - 2, y() - 2})) {
                         e->set_speed(1.8f / 2, i * 22 - 45);
                     }
-                    if (auto e = engine().add_object<EnemyShot>(Vec2<Fixnum>{x() - 2,
-                                                                                 y() - 2})) {
+                    if (auto e = engine().add_object<EnemyShot>(
+                            Vec2<Fixnum>{x() - 2, y() - 2})) {
                         e->set_speed(1.8f / 2, i * 22 + 135);
                     }
                 }
             } else {
                 for (int i = 0; i < 3; ++i) {
                     if (i not_eq 1) {
-                        if (auto e = engine().add_object<EnemyShot>(Vec2<Fixnum>{x() - 2,
-                                                                                     y() - 2})) {
+                        if (auto e = engine().add_object<EnemyShot>(
+                                Vec2<Fixnum>{x() - 2, y() - 2})) {
                             e->set_speed(1.5f / 2, i * 45 - 45);
                         }
-                        if (auto e = engine().add_object<EnemyShot>(Vec2<Fixnum>{x() - 2,
-                                                                                     y() - 2})) {
+                        if (auto e = engine().add_object<EnemyShot>(
+                                Vec2<Fixnum>{x() - 2, y() - 2})) {
                             e->set_speed(1.5f / 2, i * 45 + 135);
                         }
                     }
@@ -404,8 +386,7 @@ public:
             break;
         }
 
-        if (not place_free({position_.x + speed_.x,
-                            position_.y + speed_.y}, 3)) {
+        if (not place_free({position_.x + speed_.x, position_.y + speed_.y}, 3)) {
             auto x = position_.x;
             auto y = position_.y;
             if (not place_free({x + 3, y}, 3) or not place_free({x - 3, y}, 3)) {
@@ -442,13 +423,9 @@ public:
                 trailcyc_ = 0;
                 EnemyProjectile* e;
                 if (engine().g_.difficulty_ == Difficulty::hard) {
-                    e = engine().add_object<Supershot>(Vec2<Fixnum>{
-                            x() - 2, y() - 2
-                                });
+                    e = engine().add_object<Supershot>(Vec2<Fixnum>{x() - 2, y() - 2});
                 } else {
-                    e = engine().add_object<EnemyShot>(Vec2<Fixnum>{
-                            x() - 2, y() - 2
-                                });
+                    e = engine().add_object<EnemyShot>(Vec2<Fixnum>{x() - 2, y() - 2});
                 }
 
                 if (e) {
@@ -470,9 +447,7 @@ public:
 private:
     int trailcyc_ = 0;
     int timeline_ = 0;
-
 };
 
 
-
-}
+} // namespace herocore

@@ -1,26 +1,22 @@
 #pragma once
 
 #include "enemyProjectile.hpp"
-#include "supershot.hpp"
 #include "enemyShot.hpp"
 #include "objects/particles/bigExplo.hpp"
-
+#include "supershot.hpp"
 
 
 namespace herocore
 {
 
 
-
 class Megashot : public EnemyProjectile
 {
 private:
-
     int anim_ = 0;
     int count_ = 0;
 
 public:
-
     Megashot(const Vec2<Fixnum>& pos) : EnemyProjectile(pos, 3, 0)
     {
         sprite_index_ = 43;
@@ -93,5 +89,4 @@ public:
 };
 
 
-
-}
+} // namespace herocore

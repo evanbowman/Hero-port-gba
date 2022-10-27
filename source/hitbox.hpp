@@ -5,10 +5,8 @@
 #include "number/numeric.hpp"
 
 
-
 namespace herocore
 {
-
 
 
 struct Hitbox
@@ -45,6 +43,4 @@ struct Hitbox
 };
 
 
-
-
-}
+} // namespace herocore

@@ -2,10 +2,8 @@
 #include "engine.hpp"
 
 
-
 namespace herocore
 {
-
 
 
 ObjectPool& object_pool()
@@ -15,13 +13,11 @@ ObjectPool& object_pool()
 }
 
 
-
 GlobalObjectListData::Pool& GlobalObjectListData::pool() const
 {
     static Pool pool("object-list-data-pool");
     return pool;
 }
-
 
 
 // Special copy of hitbox for integer-constrained positions, for faster
@@ -55,7 +51,6 @@ struct IntHitbox
         return c;
     }
 };
-
 
 
 bool Object::place_free(Vec2<Fixnum> pos, int diameter)
@@ -115,7 +110,6 @@ bool Object::place_free(Vec2<Fixnum> pos, int diameter)
 }
 
 
-
 bool Object::place_free(Vec2<Fixnum> pos)
 {
     auto intx = pos.x.as_integer();
@@ -173,4 +167,4 @@ bool Object::place_free(Vec2<Fixnum> pos)
 }
 
 
-}
+} // namespace herocore

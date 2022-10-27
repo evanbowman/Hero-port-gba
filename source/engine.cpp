@@ -1,57 +1,55 @@
 #include "engine.hpp"
 #include "graphics/overlay.hpp"
 #include "localization.hpp"
+#include "maps.hpp"
 #include "number/endian.hpp"
-#include "string.hpp"
-#include "version.hpp"
-#include "objects/hero.hpp"
-#include "objects/enemies/light/drone.hpp"
-#include "objects/enemies/light/reaver.hpp"
-#include "objects/enemies/light/crusher.hpp"
-#include "objects/enemies/light/spew.hpp"
-#include "objects/enemies/light/bolt.hpp"
-#include "objects/enemies/light/blomb.hpp"
-#include "objects/enemies/light/turret.hpp"
-#include "objects/enemies/light/lurk.hpp"
-#include "objects/enemies/heavy/spawner.hpp"
-#include "objects/enemies/heavy/powerTurret.hpp"
-#include "objects/enemies/heavy/boltaray.hpp"
-#include "objects/enemies/heavy/soldier.hpp"
-#include "objects/enemies/heavy/phaze.hpp"
+#include "objects/enemies/boss/eliminator.hpp"
+#include "objects/enemies/boss/elite.hpp"
+#include "objects/enemies/boss/guardian.hpp"
+#include "objects/enemies/boss/hydra.hpp"
+#include "objects/enemies/boss/liquidMetalProcessor.hpp"
+#include "objects/enemies/boss/reaperDrone.hpp"
+#include "objects/enemies/boss/rockSmasher.hpp"
+#include "objects/enemies/boss/silencer.hpp"
+#include "objects/enemies/elite/annihilator.hpp"
+#include "objects/enemies/elite/barrier.hpp"
+#include "objects/enemies/elite/direviper.hpp"
+#include "objects/enemies/elite/eidolon.hpp"
+#include "objects/enemies/elite/generator.hpp"
+#include "objects/enemies/elite/hunter.hpp"
+#include "objects/enemies/elite/mode.hpp"
 #include "objects/enemies/heavy/battleDoor.hpp"
+#include "objects/enemies/heavy/boltaray.hpp"
 #include "objects/enemies/heavy/chainsnake.hpp"
 #include "objects/enemies/heavy/eyespy.hpp"
-#include "objects/enemies/elite/generator.hpp"
-#include "objects/enemies/elite/barrier.hpp"
-#include "objects/enemies/elite/mode.hpp"
-#include "objects/enemies/elite/hunter.hpp"
-#include "objects/enemies/elite/eidolon.hpp"
-#include "objects/enemies/elite/direviper.hpp"
-#include "objects/enemies/elite/annihilator.hpp"
-#include "objects/enemies/boss/reaperDrone.hpp"
-#include "objects/enemies/boss/guardian.hpp"
-#include "objects/enemies/boss/silencer.hpp"
-#include "objects/enemies/boss/hydra.hpp"
-#include "objects/enemies/boss/rockSmasher.hpp"
-#include "objects/enemies/boss/elite.hpp"
-#include "objects/enemies/boss/eliminator.hpp"
-#include "objects/enemies/boss/liquidMetalProcessor.hpp"
-#include "objects/misc/savepoint.hpp"
+#include "objects/enemies/heavy/phaze.hpp"
+#include "objects/enemies/heavy/powerTurret.hpp"
+#include "objects/enemies/heavy/soldier.hpp"
+#include "objects/enemies/heavy/spawner.hpp"
+#include "objects/enemies/light/blomb.hpp"
+#include "objects/enemies/light/bolt.hpp"
+#include "objects/enemies/light/crusher.hpp"
+#include "objects/enemies/light/drone.hpp"
+#include "objects/enemies/light/lurk.hpp"
+#include "objects/enemies/light/reaver.hpp"
+#include "objects/enemies/light/spew.hpp"
+#include "objects/enemies/light/turret.hpp"
+#include "objects/hero.hpp"
 #include "objects/misc/holder.hpp"
-#include "objects/particles/weed.hpp"
+#include "objects/misc/savepoint.hpp"
+#include "objects/particles/flame.hpp"
 #include "objects/particles/star.hpp"
-#include "maps.hpp"
+#include "objects/particles/weed.hpp"
 #include "scene.hpp"
 #include "scenes.hpp"
-#include "objects/particles/flame.hpp"
-
+#include "string.hpp"
+#include "version.hpp"
 
 
 namespace herocore::scene_pool
 {
-    _Pool pool_("scene-pool");
+_Pool pool_("scene-pool");
 }
-
 
 
 herocore::ScenePtr<herocore::Scene> herocore::null_scene()
@@ -60,9 +58,7 @@ herocore::ScenePtr<herocore::Scene> herocore::null_scene()
 }
 
 
-
 static Platform* _platform;
-
 
 
 Platform& platform()
@@ -71,14 +67,11 @@ Platform& platform()
 }
 
 
-
 namespace herocore
 {
 
 
-
 static Engine* bound_engine;
-
 
 
 Engine& engine()
@@ -87,12 +80,10 @@ Engine& engine()
 }
 
 
-
-Engine::Engine(Platform& pf) :
-    hero_(alloc_object<Hero>(Vec2<Fixnum>{110, 70})),
-    p_(allocate_dynamic<Persistence>(pf)),
-    current_scene_(scene_pool::alloc<OverworldScene>()),
-    next_scene_(null_scene())
+Engine::Engine(Platform& pf)
+    : hero_(alloc_object<Hero>(Vec2<Fixnum>{110, 70})),
+      p_(allocate_dynamic<Persistence>(pf)),
+      current_scene_(scene_pool::alloc<OverworldScene>()), next_scene_(null_scene())
 {
     pf.load_overlay_texture("overlay");
     pf.load_sprite_texture("spritesheet");
@@ -118,10 +109,10 @@ Engine::Engine(Platform& pf) :
 }
 
 
-
 void Engine::respawn_to_checkpoint()
 {
-    if (not str_cmp(platform().speaker().current_music(), p_->checkpoint_music_.c_str()) == 0) {
+    if (not str_cmp(platform().speaker().current_music(),
+                    p_->checkpoint_music_.c_str()) == 0) {
         platform().speaker().play_music(p_->checkpoint_music_.c_str(), 0);
     }
 
@@ -134,8 +125,8 @@ void Engine::respawn_to_checkpoint()
 
 
     room_.clear();
-    hero_->set_position(Vec2<Fixnum>{40 + p_->checkpoint_coords_.x,
-                                         p_->checkpoint_coords_.y});
+    hero_->set_position(
+        Vec2<Fixnum>{40 + p_->checkpoint_coords_.x, p_->checkpoint_coords_.y});
 
     g_.hp_ = 10 + p_->level_;
     g_.invulnerable_ = 0;
@@ -145,7 +136,6 @@ void Engine::respawn_to_checkpoint()
     load(p_->checkpoint_room_.x, p_->checkpoint_room_.y, true);
     draw_hud();
 }
-
 
 
 void Engine::begin_game(Difficulty d)
@@ -188,7 +178,6 @@ void Engine::begin_game(Difficulty d)
     g_.shot_count_ = 0;
     g_.autofire_ = false;
 }
-
 
 
 const char* load_music(int x, int y)
@@ -236,7 +225,6 @@ const char* load_music(int x, int y)
 }
 
 
-
 void Engine::loadgame()
 {
     // Yeah, copying objects in this way isn't really safe. But right now, the
@@ -255,16 +243,13 @@ void Engine::loadgame()
 
         platform().speaker().play_music(current_music.c_str(), 0);
     }
-
 }
-
 
 
 void Engine::savegame()
 {
     platform().write_save_data(&*p_, sizeof *p_);
 }
-
 
 
 void Engine::collision_check()
@@ -283,7 +268,6 @@ void Engine::collision_check()
                     g_.heat_ = std::min(g_.heat_, g_.maxheat_);
                     draw_hud();
                 }
-
             }
         }
     }
@@ -292,9 +276,7 @@ void Engine::collision_check()
         for (auto& e : enemies_) {
             if (p->hitbox().overlapping(e->hitbox())) {
                 if (e->damage(p->damage(), *p)) {
-                    add_object<Explo>(Vec2<Fixnum>{
-                            p->x() - 2, p->y() - 2
-                        });
+                    add_object<Explo>(Vec2<Fixnum>{p->x() - 2, p->y() - 2});
                 }
                 if (p->dead()) {
                     break;
@@ -308,8 +290,7 @@ void Engine::collision_check()
             if (not g_.invulnerable_) {
                 auto dmg = e->collision_damage();
                 if (dmg) {
-                    g_.damage(dmg,
-                              e->collision_damage_extra_invulnerable_time());
+                    g_.damage(dmg, e->collision_damage_extra_invulnerable_time());
                     draw_hud();
                 }
             }
@@ -337,7 +318,6 @@ void Engine::collision_check()
         }
     }
 }
-
 
 
 void Engine::run()
@@ -435,17 +415,14 @@ void Engine::run()
 
         _platform->screen().display();
     }
-
 }
-
 
 
 void Engine::summon_eliminator()
 {
     bool can_summon_eliminator = true;
     for (auto& e : enemies_) {
-        if (dynamic_cast<Generator*>(e.get()) or
-            dynamic_cast<Barrier*>(e.get()) or
+        if (dynamic_cast<Generator*>(e.get()) or dynamic_cast<Barrier*>(e.get()) or
             dynamic_cast<Eyespy*>(e.get())) {
             can_summon_eliminator = false;
             break;
@@ -461,8 +438,8 @@ void Engine::summon_eliminator()
     for (int x = 0; x < 20; ++x) {
         for (int y = 0; y < 20; ++y) {
             auto t = platform().get_tile(Layer::map_0, x + 5, y);
-            if (t == 33 or t == 34 or t == 35 or t == 36 or
-                t == 37 or t == 38 or t == 39 or t == 40) {
+            if (t == 33 or t == 34 or t == 35 or t == 36 or t == 37 or t == 38 or
+                t == 39 or t == 40) {
                 // Doors in room
                 can_summon_eliminator = false;
             }
@@ -486,16 +463,13 @@ void Engine::summon_eliminator()
         engine().add_object<GigaExplo>(Vec2<Fixnum>{80 + 5 * 8 - 8, 80 - 5});
 
         for (int i = 0; i < 20; ++i) {
-            auto mkobj =
-                [&](int xo, int yo) {
-                    Vec2<Fixnum> p{5 * 8 + 80 + xo - 1,
-                                   80 + yo};
-                    if (auto f = engine().add_object<Flame>(p)) {
-                        f->priority_ = 0;
-                        f->counter_ = 10 + rng::choice(2 * (20 - i),
-                                                       rng::critical_state);
-                    }
-                };
+            auto mkobj = [&](int xo, int yo) {
+                Vec2<Fixnum> p{5 * 8 + 80 + xo - 1, 80 + yo};
+                if (auto f = engine().add_object<Flame>(p)) {
+                    f->priority_ = 0;
+                    f->counter_ = 10 + rng::choice(2 * (20 - i), rng::critical_state);
+                }
+            };
             mkobj(-i * 2.6f, -i * 2.6f);
             mkobj(i * 2.6f, i * 2.6f);
             mkobj(i * 2.6f, -i * 2.6f);
@@ -505,21 +479,16 @@ void Engine::summon_eliminator()
 }
 
 
-
 void Engine::unlock_doors()
 {
     bool changed = false;
     for (int x = 0; x < 20; ++x) {
         for (int y = 0; y < 20; ++y) {
             auto t = platform().get_tile(Layer::map_0, x + 5, y);
-            if (t == 33 or t == 34 or t == 35 or t == 36 or
-                t == 37 or t == 38 or t == 39 or t == 40) {
-                p_->tile_modifications_.push_back({(u8)x,
-                                                   (u8)y,
-                                                   (u8)room_.coord_.x,
-                                                   (u8)room_.coord_.y,
-                                                   0
-                    });
+            if (t == 33 or t == 34 or t == 35 or t == 36 or t == 37 or t == 38 or
+                t == 39 or t == 40) {
+                p_->tile_modifications_.push_back(
+                    {(u8)x, (u8)y, (u8)room_.coord_.x, (u8)room_.coord_.y, 0});
                 platform().set_tile(Layer::map_0, x + 5, y, 0);
                 room_.walls_[x][y] = false;
                 changed = true;
@@ -533,7 +502,6 @@ void Engine::unlock_doors()
 
     room_.render_entrances();
 }
-
 
 
 void Engine::animate_tiles()
@@ -593,7 +561,6 @@ void Engine::animate_tiles()
 }
 
 
-
 void Engine::load(int chunk_x, int chunk_y, bool restore)
 {
     enemies_.clear();
@@ -608,14 +575,12 @@ void Engine::load(int chunk_x, int chunk_y, bool restore)
     platform().sleep(1);
     room_.load(chunk_x, chunk_y, restore);
 
-    if (not restore and
-        not is_boss_level(g_.difficulty_, {u8(chunk_x), u8(chunk_y)})) {
+    if (not restore and not is_boss_level(g_.difficulty_, {u8(chunk_x), u8(chunk_y)})) {
         g_.summon_eliminator_tics_ = 20;
     }
 
     p_->visited_.set(chunk_x, chunk_y, true);
 }
-
 
 
 void Engine::draw_hud()
@@ -675,38 +640,19 @@ void Engine::draw_hud()
 
     draw_hud_heat();
 
-    draw_image(platform(),
-               173,
-               0,
-               0,
-               2,
-               2,
-               Layer::overlay);
+    draw_image(platform(), 173, 0, 0, 2, 2, Layer::overlay);
     pf.set_tile(Layer::overlay, 1, 1, 175 + p_->blaster_);
 
     if (p_->blade_) {
-        draw_image(platform(),
-                   179,
-                   0,
-                   2,
-                   2,
-                   2,
-                   Layer::overlay);
+        draw_image(platform(), 179, 0, 2, 2, 2, Layer::overlay);
         pf.set_tile(Layer::overlay, 1, 3, 181 + p_->blade_);
     }
 
     if (p_->suit_) {
-        draw_image(platform(),
-                   196,
-                   0,
-                   4,
-                   2,
-                   2,
-                   Layer::overlay);
+        draw_image(platform(), 196, 0, 4, 2, 2, Layer::overlay);
         pf.set_tile(Layer::overlay, 1, 5, 198 + p_->suit_);
     }
 }
-
 
 
 void Engine::draw_hud_heat()
@@ -742,10 +688,7 @@ void Engine::draw_hud_heat()
         pf.set_tile(Layer::overlay, 30 - 5, 18 - full_tiles, 108 + 2 * (rt - 1));
         pf.set_tile(Layer::overlay, 30 - 4, 18 - full_tiles, 109 + 2 * (rt - 1));
     }
-
-
 }
-
 
 
 void Engine::Room::render_entrances()
@@ -769,42 +712,35 @@ void Engine::Room::render_entrances()
 }
 
 
-
 void Engine::Room::clear_adjacent_barriers()
 {
     auto get_chunk = [&](int chunk_x, int chunk_y) {
-                         const RoomData* rd;
-                         if (engine().g_.difficulty_ == Difficulty::hard) {
-                             rd = load_room_hard(chunk_x, chunk_y);
-                         } else {
-                             rd = load_room_normal(chunk_x, chunk_y);
-                             return rd;
-                         }
-                         return rd;
-                     };
+        const RoomData* rd;
+        if (engine().g_.difficulty_ == Difficulty::hard) {
+            rd = load_room_hard(chunk_x, chunk_y);
+        } else {
+            rd = load_room_normal(chunk_x, chunk_y);
+            return rd;
+        }
+        return rd;
+    };
 
     auto x = coord_.x;
     auto y = coord_.y;
 
-    auto barrier_clear =
-        [&](int x_off, int y_off) {
-            if (not (x + x_off > 0 and x + x_off < 15 and
-                     y + y_off > 0 and y + y_off < 15)) {
-                return;
-            }
-            if (auto ch = get_chunk(x + x_off, y + y_off)) {
-                for (auto& obj : ch->objects_) {
-                    if (obj.type_ == 18 or obj.type_ == 19) {
-                        engine().p_->objects_removed_.push_back({
-                                (u8)(x + x_off),
-                                (u8)(y + y_off),
-                                obj.x_,
-                                obj.y_
-                            });
-                    }
+    auto barrier_clear = [&](int x_off, int y_off) {
+        if (not(x + x_off > 0 and x + x_off < 15 and y + y_off > 0 and y + y_off < 15)) {
+            return;
+        }
+        if (auto ch = get_chunk(x + x_off, y + y_off)) {
+            for (auto& obj : ch->objects_) {
+                if (obj.type_ == 18 or obj.type_ == 19) {
+                    engine().p_->objects_removed_.push_back(
+                        {(u8)(x + x_off), (u8)(y + y_off), obj.x_, obj.y_});
                 }
             }
-        };
+        }
+    };
 
     barrier_clear(0, 0);
     barrier_clear(-1, 0);
@@ -820,7 +756,6 @@ void Engine::Room::clear_adjacent_barriers()
         }
     }
 }
-
 
 
 void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
@@ -852,33 +787,24 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
 
         for (int y = 0; y < 20; ++y) {
             for (int x = 0; x < 20; ++x) {
-                walls_[x][y] =
-                    rd->tiles_[y][x] == 1 or
-                    rd->tiles_[y][x] == 6 or
-                    rd->tiles_[y][x] == 7 or
-                    rd->tiles_[y][x] == 8 or
-                    rd->tiles_[y][x] == 33 or
-                    rd->tiles_[y][x] == 34 or
-                    rd->tiles_[y][x] == 37 or
-                    rd->tiles_[y][x] == 38;
+                walls_[x][y] = rd->tiles_[y][x] == 1 or rd->tiles_[y][x] == 6 or
+                               rd->tiles_[y][x] == 7 or rd->tiles_[y][x] == 8 or
+                               rd->tiles_[y][x] == 33 or rd->tiles_[y][x] == 34 or
+                               rd->tiles_[y][x] == 37 or rd->tiles_[y][x] == 38;
 
-                platform().set_tile(Layer::map_0, x + 5, y,
-                                    rd->tiles_[y][x]);
+                platform().set_tile(Layer::map_0, x + 5, y, rd->tiles_[y][x]);
             }
         }
         for (int x = 0; x < 20; ++x) {
-            platform().set_tile(Layer::map_0, x + 5, 63,
-                                rd->tiles_[0][x]);
+            platform().set_tile(Layer::map_0, x + 5, 63, rd->tiles_[0][x]);
         }
 
         for (auto& obj : rd->objects_) {
 
             bool removed = false;
             for (auto& rem : engine().p_->objects_removed_) {
-                if (rem.room_x_ == chunk_x and
-                    rem.room_y_ == chunk_y and
-                    rem.x_ == obj.x_ and
-                    rem.y_ == obj.y_) {
+                if (rem.room_x_ == chunk_x and rem.room_y_ == chunk_y and
+                    rem.x_ == obj.x_ and rem.y_ == obj.y_) {
                     removed = true;
                 }
             }
@@ -900,15 +826,18 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                 break;
 
             case 2:
-                engine().add_object<Reaver>(Vec2<Fixnum>{40 + obj.x_ * 8 - 4, obj.y_ * 8 - 4});
+                engine().add_object<Reaver>(
+                    Vec2<Fixnum>{40 + obj.x_ * 8 - 4, obj.y_ * 8 - 4});
                 break;
 
             case 3:
-                engine().add_object<Spew>(Vec2<Fixnum>{40 + obj.x_ * 8 - 4, obj.y_ * 8 - 4});
+                engine().add_object<Spew>(
+                    Vec2<Fixnum>{40 + obj.x_ * 8 - 4, obj.y_ * 8 - 4});
                 break;
 
             case 4:
-                engine().add_object<Crusher>(Vec2<Fixnum>{40 + obj.x_ * 8 - 4, obj.y_ * 8 - 4});
+                engine().add_object<Crusher>(
+                    Vec2<Fixnum>{40 + obj.x_ * 8 - 4, obj.y_ * 8 - 4});
                 break;
 
             case 5:
@@ -916,11 +845,13 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                 break;
 
             case 6:
-                engine().add_object<Bolt>(Vec2<Fixnum>{40 + obj.x_ * 8 - 4, obj.y_ * 8 - 4});
+                engine().add_object<Bolt>(
+                    Vec2<Fixnum>{40 + obj.x_ * 8 - 4, obj.y_ * 8 - 4});
                 break;
 
             case 8:
-                if (auto t = engine().add_object<Turret>(Vec2<Fixnum>{40 + obj.x_ * 8 + 8, obj.y_ * 8})) {
+                if (auto t = engine().add_object<Turret>(
+                        Vec2<Fixnum>{40 + obj.x_ * 8 + 8, obj.y_ * 8})) {
                     t->set_left();
                 }
                 break;
@@ -930,25 +861,30 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                 break;
 
             case 9:
-                engine().add_object<Boltaray>(Vec2<Fixnum>{40 + obj.x_ * 8 - 4, obj.y_ * 8 - 4});
+                engine().add_object<Boltaray>(
+                    Vec2<Fixnum>{40 + obj.x_ * 8 - 4, obj.y_ * 8 - 4});
                 break;
 
             case 10:
-                engine().add_object<Spawner>(Vec2<Fixnum>{40 + obj.x_ * 8 - 8, obj.y_ * 8 - 4});
+                engine().add_object<Spawner>(
+                    Vec2<Fixnum>{40 + obj.x_ * 8 - 8, obj.y_ * 8 - 4});
                 break;
 
             case 11:
-                engine().add_object<Soldier>(Vec2<Fixnum>{40 + obj.x_ * 8 - 4, obj.y_ * 8 - 4});
+                engine().add_object<Soldier>(
+                    Vec2<Fixnum>{40 + obj.x_ * 8 - 4, obj.y_ * 8 - 4});
                 break;
 
             case 13:
-                if (auto t = engine().add_object<PowerTurret>(Vec2<Fixnum>{40 + obj.x_ * 8 + 8, obj.y_ * 8})) {
+                if (auto t = engine().add_object<PowerTurret>(
+                        Vec2<Fixnum>{40 + obj.x_ * 8 + 8, obj.y_ * 8})) {
                     t->set_left();
                 }
                 break;
 
             case 12:
-                engine().add_object<PowerTurret>(Vec2<Fixnum>{40 + obj.x_ * 8, obj.y_ * 8});
+                engine().add_object<PowerTurret>(
+                    Vec2<Fixnum>{40 + obj.x_ * 8, obj.y_ * 8});
                 break;
 
             case 14:
@@ -964,18 +900,18 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                 break;
 
             case 17:
-                engine().add_object<Generator>(Vec2<Fixnum>{40 + obj.x_ * 8 - 5,
-                                                                obj.y_ * 8 - 5},
-                    obj.x_,
-                    obj.y_);
+                engine().add_object<Generator>(
+                    Vec2<Fixnum>{40 + obj.x_ * 8 - 5, obj.y_ * 8 - 5}, obj.x_, obj.y_);
                 break;
 
             case 18:
-                engine().add_object<Barrier>(Vec2<Fixnum>{40 + obj.x_ * 8, obj.y_ * 8}, false);
+                engine().add_object<Barrier>(Vec2<Fixnum>{40 + obj.x_ * 8, obj.y_ * 8},
+                                             false);
                 break;
 
             case 19:
-                engine().add_object<Barrier>(Vec2<Fixnum>{40 + obj.x_ * 8, obj.y_ * 8}, true);
+                engine().add_object<Barrier>(Vec2<Fixnum>{40 + obj.x_ * 8, obj.y_ * 8},
+                                             true);
                 break;
 
             case 20:
@@ -1004,9 +940,8 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                 break;
 
             case 25:
-                engine().add_object<ReaperDrone>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
-                                                 obj.x_,
-                                                 obj.y_);
+                engine().add_object<ReaperDrone>(
+                    Vec2<Fixnum>{40 + obj.x_, obj.y_}, obj.x_, obj.y_);
                 break;
 
             case 26:
@@ -1018,9 +953,8 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                 break;
 
             case 28:
-                engine().add_object<BattleDoor>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
-                                                obj.x_,
-                                                obj.y_);
+                engine().add_object<BattleDoor>(
+                    Vec2<Fixnum>{40 + obj.x_, obj.y_}, obj.x_, obj.y_);
                 break;
 
             case 29:
@@ -1044,39 +978,33 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                 break;
 
             case 34:
-                engine().add_object<Annihilator>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
-                                                 obj.x_,
-                                                 obj.y_);
+                engine().add_object<Annihilator>(
+                    Vec2<Fixnum>{40 + obj.x_, obj.y_}, obj.x_, obj.y_);
                 break;
 
             case 35:
-                engine().add_object<Silencer>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
-                                              obj.x_,
-                                              obj.y_);
+                engine().add_object<Silencer>(
+                    Vec2<Fixnum>{40 + obj.x_, obj.y_}, obj.x_, obj.y_);
                 break;
 
             case 36:
-                engine().add_object<Hydra>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
-                                           obj.x_,
-                                           obj.y_);
+                engine().add_object<Hydra>(
+                    Vec2<Fixnum>{40 + obj.x_, obj.y_}, obj.x_, obj.y_);
                 break;
 
             case 37:
-                engine().add_object<RockSmasher>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
-                                                 obj.x_,
-                                                 obj.y_);
+                engine().add_object<RockSmasher>(
+                    Vec2<Fixnum>{40 + obj.x_, obj.y_}, obj.x_, obj.y_);
                 break;
 
             case 38:
-                engine().add_object<Elite>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
-                                           obj.x_,
-                                           obj.y_);
+                engine().add_object<Elite>(
+                    Vec2<Fixnum>{40 + obj.x_, obj.y_}, obj.x_, obj.y_);
                 break;
 
             case 39:
-                engine().add_object<GuardianCore>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
-                                                  obj.x_,
-                                                  obj.y_);
+                engine().add_object<GuardianCore>(
+                    Vec2<Fixnum>{40 + obj.x_, obj.y_}, obj.x_, obj.y_);
                 break;
 
             case 40:
@@ -1088,9 +1016,8 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                 break;
 
             case 42:
-                engine().add_object<LiquidMetalProcessor>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
-                                                          obj.x_,
-                                                          obj.y_);
+                engine().add_object<LiquidMetalProcessor>(
+                    Vec2<Fixnum>{40 + obj.x_, obj.y_}, obj.x_, obj.y_);
                 break;
 
             case 43:
@@ -1123,7 +1050,6 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
 }
 
 
-
 bool Engine::Room::has_exit_up() const
 {
     if (coord_.y == 0) {
@@ -1142,7 +1068,6 @@ bool Engine::Room::has_exit_up() const
 }
 
 
-
 bool Engine::Room::has_exit_down() const
 {
     if (coord_.y == 14) {
@@ -1151,7 +1076,6 @@ bool Engine::Room::has_exit_down() const
 
     return true;
 }
-
 
 
 bool Engine::Room::has_exit_left() const
@@ -1176,7 +1100,6 @@ bool Engine::Room::has_exit_left() const
 }
 
 
-
 bool Engine::Room::has_exit_right() const
 {
     if (coord_.x == 14) {
@@ -1193,5 +1116,4 @@ bool Engine::Room::has_exit_right() const
 }
 
 
-
-}
+} // namespace herocore

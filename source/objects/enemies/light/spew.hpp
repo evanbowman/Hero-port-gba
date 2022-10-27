@@ -1,18 +1,16 @@
 #pragma once
 
-#include "objects/enemies/enemy.hpp"
-#include "objects/projectile/enemyShot.hpp"
-#include "objects/projectile/supershot.hpp"
 #include "engine.hpp"
 #include "fmt.hpp"
 #include "number/random.hpp"
+#include "objects/enemies/enemy.hpp"
 #include "objects/particles/explo.hpp"
-
+#include "objects/projectile/enemyShot.hpp"
+#include "objects/projectile/supershot.hpp"
 
 
 namespace herocore
 {
-
 
 
 class Spew : public Enemy
@@ -24,9 +22,7 @@ private:
     int shotcyc_ = 0;
 
 public:
-
-    Spew(const Vec2<Fixnum>& pos) :
-        Enemy(TaggedObject::Tag::spew, Health{1})
+    Spew(const Vec2<Fixnum>& pos) : Enemy(TaggedObject::Tag::spew, Health{1})
     {
         position_ = pos;
 
@@ -76,8 +72,7 @@ public:
             origin_.x = 4;
 
             if (engine().g_.hp_ > 0) {
-                auto dir = direction(fvec(position_),
-                                     fvec(engine().hero()->position()));
+                auto dir = direction(fvec(position_), fvec(engine().hero()->position()));
 
                 speed_ = Fixnum(1.2f / 2);
 
@@ -214,11 +209,8 @@ public:
 
 
 private:
-
     int timeline_ = 0;
-
 };
 
 
-
-}
+} // namespace herocore

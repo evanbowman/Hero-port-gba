@@ -5,7 +5,6 @@
 #include <utility>
 
 
-
 template <s32 precision, typename T> class FixedPoint
 {
 public:
@@ -40,8 +39,7 @@ public:
     }
 
 
-    constexpr FixedPoint(float value)
-        : data_(static_cast<ValueType>(value * scale()))
+    constexpr FixedPoint(float value) : data_(static_cast<ValueType>(value * scale()))
     {
     }
 
@@ -231,11 +229,9 @@ constexpr Fixnum operator"" _fixed(long double value)
 }
 
 
-
 #ifdef TEST
 
 #include <iostream>
-
 
 
 int main()
@@ -254,7 +250,6 @@ int main()
 
     std::cout << Fixnum(0.0003f).as_float() << std::endl;
 }
-
 
 
 #endif

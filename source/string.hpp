@@ -60,7 +60,8 @@ inline int str_cmp(const char* p1, const char* p2)
 
 
 // A not great, but satisfactory implementation of a string class.
-template <u32 Capacity> class StringBuffer {
+template <u32 Capacity> class StringBuffer
+{
 public:
     using Buffer = ::Buffer<char, Capacity + 1>;
 
@@ -84,8 +85,7 @@ public:
         }
     }
 
-    template <u32 OtherCapacity>
-    StringBuffer(const StringBuffer<OtherCapacity>& other)
+    template <u32 OtherCapacity> StringBuffer(const StringBuffer<OtherCapacity>& other)
     {
         static_assert(OtherCapacity <= Capacity);
 
@@ -209,8 +209,7 @@ private:
 };
 
 
-template <u32 Capacity>
-bool operator==(StringBuffer<Capacity> buf, const char* str)
+template <u32 Capacity> bool operator==(StringBuffer<Capacity> buf, const char* str)
 {
     return str_cmp(str, buf.c_str()) == 0;
 }

@@ -1,22 +1,19 @@
 #pragma once
 
 #include "engine.hpp"
-#include "objects/particles/explo.hpp"
 #include "number/random.hpp"
-#include "objects/solid.hpp"
 #include "objects/particles/bigExplo.hpp"
-
+#include "objects/particles/explo.hpp"
+#include "objects/solid.hpp"
 
 
 namespace herocore
 {
 
 
-
 class RockSmasher : public Solid
 {
 public:
-
     RockSmasher(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y);
 
 
@@ -69,13 +66,9 @@ private:
             Fixnum d,
             Fixnum d_max,
             Fixnum rot_speed,
-            u8 mode) :
-            owner_(owner),
-            rot_(0),
-            d_(d),
-            d_max_(d_max),
-            rot_speed_(rot_speed),
-            mode_(mode)
+            u8 mode)
+            : owner_(owner), rot_(0), d_(d), d_max_(d_max), rot_speed_(rot_speed),
+              mode_(mode)
         {
             r_ = rot.as_integer();
         }
@@ -159,5 +152,4 @@ public:
 };
 
 
-
-}
+} // namespace herocore

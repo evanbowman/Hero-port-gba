@@ -3,7 +3,6 @@
 #include "object.hpp"
 
 
-
 // Used to associate groups of objects with integer tags. The original game
 // often checks overlap between objects of the same type, to prevent them from
 // bunching up, we need a relatively fast way to check intersection between
@@ -13,16 +12,13 @@
 // methods. But this is what I decided to do.
 
 
-
 namespace herocore
 {
-
 
 
 class TaggedObject : public Object
 {
 public:
-
     enum class Tag : u8 {
         drone,
         reaver,
@@ -104,5 +100,4 @@ protected:
 };
 
 
-
-}
+} // namespace herocore

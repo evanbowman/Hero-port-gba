@@ -1,25 +1,21 @@
 #pragma once
 
-#include "taggedObject.hpp"
 #include "enemyProjectile.hpp"
 #include "engine.hpp"
-
+#include "taggedObject.hpp"
 
 
 namespace herocore
 {
 
 
-
 class EnemyShot : public EnemyProjectile
 {
 private:
-
     int anim_ = 0;
     int count_ = 0;
 
 public:
-
     EnemyShot(const Vec2<Fixnum>& pos) : EnemyProjectile(pos, 1, 0)
     {
         sprite_index_ = 17;
@@ -53,9 +49,7 @@ public:
             }
         }
     }
-
 };
 
 
-
-}
+} // namespace herocore

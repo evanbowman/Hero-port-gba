@@ -7,7 +7,8 @@
 using AudioSample = s8;
 
 
-struct ActiveSoundInfo {
+struct ActiveSoundInfo
+{
     s32 position_;
     const s32 length_;
     const AudioSample* data_;
@@ -15,7 +16,8 @@ struct ActiveSoundInfo {
 };
 
 
-struct SoundContext {
+struct SoundContext
+{
     // Only three sounds will play at a time... hey, sound mixing's expensive!
     Buffer<ActiveSoundInfo, 2> active_sounds;
 

@@ -1,27 +1,21 @@
 #pragma once
 
-#include "objects/solid.hpp"
 #include "engine.hpp"
 #include "objects/particles/explo.hpp"
-
+#include "objects/solid.hpp"
 
 
 namespace herocore
 {
 
 
-
 class Pickup : public Solid
 {
 public:
-
-    enum Type { blaster,
-                blade,
-                suit };
+    enum Type { blaster, blade, suit };
 
 
-    Pickup(const Vec2<Fixnum>& pos, Type type) :
-        type_(type)
+    Pickup(const Vec2<Fixnum>& pos, Type type) : type_(type)
     {
         position_ = pos;
 
@@ -99,5 +93,4 @@ private:
 };
 
 
-
-}
+} // namespace herocore

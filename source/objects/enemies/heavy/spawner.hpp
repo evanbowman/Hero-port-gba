@@ -1,29 +1,25 @@
 #pragma once
 
-#include "objects/enemies/enemy.hpp"
 #include "engine.hpp"
 #include "fmt.hpp"
 #include "number/random.hpp"
-#include "objects/projectile/enemyShot.hpp"
-#include "objects/projectile/megashot.hpp"
-#include "objects/particles/bigExplo.hpp"
+#include "objects/enemies/enemy.hpp"
 #include "objects/enemies/light/drone.hpp"
 #include "objects/enemies/light/reaver.hpp"
 #include "objects/enemies/light/spew.hpp"
-
+#include "objects/particles/bigExplo.hpp"
+#include "objects/projectile/enemyShot.hpp"
+#include "objects/projectile/megashot.hpp"
 
 
 namespace herocore
 {
 
 
-
 class Spawner : public Enemy
 {
 public:
-
-    Spawner(const Vec2<Fixnum>& pos) :
-        Enemy(TaggedObject::Tag::ignored, Health{16})
+    Spawner(const Vec2<Fixnum>& pos) : Enemy(TaggedObject::Tag::ignored, Health{16})
     {
         position_ = pos;
 
@@ -41,8 +37,7 @@ public:
             if (engine().g_.screenshake_ < 6) {
                 engine().g_.screenshake_ = 6;
             }
-            engine().add_object<BigExplo>(Vec2<Fixnum>{
-                    position_.x + 8, position_.y + 5});
+            engine().add_object<BigExplo>(Vec2<Fixnum>{position_.x + 8, position_.y + 5});
             return;
         }
 
@@ -67,8 +62,7 @@ public:
             break;
 
         case 40: {
-            if (auto s = engine().add_object<EnemyShot>(Vec2<Fixnum>{x() + 6,
-                                                                     y() - 2})) {
+            if (auto s = engine().add_object<EnemyShot>(Vec2<Fixnum>{x() + 6, y() - 2})) {
                 auto d = rotate({1, 0}, rng::choice<180>(rng::utility_state));
                 d = d * (1.5f / 2);
                 Vec2<Fixnum> spd;
@@ -76,9 +70,9 @@ public:
                 spd.y = Fixnum(-d.y);
                 s->set_speed(spd);
             }
-            if (TaggedObject::count(Tag::drone) +
-                TaggedObject::count(Tag::reaver) +
-                TaggedObject::count(Tag::spew) < 4) {
+            if (TaggedObject::count(Tag::drone) + TaggedObject::count(Tag::reaver) +
+                    TaggedObject::count(Tag::spew) <
+                4) {
 
                 auto o = position_;
                 o.x += 4;
@@ -102,8 +96,8 @@ public:
 
         case 80:
             if (engine().g_.difficulty_ == Difficulty::hard) {
-                if (auto s = engine().add_object<Megashot>(Vec2<Fixnum>{x() + 4,
-                                                                        y() - 2})) {
+                if (auto s =
+                        engine().add_object<Megashot>(Vec2<Fixnum>{x() + 4, y() - 2})) {
                     auto d = rotate({1, 0}, rng::choice<180>(rng::utility_state));
                     d = d * (1.5f / 2);
                     Vec2<Fixnum> spd;
@@ -118,8 +112,7 @@ public:
             if (engine().g_.difficulty_ == Difficulty::hard) {
                 break;
             }
-            if (auto s = engine().add_object<EnemyShot>(Vec2<Fixnum>{x() + 6,
-                                                                     y() - 2})) {
+            if (auto s = engine().add_object<EnemyShot>(Vec2<Fixnum>{x() + 6, y() - 2})) {
                 auto d = rotate({1, 0}, rng::choice<180>(rng::utility_state));
                 d = d * (1.5f / 2);
                 Vec2<Fixnum> spd;
@@ -147,5 +140,4 @@ private:
 };
 
 
-
-}
+} // namespace herocore

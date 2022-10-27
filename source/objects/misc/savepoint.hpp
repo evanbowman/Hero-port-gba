@@ -1,14 +1,12 @@
 #pragma once
 
-#include "objects/solid.hpp"
 #include "engine.hpp"
 #include "objects/particles/explo.hpp"
-
+#include "objects/solid.hpp"
 
 
 namespace herocore
 {
-
 
 
 class Savepoint : public Solid
@@ -19,9 +17,7 @@ private:
     bool visible_ = false;
 
 public:
-
-    Savepoint(const Vec2<Fixnum>& pos, bool avail = true) :
-        avail_(avail)
+    Savepoint(const Vec2<Fixnum>& pos, bool avail = true) : avail_(avail)
     {
         position_ = pos;
         position_.x += 2;
@@ -41,8 +37,7 @@ public:
         hb.position_ = &pos;
         hb.dimension_.size_ = {20, 12};
 
-        if (avail_ and
-            hb.overlapping(engine().hero()->hitbox())) {
+        if (avail_ and hb.overlapping(engine().hero()->hitbox())) {
             engine().p_->checkpoint_music_ = platform().speaker().current_music();
             engine().p_->checkpoint_room_ = engine().room_.coord_.cast<u8>();
             engine().p_->checkpoint_coords_.x = (x() - 40 + 4).as_integer();
@@ -82,5 +77,4 @@ public:
 };
 
 
-
-}
+} // namespace herocore

@@ -36,8 +36,7 @@ void Text::erase()
 }
 
 
-Text::Text(Text&& from)
-    : pfrm_(from.pfrm_), coord_(from.coord_), len_(from.len_)
+Text::Text(Text&& from) : pfrm_(from.pfrm_), coord_(from.coord_), len_(from.len_)
 {
     from.len_ = 0;
 }
@@ -343,9 +342,7 @@ Border::~Border()
 }
 
 
-BossHealthBar::BossHealthBar(Platform& pfrm,
-                             u8 height,
-                             const OverlayCoord& position)
+BossHealthBar::BossHealthBar(Platform& pfrm, u8 height, const OverlayCoord& position)
     : pfrm_(pfrm), position_(position), height_(height)
 {
     pfrm_.set_tile(Layer::overlay, position_.x, position_.y, 82);
@@ -363,8 +360,7 @@ void BossHealthBar::set_health(Float percentage)
     int current_tile = 0;
 
     while (fractional_pixels >= 8) {
-        pfrm_.set_tile(
-            Layer::overlay, position_.x, position_.y + 1 + current_tile, 91);
+        pfrm_.set_tile(Layer::overlay, position_.x, position_.y + 1 + current_tile, 91);
         fractional_pixels -= 8;
         ++current_tile;
     }
@@ -378,8 +374,7 @@ void BossHealthBar::set_health(Float percentage)
     }
 
     while (current_tile < height_) {
-        pfrm_.set_tile(
-            Layer::overlay, position_.x, position_.y + 1 + current_tile, 92);
+        pfrm_.set_tile(Layer::overlay, position_.x, position_.y + 1 + current_tile, 92);
         ++current_tile;
     }
 }
@@ -387,8 +382,7 @@ void BossHealthBar::set_health(Float percentage)
 
 BossHealthBar::~BossHealthBar()
 {
-    for (int y = 0; y < height_ + 2 /* +2 due to the header and footer */;
-         ++y) {
+    for (int y = 0; y < height_ + 2 /* +2 due to the header and footer */; ++y) {
         pfrm_.set_tile(Layer::overlay, position_.x, position_.y + y, 0);
     }
 }
@@ -421,8 +415,7 @@ void LoadingBar::set_progress(Float percentage)
     int current_tile = 0;
 
     while (fractional_pixels >= 8) {
-        pfrm_.set_tile(
-            Layer::overlay, position_.x + 1 + current_tile, position_.y, 410);
+        pfrm_.set_tile(Layer::overlay, position_.x + 1 + current_tile, position_.y, 410);
         fractional_pixels -= 8;
         ++current_tile;
     }
@@ -436,8 +429,7 @@ void LoadingBar::set_progress(Float percentage)
     }
 
     while (current_tile < width_) {
-        pfrm_.set_tile(
-            Layer::overlay, position_.x + 1 + current_tile, position_.y, 402);
+        pfrm_.set_tile(Layer::overlay, position_.x + 1 + current_tile, position_.y, 402);
         ++current_tile;
     }
 }
@@ -470,10 +462,8 @@ void Sidebar::set_display_percentage(Float percentage)
         }
 
         if (current_tile < width_ and pixels % 8 not_eq 0) {
-            pfrm_.set_tile(Layer::overlay,
-                           pos_.x - (1 + current_tile),
-                           y,
-                           128 - pixels % 8);
+            pfrm_.set_tile(
+                Layer::overlay, pos_.x - (1 + current_tile), y, 128 - pixels % 8);
             ++current_tile;
         }
 
@@ -491,10 +481,7 @@ Sidebar::~Sidebar()
 }
 
 
-LeftSidebar::LeftSidebar(Platform& pfrm,
-                         u8 width,
-                         u8 height,
-                         const OverlayCoord& pos)
+LeftSidebar::LeftSidebar(Platform& pfrm, u8 width, u8 height, const OverlayCoord& pos)
     : pfrm_(pfrm), width_(width), height_(height), pos_(pos)
 {
 }
@@ -521,8 +508,7 @@ void LeftSidebar::set_display_percentage(Float percentage)
         }
 
         if (current_tile < width_ and pixels % 8 not_eq 0) {
-            pfrm_.set_tile(
-                Layer::overlay, current_tile + pos_.x, y, 433 - pixels % 8);
+            pfrm_.set_tile(Layer::overlay, current_tile + pos_.x, y, 433 - pixels % 8);
             ++current_tile;
         }
 

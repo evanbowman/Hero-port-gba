@@ -1,24 +1,20 @@
 #include "eyespy.hpp"
 
 
-
 namespace herocore
 {
-
 
 
 class EyespyRadius : public Object
 {
 public:
-
     Eyespy* parent_;
     u8 cyc_ = 0;
     int timeline_ = 0;
     Fixnum spd_ = 0;
 
 
-    EyespyRadius(Eyespy* parent, const Vec2<Fixnum>& position) :
-        parent_(parent)
+    EyespyRadius(Eyespy* parent, const Vec2<Fixnum>& position) : parent_(parent)
     {
         position_ = position;
         position_.x -= 32;
@@ -101,10 +97,10 @@ public:
         hb.position_ = &hb_pos;
 
         auto parent_wake = [&] {
-                               kill();
-                               parent_->wake_ = true;
-                               platform().speaker().play_sound("snd_spot", 20);
-                           };
+            kill();
+            parent_->wake_ = true;
+            platform().speaker().play_sound("snd_spot", 20);
+        };
 
         // Because I'm lazy, approximating the eyespy radius with a few bounding
         // boxes. Two long rectangular bounding boxes represent the radius' max
@@ -148,16 +144,15 @@ public:
 
         Sprite spr;
 
-        auto chunk =
-            [&](int xo, int yo, int t, bool xflip, bool yflip) {
-                auto pos = position_;
-                pos.x += xo;
-                pos.y += yo;
-                spr.set_position(pos);
-                spr.set_flip({xflip, yflip});
-                spr.set_texture_index(t);
-                screen.draw(spr);
-            };
+        auto chunk = [&](int xo, int yo, int t, bool xflip, bool yflip) {
+            auto pos = position_;
+            pos.x += xo;
+            pos.y += yo;
+            spr.set_position(pos);
+            spr.set_flip({xflip, yflip});
+            spr.set_texture_index(t);
+            screen.draw(spr);
+        };
 
         chunk(0, 0, 203, false, false);
         chunk(0, 16, 202, false, false);
@@ -178,9 +173,7 @@ public:
 };
 
 
-
-Eyespy::Eyespy(const Vec2<Fixnum>& pos) :
-    Enemy(TaggedObject::Tag::ignored, Health{64})
+Eyespy::Eyespy(const Vec2<Fixnum>& pos) : Enemy(TaggedObject::Tag::ignored, Health{64})
 {
     position_ = pos;
 
@@ -193,15 +186,12 @@ Eyespy::Eyespy(const Vec2<Fixnum>& pos) :
 }
 
 
-
-
 void Eyespy::step()
 {
     if (health_ == 0) {
         kill();
         platform().speaker().play_sound("snd_explo2", 6);
-        engine().add_object<BigExplo>(Vec2<Fixnum>{
-                position_.x - 4, position_.y - 4});
+        engine().add_object<BigExplo>(Vec2<Fixnum>{position_.x - 4, position_.y - 4});
         return;
     }
 
@@ -283,6 +273,4 @@ void Eyespy::step()
 }
 
 
-
-
-}
+} // namespace herocore

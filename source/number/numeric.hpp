@@ -41,12 +41,10 @@ enum class byte : u8 {};
 
 inline u8 count_ones(u8 byte)
 {
-    static const u8 nibble_lut[16] = {
-        0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4};
+    static const u8 nibble_lut[16] = {0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4};
 
     return nibble_lut[byte & 0x0F] + nibble_lut[byte >> 4];
 }
-
 
 
 inline int count_ones(u64 x)
@@ -61,14 +59,12 @@ inline int count_ones(u64 x)
 }
 
 
-
 template <typename T> struct Vec3
 {
     T x = 0;
     T y = 0;
     T z = 0;
 };
-
 
 
 template <typename T> struct Vec2
@@ -88,7 +84,6 @@ template <typename T> struct Vec2
         return result;
     }
 };
-
 
 
 template <typename T, typename U = T> struct Rect
@@ -122,19 +117,16 @@ using Angle = Degree;
 using Float = float;
 
 
-
 inline Vec2<Float> fvec(Vec2<Fixnum> fixed)
 {
     return {fixed.x.as_float(), fixed.y.as_float()};
 }
 
 
-
 inline Vec2<s32> ivec(Vec2<Fixnum> fixed)
 {
     return {fixed.x.as_integer(), fixed.y.as_integer()};
 }
-
 
 
 inline Float sqrt_approx(const Float x)
@@ -213,8 +205,7 @@ template <typename T> bool operator==(const Vec3<T>& rhs, const Vec3<T>& lhs)
     return lhs.x == rhs.x and lhs.y == rhs.y and lhs.z == rhs.z;
 }
 
-template <typename T>
-bool operator not_eq(const Vec2<T>& rhs, const Vec2<T>& lhs)
+template <typename T> bool operator not_eq(const Vec2<T>& rhs, const Vec2<T>& lhs)
 {
     return lhs.x not_eq rhs.x or lhs.y not_eq rhs.y;
 }
@@ -283,8 +274,6 @@ constexpr Microseconds milliseconds(u32 count)
 }
 
 
-
-
 #define INT16_BITS (8 * sizeof(int16_t))
 #ifndef INT16_MAX
 #define INT16_MAX ((1 << (INT16_BITS - 1)) - 1)
@@ -323,14 +312,12 @@ constexpr inline s16 sine(s16 angle)
         v1 = angle;
     }
     v0 &= TABLE_MASK;
-    v1 = sin90[v0] +
-         (s16)(((int32_t)(sin90[v0 + 1] - sin90[v0]) * (v1 & INTERP_MASK)) >>
-               INTERP_BITS);
+    v1 = sin90[v0] + (s16)(((int32_t)(sin90[v0 + 1] - sin90[v0]) * (v1 & INTERP_MASK)) >>
+                           INTERP_BITS);
     if ((angle >> INTERP_BITS) & NEGATE_BIT)
         v1 = -v1;
     return v1;
 }
-
 
 
 constexpr inline s16 cosine(s16 angle)
@@ -341,7 +328,6 @@ constexpr inline s16 cosine(s16 angle)
     }
     return sine(angle - s16((270.f / 360.f) * INT16_MAX));
 }
-
 
 
 using UnitVec = Vec2<Float>;
@@ -385,7 +371,6 @@ inline Float distance(const Vec2<Float>& from, const Vec2<Float>& to)
 enum class Cardinal : u8 { north, south, west, east };
 
 
-
 inline s32 parse_int(const char* str, u32 len)
 {
     s32 n = 0;
@@ -394,7 +379,6 @@ inline s32 parse_int(const char* str, u32 len)
     }
     return n;
 }
-
 
 
 inline Float fast_atan_approx(Float x)
@@ -433,14 +417,12 @@ inline Float fast_atan2_approx(Float x, Float y)
 }
 
 
-
 namespace detail
 {
 template <std::size_t... Is> struct seq
 {
 };
-template <std::size_t N, std::size_t... Is>
-struct gen_seq : gen_seq<N - 1, N - 1, Is...>
+template <std::size_t N, std::size_t... Is> struct gen_seq : gen_seq<N - 1, N - 1, Is...>
 {
 };
 template <std::size_t... Is> struct gen_seq<0, Is...> : seq<Is...>

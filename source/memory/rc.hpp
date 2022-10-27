@@ -20,14 +20,16 @@
 //
 
 
-template <typename T, u32 Count> class RcBase {
+template <typename T, u32 Count> class RcBase
+{
 public:
     size_t strong_count() const
     {
         return control_->strong_count_;
     }
 
-    struct ControlBlock {
+    struct ControlBlock
+    {
         template <typename... Args>
         ControlBlock(ObjectPool<ControlBlock, Count>* pool,
                      void (*finalizer_hook)(ControlBlock*),
@@ -36,9 +38,7 @@ public:
               finalizer_hook_(finalizer_hook), strong_count_(0), weak_count_(0)
         {
             if (finalizer_hook_ == nullptr) {
-                finalizer_hook_ = [](ControlBlock* ctrl) {
-                    ctrl->pool_->free(ctrl);
-                };
+                finalizer_hook_ = [](ControlBlock* ctrl) { ctrl->pool_->free(ctrl); };
             }
         }
 
@@ -83,7 +83,8 @@ protected:
 };
 
 
-template <typename T, u32 Count> class Rc : public RcBase<T, Count> {
+template <typename T, u32 Count> class Rc : public RcBase<T, Count>
+{
 public:
     using Super = RcBase<T, Count>;
 
@@ -127,8 +128,7 @@ public:
            void (*finalizer_hook)(typename RcBase<T, Count>::ControlBlock*),
            Args&&... args)
     {
-        auto ctrl =
-            pool->alloc(pool, finalizer_hook, std::forward<Args>(args)...);
+        auto ctrl = pool->alloc(pool, finalizer_hook, std::forward<Args>(args)...);
         if (ctrl) {
             return Rc(ctrl);
         } else {
@@ -146,7 +146,8 @@ private:
 };
 
 
-template <typename T, u32 Count> class Weak : public RcBase<T, Count> {
+template <typename T, u32 Count> class Weak : public RcBase<T, Count>
+{
 public:
     using Super = RcBase<T, Count>;
 

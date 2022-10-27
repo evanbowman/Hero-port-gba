@@ -1,23 +1,18 @@
 #pragma once
 
-#include "object.hpp"
 #include "enemyProjectile.hpp"
-
+#include "object.hpp"
 
 
 namespace herocore
 {
 
 
-
 class MimicShot : public EnemyProjectile
 {
 private:
-
 public:
-
-    MimicShot(const Vec2<Fixnum>& pos, Fixnum speed) :
-        EnemyProjectile(pos, 1, 0)
+    MimicShot(const Vec2<Fixnum>& pos, Fixnum speed) : EnemyProjectile(pos, 1, 0)
     {
         sprite_index_ = 7;
         speed_.x = speed;
@@ -38,9 +33,7 @@ public:
 
 private:
     int timeline_ = 0;
-
 };
 
 
-
-}
+} // namespace herocore

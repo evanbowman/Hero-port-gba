@@ -1,27 +1,23 @@
 #include "rockSmasher.hpp"
-#include "objects/particles/bigExplo.hpp"
 #include "objects/enemies/enemy.hpp"
-#include "objects/projectile/shot.hpp"
-#include "objects/projectile/enemyShot.hpp"
-#include "objects/projectile/supershot.hpp"
 #include "objects/misc/pickup.hpp"
-
+#include "objects/particles/bigExplo.hpp"
+#include "objects/projectile/enemyShot.hpp"
+#include "objects/projectile/shot.hpp"
+#include "objects/projectile/supershot.hpp"
 
 
 namespace herocore
 {
 
 
-
 class EnemyShotTimeout : public EnemyProjectile
 {
 private:
-
     int anim_ = 0;
     int count_ = 0;
 
 public:
-
     EnemyShotTimeout(const Vec2<Fixnum>& pos) : EnemyProjectile(pos, 1, 0)
     {
         sprite_index_ = 17;
@@ -48,9 +44,7 @@ public:
             kill();
         }
     }
-
 };
-
 
 
 class RockSmasherCore : public Enemy
@@ -60,7 +54,6 @@ private:
     int animcyc_ = 0;
 
 public:
-
     Fixnum x_offset_;
     Fixnum y_offset_;
 
@@ -71,17 +64,9 @@ public:
     u8 mode_ = 0;
     u8 id_ = 0;
 
-    RockSmasherCore(RockSmasher* owner,
-                    Fixnum x_offset,
-                    Fixnum y_offset,
-                    u8 mode,
-                    u8 id) :
-        Enemy(TaggedObject::Tag::ignored, Health{32}),
-        owner_(owner),
-        x_offset_(x_offset),
-        y_offset_(y_offset),
-        mode_(mode),
-        id_(id)
+    RockSmasherCore(RockSmasher* owner, Fixnum x_offset, Fixnum y_offset, u8 mode, u8 id)
+        : Enemy(TaggedObject::Tag::ignored, Health{32}), owner_(owner),
+          x_offset_(x_offset), y_offset_(y_offset), mode_(mode), id_(id)
     {
         hitbox_.dimension_.size_ = {4, 5};
         hitbox_.dimension_.origin_ = {3, 3};
@@ -102,9 +87,7 @@ public:
     void step() override
     {
         if (health_ == 0) {
-            engine().add_object<ExploSpewer>(Vec2<Fixnum>{
-                    x(), y()
-                });
+            engine().add_object<ExploSpewer>(Vec2<Fixnum>{x(), y()});
             platform().sleep(4);
             kill();
             owner_->hp_--;
@@ -125,7 +108,6 @@ public:
                     } else {
                         e->set_speed({Fixnum(1.5f), Fixnum(0)});
                     }
-
                 }
             }
         }
@@ -133,11 +115,8 @@ public:
 };
 
 
-
-RockSmasher::RockSmasher(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y) :
-    spawn_x_(spawn_x),
-    spawn_y_(spawn_y),
-    c_(allocate_dynamic<Components>(platform()))
+RockSmasher::RockSmasher(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y)
+    : spawn_x_(spawn_x), spawn_y_(spawn_y), c_(allocate_dynamic<Components>(platform()))
 {
     position_ = pos;
 
@@ -158,12 +137,11 @@ RockSmasher::RockSmasher(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y) :
     }
 
 
-    auto setup_core = [&](int n, u8 tx, u8 ty)
-                      {
-                          c_->cores_[n].tx_ = tx;
-                          c_->cores_[n].ty_ = ty;
-                          c_->cores_[n].hp_ = 32;
-                      };
+    auto setup_core = [&](int n, u8 tx, u8 ty) {
+        c_->cores_[n].tx_ = tx;
+        c_->cores_[n].ty_ = ty;
+        c_->cores_[n].hp_ = 32;
+    };
 
     setup_core(0, 1, 1);
     setup_core(1, 1, 3);
@@ -177,59 +155,29 @@ RockSmasher::RockSmasher(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y) :
 
     // While cores are drawn with tiles for speed, we still create invisible
     // core sentinel objects for collision checking.
-    engine().add_object<RockSmasherCore>(this,
-                                         Fixnum(-54 / 2),
-                                         Fixnum(-50 / 2),
-                                         u8(18),
-                                         0);
+    engine().add_object<RockSmasherCore>(
+        this, Fixnum(-54 / 2), Fixnum(-50 / 2), u8(18), 0);
 
-    engine().add_object<RockSmasherCore>(this,
-                                         Fixnum(-54 / 2),
-                                         Fixnum(-22 / 2),
-                                         u8(17),
-                                         1);
+    engine().add_object<RockSmasherCore>(
+        this, Fixnum(-54 / 2), Fixnum(-22 / 2), u8(17), 1);
 
 
-    engine().add_object<RockSmasherCore>(this,
-                                         Fixnum(-54 / 2),
-                                         Fixnum(50 / 2),
-                                         u8(15),
-                                         3);
+    engine().add_object<RockSmasherCore>(
+        this, Fixnum(-54 / 2), Fixnum(50 / 2), u8(15), 3);
 
-    engine().add_object<RockSmasherCore>(this,
-                                         Fixnum(-54 / 2),
-                                         Fixnum(22 / 2),
-                                         u8(16),
-                                         2);
+    engine().add_object<RockSmasherCore>(
+        this, Fixnum(-54 / 2), Fixnum(22 / 2), u8(16), 2);
 
 
-    engine().add_object<RockSmasherCore>(this,
-                                         Fixnum(54 / 2),
-                                         Fixnum(-50 / 2),
-                                         11,
-                                         4);
+    engine().add_object<RockSmasherCore>(this, Fixnum(54 / 2), Fixnum(-50 / 2), 11, 4);
 
-    engine().add_object<RockSmasherCore>(this,
-                                         Fixnum(54 / 2),
-                                         Fixnum(-22 / 2),
-                                         12,
-                                         5);
+    engine().add_object<RockSmasherCore>(this, Fixnum(54 / 2), Fixnum(-22 / 2), 12, 5);
 
 
-    engine().add_object<RockSmasherCore>(this,
-                                         Fixnum(54 / 2),
-                                         Fixnum(50 / 2),
-                                         14,
-                                         7);
+    engine().add_object<RockSmasherCore>(this, Fixnum(54 / 2), Fixnum(50 / 2), 14, 7);
 
-    engine().add_object<RockSmasherCore>(this,
-                                         Fixnum(54 / 2),
-                                         Fixnum(22 / 2),
-                                         13,
-                                         6);
-
+    engine().add_object<RockSmasherCore>(this, Fixnum(54 / 2), Fixnum(22 / 2), 13, 6);
 }
-
 
 
 void RockSmasher::draw(Platform::Screen& s) const
@@ -250,59 +198,57 @@ void RockSmasher::draw(Platform::Screen& s) const
 
         // Originally I was using actual objects, but switched to tiles due to
         // lag.
-        auto draw_cores =
-            [&](u8 tl, u8 tr)
-            {
-                if (c_->cores_[0].hp_) {
-                    platform().set_tile(Layer::map_1, 1, 1, (tl - 1) + 1);
-                    platform().set_tile(Layer::map_1, 1, 2, (tl - 1) + 2);
-                } else {
-                    platform().set_tile(Layer::map_1, 1, 1, 13);
-                    platform().set_tile(Layer::map_1, 1, 2, 23);
-                }
-                if (c_->cores_[1].hp_) {
-                    platform().set_tile(Layer::map_1, 1, 3, (tl - 1) + 3);
-                } else {
-                    platform().set_tile(Layer::map_1, 1, 3, 33);
-                }
-                if (c_->cores_[2].hp_) {
-                    platform().set_tile(Layer::map_1, 1, 6, (tl - 1) + 4);
-                } else {
-                    platform().set_tile(Layer::map_1, 1, 6, 63);
-                }
-                if (c_->cores_[3].hp_) {
-                    platform().set_tile(Layer::map_1, 1, 7, (tl - 1) + 5);
-                    platform().set_tile(Layer::map_1, 1, 8, (tl - 1) + 6);
-                } else {
-                    platform().set_tile(Layer::map_1, 1, 7, 73);
-                    platform().set_tile(Layer::map_1, 1, 8, 83);
-                }
+        auto draw_cores = [&](u8 tl, u8 tr) {
+            if (c_->cores_[0].hp_) {
+                platform().set_tile(Layer::map_1, 1, 1, (tl - 1) + 1);
+                platform().set_tile(Layer::map_1, 1, 2, (tl - 1) + 2);
+            } else {
+                platform().set_tile(Layer::map_1, 1, 1, 13);
+                platform().set_tile(Layer::map_1, 1, 2, 23);
+            }
+            if (c_->cores_[1].hp_) {
+                platform().set_tile(Layer::map_1, 1, 3, (tl - 1) + 3);
+            } else {
+                platform().set_tile(Layer::map_1, 1, 3, 33);
+            }
+            if (c_->cores_[2].hp_) {
+                platform().set_tile(Layer::map_1, 1, 6, (tl - 1) + 4);
+            } else {
+                platform().set_tile(Layer::map_1, 1, 6, 63);
+            }
+            if (c_->cores_[3].hp_) {
+                platform().set_tile(Layer::map_1, 1, 7, (tl - 1) + 5);
+                platform().set_tile(Layer::map_1, 1, 8, (tl - 1) + 6);
+            } else {
+                platform().set_tile(Layer::map_1, 1, 7, 73);
+                platform().set_tile(Layer::map_1, 1, 8, 83);
+            }
 
-                if (c_->cores_[4].hp_) {
-                    platform().set_tile(Layer::map_1, 8, 1, (tr - 1) + 1);
-                    platform().set_tile(Layer::map_1, 8, 2, (tr - 1) + 2);
-                } else {
-                    platform().set_tile(Layer::map_1, 8, 1, 30);
-                    platform().set_tile(Layer::map_1, 8, 2, 30);
-                }
-                if (c_->cores_[5].hp_) {
-                    platform().set_tile(Layer::map_1, 8, 3, (tr - 1) + 3);
-                } else {
-                    platform().set_tile(Layer::map_1, 8, 3, 40);
-                }
-                if (c_->cores_[6].hp_) {
-                    platform().set_tile(Layer::map_1, 8, 6, (tr - 1) + 4);
-                } else {
-                    platform().set_tile(Layer::map_1, 8, 6, 70);
-                }
-                if (c_->cores_[7].hp_) {
-                    platform().set_tile(Layer::map_1, 8, 7, (tr - 1) + 5);
-                    platform().set_tile(Layer::map_1, 8, 8, (tr - 1) + 6);
-                } else {
-                    platform().set_tile(Layer::map_1, 8, 7, 80);
-                    platform().set_tile(Layer::map_1, 8, 8, 90);
-                }
-            };
+            if (c_->cores_[4].hp_) {
+                platform().set_tile(Layer::map_1, 8, 1, (tr - 1) + 1);
+                platform().set_tile(Layer::map_1, 8, 2, (tr - 1) + 2);
+            } else {
+                platform().set_tile(Layer::map_1, 8, 1, 30);
+                platform().set_tile(Layer::map_1, 8, 2, 30);
+            }
+            if (c_->cores_[5].hp_) {
+                platform().set_tile(Layer::map_1, 8, 3, (tr - 1) + 3);
+            } else {
+                platform().set_tile(Layer::map_1, 8, 3, 40);
+            }
+            if (c_->cores_[6].hp_) {
+                platform().set_tile(Layer::map_1, 8, 6, (tr - 1) + 4);
+            } else {
+                platform().set_tile(Layer::map_1, 8, 6, 70);
+            }
+            if (c_->cores_[7].hp_) {
+                platform().set_tile(Layer::map_1, 8, 7, (tr - 1) + 5);
+                platform().set_tile(Layer::map_1, 8, 8, (tr - 1) + 6);
+            } else {
+                platform().set_tile(Layer::map_1, 8, 7, 80);
+                platform().set_tile(Layer::map_1, 8, 8, 90);
+            }
+        };
 
         switch (c_->core_anim_) {
         case 0:
@@ -322,9 +268,7 @@ void RockSmasher::draw(Platform::Screen& s) const
             break;
         }
     }
-
 }
-
 
 
 bool RockSmasher::overlapping_impl(Object& other)
@@ -419,7 +363,6 @@ bool RockSmasher::overlapping_impl(Object& other)
 }
 
 
-
 bool RockSmasher::overlapping(Object& other)
 {
     // Checking intersection with the rocksmasher is pretty costly. Only test
@@ -430,7 +373,6 @@ bool RockSmasher::overlapping(Object& other)
 
     return overlapping_impl(other);
 }
-
 
 
 void RockSmasher::step()
@@ -494,8 +436,7 @@ void RockSmasher::step()
             engine().p_->objects_removed_.push_back({(u8)engine().room_.coord_.x,
                                                      (u8)engine().room_.coord_.y,
                                                      spawn_x_,
-                                                     spawn_y_
-                });
+                                                     spawn_y_});
 
             engine().boss_completed();
 
@@ -515,9 +456,7 @@ void RockSmasher::step()
 
 
     for (auto& s : engine().player_projectiles_) {
-        if (s->x() < x() - 36 or
-            s->x() > x() + 30 or
-            s->y() < y() - 30 or
+        if (s->x() < x() - 36 or s->x() > x() + 30 or s->y() < y() - 30 or
             s->y() > y() + 36) {
             if (overlapping_impl(*s)) {
                 s->kill();
@@ -591,10 +530,8 @@ void RockSmasher::step()
 
     switch (timeline_++) {
     case 2:
-        if (!(engine().hero()->y() > y() - 23 and
-              engine().hero()->y() < y() + 23 and
-              engine().hero()->x() > x() - 23 and
-              engine().hero()->x() < x() + 23)) {
+        if (!(engine().hero()->y() > y() - 23 and engine().hero()->y() < y() + 23 and
+              engine().hero()->x() > x() - 23 and engine().hero()->x() < x() + 23)) {
             timeline_ = 0;
         } else {
             engine().swapsong("boss");
@@ -604,18 +541,18 @@ void RockSmasher::step()
     case 40:
         for (int i = 0; i < 8; ++i) {
             c_->orbs_.emplace_back(this,
-                                Fixnum(i * 45),
-                                Fixnum((256 + 32 * i) / 2),
-                                Fixnum(128 / 2),
-                                Fixnum(-0.5f),
-                                1);
+                                   Fixnum(i * 45),
+                                   Fixnum((256 + 32 * i) / 2),
+                                   Fixnum(128 / 2),
+                                   Fixnum(-0.5f),
+                                   1);
 
             c_->orbs_.emplace_back(this,
-                                Fixnum(i * 45),
-                                Fixnum((256 + 32 * i) / 2),
-                                Fixnum(112 / 2),
-                                Fixnum(1),
-                                2);
+                                   Fixnum(i * 45),
+                                   Fixnum((256 + 32 * i) / 2),
+                                   Fixnum(112 / 2),
+                                   Fixnum(1),
+                                   2);
         }
         break;
 
@@ -651,8 +588,7 @@ void RockSmasher::step()
                 if (o.mode_ == 1) {
                     Vec2<Fixnum> v{o.x_, o.y_};
                     if (auto e = engine().add_object<EnemyShot>(v)) {
-                        auto dir = direction(fvec(v),
-                                             fvec(position()));
+                        auto dir = direction(fvec(v), fvec(position()));
                         dir = rotate(dir, 32);
                         dir = dir * (1.5f / 2);
                         e->set_speed({Fixnum(dir.x), Fixnum(dir.y)});
@@ -666,8 +602,7 @@ void RockSmasher::step()
                 if (o.mode_ == 2) {
                     Vec2<Fixnum> v{o.x_, o.y_};
                     if (auto e = engine().add_object<Supershot>(v)) {
-                        auto dir = direction(fvec(v),
-                                             fvec(position()));
+                        auto dir = direction(fvec(v), fvec(position()));
                         dir = rotate(dir, 360 - 26);
                         dir = dir * (1.5f / 2);
                         e->set_speed({Fixnum(dir.x), Fixnum(dir.y)});
@@ -717,9 +652,7 @@ void RockSmasher::step()
         timeline_ = 80;
         break;
     }
-
 }
 
 
-
-}
+} // namespace herocore

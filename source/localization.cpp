@@ -2,14 +2,14 @@
 #include "platform/platform.hpp"
 
 
-class str_const {
+class str_const
+{
 private:
     const char* const p_;
     const size_t sz_;
 
 public:
-    template <size_t N>
-    constexpr str_const(const char (&a)[N]) : p_(a), sz_(N - 1)
+    template <size_t N> constexpr str_const(const char (&a)[N]) : p_(a), sz_(N - 1)
     {
     }
 
@@ -36,26 +36,24 @@ public:
 // Needs to be a macro because there's no way to pass a str_const as a
 // constexpr parameter. Converts the first utf-8 codepoint in a string to a
 // 32-bit integer, for use in a giant switch statement (below).
-#define UTF8_GETCHR(_STR_)                                                     \
-    []() -> utf8::Codepoint {                                                  \
-        if constexpr ((str_const(_STR_)[0] & 0x80) == 0) {                     \
-            return str_const(_STR_)[0];                                        \
-        } else if constexpr ((str_const(_STR_)[0] & 0xf0) == 0xC0 ||           \
-                             (str_const(_STR_)[0] & 0xf0) == 0xD0) {           \
-            return (u32)(u8)str_const(_STR_)[0] |                              \
-                   (((u32)(u8)str_const(_STR_)[1]) << 8);                      \
-        } else if constexpr ((str_const(_STR_)[0] & 0xf0) == 0xE0) {           \
-            return (u32)(u8)str_const(_STR_)[0] |                              \
-                   (((u32)(u8)str_const(_STR_)[1]) << 8) |                     \
-                   ((u32)(u8)str_const(_STR_)[2] << 16);                       \
-        } else if constexpr ((str_const(_STR_)[0] & 0xf0) == 0xF0) {           \
-            return (u32)(u8)str_const(_STR_)[0] |                              \
-                   ((u32)(u8)str_const(_STR_)[1] << 8) |                       \
-                   ((u32)(u8)str_const(_STR_)[2] << 16) |                      \
-                   ((u32)(u8)str_const(_STR_)[3] << 24);                       \
-        } else {                                                               \
-            return 0;                                                          \
-        }                                                                      \
+#define UTF8_GETCHR(_STR_)                                                               \
+    []() -> utf8::Codepoint {                                                            \
+        if constexpr ((str_const(_STR_)[0] & 0x80) == 0) {                               \
+            return str_const(_STR_)[0];                                                  \
+        } else if constexpr ((str_const(_STR_)[0] & 0xf0) == 0xC0 ||                     \
+                             (str_const(_STR_)[0] & 0xf0) == 0xD0) {                     \
+            return (u32)(u8)str_const(_STR_)[0] | (((u32)(u8)str_const(_STR_)[1]) << 8); \
+        } else if constexpr ((str_const(_STR_)[0] & 0xf0) == 0xE0) {                     \
+            return (u32)(u8)str_const(_STR_)[0] |                                        \
+                   (((u32)(u8)str_const(_STR_)[1]) << 8) |                               \
+                   ((u32)(u8)str_const(_STR_)[2] << 16);                                 \
+        } else if constexpr ((str_const(_STR_)[0] & 0xf0) == 0xF0) {                     \
+            return (u32)(u8)str_const(_STR_)[0] | ((u32)(u8)str_const(_STR_)[1] << 8) |  \
+                   ((u32)(u8)str_const(_STR_)[2] << 16) |                                \
+                   ((u32)(u8)str_const(_STR_)[3] << 24);                                 \
+        } else {                                                                         \
+            return 0;                                                                    \
+        }                                                                                \
     }()
 
 
@@ -64,10 +62,10 @@ template <u32 B, bool C> constexpr void my_assert()
     static_assert(C, "oh no");
 }
 
-#define UTF8_TESTCHR(_STR_)                                                    \
-    []() -> utf8::Codepoint {                                                  \
-        my_assert<(u32)(u8)str_const(_STR_)[0], false>();                      \
-        return 0;                                                              \
+#define UTF8_TESTCHR(_STR_)                                                              \
+    []() -> utf8::Codepoint {                                                            \
+        my_assert<(u32)(u8)str_const(_STR_)[0], false>();                                \
+        return 0;                                                                        \
     }()
 
 
@@ -103,8 +101,7 @@ std::optional<u16> char_lookup_slow(const utf8::Codepoint& cp)
 // codepoint. Keep in mind, that on some platforms, like the Gameboy Advance,
 // there is very little texture memory available for displaying glyphs. You may
 // only be able to display 80 or so unique characters on the screen at a time.
-std::optional<Platform::TextureMapping>
-standard_texture_map(const utf8::Codepoint& cp)
+std::optional<Platform::TextureMapping> standard_texture_map(const utf8::Codepoint& cp)
 {
     // clang-format off
     auto mapping = [&]() -> std::optional<u16> {

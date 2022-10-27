@@ -4,7 +4,8 @@
 #include "number/numeric.hpp"
 
 
-class Color {
+class Color
+{
 public:
     Color(ColorConstant k)
     {
@@ -30,8 +31,7 @@ public:
 
     static Color from_bgr_hex_555(u16 val)
     {
-        return {
-            u8(0x1F & val), u8((0x3E0 & val) >> 5), u8((0x7C00 & val) >> 10)};
+        return {u8(0x1F & val), u8((0x3E0 & val) >> 5), u8((0x7C00 & val) >> 10)};
     }
 
     inline Color invert() const

@@ -1,14 +1,12 @@
 #include "hydra.hpp"
-#include "objects/projectile/enemyShot.hpp"
-#include "objects/projectile/bomb.hpp"
-#include "objects/projectile/vortex.hpp"
 #include "objects/particles/bigExplo.hpp"
-
+#include "objects/projectile/bomb.hpp"
+#include "objects/projectile/enemyShot.hpp"
+#include "objects/projectile/vortex.hpp"
 
 
 namespace herocore
 {
-
 
 
 void HydraHead::draw(Platform::Screen& s) const
@@ -23,13 +21,12 @@ void HydraHead::draw(Platform::Screen& s) const
     auto xdiff_ = Fixnum(0.2f) * (x_start_ - x());
     auto ydiff_ = Fixnum(0.2f) * (y_start_ - y());
 
-    auto neck =
-        [&](Fixnum xfrac, Fixnum yfrac) {
-            Fixnum x = (position_.x + xdiff_ * xfrac) + 12;
-            Fixnum y = (position_.y + ydiff_ * yfrac) + 8;
-            spr.set_position({x, y});
-            s.draw(spr);
-        };
+    auto neck = [&](Fixnum xfrac, Fixnum yfrac) {
+        Fixnum x = (position_.x + xdiff_ * xfrac) + 12;
+        Fixnum y = (position_.y + ydiff_ * yfrac) + 8;
+        spr.set_position({x, y});
+        s.draw(spr);
+    };
 
     spr.set_texture_index(141);
     spr.set_priority(2);
@@ -74,7 +71,6 @@ void HydraHead::draw(Platform::Screen& s) const
 }
 
 
-
 void HydraHead::step()
 {
     const bool hard = engine().g_.difficulty_ == Difficulty::hard;
@@ -86,15 +82,14 @@ void HydraHead::step()
         auto xdiff_ = Fixnum(0.2f) * (x_start_ - x());
         auto ydiff_ = Fixnum(0.2f) * (y_start_ - y());
 
-        auto boom =
-            [&](Fixnum xfrac, Fixnum yfrac) {
-                Fixnum x = (position_.x + xdiff_ * xfrac) + 12;
-                Fixnum y = (position_.y + ydiff_ * yfrac) + 8;
-                engine().add_object<BigExplo>(Vec2<Fixnum>{x - 6, y - 6});
-                if (engine().g_.screenshake_ < 2) {
-                    engine().g_.screenshake_ = 2;
-                }
-            };
+        auto boom = [&](Fixnum xfrac, Fixnum yfrac) {
+            Fixnum x = (position_.x + xdiff_ * xfrac) + 12;
+            Fixnum y = (position_.y + ydiff_ * yfrac) + 8;
+            engine().add_object<BigExplo>(Vec2<Fixnum>{x - 6, y - 6});
+            if (engine().g_.screenshake_ < 2) {
+                engine().g_.screenshake_ = 2;
+            }
+        };
 
 
         switch (deadcyc_) {
@@ -139,20 +134,23 @@ void HydraHead::step()
         if (copy_ == 0) {
 
             if (hard) {
-                auto h = engine().add_object<HydraHead>(Vec2<Fixnum>{x_start_, y_start_ - 2}, 40);
+                auto h = engine().add_object<HydraHead>(
+                    Vec2<Fixnum>{x_start_, y_start_ - 2}, 40);
                 if (h) {
                     h->copy_++;
                     h->health_ = 8;
                 }
 
-                h = engine().add_object<HydraHead>(Vec2<Fixnum>{x_start_, y_start_ + 2}, 40);
+                h = engine().add_object<HydraHead>(Vec2<Fixnum>{x_start_, y_start_ + 2},
+                                                   40);
                 if (h) {
                     h->copy_++;
                     h->health_ = 8;
                     h->hyper_ = true;
                 }
             } else {
-                auto h = engine().add_object<HydraHead>(Vec2<Fixnum>{x_start_, y_start_}, 40);
+                auto h =
+                    engine().add_object<HydraHead>(Vec2<Fixnum>{x_start_, y_start_}, 40);
                 if (h) {
                     h->copy_++;
                     h->health_ = 8;
@@ -199,35 +197,30 @@ void HydraHead::step()
     case 160:
         sprite_subimage_ = 2;
         if (copy_ == 0) {
-            if (auto obj = engine().add_object<EnemyShot>(Vec2<Fixnum>{
-                            x() - 2, y() + 1
-                        })) {
-                auto dir = direction(fvec(position_),
-                                     fvec(engine().hero()->position()));
+            if (auto obj =
+                    engine().add_object<EnemyShot>(Vec2<Fixnum>{x() - 2, y() + 1})) {
+                auto dir = direction(fvec(position_), fvec(engine().hero()->position()));
 
                 obj->set_speed(Vec2<Fixnum>{dir.x, dir.y});
             }
             // if (hard) {
-                if (auto obj = engine().add_object<EnemyShot>(Vec2<Fixnum>{
-                            x() - 2, y() + 1
-                                })) {
-                    auto dir = rotate({1, 0},
-                                      120 + rng::choice<120>(rng::critical_state));
+            if (auto obj =
+                    engine().add_object<EnemyShot>(Vec2<Fixnum>{x() - 2, y() + 1})) {
+                auto dir = rotate({1, 0}, 120 + rng::choice<120>(rng::critical_state));
 
-                    dir = dir * 0.5f;
+                dir = dir * 0.5f;
 
-                    obj->set_speed(Vec2<Fixnum>{dir.x, dir.y});
-                }
-                // }
+                obj->set_speed(Vec2<Fixnum>{dir.x, dir.y});
+            }
+            // }
         } else if (copy_ == 1) {
             if (auto b = engine().add_object<Bomb>(position_)) {
                 auto d = rotate({1, 0}, 180 - 60);
                 b->set_speed({2.8f * Fixnum(d.x), Fixnum(1.5f * -d.y)});
             }
             if (hard) {
-                if (auto obj = engine().add_object<EnemyShot>(Vec2<Fixnum>{
-                            x() - 2, y() + 1
-                                })) {
+                if (auto obj =
+                        engine().add_object<EnemyShot>(Vec2<Fixnum>{x() - 2, y() + 1})) {
                     auto dir = rotate({1, 0}, 180);
 
                     dir = dir * 0.5f;
@@ -316,11 +309,9 @@ void HydraHead::step()
 }
 
 
-
-Hydra::Hydra(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y) :
-    Enemy(TaggedObject::Tag::ignored, Health{9999}),
-    spawn_x_(spawn_x),
-    spawn_y_(spawn_y)
+Hydra::Hydra(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y)
+    : Enemy(TaggedObject::Tag::ignored, Health{9999}), spawn_x_(spawn_x),
+      spawn_y_(spawn_y)
 {
     position_ = pos;
 
@@ -334,7 +325,6 @@ Hydra::Hydra(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y) :
 
     draw_image(platform(), 49, spawn_x / 8 + 5, spawn_y / 8, 6, 6, Layer::map_0);
 }
-
 
 
 void Hydra::step()
@@ -353,7 +343,6 @@ void Hydra::step()
             if (auto m = engine().add_object<Missile>(o)) {
                 m->set_dir(rotate({1, 0}, 360 - 65));
             }
-
         }
     }
 
@@ -376,24 +365,27 @@ void Hydra::step()
             if (totcyc_ < 15) {
                 engine().g_.screenshake_ = 6;
                 platform().speaker().play_sound("snd_explo1", 9);
-                engine().add_object<BigExplo>(rng::sample<16>(o,
-                                                              rng::critical_state));
+                engine().add_object<BigExplo>(rng::sample<16>(o, rng::critical_state));
             } else if (totcyc_ == 15) {
 
                 platform().speaker().play_sound("snd_explo3", 10);
 
                 engine().add_object<ExploSpewer>(Vec2<Fixnum>{o.x + 20, o.y + 25});
 
-                if (auto e = engine().add_object<ExploSpewer>(Vec2<Fixnum>{o.x - 16, o.y})) {
+                if (auto e =
+                        engine().add_object<ExploSpewer>(Vec2<Fixnum>{o.x - 16, o.y})) {
                     e->set_speed({-1, 0});
                 }
-                if (auto e = engine().add_object<ExploSpewer>(Vec2<Fixnum>{o.x + 16, o.y})) {
+                if (auto e =
+                        engine().add_object<ExploSpewer>(Vec2<Fixnum>{o.x + 16, o.y})) {
                     e->set_speed({1, 0});
                 }
-                if (auto e = engine().add_object<ExploSpewer>(Vec2<Fixnum>{o.x, o.y - 16})) {
+                if (auto e =
+                        engine().add_object<ExploSpewer>(Vec2<Fixnum>{o.x, o.y - 16})) {
                     e->set_speed({0, -1});
                 }
-                if (auto e = engine().add_object<ExploSpewer>(Vec2<Fixnum>{o.x, o.y + 16})) {
+                if (auto e =
+                        engine().add_object<ExploSpewer>(Vec2<Fixnum>{o.x, o.y + 16})) {
                     e->set_speed({0, 1});
                 }
             } else if (totcyc_ >= 20) {
@@ -413,12 +405,10 @@ void Hydra::step()
                 kill();
                 engine().add_object<Explo>(o);
 
-                engine().p_->objects_removed_.push_back({
-                                                         (u8)engine().room_.coord_.x,
+                engine().p_->objects_removed_.push_back({(u8)engine().room_.coord_.x,
                                                          (u8)engine().room_.coord_.y,
                                                          spawn_x_,
-                                                         spawn_y_
-                    });
+                                                         spawn_y_});
 
                 u8 start_x = spawn_x_ / 8 + 5;
                 u8 start_y = spawn_y_ / 8;
@@ -465,5 +455,4 @@ void Hydra::step()
 }
 
 
-
-}
+} // namespace herocore

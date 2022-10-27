@@ -1,25 +1,22 @@
 #include "hero.hpp"
 #include "engine.hpp"
 #include "objects/particles/flame.hpp"
-#include "objects/projectile/shot.hpp"
-#include "objects/projectile/missile.hpp"
-#include "objects/projectile/vortex.hpp"
 #include "objects/projectile/enemyProjectile.hpp"
-#include "objects/projectile/supershot.hpp"
-#include "objects/projectile/megashot.hpp"
 #include "objects/projectile/gigashot.hpp"
-
+#include "objects/projectile/megashot.hpp"
+#include "objects/projectile/missile.hpp"
+#include "objects/projectile/shot.hpp"
+#include "objects/projectile/supershot.hpp"
+#include "objects/projectile/vortex.hpp"
 
 
 namespace herocore
 {
 
 
-
 class Blade : public Object
 {
 public:
-
     Blade(const Vec2<Fixnum>& pos, bool flip)
     {
         position_ = pos;
@@ -42,9 +39,7 @@ public:
         if (engine().p_->blade_ > 2) {
             sprite_index_ = 195;
             hitbox_.dimension_.size_ = {10, 16};
-
         }
-
     }
 
 
@@ -122,14 +117,10 @@ public:
 
                 auto dir = hflip_ ? Fixnum(2) : Fixnum(-2);
 
-                auto reflect_s = [&](int xo, int yo)
-                                 {
-                                     engine().add_object<Shot>(Vec2<Fixnum>
-                                                               {s->x() + xo,
-                                                                s->y() + yo},
-                                                               dir,
-                                                               1);
-                                 };
+                auto reflect_s = [&](int xo, int yo) {
+                    engine().add_object<Shot>(
+                        Vec2<Fixnum>{s->x() + xo, s->y() + yo}, dir, 1);
+                };
 
                 if (dynamic_cast<Missile*>(s.get())) {
                     reflect_s(0, 3);
@@ -137,8 +128,7 @@ public:
                     reflect_s(hflip_ ? 3 : -3, 0);
                     engine().add_object<Explo>(Vec2<Fixnum>{s->x() - 4, s->y() - 4});
                     s->kill();
-                } else if (dynamic_cast<Vortex*>(s.get()) and
-                           engine().p_->blade_ == 3) {
+                } else if (dynamic_cast<Vortex*>(s.get()) and engine().p_->blade_ == 3) {
                     reflect_s(0, 3);
                     reflect_s(0, -3);
                     reflect_s(hflip_ ? 3 : -3, 0);
@@ -182,7 +172,6 @@ public:
         }
 
         if (test_wall_collision()) {
-
         }
     }
 
@@ -190,7 +179,6 @@ private:
     u8 dud_ = 1;
     u8 cyc_ = 0;
 };
-
 
 
 void Hero::step()
@@ -239,8 +227,7 @@ void Hero::step()
                 chargeblade_ += 1;
             }
         } else if (not key_pressed<Key::action_1>() and
-                   not key_pressed<Key::action_2>() and
-                   chargeblade_ == 20) {
+                   not key_pressed<Key::action_2>() and chargeblade_ == 20) {
 
             engine().add_object<Blade>(position_, hflip_);
 
@@ -257,13 +244,11 @@ void Hero::step()
         hflip_ = false;
 
         fireleft();
-
     }
     if (key_down<Key::action_1>()) {
         hflip_ = true;
 
         fireright();
-
     }
 
     if (engine().g_.invulnerable_ > 0) {
@@ -317,17 +302,16 @@ void Hero::step()
         if (jetpack_counter_ == 6) {
             jetpack_counter_ = 0;
             if (hflip_ == false) {
-                engine().add_object<Flame>(Vec2<Fixnum>{position_.x + 4,
-                                                        position_.y + 5});
+                engine().add_object<Flame>(
+                    Vec2<Fixnum>{position_.x + 4, position_.y + 5});
             } else {
-                engine().add_object<Flame>(Vec2<Fixnum>{position_.x - 1,
-                                                        position_.y + 5});
+                engine().add_object<Flame>(
+                    Vec2<Fixnum>{position_.x - 1, position_.y + 5});
             }
         }
     }
 
-    if (not chargeblade_ and
-        engine().g_.autofire_) {
+    if (not chargeblade_ and engine().g_.autofire_) {
         autofire_index_ += 1;
         if (autofire_index_ >= 4) {
             autofire_index_ = 0;
@@ -349,15 +333,13 @@ void Hero::step()
 }
 
 
-
 void Hero::draw(Platform::Screen& screen) const
 {
     if (engine().g_.hp_ == 0) {
         return;
     }
 
-    if (engine().g_.invulnerable_ > 0 and
-        engine().g_.invulnerable_ % 4 < 2) {
+    if (engine().g_.invulnerable_ > 0 and engine().g_.invulnerable_ % 4 < 2) {
         Object::draw(screen);
     }
     if (not engine().g_.invulnerable_ or chargeblade_ >= 20) {
@@ -382,7 +364,6 @@ void Hero::draw(Platform::Screen& screen) const
 }
 
 
-
 void Hero::fireleft()
 {
     if (engine().g_.heat_) {
@@ -392,12 +373,10 @@ void Hero::fireleft()
         if (not platform().speaker().is_sound_playing("snd_fireshot")) {
             platform().speaker().play_sound("snd_fireshot", 1);
         }
-        engine().add_object<Shot>(Vec2<Fixnum>{position_.x - 1, position_.y + 3},
-                                  Fixnum(-2),
-                                  1);
+        engine().add_object<Shot>(
+            Vec2<Fixnum>{position_.x - 1, position_.y + 3}, Fixnum(-2), 1);
     }
 }
-
 
 
 void Hero::fireright()
@@ -409,12 +388,10 @@ void Hero::fireright()
         if (not platform().speaker().is_sound_playing("snd_fireshot")) {
             platform().speaker().play_sound("snd_fireshot", 1);
         }
-        engine().add_object<Shot>(Vec2<Fixnum>{position_.x + 2, position_.y + 3},
-                                  Fixnum(2),
-                                  1);
+        engine().add_object<Shot>(
+            Vec2<Fixnum>{position_.x + 2, position_.y + 3}, Fixnum(2), 1);
     }
 }
-
 
 
 u8& Hero::blaster_level() const
@@ -423,12 +400,10 @@ u8& Hero::blaster_level() const
 }
 
 
-
 u8& Hero::blade_level() const
 {
     return engine().p_->blade_;
 }
-
 
 
 u8& Hero::suit_level() const
@@ -437,12 +412,10 @@ u8& Hero::suit_level() const
 }
 
 
-
 u8& Hero::level() const
 {
     return engine().p_->level_;
 }
 
 
-
-}
+} // namespace herocore

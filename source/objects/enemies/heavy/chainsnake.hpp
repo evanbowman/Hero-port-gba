@@ -1,23 +1,20 @@
 #pragma once
 
-#include "objects/enemies/enemy.hpp"
+#include "bulkAllocator.hpp"
 #include "engine.hpp"
 #include "number/random.hpp"
-#include "objects/projectile/enemyShot.hpp"
-#include "objects/projectile/supershot.hpp"
-#include "objects/projectile/megashot.hpp"
+#include "objects/enemies/enemy.hpp"
 #include "objects/particles/bigExplo.hpp"
-#include "bulkAllocator.hpp"
-
+#include "objects/projectile/enemyShot.hpp"
+#include "objects/projectile/megashot.hpp"
+#include "objects/projectile/supershot.hpp"
 
 
 namespace herocore
 {
 
 
-
 class Chainsnake;
-
 
 
 class ChainsnakeNeck : public Enemy
@@ -27,10 +24,8 @@ private:
     int offset_;
 
 public:
-
-    ChainsnakeNeck(Chainsnake* owner, int offset) :
-        Enemy(Tag::chainsnake_neck, Health{99}),
-        owner_(owner), offset_(offset)
+    ChainsnakeNeck(Chainsnake* owner, int offset)
+        : Enemy(Tag::chainsnake_neck, Health{99}), owner_(owner), offset_(offset)
     {
         sprite_index_ = 141;
         origin_ = {3, 3};
@@ -53,9 +48,7 @@ public:
     {
         return owner_;
     }
-
 };
-
 
 
 class Chainsnake : public Enemy
@@ -73,13 +66,12 @@ private:
     int shotcyc_ = 0;
 
 public:
-
     DynamicMemory<HistoryBuffer> hist_;
 
 
-    Chainsnake(const Vec2<Fixnum>& pos) :
-        Enemy(TaggedObject::Tag::chainsnake_neck, Health{8}),
-        hist_(allocate_dynamic<HistoryBuffer>(platform()))
+    Chainsnake(const Vec2<Fixnum>& pos)
+        : Enemy(TaggedObject::Tag::chainsnake_neck, Health{8}),
+          hist_(allocate_dynamic<HistoryBuffer>(platform()))
     {
         position_ = pos;
 
@@ -102,8 +94,7 @@ public:
                     }
                 }
             }
-            engine().add_object<BigExplo>(Vec2<Fixnum>{
-                    position_.x, position_.y});
+            engine().add_object<BigExplo>(Vec2<Fixnum>{position_.x, position_.y});
             return;
         }
 
@@ -136,9 +127,8 @@ public:
                 shotcyc_ += 1;
                 if (shotcyc_ == 4) {
                     for (int i = 0; i < 4; ++i) {
-                        if (auto e = engine().add_object<EnemyShot>(Vec2<Fixnum>{
-                                    x() - 2, y() - 2
-                                })) {
+                        if (auto e = engine().add_object<EnemyShot>(
+                                Vec2<Fixnum>{x() - 2, y() - 2})) {
                             auto d = rotate({1, 0}, 45 + i * 90);
                             e->set_speed({Fixnum(d.x), Fixnum(d.y)});
                         }
@@ -188,8 +178,7 @@ public:
                     firsthome_ = true;
                     prevdir_ = dir_;
                 }
-                if ((dir_ == 0 and prevdir_ == 180) or
-                    (dir_ == 180 and prevdir_ == 0) or
+                if ((dir_ == 0 and prevdir_ == 180) or (dir_ == 180 and prevdir_ == 0) or
                     (dir_ == 90 and prevdir_ == 270) or
                     (dir_ == 270 and prevdir_ == 90)) {
                     dir_ = prevdir_;
@@ -278,7 +267,6 @@ public:
 };
 
 
-
 inline void ChainsnakeNeck::step()
 {
     position_.x = (*owner()->hist_)[offset_].x;
@@ -286,5 +274,4 @@ inline void ChainsnakeNeck::step()
 }
 
 
-
-}
+} // namespace herocore

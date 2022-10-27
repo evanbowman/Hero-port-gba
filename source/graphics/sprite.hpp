@@ -6,7 +6,6 @@
 #include "number/numeric.hpp"
 
 
-
 using TextureIndex = u16;
 
 
@@ -122,7 +121,6 @@ private:
     TextureIndex texture_index_ = 0;
     ColorMix mix_;
 };
-
 
 
 // Warning: The class requires the initial mix amount passed in to be a multiple

@@ -1,31 +1,26 @@
 #pragma once
 
-#include "objects/enemies/enemy.hpp"
-#include "objects/projectile/bomb.hpp"
 #include "engine.hpp"
 #include "fmt.hpp"
 #include "number/random.hpp"
+#include "objects/enemies/enemy.hpp"
 #include "objects/particles/explo.hpp"
-
+#include "objects/projectile/bomb.hpp"
 
 
 namespace herocore
 {
 
 
-
 class Blomb : public Enemy
 {
 private:
-
     int timeline_ = 0;
     int movedir_ = 0;
     bool move_ = false;
 
 public:
-
-    Blomb(const Vec2<Fixnum>& pos) :
-        Enemy(TaggedObject::Tag::blomb, Health{2})
+    Blomb(const Vec2<Fixnum>& pos) : Enemy(TaggedObject::Tag::blomb, Health{2})
     {
         position_ = pos;
 
@@ -125,7 +120,6 @@ public:
         case 119:
             timeline_ = 40;
             break;
-
         }
 
         // if (move_) {
@@ -162,5 +156,4 @@ public:
 };
 
 
-
-}
+} // namespace herocore

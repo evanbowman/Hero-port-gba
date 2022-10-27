@@ -1,15 +1,13 @@
 #pragma once
 
-#include "objects/solid.hpp"
 #include "engine.hpp"
 #include "objects/particles/explo.hpp"
 #include "objects/projectile/enemyProjectile.hpp"
-
+#include "objects/solid.hpp"
 
 
 namespace herocore
 {
-
 
 
 // The gamemaker source code calls this object simply obj_holder. For reference,
@@ -17,7 +15,6 @@ namespace herocore
 class Holder : public Solid
 {
 public:
-
     Holder(const Vec2<Fixnum>& pos)
     {
         position_ = pos;
@@ -94,5 +91,4 @@ public:
 };
 
 
-
-}
+} // namespace herocore

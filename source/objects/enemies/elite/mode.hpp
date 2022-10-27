@@ -1,24 +1,21 @@
 #pragma once
 
-#include "objects/enemies/enemy.hpp"
-#include "objects/projectile/supershot.hpp"
-#include "objects/projectile/megashot.hpp"
-#include "objects/projectile/missile.hpp"
-#include "objects/projectile/vortex.hpp"
-#include "objects/projectile/bomb.hpp"
-#include "objects/particles/bigExplo.hpp"
 #include "engine.hpp"
 #include "number/random.hpp"
-
+#include "objects/enemies/enemy.hpp"
+#include "objects/particles/bigExplo.hpp"
+#include "objects/projectile/bomb.hpp"
+#include "objects/projectile/megashot.hpp"
+#include "objects/projectile/missile.hpp"
+#include "objects/projectile/supershot.hpp"
+#include "objects/projectile/vortex.hpp"
 
 
 namespace herocore
 {
 
 
-
 class Mode;
-
 
 
 class ModeNeck : public Enemy
@@ -38,7 +35,6 @@ private:
     mutable u8 flashcyc_ = 0;
 
 public:
-
     ModeNeck(Mode* owner, Fixnum rot, int offset);
 
 
@@ -50,25 +46,19 @@ public:
     {
         return owner_;
     }
-
-
 };
-
 
 
 class Mode : public Enemy
 {
 private:
-
     int timeline_ = 0;
     bool neckinit_ = false;
     bool flash_ = false;
 
 
 public:
-
-    Mode(const Vec2<Fixnum>& pos) :
-        Enemy(TaggedObject::Tag::ignored, Health{32})
+    Mode(const Vec2<Fixnum>& pos) : Enemy(TaggedObject::Tag::ignored, Health{32})
     {
         position_ = pos;
 
@@ -145,8 +135,7 @@ public:
                     }
                 } else {
                     for (int i = 0; i < 5; ++i) {
-                        engine().add_object<ModeNeck>(this, Fixnum(i * 72),
-                                                      -20 + i * 9);
+                        engine().add_object<ModeNeck>(this, Fixnum(i * 72), -20 + i * 9);
                     }
                 }
 
@@ -191,8 +180,8 @@ public:
             }
             if (engine().g_.difficulty_ == Difficulty::hard) {
                 if (auto em = engine().add_object<Megashot>(position_)) {
-                    auto dir = direction(fvec(position_),
-                                         fvec(engine().hero()->position()));
+                    auto dir =
+                        direction(fvec(position_), fvec(engine().hero()->position()));
 
                     dir = dir * (2.5f / 2);
                     em->set_speed({Fixnum(dir.x), Fixnum(dir.y)});
@@ -203,8 +192,8 @@ public:
         case 135:
             if (engine().g_.difficulty_ == Difficulty::hard) {
                 if (auto em = engine().add_object<Megashot>(position_)) {
-                    auto dir = direction(fvec(position_),
-                                         fvec(engine().hero()->position()));
+                    auto dir =
+                        direction(fvec(position_), fvec(engine().hero()->position()));
 
                     dir = dir * (2.5f / 2);
                     em->set_speed({Fixnum(dir.x), Fixnum(dir.y)});
@@ -222,8 +211,8 @@ public:
             }
             if (engine().g_.difficulty_ == Difficulty::hard) {
                 if (auto em = engine().add_object<Megashot>(position_)) {
-                    auto dir = direction(fvec(position_),
-                                         fvec(engine().hero()->position()));
+                    auto dir =
+                        direction(fvec(position_), fvec(engine().hero()->position()));
 
                     dir = dir * (2.5f / 2);
                     em->set_speed({Fixnum(dir.x), Fixnum(dir.y)});
@@ -231,13 +220,12 @@ public:
             }
             break;
 
-        case 180:
-            {
-                auto dir = rotate({1, 0}, rng::choice<360>(rng::utility_state));
-                dir = dir * 0.5f;
-                speed_.x = Fixnum(dir.x);
-                speed_.y = Fixnum(dir.y);
-            }
+        case 180: {
+            auto dir = rotate({1, 0}, rng::choice<360>(rng::utility_state));
+            dir = dir * 0.5f;
+            speed_.x = Fixnum(dir.x);
+            speed_.y = Fixnum(dir.y);
+        }
             if (engine().g_.difficulty_ == Difficulty::hard) {
                 if (auto m = engine().add_object<Missile>(Vec2<Fixnum>{x() + 4, y()})) {
                     m->set_dir({1, 0});
@@ -274,8 +262,7 @@ public:
             break;
         }
 
-        if (not place_free({position_.x + speed_.x,
-                            position_.y + speed_.y})) {
+        if (not place_free({position_.x + speed_.x, position_.y + speed_.y})) {
             auto x = position_.x;
             auto y = position_.y;
             if (not place_free({x + 2, y}) or not place_free({x - 2, y})) {
@@ -292,18 +279,12 @@ public:
     {
         return 4;
     }
-
-
-
 };
 
 
-
-inline ModeNeck::ModeNeck(Mode* owner, Fixnum rot, int offset) :
-        Enemy(TaggedObject::Tag::ignored, Health{16}),
-        owner_(owner),
-        rot_(rot),
-        offset_(offset)
+inline ModeNeck::ModeNeck(Mode* owner, Fixnum rot, int offset)
+    : Enemy(TaggedObject::Tag::ignored, Health{16}), owner_(owner), rot_(rot),
+      offset_(offset)
 {
     position_ = owner_->position();
     sprite_index_ = 125;
@@ -312,7 +293,6 @@ inline ModeNeck::ModeNeck(Mode* owner, Fixnum rot, int offset) :
     hitbox_.dimension_.origin_ = {4, 4};
     origin_ = {4, 4};
 }
-
 
 
 inline void ModeNeck::draw(Platform::Screen& s) const
@@ -346,9 +326,7 @@ inline void ModeNeck::draw(Platform::Screen& s) const
             s.draw(spr_);
         }
     }
-
 }
-
 
 
 inline void ModeNeck::step()
@@ -361,14 +339,12 @@ inline void ModeNeck::step()
 
     if (owner_->timeline() == 300 + offset_) {
         if (x() > engine().hero()->x()) {
-            if (auto v = engine().add_object<Vortex>(Vec2<Fixnum>{x(),
-                                                                  y() - 4})) {
+            if (auto v = engine().add_object<Vortex>(Vec2<Fixnum>{x(), y() - 4})) {
                 v->set_left();
             }
         } else {
             engine().add_object<Vortex>(Vec2<Fixnum>{x() - 4, y() - 4});
         }
-
     }
 
     if (d_ < dmax_) {
@@ -397,5 +373,4 @@ inline void ModeNeck::step()
 }
 
 
-
-}
+} // namespace herocore

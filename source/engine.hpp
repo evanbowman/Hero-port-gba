@@ -1,29 +1,26 @@
 #pragma once
 
 
+#include "bitvector.hpp"
 #include "bulkAllocator.hpp"
 #include "filesystem.hpp"
-#include "platform/platform.hpp"
-#include "object.hpp"
 #include "list.hpp"
+#include "object.hpp"
 #include "objects/enemies/enemy.hpp"
+#include "objects/fluids/liquidMetal.hpp"
+#include "objects/hero.hpp"
 #include "objects/projectile/enemyProjectile.hpp"
 #include "objects/projectile/shot.hpp"
-#include "objects/fluids/liquidMetal.hpp"
 #include "objects/solid.hpp"
-#include "objects/hero.hpp"
+#include "platform/platform.hpp"
 #include "scene.hpp"
-#include "bitvector.hpp"
-
 
 
 Platform& platform();
 
 
-
 namespace herocore
 {
-
 
 
 inline void play_sound(const char* name, int priority)
@@ -34,26 +31,24 @@ inline void play_sound(const char* name, int priority)
 }
 
 
-
 enum class Difficulty { normal, hard };
 
 
-
-class Engine {
+class Engine
+{
 public:
     Engine(Platform& pf);
 
     void run();
 
 
-    template <typename T, typename ...Args>
-    T* add_object(Args&& ...args)
+    template <typename T, typename... Args> T* add_object(Args&&... args)
     {
         if (auto obj = alloc_object<T>(std::forward<Args>(args)...)) {
             auto result = obj.get();
             if constexpr (std::is_base_of<Enemy, T>()) {
                 enemies_.push(std::move(obj));
-            } else if constexpr(std::is_base_of<EnemyProjectile, T>()) {
+            } else if constexpr (std::is_base_of<EnemyProjectile, T>()) {
                 enemy_projectiles_.push(std::move(obj));
             } else if constexpr (std::is_base_of<Shot, T>()) {
                 player_projectiles_.push(std::move(obj));
@@ -249,7 +244,6 @@ public:
     void unlock_doors();
 
 private:
-
     int animcyc_ = 0;
     void animate_tiles();
 
@@ -263,20 +257,16 @@ private:
 };
 
 
-
 Engine& engine();
 
 
-
-}
-
+} // namespace herocore
 
 
 template <Key k> bool key_down()
 {
     return platform().keyboard().down_transition<k>();
 }
-
 
 
 template <Key k> bool key_pressed()

@@ -3,18 +3,14 @@
 #include "object.hpp"
 
 
-
 namespace herocore
 {
-
 
 
 class LiquidMetal : public Object
 {
 private:
-
 public:
-
     LiquidMetal(const Vec2<Fixnum>& pos, Hitbox::Dimension d)
     {
         position_ = pos;
@@ -31,5 +27,4 @@ public:
 };
 
 
-
-}
+} // namespace herocore

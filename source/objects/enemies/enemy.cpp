@@ -3,10 +3,8 @@
 #include "fmt.hpp"
 
 
-
 namespace herocore
 {
-
 
 
 bool Enemy::damage(Health dmg, Object& s)
@@ -20,5 +18,4 @@ bool Enemy::damage(Health dmg, Object& s)
 }
 
 
-
-}
+} // namespace herocore

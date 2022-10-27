@@ -8,17 +8,18 @@
 // A fixed-space version of std::function, does not allocate.
 
 
-template <std::size_t storage, typename T> class Function {
+template <std::size_t storage, typename T> class Function
+{
 };
 
 
 template <std::size_t storage, typename R, typename... Args>
-class Function<storage, R(Args...)> {
+class Function<storage, R(Args...)>
+{
 public:
     Function()
-        : invoke_policy_(nullptr), construct_policy_(nullptr),
-          move_policy_(nullptr), destroy_policy_(nullptr), data_(nullptr),
-          data_size_(0)
+        : invoke_policy_(nullptr), construct_policy_(nullptr), move_policy_(nullptr),
+          destroy_policy_(nullptr), data_(nullptr), data_size_(0)
     {
     }
 
@@ -26,11 +27,9 @@ public:
     template <typename Functor>
     Function(Functor f)
         : invoke_policy_(reinterpret_cast<InvokePolicy>(invokeImpl<Functor>)),
-          construct_policy_(
-              reinterpret_cast<ConstructPolicy>(constructImpl<Functor>)),
+          construct_policy_(reinterpret_cast<ConstructPolicy>(constructImpl<Functor>)),
           move_policy_(reinterpret_cast<MovePolicy>(moveImpl<Functor>)),
-          destroy_policy_(
-              reinterpret_cast<DestroyPolicy>(destroyImpl<Functor>)),
+          destroy_policy_(reinterpret_cast<DestroyPolicy>(destroyImpl<Functor>)),
           data_(nullptr), data_size_(sizeof(Functor))
     {
         static_assert(storage >= sizeof(Functor));
@@ -47,8 +46,7 @@ public:
 
 
     Function(Function const& rhs)
-        : invoke_policy_(rhs.invoke_policy_),
-          construct_policy_(rhs.construct_policy_),
+        : invoke_policy_(rhs.invoke_policy_), construct_policy_(rhs.construct_policy_),
           move_policy_(rhs.move_policy_), destroy_policy_(rhs.destroy_policy_),
           data_(nullptr), data_size_(rhs.data_size_)
     {
@@ -60,8 +58,7 @@ public:
 
 
     Function(Function&& rhs)
-        : invoke_policy_(rhs.invoke_policy_),
-          construct_policy_(rhs.construct_policy_),
+        : invoke_policy_(rhs.invoke_policy_), construct_policy_(rhs.construct_policy_),
           move_policy_(rhs.move_policy_), destroy_policy_(rhs.destroy_policy_),
           data_(nullptr), data_size_(rhs.data_size_)
     {
@@ -110,8 +107,7 @@ private:
     }
 
 
-    template <typename Functor>
-    static void moveImpl(Functor* move_dst, Functor* move_src)
+    template <typename Functor> static void moveImpl(Functor* move_dst, Functor* move_src)
     {
         new (move_dst) Functor(std::move(*move_src));
     }

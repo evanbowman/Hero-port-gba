@@ -54,11 +54,11 @@ std::string resource_path();
 ////////////////////////////////////////////////////////////////////////////////
 
 
-class TileMap : public sf::Drawable, public sf::Transformable {
+class TileMap : public sf::Drawable, public sf::Transformable
+{
 public:
     TileMap(sf::Texture* texture, sf::Vector2u tile_size, int width, int height)
-        : texture_(texture), tile_size_(tile_size), width_(width),
-          height_(height)
+        : texture_(texture), tile_size_(tile_size), width_(width), height_(height)
     {
         // resize the vertex array to fit the level size
         vertices_.setPrimitiveType(sf::Quads);
@@ -85,21 +85,16 @@ public:
 
         // define its 4 corners
         quad[0].position = sf::Vector2f(x * tile_size_.x, y * tile_size_.y);
-        quad[1].position =
-            sf::Vector2f((x + 1) * tile_size_.x, y * tile_size_.y);
-        quad[2].position =
-            sf::Vector2f((x + 1) * tile_size_.x, (y + 1) * tile_size_.y);
-        quad[3].position =
-            sf::Vector2f(x * tile_size_.x, (y + 1) * tile_size_.y);
+        quad[1].position = sf::Vector2f((x + 1) * tile_size_.x, y * tile_size_.y);
+        quad[2].position = sf::Vector2f((x + 1) * tile_size_.x, (y + 1) * tile_size_.y);
+        quad[3].position = sf::Vector2f(x * tile_size_.x, (y + 1) * tile_size_.y);
 
         // define its 4 texture coordinates
         quad[0].texCoords = sf::Vector2f(tu * tile_size_.x, tv * tile_size_.y);
-        quad[1].texCoords =
-            sf::Vector2f((tu + 1) * tile_size_.x, tv * tile_size_.y);
+        quad[1].texCoords = sf::Vector2f((tu + 1) * tile_size_.x, tv * tile_size_.y);
         quad[2].texCoords =
             sf::Vector2f((tu + 1) * tile_size_.x, (tv + 1) * tile_size_.y);
-        quad[3].texCoords =
-            sf::Vector2f(tu * tile_size_.x, (tv + 1) * tile_size_.y);
+        quad[3].texCoords = sf::Vector2f(tu * tile_size_.x, (tv + 1) * tile_size_.y);
     }
 
     Vec2<int> size() const
@@ -136,7 +131,8 @@ static constexpr Vec2<u32> resolution{240, 160};
 static const TileDesc glyph_region_start = 504;
 
 
-class Platform::Data {
+class Platform::Data
+{
 public:
     sf::Texture spritesheet_texture_;
     sf::Texture tile0_texture_;
@@ -204,17 +200,16 @@ public:
                       3;
               }
           }()),
-          window_(sf::VideoMode(resolution.x * window_scale_,
-                                resolution.y * window_scale_),
-                  "Blind Jump",
-                  [&] {
-                      if (fullscreen_) {
-                          return static_cast<int>(sf::Style::Fullscreen);
-                      } else {
-                          return sf::Style::Titlebar | sf::Style::Close |
-                                 sf::Style::Resize;
-                      }
-                  }())
+          window_(
+              sf::VideoMode(resolution.x * window_scale_, resolution.y * window_scale_),
+              "Blind Jump",
+              [&] {
+                  if (fullscreen_) {
+                      return static_cast<int>(sf::Style::Fullscreen);
+                  } else {
+                      return sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize;
+                  }
+              }())
     {
         window_.setVerticalSyncEnabled(true);
         // window_.setMouseCursorVisible(false);
@@ -240,8 +235,7 @@ public:
 
             if (prefix_loc not_eq std::string::npos) {
                 std::ifstream file_data(dirent.path(), std::ios::binary);
-                std::vector<s8> buffer(
-                    std::istreambuf_iterator<char>(file_data), {});
+                std::vector<s8> buffer(std::istreambuf_iterator<char>(file_data), {});
 
                 // The gameboy advance sound data was 8 bit signed mono at
                 // 16kHz. Here, we're upsampling to 16bit signed.
@@ -265,7 +259,8 @@ public:
 static Platform* platform = nullptr;
 
 
-class WatchdogTask : public Platform::Task {
+class WatchdogTask : public Platform::Task
+{
 public:
     WatchdogTask()
     {
@@ -282,8 +277,7 @@ public:
 
         const auto now = std::chrono::high_resolution_clock::now();
         total_ +=
-            std::chrono::duration_cast<std::chrono::microseconds>(now - last_)
-                .count();
+            std::chrono::duration_cast<std::chrono::microseconds>(now - last_).count();
 
         last_ = now;
 
@@ -336,10 +330,8 @@ Platform::DeltaClock::DeltaClock() : impl_(new sf::Clock)
 }
 
 
-std::chrono::time_point throttle_start =
-    std::chrono::high_resolution_clock::now();
-std::chrono::time_point throttle_stop =
-    std::chrono::high_resolution_clock::now();
+std::chrono::time_point throttle_start = std::chrono::high_resolution_clock::now();
+std::chrono::time_point throttle_stop = std::chrono::high_resolution_clock::now();
 static int sleep_time;
 
 
@@ -448,8 +440,7 @@ void Platform::Keyboard::poll()
             if (not focused_) {
                 break;
             }
-            for (int keycode = 0; keycode < static_cast<int>(Key::count);
-                 ++keycode) {
+            for (int keycode = 0; keycode < static_cast<int>(Key::count); ++keycode) {
                 if (keymap[keycode] == event.key.code) {
                     states_[keycode] = true;
                 }
@@ -460,8 +451,7 @@ void Platform::Keyboard::poll()
             if (not focused_) {
                 break;
             }
-            for (int keycode = 0; keycode < static_cast<int>(Key::count);
-                 ++keycode) {
+            for (int keycode = 0; keycode < static_cast<int>(Key::count); ++keycode) {
                 if (keymap[keycode] == event.key.code) {
                     states_[keycode] = false;
                 }
@@ -472,8 +462,7 @@ void Platform::Keyboard::poll()
         // non-main thread...
         case sf::Event::JoystickConnected: {
             info(*::platform,
-                 ("joystick " +
-                  std::to_string(event.joystickConnect.joystickId) +
+                 ("joystick " + std::to_string(event.joystickConnect.joystickId) +
                   " connected")
                      .c_str());
             break;
@@ -481,24 +470,23 @@ void Platform::Keyboard::poll()
 
         case sf::Event::JoystickDisconnected: {
             info(*::platform,
-                 ("joystick " +
-                  std::to_string(event.joystickConnect.joystickId) +
+                 ("joystick " + std::to_string(event.joystickConnect.joystickId) +
                   " disconnected")
                      .c_str());
             break;
         }
 
         case sf::Event::JoystickButtonPressed: {
-            const auto ident = sf::Joystick::getIdentification(
-                event.joystickButton.joystickId);
+            const auto ident =
+                sf::Joystick::getIdentification(event.joystickButton.joystickId);
             for (auto& info : reversed(joystick_info)) {
                 if (info.vendor_id == (int)ident.vendorId and
                     info.product_id == (int)ident.productId) {
                     const int button = event.joystickButton.button;
-                    ::info(*::platform,
-                           ("joystick button " +
-                            std::to_string(event.joystickButton.button))
-                               .c_str());
+                    ::info(
+                        *::platform,
+                        ("joystick button " + std::to_string(event.joystickButton.button))
+                            .c_str());
                     if (button == info.action_1_key) {
                         states_[static_cast<int>(Key::action_1)] = true;
                     } else if (button == info.action_2_key) {
@@ -517,8 +505,8 @@ void Platform::Keyboard::poll()
         }
 
         case sf::Event::JoystickButtonReleased: {
-            const auto ident = sf::Joystick::getIdentification(
-                event.joystickButton.joystickId);
+            const auto ident =
+                sf::Joystick::getIdentification(event.joystickButton.joystickId);
             for (auto& info : reversed(joystick_info)) {
                 if (info.vendor_id == (int)ident.vendorId and
                     info.product_id == (int)ident.productId) {
@@ -541,8 +529,8 @@ void Platform::Keyboard::poll()
         }
 
         case sf::Event::JoystickMoved: {
-            const auto ident = sf::Joystick::getIdentification(
-                event.joystickButton.joystickId);
+            const auto ident =
+                sf::Joystick::getIdentification(event.joystickButton.joystickId);
             for (auto& info : reversed(joystick_info)) {
                 if (info.vendor_id == (int)ident.vendorId and
                     info.product_id == (int)ident.productId) {
@@ -559,8 +547,7 @@ void Platform::Keyboard::poll()
                             states_[static_cast<int>(Key::left)] = false;
                             states_[static_cast<int>(Key::right)] = false;
                         }
-                    } else if (event.joystickMove.axis ==
-                               sf::Joystick::Axis::Y) {
+                    } else if (event.joystickMove.axis == sf::Joystick::Axis::Y) {
                         float position = event.joystickMove.position;
                         if (-position > deadZone) {
                             states_[static_cast<int>(Key::up)] = true;
@@ -667,8 +654,7 @@ void Platform::Screen::clear()
     window.clear();
     rt.clear();
 
-    ::platform->data()->fade_overlay_.setFillColor(
-        ::platform->data()->fade_color_);
+    ::platform->data()->fade_overlay_.setFillColor(::platform->data()->fade_color_);
 
     {
         // std::lock_guard<std::mutex> guard(::platform->data()->audio_lock_);
@@ -692,11 +678,9 @@ void Platform::Screen::clear()
 
             auto image_folder = resource_path() + ("images" PATH_DELIMITER);
 
-            if (not image.loadFromFile(image_folder + request.second +
-                                       ".png")) {
+            if (not image.loadFromFile(image_folder + request.second + ".png")) {
                 error(*::platform,
-                      (std::string("failed to load texture ") + request.second)
-                          .c_str());
+                      (std::string("failed to load texture ") + request.second).c_str());
                 exit(EXIT_FAILURE);
             } else {
                 info(*::platform,
@@ -719,8 +703,7 @@ void Platform::Screen::clear()
                     sf::Image meta_image;
                     meta_image.create(image.getSize().x * 3, 8);
 
-                    for (size_t block = 0; block < image.getSize().x / 32;
-                         ++block) {
+                    for (size_t block = 0; block < image.getSize().x / 32; ++block) {
                         for (int row = 0; row < 3; ++row) {
                             const int src_x = block * 32;
                             const int src_y = row * 8;
@@ -728,29 +711,24 @@ void Platform::Screen::clear()
                             const int dest_x = block * (32 * 3) + row * 32;
                             const int dest_y = 0;
 
-                            meta_image.copy(
-                                image, dest_x, dest_y, {src_x, src_y, 32, 8});
+                            meta_image.copy(image, dest_x, dest_y, {src_x, src_y, 32, 8});
                         }
                     }
 
-                    if (not ::platform->data()
-                                ->background_texture_.loadFromImage(
-                                    meta_image)) {
-                        error(*::platform,
-                              "Failed to create background texture");
+                    if (not ::platform->data()->background_texture_.loadFromImage(
+                            meta_image)) {
+                        error(*::platform, "Failed to create background texture");
                         exit(EXIT_FAILURE);
                     }
 
-                    if (not platform->data()->tile0_texture_.loadFromImage(
-                            image)) {
+                    if (not platform->data()->tile0_texture_.loadFromImage(image)) {
                         error(*::platform, "Failed to create tile0 texture");
                     }
 
                 } else {
-                    if (not ::platform->data()
-                                ->background_texture_.loadFromImage(image)) {
-                        error(*::platform,
-                              "Failed to create background texture");
+                    if (not ::platform->data()->background_texture_.loadFromImage(
+                            image)) {
+                        error(*::platform, "Failed to create background texture");
                         exit(EXIT_FAILURE);
                     }
 
@@ -772,8 +750,7 @@ void Platform::Screen::clear()
                            case TextureSwap::overlay:
                                return &::platform->data()->overlay_texture_;
                            }
-                           error(*::platform,
-                                 "invalid texture swap enumeration");
+                           error(*::platform, "invalid texture swap enumeration");
                            ::platform->fatal();
                        }()
                                ->loadFromImage(image)) {
@@ -796,10 +773,9 @@ void Platform::Screen::clear()
             const auto charset_path =
                 std::string(image_folder) + rq.second.texture_name_ + ".png";
             if (not character_source_image_.loadFromFile(charset_path)) {
-                error(
-                    *::platform,
-                    (std::string("failed to open charset image " + charset_path)
-                         .c_str()));
+                error(*::platform,
+                      (std::string("failed to open charset image " + charset_path)
+                           .c_str()));
                 exit(EXIT_FAILURE);
             }
 
@@ -809,8 +785,7 @@ void Platform::Screen::clear()
             auto old_texture_img = texture.copyToImage();
 
             sf::Image new_texture_image;
-            new_texture_image.create((rq.first + 1) * 8,
-                                     old_texture_img.getSize().y);
+            new_texture_image.create((rq.first + 1) * 8, old_texture_img.getSize().y);
 
             new_texture_image.copy(old_texture_img,
                                    0,
@@ -826,22 +801,18 @@ void Platform::Screen::clear()
                                    {rq.second.offset_ * 8, 0, 8, 8},
                                    true);
 
-            const auto glyph_background_color =
-                character_source_image_.getPixel(0, 0);
+            const auto glyph_background_color = character_source_image_.getPixel(0, 0);
 
             const auto font_fg_color = new_texture_image.getPixel(648, 0);
             const auto font_bg_color = new_texture_image.getPixel(649, 0);
 
             for (int x = 0; x < 8; ++x) {
                 for (int y = 0; y < 8; ++y) {
-                    const auto px =
-                        new_texture_image.getPixel(rq.first * 8 + x, y);
+                    const auto px = new_texture_image.getPixel(rq.first * 8 + x, y);
                     if (px == glyph_background_color) {
-                        new_texture_image.setPixel(
-                            rq.first * 8 + x, y, font_bg_color);
+                        new_texture_image.setPixel(rq.first * 8 + x, y, font_bg_color);
                     } else {
-                        new_texture_image.setPixel(
-                            rq.first * 8 + x, y, font_fg_color);
+                        new_texture_image.setPixel(rq.first * 8 + x, y, font_fg_color);
                     }
                 }
             }
@@ -861,30 +832,26 @@ void Platform::Screen::clear()
 
             switch (std::get<0>(request)) {
             case Layer::overlay:
-                ::platform->data()->overlay_.set_tile(std::get<1>(request),
-                                                      std::get<2>(request),
-                                                      std::get<3>(request));
+                ::platform->data()->overlay_.set_tile(
+                    std::get<1>(request), std::get<2>(request), std::get<3>(request));
                 break;
 
             case Layer::map_0:
                 ::platform->data()->map_0_changed_ = true;
-                ::platform->data()->map_0_.set_tile(std::get<1>(request),
-                                                    std::get<2>(request),
-                                                    std::get<3>(request));
+                ::platform->data()->map_0_.set_tile(
+                    std::get<1>(request), std::get<2>(request), std::get<3>(request));
                 break;
 
             case Layer::map_1:
                 ::platform->data()->map_1_changed_ = true;
-                ::platform->data()->map_1_.set_tile(std::get<1>(request),
-                                                    std::get<2>(request),
-                                                    std::get<3>(request));
+                ::platform->data()->map_1_.set_tile(
+                    std::get<1>(request), std::get<2>(request), std::get<3>(request));
                 break;
 
             case Layer::background:
                 ::platform->data()->background_changed_ = true;
-                ::platform->data()->background_.set_tile(std::get<1>(request),
-                                                         std::get<2>(request),
-                                                         std::get<3>(request));
+                ::platform->data()->background_.set_tile(
+                    std::get<1>(request), std::get<2>(request), std::get<3>(request));
                 break;
             }
         }
@@ -897,8 +864,7 @@ void Platform::Screen::clear()
         // other thread, and the sfml window does not fire keypressed events
         // consistently while a key is held down, so we're generating our own
         // events.
-        for (int keycode = 0; keycode < static_cast<int>(Key::count);
-             ++keycode) {
+        for (int keycode = 0; keycode < static_cast<int>(Key::count); ++keycode) {
             sf::Event event;
             if (sf::Keyboard::isKeyPressed(keymap[keycode])) {
                 event.type = sf::Event::KeyPressed;
@@ -994,8 +960,7 @@ void Platform::Screen::display()
     if (::platform->data()->background_changed_) {
         ::platform->data()->background_changed_ = false;
         ::platform->data()->background_rt_.clear(sf::Color::Transparent);
-        ::platform->data()->background_rt_.draw(
-            ::platform->data()->background_);
+        ::platform->data()->background_rt_.draw(::platform->data()->background_);
         ::platform->data()->background_rt_.display();
     }
 
@@ -1093,8 +1058,7 @@ void Platform::Screen::display()
         sf::Sprite sf_spr;
 
         if (auto rot = spr.get_rotation()) {
-            sf_spr.setRotation((float(rot) / std::numeric_limits<s16>::max()) *
-                               360);
+            sf_spr.setRotation((float(rot) / std::numeric_limits<s16>::max()) * 360);
         }
 
         if (spr.get_scale().x or spr.get_scale().y) {
@@ -1109,8 +1073,7 @@ void Platform::Screen::display()
         }
 
         sf_spr.setPosition({pos.x, pos.y});
-        sf_spr.setOrigin(
-            {float(spr.get_origin().x), float(spr.get_origin().y)});
+        sf_spr.setOrigin({float(spr.get_origin().x), float(spr.get_origin().y)});
         if (spr.get_alpha() == Sprite::Alpha::translucent) {
             sf_spr.setColor({255, 255, 255, 128});
         }
@@ -1129,8 +1092,7 @@ void Platform::Screen::display()
             break;
         }
 
-        if (const auto& mix = spr.get_mix();
-            mix.color_ not_eq ColorConstant::null) {
+        if (const auto& mix = spr.get_mix(); mix.color_ not_eq ColorConstant::null) {
             sf::Shader& shader = ::platform->data()->color_shader_;
             shader.setUniform("amount", mix.amount_ / 255.f);
             shader.setUniform("targetColor", real_color(mix.color_));
@@ -1201,17 +1163,16 @@ void Platform::Screen::fade(Float amount,
         ::platform->data()->fade_include_overlay_ = include_overlay;
     } else {
         const auto c2 = real_color(*base);
-        ::platform->data()->fade_color_ = {
-            interpolate(static_cast<uint8_t>(c.x * 255),
-                        static_cast<uint8_t>(c2.x * 255),
-                        amount),
-            interpolate(static_cast<uint8_t>(c.y * 255),
-                        static_cast<uint8_t>(c2.y * 255),
-                        amount),
-            interpolate(static_cast<uint8_t>(c.z * 255),
-                        static_cast<uint8_t>(c2.z * 255),
-                        amount),
-            static_cast<uint8_t>(255)};
+        ::platform->data()->fade_color_ = {interpolate(static_cast<uint8_t>(c.x * 255),
+                                                       static_cast<uint8_t>(c2.x * 255),
+                                                       amount),
+                                           interpolate(static_cast<uint8_t>(c.y * 255),
+                                                       static_cast<uint8_t>(c2.y * 255),
+                                                       amount),
+                                           interpolate(static_cast<uint8_t>(c.z * 255),
+                                                       static_cast<uint8_t>(c2.z * 255),
+                                                       amount),
+                                           static_cast<uint8_t>(255)};
     }
 }
 
@@ -1470,14 +1431,12 @@ static int scratch_buffers_in_use = 0;
 
 Rc<Platform::ScratchBuffer, 100> Platform::make_scratch_buffer()
 {
-    auto finalizer =
-        [](RcBase<Platform::ScratchBuffer, 100>::ControlBlock* ctrl) {
-            --scratch_buffers_in_use;
-            ctrl->pool_->post(ctrl);
-        };
+    auto finalizer = [](RcBase<Platform::ScratchBuffer, 100>::ControlBlock* ctrl) {
+        --scratch_buffers_in_use;
+        ctrl->pool_->post(ctrl);
+    };
 
-    auto maybe_buffer =
-        Rc<ScratchBuffer, 100>::create(&scratch_buffer_pool, finalizer);
+    auto maybe_buffer = Rc<ScratchBuffer, 100>::create(&scratch_buffer_pool, finalizer);
     if (maybe_buffer) {
         ++scratch_buffers_in_use;
         return *maybe_buffer;
@@ -1528,14 +1487,12 @@ Platform::Platform()
 
 
     if (not data_->color_shader_.loadFromFile(
-            shader_folder + std::string("colorShader.frag"),
-            sf::Shader::Fragment)) {
+            shader_folder + std::string("colorShader.frag"), sf::Shader::Fragment)) {
         error(*this, "Failed to load shader");
     }
     data_->color_shader_.setUniform("texture", sf::Shader::CurrentTexture);
 
-    data_->fade_overlay_.setSize(
-        {Float(screen_.size().x), Float(screen_.size().y)});
+    data_->fade_overlay_.setSize({Float(screen_.size().x), Float(screen_.size().y)});
 
 
     data_->map_0_rt_.create(16 * 32, 20 * 24);
@@ -1566,8 +1523,7 @@ static const char* const save_file_name = "save.dat";
 
 bool Platform::write_save_data(const void* data, u32 length)
 {
-    std::ofstream out(save_file_name,
-                      std::ios_base::out | std::ios_base::binary);
+    std::ofstream out(save_file_name, std::ios_base::out | std::ios_base::binary);
 
     out.write(reinterpret_cast<const char*>(data), length);
 
@@ -1598,9 +1554,9 @@ bool Platform::is_running() const
 void Platform::sleep(u32 frames)
 {
     const auto amount =
-        frames * (std::chrono::duration_cast<std::chrono::microseconds>(
-                      std::chrono::seconds(1)) /
-                  60);
+        frames *
+        (std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::seconds(1)) /
+         60);
 
     std::this_thread::sleep_for(amount);
 
@@ -1705,8 +1661,7 @@ void Platform::enable_glyph_mode(bool enabled)
 }
 
 
-TileDesc Platform::map_glyph(const utf8::Codepoint& glyph,
-                             TextureCpMapper mapper)
+TileDesc Platform::map_glyph(const utf8::Codepoint& glyph, TextureCpMapper mapper)
 {
     auto& glyphs = ::platform->data()->glyph_table_;
 
@@ -1745,8 +1700,7 @@ void Platform::feed_watchdog()
 static std::map<std::string, std::string> scripts;
 
 
-const char* Platform::load_file_contents(const char* folder,
-                                         const char* filename) const
+const char* Platform::load_file_contents(const char* folder, const char* filename) const
 {
     const auto name = std::string(folder) + PATH_DELIMITER + filename;
     const auto found = scripts.find(name);
@@ -1786,10 +1740,8 @@ const char* Platform::get_opt(char opt)
 {
     try {
         popl::OptionParser op("Allowed options");
-        auto help_option =
-            op.add<popl::Switch>("h", "help", "produce help message");
-        auto eval_option =
-            op.add<popl::Value<std::string>>("e", "eval", "evaluate lisp");
+        auto help_option = op.add<popl::Switch>("h", "help", "produce help message");
+        auto eval_option = op.add<popl::Value<std::string>>("e", "eval", "evaluate lisp");
 
         op.parse(::argc, ::argv);
 
@@ -1840,7 +1792,8 @@ SynchronizedBase::~SynchronizedBase()
 ////////////////////////////////////////////////////////////////////////////////
 
 
-struct NetworkPeerImpl {
+struct NetworkPeerImpl
+{
     sf::TcpSocket socket_;
     sf::TcpListener listener_;
     bool is_host_ = false;
@@ -1912,8 +1865,7 @@ void Platform::NetworkPeer::connect(const char* peer)
     // ::platform->device_name().c_str(), "host_address");
 
     info(*::platform,
-         ("connecting to " + std::string(addr) + ":" + std::to_string(port))
-             .c_str());
+         ("connecting to " + std::string(addr) + ":" + std::to_string(port)).c_str());
 
     if (impl->socket_.connect(addr, port) == sf::Socket::Status::Done) {
         info(*::platform, "Peer connected!");
@@ -1957,8 +1909,7 @@ void Platform::NetworkPeer::update()
 
     if (impl->poll_consume_position_) {
         receive_buffer.erase(receive_buffer.begin(),
-                             receive_buffer.begin() +
-                                 impl->poll_consume_position_);
+                             receive_buffer.begin() + impl->poll_consume_position_);
     }
 
     impl->poll_consume_position_ = 0;
@@ -1982,8 +1933,7 @@ void Platform::NetworkPeer::update()
 }
 
 
-std::optional<Platform::NetworkPeer::Message>
-Platform::NetworkPeer::poll_message()
+std::optional<Platform::NetworkPeer::Message> Platform::NetworkPeer::poll_message()
 {
     auto impl = (NetworkPeerImpl*)impl_;
 
