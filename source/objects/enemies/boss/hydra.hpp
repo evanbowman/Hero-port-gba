@@ -52,6 +52,12 @@ public:
     void draw(Platform::Screen& s) const override;
 
 
+    int collision_damage() const override
+    {
+        return 4;
+    }
+
+
     bool damage(Health dmg, Object& s) override
     {
         if (health_ == 0) {

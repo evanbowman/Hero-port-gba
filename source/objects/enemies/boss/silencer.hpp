@@ -38,6 +38,14 @@ public:
     }
 
 
+
+    int collision_damage() const override
+    {
+        return 4;
+    }
+
+
+
     int hit_sound() const override
     {
         return 4;
@@ -125,6 +133,12 @@ public:
         (*shields_)[0].x_offset_ = 12;
 
         speed_.y = Fixnum(0.001f);
+    }
+
+
+    int collision_damage() const override
+    {
+        return 4;
     }
 
 

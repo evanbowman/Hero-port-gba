@@ -46,6 +46,9 @@ private:
     u8 heatcyc_ = 0;
     u8 chargeblade_ = 0;
     u8 chargebladeprev_ = 0;
+    bool lv2_blaster_damage_inc_ = false;
+
+    int blaster_damage();
 };
 
 

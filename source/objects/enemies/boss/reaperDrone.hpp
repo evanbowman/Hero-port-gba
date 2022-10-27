@@ -135,6 +135,12 @@ public:
     }
 
 
+    int collision_damage() const override
+    {
+        return 4;
+    }
+
+
     void timeline_hard_mode()
     {
 
@@ -354,8 +360,8 @@ public:
         case 160: {
             auto dir = direction(fvec(position_), fvec(engine().hero()->position()));
 
-            speed_.x = Fixnum((1.4f / 2) * dir.x);
-            speed_.y = Fixnum((1.4f / 2) * dir.y);
+            speed_.x = Fixnum((1.8f / 2) * dir.x);
+            speed_.y = Fixnum((1.8f / 2) * dir.y);
             break;
         }
 
@@ -372,24 +378,24 @@ public:
         case 330: {
             auto dir = direction(fvec(position_), fvec(engine().hero()->position()));
             rotate(dir, 90);
-            speed_.x = Fixnum((1.9f / 2) * dir.x);
-            speed_.y = Fixnum((1.9f / 2) * dir.y);
+            speed_.x = Fixnum((1.8f / 2) * dir.x);
+            speed_.y = Fixnum((1.8f / 2) * dir.y);
             break;
         }
 
         case 370: {
             auto dir = direction(fvec(position_), fvec(engine().hero()->position()));
             rotate(dir, 360 - 90);
-            speed_.x = Fixnum((1.9f / 2) * dir.x);
-            speed_.y = Fixnum((1.9f / 2) * dir.y);
+            speed_.x = Fixnum((1.8f / 2) * dir.x);
+            speed_.y = Fixnum((1.8f / 2) * dir.y);
             break;
         }
 
         case 410: {
             auto dir = direction(fvec(position_), fvec(engine().hero()->position()));
             rotate(dir, rng::choice<360>(rng::utility_state));
-            speed_.x = Fixnum((1.9f / 2) * dir.x);
-            speed_.y = Fixnum((1.9f / 2) * dir.y);
+            speed_.x = Fixnum((1.8f / 2) * dir.x);
+            speed_.y = Fixnum((1.8f / 2) * dir.y);
             break;
         }
 

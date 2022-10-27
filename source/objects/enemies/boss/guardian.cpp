@@ -153,6 +153,14 @@ public:
     }
 
 
+
+    int collision_damage() const override
+    {
+        return 4;
+    }
+
+
+
     void vortex()
     {
         int xo = (not flip_) ? -1 : 24;
@@ -285,6 +293,14 @@ public:
         s.kill();
         return false;
     }
+
+
+
+    int collision_damage() const override
+    {
+        return 4;
+    }
+
 
 
     void draw(Platform::Screen& screen) const override

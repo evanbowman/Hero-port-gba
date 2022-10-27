@@ -25,6 +25,8 @@ private:
     int sfcyc2_ = 0;
     u8 spawn_x_;
     u8 spawn_y_;
+    bool dead_ = false;
+    u8 deadcyc_ = 0;
 
 public:
     Annihilator(const Vec2<Fixnum>& pos, u8 spawn_x, u8 spawn_y)
@@ -85,6 +87,11 @@ public:
 
     bool damage(Health dmg, Object& s) override
     {
+        if (dead_) {
+            s.kill();
+            return false;
+        }
+
         s.kill();
 
         if (sprite_subimage_ not_eq 2) {
@@ -104,6 +111,7 @@ public:
         // head
         if (hb.overlapping(s.hitbox())) {
             health_ = std::max(0, health_ - dmg);
+            play_sound("snd_hit1", 1);
             return true;
         }
 
@@ -120,6 +128,7 @@ public:
         // tail
         if (hb.overlapping(s.hitbox())) {
             health_ = std::max(0, health_ - dmg);
+            play_sound("snd_hit1", 1);
             return true;
         }
 
@@ -129,15 +138,51 @@ public:
 
     void step() override
     {
-        if (health_ == 0) {
-            kill();
-            engine().add_object<Explo>(position_);
+        if (health_ == 0 and not dead_) {
+            dead_ = true;
+            return;
+        }
 
-            engine().p_->objects_removed_.push_back({(u8)engine().room_.coord_.x,
-                                                     (u8)engine().room_.coord_.y,
-                                                     spawn_x_,
-                                                     spawn_y_});
+        if (dead_) {
 
+            deadcyc_ += 1;
+            if (deadcyc_ % 4 == 0) {
+                auto p = position_;
+                auto sp = rng::sample<32>(p, rng::critical_state);
+                if (engine().add_object<BigExplo>(sp)) {
+                    play_sound("snd_explo1", 20 + deadcyc_ / 4);
+                    engine().g_.screenshake_ = 2;
+                }
+            }
+
+            if (deadcyc_ == 80) {
+                kill();
+                engine().add_object<Explo>(position_);
+
+                engine().g_.screenshake_ = 6;
+
+                play_sound("snd_explo4", 80);
+
+                for (int i = 0; i < 8; ++i) {
+                    for (int j = 0; j < 4; ++j) {
+                        if (auto exp = engine().add_object<BigExplo>(position_)) {
+                            auto dir = rotate({1, 0}, j * 90 + 45 + i * 3);
+                            dir = dir * ((i + 1 / 2.f) * 1.5f);
+                            Vec2<Fixnum> spd;
+                            spd.x = Fixnum(dir.x);
+                            spd.y = Fixnum(dir.y);
+                            exp->set_speed(spd);
+                        }
+                    }
+                }
+
+                engine().p_->objects_removed_.push_back({(u8)engine().room_.coord_.x,
+                                                         (u8)engine().room_.coord_.y,
+                                                         spawn_x_,
+                                                         spawn_y_});
+
+                return;
+            }
             return;
         }
 

@@ -364,6 +364,27 @@ void Hero::draw(Platform::Screen& screen) const
 }
 
 
+
+int Hero::blaster_damage()
+{
+    int dmg = 1;
+    if (blaster_level() == 2) {
+        // NOTE: already months into this project, I realized that in the
+        // original source code, the level 2 blaster deals 1.5 damage. This is
+        // really inconvenient, as I'm not storing health as fixed point. Until
+        // I can fix it, the level 2 blaster deals 2 damage half of the time.
+        lv2_blaster_damage_inc_ = not lv2_blaster_damage_inc_;
+        if (lv2_blaster_damage_inc_) {
+            dmg = 2;
+        }
+    } else if (blaster_level() == 3) {
+        dmg = 2;
+    }
+    return dmg;
+}
+
+
+
 void Hero::fireleft()
 {
     if (engine().g_.heat_) {
@@ -373,10 +394,14 @@ void Hero::fireleft()
         if (not platform().speaker().is_sound_playing("snd_fireshot")) {
             platform().speaker().play_sound("snd_fireshot", 1);
         }
+
+        int dmg = blaster_damage();
+
         engine().add_object<Shot>(
-            Vec2<Fixnum>{position_.x - 1, position_.y + 3}, Fixnum(-2), 1);
+            Vec2<Fixnum>{position_.x - 1, position_.y + 3}, Fixnum(-2), dmg);
     }
 }
+
 
 
 void Hero::fireright()
@@ -388,8 +413,11 @@ void Hero::fireright()
         if (not platform().speaker().is_sound_playing("snd_fireshot")) {
             platform().speaker().play_sound("snd_fireshot", 1);
         }
+
+        int dmg = blaster_damage();
+
         engine().add_object<Shot>(
-            Vec2<Fixnum>{position_.x + 2, position_.y + 3}, Fixnum(2), 1);
+            Vec2<Fixnum>{position_.x + 2, position_.y + 3}, Fixnum(2), dmg);
     }
 }
 
