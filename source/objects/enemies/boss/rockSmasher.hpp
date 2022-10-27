@@ -4,6 +4,7 @@
 #include "objects/particles/explo.hpp"
 #include "number/random.hpp"
 #include "objects/solid.hpp"
+#include "objects/particles/bigExplo.hpp"
 
 
 
@@ -44,6 +45,8 @@ private:
     u8 spawn_y_;
 
     int timeline_ = 0;
+    bool dead_ = false;
+    u8 deadcyc_ = 0;
 
     struct Orb
     {
@@ -58,6 +61,7 @@ private:
         u8 rfire_ = 0;
         u8 rfirecyc_ = 0;
         u8 dir_ = 0;
+        u8 expcyc_ = 0;
         int r_ = 0;
 
         Orb(RockSmasher* owner,
@@ -92,7 +96,15 @@ private:
         void step()
         {
             if (d_ > d_max_) {
-                d_ -= Fixnum(4);
+                d_ -= Fixnum(2);
+            }
+
+            if (owner_->dead_) {
+                expcyc_ += 1;
+                if (expcyc_ == 6) {
+                    engine().add_object<BigExplo>(Vec2<Fixnum>{x_ + 4, y_ + 4});
+                    expcyc_ = 0;
+                }
             }
 
             rot_ += rot_speed_;
@@ -122,8 +134,8 @@ private:
             auto rvec = rot_lut[r_];
 
             auto result = owner_->position() + rvec * d_;
-            x_ = result.x;
-            y_ = result.y;
+            x_ = result.x - 4;
+            y_ = result.y - 4;
         }
     };
 

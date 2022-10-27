@@ -109,6 +109,8 @@ public:
             kill();
             owner_->hp_--;
             owner_->c_->cores_[id_].hp_ = 0;
+            platform().speaker().play_sound("snd_explo2", 10);
+            engine().g_.screenshake_ = 6;
         }
 
         if (rfire_ > 0) {
@@ -433,27 +435,73 @@ bool RockSmasher::overlapping(Object& other)
 
 void RockSmasher::step()
 {
-    if (hp_ == 0) {
-        c_->orbs_.clear();
-        kill();
+    if (hp_ == 0 and not dead_) {
+        dead_ = true;
+        platform().speaker().play_sound("snd_bossroar", 9);
+        platform().speaker().stop_music();
+        return;
+    }
+    if (dead_) {
 
-        for (int x = 0; x < 64; ++x) {
-            for (int y = 0; y < 64; ++y) {
-                platform().set_tile(Layer::map_1, x, y, 0);
+        deadcyc_ += 1;
+
+        engine().enemy_projectiles_.clear();
+
+        if (deadcyc_ == 20) {
+            for (auto& o : c_->orbs_) {
+                o.d_max_ = 2;
             }
         }
 
+        for (auto& orb : (c_->orbs_)) {
+            orb.step();
+        }
 
-        engine().p_->objects_removed_.push_back({
-                (u8)engine().room_.coord_.x,
-                (u8)engine().room_.coord_.y,
-                spawn_x_,
-                spawn_y_
-            });
+        if (deadcyc_ > 20 and deadcyc_ % 8 == 0) {
+            platform().speaker().play_sound("snd_explo2", deadcyc_);
+        }
 
-        engine().boss_completed();
+        if (deadcyc_ >= 60) {
+            c_->orbs_.clear();
+            kill();
 
-        engine().add_object<Pickup>(position_, Pickup::suit);
+            platform().speaker().play_sound("snd_explo4", 200);
+
+            for (int x = 0; x < 64; ++x) {
+                for (int y = 0; y < 64; ++y) {
+                    platform().set_tile(Layer::map_1, x, y, 0);
+                }
+            }
+
+            engine().g_.screenshake_ = 12;
+
+            auto pos = position_;
+            pos.x += 40;
+            pos.y += 40;
+            for (int i = 0; i < 6; ++i) {
+                for (int j = 0; j < 8; ++j) {
+                    if (auto exp = engine().add_object<BigExplo>(position_)) {
+                        auto dir = rotate({1, 0}, j * 90 + 45 + i * 3);
+                        dir = dir * ((i + 1 / 2.f) * 1.5f);
+                        Vec2<Fixnum> spd;
+                        spd.x = Fixnum(dir.x);
+                        spd.y = Fixnum(dir.y);
+                        exp->set_speed(spd);
+                    }
+                }
+            }
+
+            engine().p_->objects_removed_.push_back({(u8)engine().room_.coord_.x,
+                                                     (u8)engine().room_.coord_.y,
+                                                     spawn_x_,
+                                                     spawn_y_
+                });
+
+            engine().boss_completed();
+
+            engine().add_object<Pickup>(position_, Pickup::suit);
+        }
+        return;
     }
 
     int shake = 0;
