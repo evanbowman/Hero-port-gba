@@ -29,6 +29,10 @@ public:
 
 private:
     int timeline_ = 0;
+    u8 phase_ = 1;
+
+    Vec2<Fixnum> dir_;
+    Fixnum spd_;
 };
 
 

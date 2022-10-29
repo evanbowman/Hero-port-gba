@@ -86,6 +86,13 @@ public:
     }
 
 
+    bool damage(Health dmg, Object& s) override
+    {
+        s.kill();
+        return false;
+    }
+
+
     void step() override
     {
         if (d_ < d_max_) {
@@ -127,15 +134,24 @@ Tetron::Tetron(const Vec2<Fixnum>& pos)
     position_ = {pos.x - 4, pos.y - 4};
     sprite_index_ = 206;
 
-    hitbox_.dimension_.size_ = {24, 60};
-    hitbox_.dimension_.origin_ = {13, 30};
+    hitbox_.dimension_.size_ = {32, 60};
+    hitbox_.dimension_.origin_ = {16, 30};
 }
 
 
 
 bool Tetron::damage(Health dmg, Object& s)
 {
-    s.kill();
+    auto hb2 = hitbox_;
+    hb2.dimension_.size_ = {24, 60};
+    hb2.dimension_.origin_ = {13, 30};
+
+    if (hb2.overlapping(s.hitbox())) {
+        s.kill();
+    } else {
+        return false;
+    }
+
 
     if (sprite_index_ == 214) {
         return false;
@@ -193,12 +209,44 @@ void Tetron::step()
         };
 
     auto dir_player =
-        [&] {
-            auto p = Vec2<Float>{position_.x.as_float(),
-                             position_.y.as_float()};
+        [&](int xoff, int yoff) {
+            auto p = Vec2<Float>{position_.x.as_float() + xoff,
+                             position_.y.as_float() + yoff};
             return direction(p, fvec(engine().hero()->position()));
         };
 
+    auto move_to_hero =
+        [&](int rot = 0) {
+            auto d = dir_player(0, 0);
+            if (rot) {
+                d = rotate(d, rot);
+            }
+            dir_.x = Fixnum(d.x);
+            dir_.y = Fixnum(d.y);
+        };
+
+    if (phase_ == 1 and health_ < 128) {
+        phase_ = 2;
+        timeline_ = 1000;
+        sprite_index_ = 206;
+        engine().add_object<ExploSpewer>(position_);
+        play_sound("snd_bossroar", 20);
+        engine().g_.screenshake_ = 12;
+    }
+
+    if (phase_ == 2 and health_ < 64) {
+        phase_ = 3;
+        spd_ = 0;
+
+        engine().add_object<ExploSpewer>(position_);
+        play_sound("snd_bossroar", 20);
+        engine().g_.screenshake_ = 12;
+    }
+
+    if (phase_ == 3) {
+        // TODO
+        return;
+    }
 
     switch (timeline_++) {
     case 0:
@@ -213,18 +261,21 @@ void Tetron::step()
         break;
 
     case 120: {
+        spd_ = 1;
+        move_to_hero(180);
         sprite_index_ = 206;
         hflip_ = x() < engine().hero()->x();
 
         if (not hflip_) {
-            laser(dir_player(), -16, 4);
+            laser(dir_player(-16, 4), -16, 4);
         } else {
-            laser(dir_player(), 14, 4);
+            laser(dir_player(14, 4), 14, 4);
         }
         break;
     }
 
     case 150:
+        spd_ = 0;
         if (not hflip_) {
             laser(rotate({1, 0}, 180), -16, 4);
             laser(rotate({1, 0}, 115), -16, 4);
@@ -237,19 +288,24 @@ void Tetron::step()
         break;
 
     case 180:
+        spd_ = 1;
         hflip_ = x() < engine().hero()->x();
         if (not hflip_) {
             laser(rotate({1, 0}, 147), -16, 4);
             laser(rotate({1, 0}, 212), -16, 4);
+            move_to_hero(180 + 30);
         } else {
             laser(rotate({1, 0}, 32), 14, 4);
             laser(rotate({1, 0}, 360 - 32), 14, 4);
+            move_to_hero(180 - 30);
         }
         break;
 
     case 210:
         sprite_index_ = 214;
         hflip_ = false;
+
+        spd_ = 0;
 
         for (int i = 0; i < 8; ++i) {
             auto p = position_;
@@ -290,16 +346,19 @@ void Tetron::step()
         break;
 
     case 330:
+        spd_ = 1;
+        move_to_hero(rng::choice<180>(rng::critical_state) + 90);
         sprite_index_ = 206;
         hflip_ = x() < engine().hero()->x();
         if (not hflip_) {
-            laser(dir_player(), -16, 4);
+            laser(dir_player(-16, 4), -16, 4);
         } else {
-            laser(dir_player(), 14, 4);
+            laser(dir_player(14, 4), 14, 4);
         }
         break;
 
-    case 360:
+    case 360: {
+        move_to_hero(rng::choice<180>(rng::critical_state) + 90);
         hflip_ = x() < engine().hero()->x();
         if (not hflip_) {
             laser(rotate({1, 0}, 180), -16, 4);
@@ -311,43 +370,64 @@ void Tetron::step()
             laser(rotate({1, 0}, 295), 14, 4);
         }
         break;
+    }
 
-    case 390:
+    case 390: {
+        spd_ = Fixnum(0.5f);
+        Vec2<Float> d;
+        d.x = dir_.x.as_float();
+        d.y = dir_.y.as_float();
+        d = rotate(d, 180);
+        dir_.x = Fixnum(d.x);
+        dir_.y = Fixnum(d.y);
+
         hflip_ = x() < engine().hero()->x();
         if (not hflip_) {
-            laser(rotate(dir_player(), 360 - 40), -16, 4);
-            laser(rotate(dir_player(), 40), -16, 4);
+            laser(rotate(dir_player(-16, 4), 360 - 40), -16, 4);
+            laser(rotate(dir_player(-16, 4), 40), -16, 4);
         } else {
-            laser(rotate(dir_player(), 360 - 40), 14, 4);
-            laser(rotate(dir_player(), 40), 14, 4);
+            laser(rotate(dir_player(14, 4), 360 - 40), 14, 4);
+            laser(rotate(dir_player(14, 4), 40), 14, 4);
         }
         break;
+    }
 
     case 420:
+        spd_ = 0;
         hflip_ = x() < engine().hero()->x();
         if (not hflip_) {
-            laser(rotate(dir_player(), 360 - 60), -16, 4);
-            laser(rotate(dir_player(), 60), -16, 4);
+            laser(rotate(dir_player(-16, 4), 360 - 60), -16, 4);
+            laser(rotate(dir_player(-16, 4), 60), -16, 4);
         } else {
-            laser(rotate(dir_player(), 360 - 60), 14, 4);
-            laser(rotate(dir_player(), 60), 14, 4);
+            laser(rotate(dir_player(14, 4), 360 - 60), 14, 4);
+            laser(rotate(dir_player(14, 4), 60), 14, 4);
         }
         break;
 
     case 450:
+        spd_ = Fixnum(0.5f);
+        move_to_hero();
         hflip_ = x() < engine().hero()->x();
         if (not hflip_) {
-            gigashot(dir_player(), -16, 4, 1.f, Fixnum(0.025f));
-            gigashot(rotate(dir_player(), 70), -16, 4, 1.f, Fixnum(0.05f));
-            gigashot(rotate(dir_player(), 360 - 70), -16, 4, 1.f, Fixnum(0.05f));
+            gigashot(dir_player(-16, 4), -16, 4, 1.f, Fixnum(0.025f));
+            gigashot(rotate(dir_player(-16, 4), 70), -16, 4, 1.f, Fixnum(0.05f));
+            gigashot(rotate(dir_player(-16, 4), 360 - 70), -16, 4, 1.f, Fixnum(0.05f));
         } else {
-            gigashot(dir_player(), 14, 4, 1.f, Fixnum(0.025f));
-            gigashot(rotate(dir_player(), 70), 14, 4, 1.f, Fixnum(0.05f));
-            gigashot(rotate(dir_player(), 360 - 70), 14, 4, 1.f, Fixnum(0.05f));
+            gigashot(dir_player(14, 4), 14, 4, 1.f, Fixnum(0.025f));
+            gigashot(rotate(dir_player(14, 4), 70), 14, 4, 1.f, Fixnum(0.05f));
+            gigashot(rotate(dir_player(14, 4), 360 - 70), 14, 4, 1.f, Fixnum(0.05f));
         }
         break;
 
-    case 480:
+    case 480: {
+        spd_ = 1;
+        Vec2<Float> d;
+        d.x = dir_.x.as_float();
+        d.y = dir_.y.as_float();
+        d = rotate(d, 180);
+        dir_.x = Fixnum(d.x);
+        dir_.y = Fixnum(d.y);
+
         if (not hflip_) {
             laser(rotate({1, 0}, 180), -16, 4);
             laser(rotate({1, 0}, 135), -16, 4);
@@ -358,35 +438,39 @@ void Tetron::step()
             laser(rotate({1, 0}, 315), 14, 4);
         }
         break;
+    }
 
     case 510:
+        spd_ = 0.5f;
+        move_to_hero();
         hflip_ = x() < engine().hero()->x();
         if (not hflip_) {
-            laser(dir_player(), -16, 4);
+            laser(dir_player(-16, 4), -16, 4);
         } else {
-            laser(dir_player(), 14, 4);
+            laser(dir_player(14, 4), 14, 4);
         }
         break;
 
     case 540:
         hflip_ = x() < engine().hero()->x();
         if (not hflip_) {
-            laser(dir_player(), -16, 4);
+            laser(dir_player(-16, 4), -16, 4);
         } else {
-            laser(dir_player(), 14, 4);
+            laser(dir_player(14, 4), 14, 4);
         }
         break;
 
     case 570:
         hflip_ = x() < engine().hero()->x();
         if (not hflip_) {
-            laser(dir_player(), -16, 4);
+            laser(dir_player(-16, 4), -16, 4);
         } else {
-            laser(dir_player(), 14, 4);
+            laser(dir_player(14, 4), 14, 4);
         }
         break;
 
     case 600:
+        spd_ = 0;
         sprite_index_ = 214;
         hflip_ = false;
 
@@ -426,51 +510,102 @@ void Tetron::step()
         break;
 
     case 1000:
+        spd_ = 0;
         break;
 
     case 1040:
+        spd_ = Fixnum(1.5f / 2);
+        move_to_hero();
+        hflip_ = x() < engine().hero()->x();
+        // TODO: liquid shift
         break;
 
     case 1080:
+        hflip_ = x() < engine().hero()->x();
+        if (not hflip_) {
+            laser(dir_player(-16, 4), -16, 4);
+        } else {
+            laser(dir_player(14, 4), 14, 4);
+        }
         break;
 
     case 1120:
+        hflip_ = x() < engine().hero()->x();
+        if (not hflip_) {
+            laser(dir_player(-16, 4), -16, 4);
+        } else {
+            laser(dir_player(14, 4), 14, 4);
+        }
+        // TODO: liquidshift
         break;
 
     case 1160:
+        spd_ = 0;
         break;
 
     case 1164:
+        hflip_ = false;
         break;
 
     case 1168:
+        laser(rotate({1, 0}, 202), -16, 4);
+        laser(rotate({1, 0}, 270), -16, 4);
         break;
 
     case 1178:
+        hflip_ = true;
         break;
 
     case 1188:
+        laser(rotate({1, 0}, 337), 14, 4);
+        laser(rotate({1, 0}, 270), 14, 4);
         break;
 
     case 1198:
+        sprite_index_ = 214;
+        hflip_ = false;
         break;
 
     case 1200:
+        // todo: liquid
         break;
 
     case 1208:
+        laser(rotate({1, 0}, 0), 0, -12);
+        laser(rotate({1, 0}, 45), 0, -12);
+        laser(rotate({1, 0}, 90), 0, -12);
+        laser(rotate({1, 0}, 135), 0, -12);
+        laser(rotate({1, 0}, 180), 0, -12);
         break;
 
     case 1240:
+        sprite_index_ = 206;
+        spd_ = 1.5f / 2;
+        hflip_ = x() < engine().hero()->x();
+        move_to_hero(rng::choice<360>(rng::critical_state));
         break;
 
     case 1280:
+        move_to_hero(rng::choice<360>(rng::critical_state));
+        hflip_ = x() < engine().hero()->x();
+        if (not hflip_) {
+            laser(dir_player(-16, 4), -16, 4);
+        } else {
+            laser(dir_player(14, 4), 14, 4);
+        }
         break;
 
     case 1320:
+        spd_ = 0;
         break;
 
     case 1340:
+        hflip_ = x() < engine().hero()->x();
+        if (not hflip_) {
+            laser(dir_player(-16, 4), -16, 4);
+        } else {
+            laser(dir_player(14, 4), 14, 4);
+        }
         break;
 
     case 1379:
@@ -505,6 +640,22 @@ void Tetron::step()
         timeline_ = 2000;
         break;
     }
+
+    auto x = position_.x;
+    auto y = position_.y;
+    speed_ = dir_ * spd_;
+    if (not place_free({position_.x + speed_.x, position_.y + speed_.y}, 4)) {
+        if (not place_free({x + 1, y}, 4) or not place_free({x - 1, y}, 4)) {
+            speed_.x = speed_.x * -1;
+            spd_ = spd_ * -1;
+        }
+        if (not place_free({x, y + 1}, 4) or not place_free({x, y - 1}, 4)) {
+            speed_.y = speed_.y * -1;
+            spd_ = spd_ * -1;
+        }
+    }
+
+    Enemy::step();
 }
 
 
