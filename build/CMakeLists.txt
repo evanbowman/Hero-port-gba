@@ -132,6 +132,7 @@ if(GAMEBOY_ADVANCE)
     ${DATA_DIR}/zone1.s
     ${DATA_DIR}/overlay.s
     ${DATA_DIR}/tile0.s
+    ${DATA_DIR}/tile1.s
     ${DATA_DIR}/rock_smasher.s
     ${DATA_DIR}/spritesheet.s
     ${DATA_DIR}/overlay_text_key.s
@@ -364,6 +365,7 @@ if(GAMEBOY_ADVANCE)
     add_overlay(charset0 0 0 NO)
     add_overlay(charset1 0 0 NO)
     add_tilesheet(tile0 0 0 NO)
+    add_tilesheet(tile1 0 0 NO)
     add_tilesheet(rock_smasher 0 0 NO)
     add_spritesheet(spritesheet 2 2 NO)
 

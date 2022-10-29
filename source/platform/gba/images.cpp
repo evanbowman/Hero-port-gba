@@ -23,6 +23,8 @@
 //;
 #include "data/tile0.h"
 //;
+#include "data/tile1.h"
+//;
 #include "data/rock_smasher.h"
 //;
 #include "data/spritesheet.h"
@@ -54,6 +56,8 @@ static const TextureData sprite_textures[] = {
 static const TextureData tile_textures[] = {
 
     TEXTURE_INFO(tile0),
+//;
+    TEXTURE_INFO(tile1),
 //;
     TEXTURE_INFO(rock_smasher),
 //

@@ -392,12 +392,21 @@ void Engine::run()
             if (not paused_) {
                 for (auto& l : lm_) {
                     if (l->hitbox().overlapping(hero_->hitbox())) {
-                        if (g_.heat_ < g_.maxheat_) {
+                        if (p_->suit_ < 3 and
+                            g_.heat_ < g_.maxheat_) {
                             g_.heat_ += 3;
                             g_.heat_ = std::min(g_.heat_, g_.maxheat_);
                             draw_hud_heat();
                             break;
                         }
+                    }
+                }
+                if (hero()->y().as_integer() > g_.fluid_level_) {
+                    if (p_->suit_ < 3 and
+                        g_.heat_ < g_.maxheat_) {
+                        g_.heat_ += 3;
+                        g_.heat_ = std::min(g_.heat_, g_.maxheat_);
+                        draw_hud_heat();
                     }
                 }
             }
@@ -575,6 +584,8 @@ void Engine::load(int chunk_x, int chunk_y, bool restore)
     lm_.clear();
 
     g_.shot_count_ = 0;
+
+    g_.fluid_level_ = 160;
 
     platform().sleep(1);
     room_.load(chunk_x, chunk_y, restore);

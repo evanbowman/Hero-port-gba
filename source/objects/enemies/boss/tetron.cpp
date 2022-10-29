@@ -136,6 +136,13 @@ Tetron::Tetron(const Vec2<Fixnum>& pos)
 
     hitbox_.dimension_.size_ = {32, 60};
     hitbox_.dimension_.origin_ = {16, 30};
+
+    platform().load_tile1_texture("tile1");
+    for (int x = 0; x < 64; ++x) {
+        for (int y = 0; y < 64; ++y) {
+            platform().set_tile(Layer::map_1, x, y, 0);
+        }
+    }
 }
 
 
