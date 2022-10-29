@@ -129,7 +129,8 @@ private:
 
 
 Tetron::Tetron(const Vec2<Fixnum>& pos)
-    : Enemy(TaggedObject::Tag::ignored, Health{256})
+    : Enemy(TaggedObject::Tag::ignored, Health{// 256
+        130})
 {
     position_ = {pos.x - 4, pos.y - 4};
     sprite_index_ = 206;
@@ -143,6 +144,14 @@ Tetron::Tetron(const Vec2<Fixnum>& pos)
             platform().set_tile(Layer::map_1, x, y, 0);
         }
     }
+
+    for (int i = 0; i < 20; ++i) {
+        platform().set_tile(Layer::map_1, 5 + i, 20, 9);
+        for (int j = 0; j < 19; ++j) {
+            platform().set_tile(Layer::map_1, 5 + i, 21 + j, 17);
+        }
+    }
+
 }
 
 
@@ -231,6 +240,33 @@ void Tetron::step()
             dir_.x = Fixnum(d.x);
             dir_.y = Fixnum(d.y);
         };
+
+    auto update_liquid_metal =
+        [&] {
+            if (++fluidcyc_ < 4) {
+                return;
+            }
+            fluidcyc_ = 0;
+            auto t = platform().get_tile(Layer::map_1, 5, 20);
+            t += 1;
+            t %= 256;
+            if (t == 16) {
+                t = 9;
+            }
+            int idx = t - 9;
+            for (int i = 0; i < 20; ++i) {
+                platform().set_tile(Layer::map_1, 5 + i, 20, t);
+                for (int j = 0; j < 19; ++j) {
+                    platform().set_tile(Layer::map_1, 5 + i, 21 + j, 17 + idx);
+                }
+            }
+            // engine().g_.fluid_level_ = 80;
+            platform().scroll(Layer::map_1, 0, 160 - engine().g_.fluid_level_.as_integer() - 8);
+        };
+
+    if (phase_ > 1) {
+        update_liquid_metal();
+    }
 
     if (phase_ == 1 and health_ < 128) {
         phase_ = 2;
