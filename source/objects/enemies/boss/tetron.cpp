@@ -286,6 +286,16 @@ bool Tetron::damage(Health dmg, Object& s)
             s.kill();
         }
 
+        Hitbox hb = hitbox_;
+        hb.dimension_.size_ = {24, 10};
+        hb.dimension_.origin_ = {13, 16};
+        if (hb.overlapping(s.hitbox())) {
+            health_ = std::max(0, health_ - dmg);
+            play_sound("snd_hit1", 1);
+            s.kill();
+            return true;
+        }
+
         return false;
     }
 
@@ -906,7 +916,7 @@ void Tetron::step()
 
     case 2120:
         if (not hflip_) {
-            laser_fixme(dir_player(-24, 5), -24, -5);
+            laser_fixme(dir_player(-24, -5), -24, -5);
         } else {
             laser_fixme(dir_player(22, -5), 22, -5);
         }

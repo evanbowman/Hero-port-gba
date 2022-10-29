@@ -68,9 +68,9 @@ Differences from the Desktop version:
 - [ ] Star Splitter
 - [x] Elite
 - [x] Eliminator
-- [ ] Cruiser Tetron
+- [x] Cruiser Tetron
 
-- [ ] Boss death animations
+- [x] Boss death animations
 
 Note: boss death animations involve tons of code and I haven't finished them yet. Sometimes there's as much code in the boss death sequence as in the boss itself.
 
@@ -84,7 +84,7 @@ Note: boss death animations involve tons of code and I haven't finished them yet
 - [x] Missile
 - [x] Gigashot
 - [x] Laser
-- [ ] Tetron Laser
+- [x] Tetron Laser
 
 
 ### Walls

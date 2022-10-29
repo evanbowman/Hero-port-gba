@@ -37,6 +37,9 @@ private:
     u8 phase_ = 1;
     u8 liquidcyc_ = 0;
     u8 liquidshift_ = 0;
+    bool dead_ = false;
+    u8 deadcyc_ = 0;
+
 
     Object* arm_ = nullptr;
 };
