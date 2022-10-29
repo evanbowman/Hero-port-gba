@@ -28,14 +28,17 @@ public:
 
 
 private:
-    int timeline_ = 0;
-    u8 phase_ = 1;
-    u8 fluidcyc_ = 0;
-
-    Fixnum fluid_spd_;
+    Fixnum liquid_spd_;
 
     Vec2<Fixnum> dir_;
     Fixnum spd_;
+
+    int timeline_ = 0;
+    u8 phase_ = 1;
+    u8 liquidcyc_ = 0;
+    u8 liquidshift_ = 0;
+
+    Object* arm_ = nullptr;
 };
 
 

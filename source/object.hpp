@@ -114,6 +114,12 @@ public:
     }
 
 
+    Vec2<bool> get_flip() const
+    {
+        return {hflip_, vflip_};
+    }
+
+
 protected:
     Vec2<Fixnum> position_;
 

@@ -128,9 +128,129 @@ private:
 
 
 
+class TetronArm : public Enemy
+{
+public:
+
+    TetronArm(Tetron* owner,
+              const Vec2<Fixnum>& position) :
+        Enemy(TaggedObject::Tag::ignored, Health{9999}),
+        owner_(owner)
+    {
+        position_ = position;
+        sprite_index_ = 235;
+        origin_ = {16, 8};
+        hitbox_.dimension_.origin_ = {0, 2};
+        hitbox_.dimension_.size_ = {32, 12};
+        xhold_ = x();
+        yhold_ = y();
+        xorig_ = x();
+        yorig_ = y();
+    }
+
+
+    bool damage(Health dmg, Object& s) override
+    {
+        s.kill();
+        return false;
+    }
+
+
+    void step() override
+    {
+        switch (shift_) {
+        case 3:
+            break;
+
+        case 1:
+            if (owner_->get_flip().x) {
+                auto dir = rotate({1, 0}, 45);
+                speed_.x = Fixnum(dir.x);
+                speed_.y = -1 * Fixnum(dir.y);
+            } else {
+                auto dir = rotate({1, 0}, 135);
+                speed_.x = Fixnum(dir.x);
+                speed_.y = -1 * Fixnum(dir.y);
+            }
+            shiftcyc_ += 1;
+            if (shiftcyc_ == 24) {
+                speed_ = {};
+                shift_ = 0;
+                xhold_ = x();
+                yhold_ = y();
+            }
+            break;
+
+        case 2:
+            if (owner_->get_flip().x) {
+                auto dir = rotate({1, 0}, 45 + 180);
+                speed_.x = Fixnum(dir.x);
+                speed_.y = -1 * Fixnum(dir.y);
+            } else {
+                auto dir = rotate({1, 0}, 135 + 180);
+                speed_.x = Fixnum(dir.x);
+                speed_.y = -1 * Fixnum(dir.y);
+            }
+            shiftcyc_ += 1;
+            if (shiftcyc_ == 24) {
+                speed_ = {};
+                shift_ = 0;
+                x() = xorig_;
+                y() = yorig_;
+            }
+            break;
+
+        default:
+            shiftcyc_ = 0;
+            break;
+        }
+
+        Enemy::step();
+    }
+
+
+    void draw(Platform::Screen& s) const override
+    {
+        Sprite spr;
+        spr.set_priority(2);
+        auto p = position_;
+        p.x -= 16;
+
+        spr.set_position(position_);
+
+        if (owner_->get_flip().x) {
+            spr.set_flip({true, false});
+            spr.set_texture_index(236);
+            s.draw(spr);
+            spr.set_texture_index(235);
+            p.x += 32;
+            spr.set_position(p);
+            s.draw(spr);
+        } else {
+            spr.set_texture_index(235);
+            s.draw(spr);
+            spr.set_texture_index(236);
+            p.x += 32;
+            spr.set_position(p);
+            s.draw(spr);
+        }
+    }
+
+
+    Tetron* owner_;
+    u8 shiftcyc_ = 0;
+    u8 shift_ = 0;
+    Fixnum xhold_;
+    Fixnum yhold_;
+    Fixnum xorig_;
+    Fixnum yorig_;
+};
+
+
+
 Tetron::Tetron(const Vec2<Fixnum>& pos)
     : Enemy(TaggedObject::Tag::ignored, Health{// 256
-        130})
+        20})
 {
     position_ = {pos.x - 4, pos.y - 4};
     sprite_index_ = 206;
@@ -158,6 +278,17 @@ Tetron::Tetron(const Vec2<Fixnum>& pos)
 
 bool Tetron::damage(Health dmg, Object& s)
 {
+    if (sprite_index_ == 226) {
+        auto hb2 = hitbox_;
+        hb2.dimension_.size_ = {24, 48};
+        hb2.dimension_.origin_ = {13, 14};
+        if (hb2.overlapping(s.hitbox())) {
+            s.kill();
+        }
+
+        return false;
+    }
+
     auto hb2 = hitbox_;
     hb2.dimension_.size_ = {24, 60};
     hb2.dimension_.origin_ = {13, 30};
@@ -199,12 +330,33 @@ void Tetron::step()
             p.x += xoff;
             p.y += yoff;
             p.y -= 2;
+            if (phase_ == 4) {
+                dir.y *= -1;
+            }
             if (auto l = engine().add_object<Laser>(p, dir)) {
                 dir = dir * speed;
                 l->set_speed(Vec2<Fixnum>{Fixnum(dir.x), Fixnum(dir.y)});
                 l->set_grav(gravity * Vec2<Fixnum>{Fixnum(dir.x), Fixnum(dir.y)});
             }
         };
+
+    auto laser_fixme =
+        [&](Vec2<Float> dir,
+            int xoff,
+            int yoff,
+            Float speed = 1.25f,
+            Fixnum gravity = 0) {
+            auto p = position_;
+            p.x += xoff;
+            p.y += yoff;
+            p.y -= 2;
+            if (auto l = engine().add_object<Laser>(p, dir)) {
+                dir = dir * speed;
+                l->set_speed(Vec2<Fixnum>{Fixnum(dir.x), Fixnum(dir.y)});
+                l->set_grav(gravity * Vec2<Fixnum>{Fixnum(dir.x), Fixnum(dir.y)});
+            }
+        };
+
 
     auto gigashot =
         [&](Vec2<Float> dir,
@@ -243,10 +395,15 @@ void Tetron::step()
 
     auto update_liquid_metal =
         [&] {
-            if (++fluidcyc_ < 4) {
+            auto& liquid_level_ = engine().g_.fluid_level_;
+            liquid_level_ += liquid_spd_;
+            liquid_level_ = clamp(liquid_level_, Fixnum(0), Fixnum(152));
+            platform().scroll(Layer::map_1, 0, 160 - engine().g_.fluid_level_.as_integer() - 8);
+
+            if (++liquidcyc_ < 4) {
                 return;
             }
-            fluidcyc_ = 0;
+            liquidcyc_ = 0;
             auto t = platform().get_tile(Layer::map_1, 5, 20);
             t += 1;
             t %= 256;
@@ -260,8 +417,6 @@ void Tetron::step()
                     platform().set_tile(Layer::map_1, 5 + i, 21 + j, 17 + idx);
                 }
             }
-            // engine().g_.fluid_level_ = 80;
-            platform().scroll(Layer::map_1, 0, 160 - engine().g_.fluid_level_.as_integer() - 8);
         };
 
     if (phase_ > 1) {
@@ -281,14 +436,68 @@ void Tetron::step()
         phase_ = 3;
         spd_ = 0;
 
+        spd_ = 2;
+        if (x() > engine().hero()->x()) {
+            dir_ = {1, 0};
+        } else {
+            dir_ = {-1, 0};
+        }
+        speed_ = dir_ * spd_;
+        liquid_spd_ = 3;
         engine().add_object<ExploSpewer>(position_);
         play_sound("snd_bossroar", 20);
         engine().g_.screenshake_ = 12;
     }
 
     if (phase_ == 3) {
-        // TODO
+        auto x = position_.x;
+        auto y = position_.y;
+        speed_.y += Fixnum(0.05f);
+
+        if (not place_free({position_.x + speed_.x, position_.y + speed_.y}, 4)) {
+            if (not place_free({x + 3, y}, 4) or not place_free({x - 3, y}, 4)) {
+                speed_.x = 0;
+            }
+        }
+
+        if (not place_free({x, y + 1}, 4)) {
+            speed_.y = speed_.y * -1;
+            spd_ = spd_ * -1;
+
+            while (not place_free({this->x(), this->y()}, 4)) {
+                this->y() -= 1;
+            }
+
+            speed_ = {};
+            dir_ = {};
+            spd_ = 0;
+
+            phase_ = 4;
+            engine().g_.screenshake_ = 12;
+            timeline_ = 2000;
+            sprite_index_ = 226;
+
+            auto arm_pos = position_;
+            if (hflip_) {
+                arm_pos.x -= 11;
+            } else {
+                arm_pos.x -= 18;
+            }
+            arm_pos.y += 2;
+
+            if (auto e = engine().add_object<TetronArm>(this, arm_pos)) {
+                arm_ = e;
+            } else {
+                // Raise error? Should always be enough entities though...
+            }
+        }
+
+        Enemy::step();
         return;
+    }
+
+    if (phase_ == 4) {
+        // TODO
     }
 
     switch (timeline_++) {
@@ -560,7 +769,13 @@ void Tetron::step()
         spd_ = Fixnum(1.5f / 2);
         move_to_hero();
         hflip_ = x() < engine().hero()->x();
-        // TODO: liquid shift
+        if (liquidshift_ == 0) {
+            liquidshift_ = 1;
+            liquid_spd_ = -2;
+        } else {
+            liquidshift_ = 0;
+            liquid_spd_ = 2;
+        }
         break;
 
     case 1080:
@@ -579,7 +794,7 @@ void Tetron::step()
         } else {
             laser(dir_player(14, 4), 14, 4);
         }
-        // TODO: liquidshift
+        liquid_spd_ = 0;
         break;
 
     case 1160:
@@ -591,8 +806,8 @@ void Tetron::step()
         break;
 
     case 1168:
-        laser(rotate({1, 0}, 202), -16, 4);
-        laser(rotate({1, 0}, 270), -16, 4);
+        laser(rotate({-1, 0}, 337), -16, 4);
+        laser(rotate({-1, 0}, 270), -16, 4);
         break;
 
     case 1178:
@@ -600,8 +815,8 @@ void Tetron::step()
         break;
 
     case 1188:
-        laser(rotate({1, 0}, 337), 14, 4);
-        laser(rotate({1, 0}, 270), 14, 4);
+        laser(rotate({-1, 0}, 202), 14, 4);
+        laser(rotate({-1, 0}, 270), 14, 4);
         break;
 
     case 1198:
@@ -610,15 +825,15 @@ void Tetron::step()
         break;
 
     case 1200:
-        // todo: liquid
+        liquid_spd_ = 0;
         break;
 
     case 1208:
-        laser(rotate({1, 0}, 0), 0, -12);
-        laser(rotate({1, 0}, 45), 0, -12);
-        laser(rotate({1, 0}, 90), 0, -12);
-        laser(rotate({1, 0}, 135), 0, -12);
-        laser(rotate({1, 0}, 180), 0, -12);
+        laser(rotate({-1, 0}, 0), 0, -12);
+        laser(rotate({-1, 0}, 45), 0, -12);
+        laser(rotate({-1, 0}, 90), 0, -12);
+        laser(rotate({-1, 0}, 135), 0, -12);
+        laser(rotate({-1, 0}, 180), 0, -12);
         break;
 
     case 1240:
@@ -656,27 +871,109 @@ void Tetron::step()
         break;
 
     case 2000:
+        if (arm_) {
+            ((TetronArm*)arm_)->shift_ = 1;
+        }
         break;
 
     case 2030:
+        if (not hflip_) {
+            laser(rotate({1, 0}, 157), -24, -5);
+        } else {
+            laser(rotate({1, 0}, 22), 22, -5);
+        }
         break;
 
     case 2050:
+        if (not hflip_) {
+            laser(rotate({1, 0}, 157 - 40), -24, -5);
+            laser(rotate({1, 0}, 157 + 40), -24, -5);
+        } else {
+            laser(rotate({1, 0}, 22 + 40), 22, -5);
+            laser(rotate({1, 0}, 22 + 360 - 40), 22, -5);
+        }
         break;
 
     case 2070:
+        if (not hflip_) {
+            laser(rotate({1, 0}, 157 - 80), -24, -5);
+            laser(rotate({1, 0}, 157 + 80), -24, -5);
+        } else {
+            laser(rotate({1, 0}, 22 + 80), 22, -5);
+            laser(rotate({1, 0}, 22 + 360 - 80), 22, -5);
+        }
         break;
 
     case 2120:
+        if (not hflip_) {
+            laser_fixme(dir_player(-24, 5), -24, -5);
+        } else {
+            laser_fixme(dir_player(22, -5), 22, -5);
+        }
         break;
 
     case 2160:
+        if (not hflip_) {
+            laser_fixme(rotate(dir_player(-24, 5), 330), -24, -5);
+            laser_fixme(rotate(dir_player(-24, 5), 30), -24, -5);
+        } else {
+            laser_fixme(rotate(dir_player(22, -5), 330), 22, -5);
+            laser_fixme(rotate(dir_player(22, -5), 30), 22, -5);
+        }
         break;
 
     case 2198:
+        if (arm_) {
+            ((TetronArm*)arm_)->shift_ = 0;
+            ((TetronArm*)arm_)->x() = ((TetronArm*)arm_)->xhold_;
+            ((TetronArm*)arm_)->y() = ((TetronArm*)arm_)->yhold_;
+        }
         break;
 
     case 2200:
+        if (arm_) {
+            ((TetronArm*)arm_)->shift_ = 2;
+        }
+        if (not hflip_) {
+            for (int i = 0; i < 5; ++i) {
+                auto p = position_;
+                p.x -= 3;
+                p.y -= 3;
+                if (auto e = engine().add_object<SupershotG>(p)) {
+                    auto d = rotate({1, 0}, i * 45 + 45);
+                    d = d * (0.5f / 2);
+                    d.y *= -1;
+                    e->set_speed({Fixnum(d.x), Fixnum(d.y)});
+                    e->set_grav(Fixnum(0.1f) * Vec2<Fixnum>{Fixnum(d.x), Fixnum(d.y)});
+                }
+                if (auto e = engine().add_object<Gigashot>(p)) {
+                    auto d = rotate({1, 0}, i * 45 + 22);
+                    d = d * (2.5f / 2);
+                    d.y *= -1;
+                    e->set_speed({Fixnum(d.x), Fixnum(d.y)});
+                }
+            }
+        } else {
+            for (int i = 0; i < 5; ++i) {
+                auto p = position_;
+                p.x -= 3;
+                p.y -= 3;
+                if (auto e = engine().add_object<SupershotG>(p)) {
+                    auto d = rotate({1, 0}, i * 45 - 45);
+                    d = d * (0.5f / 2);
+                    d.y *= -1;
+                    e->set_speed({Fixnum(d.x), Fixnum(d.y)});
+                    e->set_grav(Fixnum(0.1f) * Vec2<Fixnum>{Fixnum(d.x), Fixnum(d.y)});
+                }
+                if (auto e = engine().add_object<Gigashot>(p)) {
+                    auto d = rotate({1, 0}, i * 45 - 22);
+                    d = d * (2.5f / 2);
+                    d.y *= -1;
+                    e->set_speed({Fixnum(d.x), Fixnum(d.y)});
+                }
+            }
+        }
+
         break;
 
     case 2279:
@@ -728,6 +1025,40 @@ void Tetron::draw(Platform::Screen& s) const
         };
 
     u8 t = sprite_index_;
+
+    // Special case: third form uses different sprite layout, because it's wider
+    // and shorter.
+    if (sprite_index_ == 226) {
+        center.y += 16;
+        if (hflip_) {
+            center.x -= 16;
+            draw_part(32, 0, t++);
+            draw_part(16, 0, t++);
+            draw_part(0, 0, t++);
+
+            draw_part(32, 16, t++);
+            draw_part(16, 16, t++);
+            draw_part(0, 16, t++);
+
+            draw_part(32, 32, t++);
+            draw_part(16, 32, t++);
+            draw_part(0, 32, t++);
+
+        } else {
+            draw_part(0, 0, t++);
+            draw_part(16, 0, t++);
+            draw_part(32, 0, t++);
+
+            draw_part(0, 16, t++);
+            draw_part(16, 16, t++);
+            draw_part(32, 16, t++);
+
+            draw_part(0, 32, t++);
+            draw_part(16, 32, t++);
+            draw_part(32, 32, t++);
+        }
+        return;
+    }
 
     if (hflip_) {
         draw_part(16, 0, t++);
