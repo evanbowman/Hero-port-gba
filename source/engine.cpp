@@ -11,6 +11,7 @@
 #include "objects/enemies/boss/reaperDrone.hpp"
 #include "objects/enemies/boss/rockSmasher.hpp"
 #include "objects/enemies/boss/silencer.hpp"
+#include "objects/enemies/boss/tetron.hpp"
 #include "objects/enemies/elite/annihilator.hpp"
 #include "objects/enemies/elite/barrier.hpp"
 #include "objects/enemies/elite/direviper.hpp"
@@ -162,6 +163,7 @@ void Engine::begin_game(Difficulty d)
         p_->checkpoint_room_ = {11, 14};
         load(11, 14, false);
         // load(6, 6, false); // eyespy
+        load(7, 7, false); // tetron
         // load(11, 4, false); // silencer
         // load(9, 6, false); // reaper drone
         // load(11, 0, false); // hydra
@@ -330,6 +332,8 @@ void Engine::run()
             // NOTE: The original game runs at 40fps. I'm using the downtime
             // between frames to run collision checking.
             collision_check();
+
+            p_->frames_spent_ += 3;
 
         } else {
 
@@ -1026,6 +1030,10 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
 
             case 44:
                 engine().add_object<Eyespy>(Vec2<Fixnum>{40 + obj.x_, obj.y_});
+                break;
+
+            case 45:
+                engine().add_object<Tetron>(Vec2<Fixnum>{40 + obj.x_, obj.y_});
                 break;
 
             default:

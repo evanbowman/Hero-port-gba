@@ -235,6 +235,8 @@ public:
         StringBuffer<32> checkpoint_music_;
         Vec2<u8> checkpoint_room_;
         Vec2<u8> checkpoint_coords_;
+
+        u64 frames_spent_ = 0;
     };
 
     DynamicMemory<Persistence> p_;
