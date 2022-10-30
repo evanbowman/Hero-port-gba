@@ -163,7 +163,7 @@ void Engine::begin_game(Difficulty d)
         p_->checkpoint_room_ = {11, 14};
         load(11, 14, false);
         // load(6, 6, false); // eyespy
-        load(7, 7, false); // tetron
+        // load(7, 7, false); // tetron
         // load(11, 4, false); // silencer
         // load(9, 6, false); // reaper drone
         // load(11, 0, false); // hydra
