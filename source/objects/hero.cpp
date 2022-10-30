@@ -374,6 +374,7 @@ void Hero::draw(Platform::Screen& screen) const
         if (warpcyc_ == 8) {
             warpcyc_ = 0;
         } else if (warpcyc_ == 2) {
+            play_sound("snd_chargeblade", 1);
             spr_.set_position({x(), y() - 1});
             screen.draw(spr_);
             spr_.set_position({x(), y() + 1});

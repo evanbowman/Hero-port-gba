@@ -81,6 +81,7 @@ private:
     Vec2<int> pt_;
     u8 flicker_cyc_ = 0;
     u8 warpcyc_ = 0;
+    u8 warp_sprite_subimage_ = 0;
     bool flicker_on_ = true;
 
     std::optional<Text> zone_text_;

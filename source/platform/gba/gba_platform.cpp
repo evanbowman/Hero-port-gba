@@ -1979,6 +1979,7 @@ static const AudioTrack* find_music(const char* name)
 // assembly output, adding the file to CMake, adding the include, and adding the
 // sound to the sounds array, it's just too tedious to keep working this way...
 #include "data/snd_blade.hpp"
+#include "data/snd_chargeblade.hpp"
 #include "data/snd_bossroar.hpp"
 #include "data/snd_death.hpp"
 #include "data/snd_explo1.hpp"
@@ -2011,6 +2012,7 @@ static const AudioTrack sounds[] = {
     DEF_SOUND(snd_explo3, snd_explo3),
     DEF_SOUND(snd_explo4, snd_explo4),
     DEF_SOUND(snd_blade, snd_blade),
+    DEF_SOUND(snd_chargeblade, snd_chargeblade),
     DEF_SOUND(snd_pain, snd_pain),
     DEF_SOUND(snd_bossroar, snd_bossroar),
     DEF_SOUND(snd_save, snd_save),

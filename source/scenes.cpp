@@ -1,6 +1,8 @@
 #include "scenes.hpp"
 #include "maps.hpp"
 #include "graphics/overlay.hpp"
+#include "objects/particles/explo.hpp"
+
 
 
 namespace herocore
@@ -218,21 +220,24 @@ void MapScene::show_worldmap()
             else if (!right && !up && !left && !down)
                 t = 16;
 
-            if (engine().room_.coord_.x == x and engine().room_.coord_.y == y) {
-                t += 16;
-                pt_ = {x + 5 + margin + pad_x, y + margin};
-            } else {
-                for (auto& obj : data->objects_) {
-                    if (obj.type_ == 24) { // savepoint
-                        t += 90;
-                        warp_points_.push_back({(u8)x, (u8)y});
-                        break;
-                    }
+            bool is_warp_point = false;
+
+            for (auto& obj : data->objects_) {
+                if (obj.type_ == 24) { // savepoint
+                    is_warp_point = true;
+                    warp_points_.push_back({(u8)x, (u8)y});
+                    break;
                 }
             }
 
-            if (left or right or up or down) {
+            if (engine().room_.coord_.x == x and engine().room_.coord_.y == y) {
+                t += 16;
+                pt_ = {x + 5 + margin + pad_x, y + margin};
+            } else if (is_warp_point) {
+                t += 90;
+            }
 
+            if (left or right or up or down) {
                 platform().set_tile(
                     Layer::overlay, x + 5 + margin + pad_x, y + margin, 126 + t);
             }
@@ -284,6 +289,15 @@ void MapScene::show_worldmap()
         platform().set_tile(Layer::overlay, 5 + pad_x + 16, y, 170);
         platform().set_tile(Layer::overlay, 5 + pad_x + y, 16, 168);
         platform().set_tile(Layer::overlay, 5 + pad_x + y, 0, 172);
+    }
+
+    if (warpmode_) {
+        for (u32 i = 0; i < warp_points_.size(); ++i) {
+            if (warp_points_[i] == engine().p_->checkpoint_room_) {
+                sel_ = i;
+                break;
+            }
+        }
     }
 }
 
@@ -511,12 +525,79 @@ ScenePtr<Scene> MapScene::step()
         platform().set_tile(Layer::overlay, pt_.x, pt_.y, t);
     }
 
+    if (warpmode_) {
+        if (key_down<Key::left>()) {
+            if (sel_ > 0) {
+                --sel_;
+            } else {
+                sel_ = warp_points_.size() - 1;
+            }
+        }
+        if (key_down<Key::right>()) {
+            if (sel_ < (int)warp_points_.size() - 1) {
+                sel_ += 1;
+            } else {
+                sel_ = 0;
+            }
+        }
+        if (key_down<Key::action_1>() or key_down<Key::action_2>()) {
+            for (int x = 0; x < 20; ++x) {
+                for (int y = 0; y < 20; ++y) {
+                    platform().set_tile(Layer::overlay, x + 5, y, 0);
+                }
+            }
+            engine().p_->checkpoint_room_ = warp_points_[sel_];
+            const bool hard = engine().g_.difficulty_ == Difficulty::hard;
+            auto loadrm = [&](int x, int y) {
+                              auto data = load_room_normal(x, y);
+                              if (hard) {
+                                  data = load_room_hard(x, y);
+                              }
+                              return data;
+                          };
+            auto data = loadrm(warp_points_[sel_].x,
+                               warp_points_[sel_].y);
+            for (auto& obj : data->objects_) {
+                if (obj.type_ == 24) { // savepoint object
+                    // Because respawn_to_checkpoint() will place FlipHero at
+                    // checkpoint coords, we need to find the savepoint in the
+                    // room and figure out what its coords are.
+                    engine().p_->checkpoint_coords_.x = obj.x_ + 6;
+                    engine().p_->checkpoint_coords_.y = obj.y_ - 12;
+                    break;
+                }
+            }
+            platform().speaker().play_sound("snd_herospawn", 11);
+            engine().respawn_to_checkpoint();
+            engine().paused_ = false;
+            engine().add_object<ExploSpewer2>(engine().hero()->position());
+            return scene_pool::alloc<OverworldScene>();
+        }
+    }
+
     return null_scene();
 }
 
 
 void MapScene::display()
 {
+    if (warpmode_ and not warp_points_.empty()) {
+        warpcyc_ += 1;
+        if (warpcyc_ == 4) {
+            warpcyc_ = 0;
+            warp_sprite_subimage_ += 1;
+            if (warp_sprite_subimage_ > 2) {
+                warp_sprite_subimage_ = 0;
+            }
+        }
+        Sprite spr;
+        spr.set_priority(0);
+        auto selected = warp_points_[sel_];
+        spr.set_position({(5 + 1 + selected.x) * 8 + 4,
+                          (1 + selected.y) * 8 - 4});
+        spr.set_texture_index(244 + warp_sprite_subimage_);
+        platform().screen().draw(spr);
+    }
 }
 
 
@@ -595,6 +676,7 @@ ScenePtr<Scene> OverworldScene::step()
     }
 
     if (engine().g_.warpready_) {
+        engine().paused_ = true;
         engine().g_.warpready_ = false;
         auto next = scene_pool::alloc<MapScene>();
         next->warpmode_ = true;

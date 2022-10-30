@@ -17,7 +17,7 @@ Differences from the Desktop version:
 - [x] weapon
 - [x] blade
 - [ ] burst
-- [ ] warp
+- [x] warp
 - [x] Level up
 - [x] overheat
 - [x] damage animation

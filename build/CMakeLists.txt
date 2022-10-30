@@ -147,6 +147,7 @@ if(GAMEBOY_ADVANCE)
     ${DATA_DIR}/sound_msg.s
 
     ${DATA_DIR}/snd_pain.s
+    ${DATA_DIR}/snd_chargeblade.s
     ${DATA_DIR}/snd_spot.s
     ${DATA_DIR}/snd_blade.s
     ${DATA_DIR}/snd_fireshot.s
