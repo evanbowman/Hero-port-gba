@@ -53,6 +53,7 @@ public:
         if (not place_free({position_.x + speed_.x, position_.y + speed_.y})) {
             engine().add_object<BigExplo>(position_);
             kill();
+            play_sound("snd_explo1", 1);
             return;
         }
 

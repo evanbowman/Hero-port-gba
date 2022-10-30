@@ -8,6 +8,8 @@
 #include "objects/projectile/shot.hpp"
 #include "objects/projectile/supershot.hpp"
 #include "objects/projectile/vortex.hpp"
+#include "objects/projectile/laser.hpp"
+
 
 
 namespace herocore
@@ -128,7 +130,9 @@ public:
                     reflect_s(hflip_ ? 3 : -3, 0);
                     engine().add_object<Explo>(Vec2<Fixnum>{s->x() - 4, s->y() - 4});
                     s->kill();
-                } else if (dynamic_cast<Vortex*>(s.get()) and engine().p_->blade_ == 3) {
+                } else if ((dynamic_cast<Laser*>(s.get()) or
+                           dynamic_cast<Vortex*>(s.get())) and
+                           engine().p_->blade_ == 3) {
                     reflect_s(0, 3);
                     reflect_s(0, -3);
                     reflect_s(hflip_ ? 3 : -3, 0);
