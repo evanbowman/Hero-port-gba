@@ -234,6 +234,7 @@ public:
         u8 blade_ = 0;
         u8 suit_ = 0;
         u8 level_ = 0;
+        u8 computer_ = 0;
 
         StringBuffer<32> checkpoint_music_;
         Vec2<u8> checkpoint_room_;
@@ -247,6 +248,7 @@ public:
     void summon_eliminator();
 
     void unlock_doors();
+    void remove_computer();
 
 private:
     int animcyc_ = 0;

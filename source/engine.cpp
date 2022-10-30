@@ -163,7 +163,7 @@ void Engine::begin_game(Difficulty d)
         p_->checkpoint_room_ = {11, 14};
         load(11, 14, false);
         // load(6, 6, false); // eyespy
-        // load(7, 7, false); // tetron
+        load(7, 7, false); // tetron
         // load(11, 4, false); // silencer
         // load(9, 6, false); // reaper drone
         // load(11, 0, false); // hydra
@@ -596,7 +596,7 @@ void Engine::load(int chunk_x, int chunk_y, bool restore)
 
     p_->visited_.set(chunk_x, chunk_y, true);
 
-    if (chunk_x == 4 and chunk_y == 14) {
+    if (chunk_x == 13 and chunk_y == 3) {
         // BUGFIX: I haven't implemented warping, and this trap effectively
         // softlocks the game until the player has access to fast travel.
         // FIXME:
@@ -605,16 +605,13 @@ void Engine::load(int chunk_x, int chunk_y, bool restore)
 
     if (chunk_x == 8 and chunk_y == 1) {
         // FIXME: grandmother boss missing!
-        unlock_doors();
-    }
-
-    if (chunk_x == 8 and chunk_y == 1) {
-        // FIXME: grandmother boss missing!
+        // NOTE: when adding, uncomment corresponding hint in scenes.cpp
         unlock_doors();
     }
 
     if (chunk_x == 6 and chunk_y == 9) {
         // FIXME: star splitter boss missing!
+        // NOTE: when adding, uncomment corresponding hint in scenes.cpp
         unlock_doors();
     }
 }
@@ -689,6 +686,11 @@ void Engine::draw_hud()
         draw_image(platform(), 196, 0, 4, 2, 2, Layer::overlay);
         pf.set_tile(Layer::overlay, 1, 5, 198 + p_->suit_);
     }
+
+    if (p_->computer_) {
+        draw_image(platform(), 202, 0, 6, 2, 2, Layer::overlay);
+        pf.set_tile(Layer::overlay, 1, 7, 205 + p_->computer_);
+    }
 }
 
 
@@ -747,6 +749,28 @@ void Engine::Room::render_entrances()
         }
     }
 }
+
+
+
+void Engine::remove_computer()
+{
+    const RoomData* rd;
+    if (engine().g_.difficulty_ == Difficulty::hard) {
+        rd = load_room_hard(room_.coord_.x, room_.coord_.y);
+    } else {
+        rd = load_room_normal(room_.coord_.x, room_.coord_.y);
+    }
+
+    for (auto& obj : rd->objects_) {
+        if (obj.type_ == 46) {
+            engine().p_->objects_removed_.push_back({
+                    (u8)room_.coord_.x, (u8)room_.coord_.y,
+                    obj.x_, obj.y_
+                });
+        }
+    }
+}
+
 
 
 void Engine::Room::clear_adjacent_barriers()
@@ -1067,6 +1091,11 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
 
             case 45:
                 engine().add_object<Tetron>(Vec2<Fixnum>{40 + obj.x_, obj.y_});
+                break;
+
+            case 46:
+                engine().add_object<Pickup>(Vec2<Fixnum>{40 + obj.x_ - 4, obj.y_ - 4},
+                                            Pickup::Type::computer);
                 break;
 
             default:

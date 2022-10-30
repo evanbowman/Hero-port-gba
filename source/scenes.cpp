@@ -8,7 +8,9 @@ namespace herocore
 
 
 static const std::array<Vec2<u8>, 10> hint_order_normal = {
-    {{11, 4}, {11, 0}, {9, 6}, {0, 3}, {9, 9}, {8, 1}, {1, 6}, {6, 9}, {5, 13}, {7, 7}}};
+    {{11, 4}, {11, 0}, {9, 6}, {0, 3}, {9, 9}, // {8, 1},
+     {1, 6}, // {6, 9},
+     {5, 13}, {7, 7}}};
 
 
 static const std::array<Vec2<u8>, 10> hint_order_hard = {{{13, 8},
@@ -573,8 +575,15 @@ void EndgameStatsScene::enter(Scene& prev_scene)
                              OverlayCoord{4, 4});
 
     text_lines_.emplace_back(platform(),
+                             "Computers: ",
+                             OverlayCoord{7, 6});
+    text_lines_.back().append(engine().p_->computer_);
+    text_lines_.back().append("/");
+    text_lines_.back().append(10);
+
+    text_lines_.emplace_back(platform(),
                              "Bosses: ",
-                             OverlayCoord{9, 6});
+                             OverlayCoord{9, 8});
     text_lines_.back().append(engine().p_->completed_bosses_.size() + 1);
     text_lines_.back().append("/");
     text_lines_.back().append(8);
@@ -589,7 +598,7 @@ void EndgameStatsScene::enter(Scene& prev_scene)
 
     text_lines_.emplace_back(platform(),
                              "Clear Time: ",
-                             OverlayCoord{5, 8});
+                             OverlayCoord{5, 10});
     if (h < 10) {
         text_lines_.back().append("0");
     }

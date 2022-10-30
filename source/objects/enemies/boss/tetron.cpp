@@ -255,7 +255,8 @@ public:
 
 
 Tetron::Tetron(const Vec2<Fixnum>& pos)
-    : Enemy(TaggedObject::Tag::ignored, Health{256})
+    : Enemy(TaggedObject::Tag::ignored, Health{2// 256
+        })
 {
     position_ = {pos.x - 4, pos.y - 4};
     sprite_index_ = 206;

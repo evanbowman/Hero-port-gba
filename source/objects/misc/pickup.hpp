@@ -12,7 +12,7 @@ namespace herocore
 class Pickup : public Solid
 {
 public:
-    enum Type { blaster, blade, suit };
+    enum Type { blaster, blade, suit, computer };
 
 
     Pickup(const Vec2<Fixnum>& pos, Type type) : type_(type)
@@ -32,6 +32,10 @@ public:
 
         case suit:
             sprite_index_ = 193;
+            break;
+
+        case computer:
+            sprite_index_ = 237;
             break;
         }
 
@@ -54,17 +58,26 @@ public:
                 switch (type_) {
                 case blaster:
                     ++engine().p_->blaster_;
+                    engine().levelup();
                     break;
 
                 case blade:
                     ++engine().p_->blade_;
+                    engine().levelup();
                     break;
 
                 case suit:
                     ++engine().p_->suit_;
+                    engine().levelup();
+                    break;
+
+                case computer:
+                    ++engine().p_->computer_;
+                    engine().remove_computer();
+                    engine().draw_hud();
                     break;
                 }
-                engine().levelup();
+
                 platform().speaker().play_sound("snd_pickup", 10);
             }
 
