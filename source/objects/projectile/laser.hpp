@@ -21,7 +21,7 @@ public:
     {
         sprite_index_ = 222;
 
-        hitbox_.dimension_.size_ = {8, 8};
+        hitbox_.dimension_.size_ = {10, 10};
         hitbox_.dimension_.origin_ = {4, 4};
         origin_ = {8, 8};
 

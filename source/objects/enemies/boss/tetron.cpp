@@ -93,6 +93,12 @@ public:
     }
 
 
+    int collision_damage() const override
+    {
+        return 3;
+    }
+
+
     void step() override
     {
         if (d_ < d_max_) {

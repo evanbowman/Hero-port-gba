@@ -27,6 +27,12 @@ public:
     bool damage(Health dmg, Object& s) override;
 
 
+    int collision_damage() const override
+    {
+        return 4;
+    }
+
+
 private:
     Fixnum liquid_spd_;
 
