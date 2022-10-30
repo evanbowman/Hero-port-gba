@@ -17,6 +17,7 @@ public:
         origin_ = {6, 0};
 
         hitbox_.dimension_.size_ = {4, 8};
+        hflip_ = false;
     }
 
 
@@ -46,6 +47,8 @@ private:
     u8 heatcyc_ = 0;
     u8 chargeblade_ = 0;
     u8 chargebladeprev_ = 0;
+    u8 chargewarp_ = 0;
+    mutable u8 warpcyc_ = 0;
     bool lv2_blaster_damage_inc_ = false;
 
     int blaster_damage();

@@ -221,9 +221,18 @@ void MapScene::show_worldmap()
             if (engine().room_.coord_.x == x and engine().room_.coord_.y == y) {
                 t += 16;
                 pt_ = {x + 5 + margin + pad_x, y + margin};
+            } else {
+                for (auto& obj : data->objects_) {
+                    if (obj.type_ == 24) { // savepoint
+                        t += 90;
+                        warp_points_.push_back({(u8)x, (u8)y});
+                        break;
+                    }
+                }
             }
 
             if (left or right or up or down) {
+
                 platform().set_tile(
                     Layer::overlay, x + 5 + margin + pad_x, y + margin, 126 + t);
             }
@@ -432,6 +441,45 @@ void MapScene::show_zoomedmap()
 void MapScene::enter(Scene& prev_scene)
 {
     show_worldmap();
+
+    zone_text_.emplace(platform(),
+                       OverlayCoord{9, 17});
+    zone_text_->assign([] {
+                           switch (engine().room_.zone_) {
+                           case 1:
+                               return "natural caves";
+
+                           case 2:
+                               return "army storage";
+
+                           case 3:
+                               return "control";
+
+                           case 4:
+                               return "light factory";
+
+                           case 5:
+                               return "new caves";
+
+                           case 6:
+                               return "war factory";
+
+                           case 7:
+                               return "guardian zone";
+
+                           case 8:
+                               return "annihltr factry";
+
+                           case 9:
+                               return "old base";
+
+                           case 10:
+                               return "core";
+
+                           default:
+                               return "?";
+                           }
+                       }());
 }
 
 
@@ -546,6 +594,13 @@ ScenePtr<Scene> OverworldScene::step()
         return scene_pool::alloc<MapScene>();
     }
 
+    if (engine().g_.warpready_) {
+        engine().g_.warpready_ = false;
+        auto next = scene_pool::alloc<MapScene>();
+        next->warpmode_ = true;
+        return next;
+    }
+
     if (engine().g_.tetron_destroyed_) {
         return scene_pool::alloc<FadeOutScene>();
     }
@@ -615,6 +670,129 @@ void EndgameStatsScene::enter(Scene& prev_scene)
         text_lines_.back().append("0");
     }
     text_lines_.back().append(s);
+}
+
+
+
+void CreditsScene::enter(Scene& prev_scene)
+{
+    platform().screen().fade(1);
+
+    scroll_ = -70;
+    platform().scroll(Layer::overlay, 0, scroll_);
+
+
+    text_lines_.emplace_back(platform(),
+                             "Game by Daniel Remar",
+                             OverlayCoord{4, 4});
+
+    text_lines_.emplace_back(platform(),
+                             "Music by Brother Android",
+                             OverlayCoord{3, 7});
+
+    text_lines_.emplace_back(platform(),
+                             "GBA Port by Evan Bowman",
+                             OverlayCoord{3, 10});
+}
+
+
+
+void CreditsScene::exit(Scene& prev_scene)
+{
+    text_lines_.clear();
+    platform().scroll(Layer::overlay, 0, 0);
+}
+
+
+
+ScenePtr<Scene> CreditsScene::step()
+{
+    scroll_ *= 0.85f;
+    platform().scroll(Layer::overlay, 0, scroll_);
+
+    if (++cnt_ == 200 or
+        (cnt_ > 20 and (key_pressed<Key::action_2>() or
+                        key_pressed<Key::action_1>()))) {
+        return scene_pool::alloc<TitleScreenScene>();
+    }
+
+    return null_scene();
+}
+
+
+
+ScenePtr<Scene> TitleScreenScene::step()
+{
+    if (cnt_ < 70) {
+        cnt_++;
+        if (cnt_ == 10) {
+            platform().sleep(1);
+            platform().load_overlay_texture("overlay_title_screen");
+            draw_image(platform(), 253, 6, 1, 19, 9, Layer::overlay);
+        }
+        if (cnt_ == 20) {
+            platform().sleep(1);
+            platform().load_overlay_texture("overlay_title_screen_2");
+        }
+        if (cnt_ == 30) {
+            platform().sleep(1);
+            platform().load_overlay_texture("overlay_title_screen_3");
+        }
+        if (cnt_ == 40) {
+            platform().sleep(1);
+            platform().load_overlay_texture("overlay_title_screen_4");
+        }
+
+        if (cnt_ == 70) {
+            text_lines_.emplace_back(platform(), "continue", OverlayCoord{10, 13});
+            text_lines_.emplace_back(platform(), "newgame", OverlayCoord{10, 15});
+            platform().set_tile(Layer::overlay, 8, 13, 121);
+            platform().set_tile(Layer::overlay, 8, 15, 0);
+        }
+    } else {
+        if (key_down<Key::down>()) {
+            sel_ = 1;
+            platform().set_tile(Layer::overlay, 8, 13, 0);
+            platform().set_tile(Layer::overlay, 8, 15, 121);
+        }
+        if (key_down<Key::up>()) {
+            sel_ = 0;
+            platform().set_tile(Layer::overlay, 8, 13, 121);
+            platform().set_tile(Layer::overlay, 8, 15, 0);
+        }
+
+        if (key_down<Key::start>() or key_down<Key::action_1>() or key_down<Key::action_2>()) {
+            return scene_pool::alloc<OverworldScene>();
+        }
+    }
+    return null_scene();
+}
+
+
+
+void TitleScreenScene::enter(Scene&)
+{
+    platform().speaker().play_music("title", 0);
+    platform().screen().fade(1);
+}
+
+
+
+void TitleScreenScene::exit(Scene&)
+{
+    platform().fill_overlay(0);
+    text_lines_.clear();
+    platform().screen().clear();
+    platform().screen().display();
+    if (sel_ == 0 and engine().has_save()) {
+        platform().speaker().play_sound("snd_herospawn", 11);
+    } else {
+        platform().speaker().stop_music();
+        platform().sleep(60);
+    }
+    engine().begin_game(engine().g_.difficulty_, sel_ == 0);
+    platform().load_overlay_texture("overlay");
+    platform().screen().fade(0);
 }
 
 

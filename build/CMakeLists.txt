@@ -121,6 +121,7 @@ if(GAMEBOY_ADVANCE)
     ${DATA_DIR}/boss.s
     ${DATA_DIR}/tetron.s
     ${DATA_DIR}/ending.s
+    ${DATA_DIR}/title.s
     ${DATA_DIR}/zone10.s
     ${DATA_DIR}/zone9.s
     ${DATA_DIR}/zone8.s
@@ -132,6 +133,10 @@ if(GAMEBOY_ADVANCE)
     ${DATA_DIR}/zone2.s
     ${DATA_DIR}/zone1.s
     ${DATA_DIR}/overlay.s
+    ${DATA_DIR}/overlay_title_screen.s
+    ${DATA_DIR}/overlay_title_screen_2.s
+    ${DATA_DIR}/overlay_title_screen_3.s
+    ${DATA_DIR}/overlay_title_screen_4.s
     ${DATA_DIR}/tile0.s
     ${DATA_DIR}/tile1.s
     ${DATA_DIR}/rock_smasher.s
@@ -362,6 +367,10 @@ if(GAMEBOY_ADVANCE)
 
   if(GBA_AUTOBUILD_IMG)
     add_overlay(overlay 0 0 NO)
+    add_overlay(overlay_title_screen 0 0 NO)
+    add_overlay(overlay_title_screen_2 0 0 NO)
+    add_overlay(overlay_title_screen_3 0 0 NO)
+    add_overlay(overlay_title_screen_4 0 0 NO)
     add_overlay(overlay_text_key 0 0 NO)
     add_overlay(charset0 0 0 NO)
     add_overlay(charset1 0 0 NO)

@@ -248,6 +248,17 @@ void Hero::step()
     }
 
 
+    if (key_pressed<Key::action_2>() and key_pressed<Key::action_1>()) {
+        chargewarp_ += 1;
+        if (chargewarp_ >= 53) {
+            engine().g_.warpready_ = true;
+            chargewarp_ = 0;
+        }
+    } else {
+        chargewarp_ = 0;
+    }
+
+
     if (key_down<Key::action_2>()) {
         hflip_ = false;
 
@@ -350,6 +361,42 @@ void Hero::draw(Platform::Screen& screen) const
     if (engine().g_.invulnerable_ > 0 and engine().g_.invulnerable_ % 4 < 2) {
         Object::draw(screen);
     }
+
+    if (chargewarp_ >= 20) {
+        Sprite spr_;
+        spr_.set_origin({origin_.x, origin_.y});
+        spr_.set_texture_index(sprite_index_ + sprite_subimage_);
+        spr_.set_flip({hflip_, vflip_});
+        spr_.set_position(position_);
+        screen.draw(spr_);
+
+        warpcyc_ += 1;
+        if (warpcyc_ == 8) {
+            warpcyc_ = 0;
+        } else if (warpcyc_ == 2) {
+            spr_.set_position({x(), y() - 1});
+            screen.draw(spr_);
+            spr_.set_position({x(), y() + 1});
+            screen.draw(spr_);
+        } else if (warpcyc_ == 4) {
+            spr_.set_position({x() - 1, y() - 1});
+            screen.draw(spr_);
+            spr_.set_position({x() + 1, y() + 1});
+            screen.draw(spr_);
+        } else if (warpcyc_ == 6) {
+            spr_.set_position({x() - 1, y()});
+            screen.draw(spr_);
+            spr_.set_position({x() + 1, y()});
+            screen.draw(spr_);
+        } else if (warpcyc_ == 0) {
+            spr_.set_position({x() - 1, y() + 1});
+            screen.draw(spr_);
+            spr_.set_position({x() + 1, y() - 1});
+            screen.draw(spr_);
+        }
+        return;
+    }
+
     if (not engine().g_.invulnerable_ or chargeblade_ >= 20) {
         Object::draw(screen);
         if (engine().g_.heat_ or chargeblade_ >= 20) {

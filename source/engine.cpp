@@ -38,6 +38,7 @@
 #include "objects/hero.hpp"
 #include "objects/misc/holder.hpp"
 #include "objects/misc/savepoint.hpp"
+#include "objects/misc/ship.hpp"
 #include "objects/particles/flame.hpp"
 #include "objects/particles/star.hpp"
 #include "objects/particles/weed.hpp"
@@ -84,7 +85,7 @@ Engine& engine()
 Engine::Engine(Platform& pf)
     : hero_(alloc_object<Hero>(Vec2<Fixnum>{110, 70})),
       p_(allocate_dynamic<Persistence>(pf)),
-      current_scene_(scene_pool::alloc<OverworldScene>()), next_scene_(null_scene())
+      current_scene_(scene_pool::alloc<CreditsScene>()), next_scene_(null_scene())
 {
     pf.load_overlay_texture("overlay");
     pf.load_sprite_texture("spritesheet");
@@ -101,12 +102,9 @@ Engine::Engine(Platform& pf)
         _platform->screen().fade(1.f);
         _platform->screen().display();
     }
-    _platform->screen().fade(0.f);
     _platform->screen().display();
 
-    begin_game(g_.difficulty_);
-
-    draw_hud();
+    g_.shot_count_ = 6;
 }
 
 
@@ -139,11 +137,14 @@ void Engine::respawn_to_checkpoint()
 }
 
 
-void Engine::begin_game(Difficulty d)
+void Engine::begin_game(Difficulty d, bool loadsave)
 {
     room_.clear();
 
-    hero_->set_position(Vec2<Fixnum>{110, 80});
+    p_->frames_spent_ = 0;
+
+    hero_->set_position(Vec2<Fixnum>{160, 90});
+
     p_->checkpoint_coords_.x = 50;
     p_->checkpoint_coords_.y = 70;
 
@@ -173,7 +174,11 @@ void Engine::begin_game(Difficulty d)
         // load(0, 3, false); // processor
     }
 
-    loadgame();
+    if (loadsave) {
+        loadgame();
+    } else {
+        hero_->set_flip(false, false);
+    }
 
     g_.hp_ = 10 + p_->level_;
     g_.invulnerable_ = 0;
@@ -225,6 +230,17 @@ const char* load_music(int x, int y)
 
     return "";
 }
+
+
+
+bool Engine::has_save()
+{
+    auto p = allocate_dynamic<Persistence>(platform());
+    platform().read_save_data(&*p, sizeof *p);
+
+    return p->magic == Persistence::magic_val;
+}
+
 
 
 void Engine::loadgame()
@@ -1097,6 +1113,11 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                 engine().add_object<Pickup>(Vec2<Fixnum>{40 + obj.x_ - 4, obj.y_ - 4},
                                             Pickup::Type::computer);
                 break;
+
+            case 47:
+                engine().add_object<Ship>(Vec2<Fixnum>{40 + obj.x_, obj.y_});
+                break;
+
 
             default:
                 break;

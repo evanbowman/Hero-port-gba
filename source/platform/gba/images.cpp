@@ -15,6 +15,14 @@
 
 #include "data/overlay.h"
 //;
+#include "data/overlay_title_screen.h"
+//;
+#include "data/overlay_title_screen_2.h"
+//;
+#include "data/overlay_title_screen_3.h"
+//;
+#include "data/overlay_title_screen_4.h"
+//;
 #include "data/overlay_text_key.h"
 //;
 #include "data/charset0.h"
@@ -67,6 +75,14 @@ static const TextureData tile_textures[] = {
 static const TextureData overlay_textures[] = {
 
     TEXTURE_INFO(overlay),
+//;
+    TEXTURE_INFO(overlay_title_screen),
+//;
+    TEXTURE_INFO(overlay_title_screen_2),
+//;
+    TEXTURE_INFO(overlay_title_screen_3),
+//;
+    TEXTURE_INFO(overlay_title_screen_4),
 //;
     TEXTURE_INFO(overlay_text_key),
 //;

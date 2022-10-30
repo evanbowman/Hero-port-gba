@@ -120,6 +120,13 @@ public:
     }
 
 
+    void set_flip(bool hflip, bool vflip)
+    {
+        hflip_ = hflip;
+        vflip_ = vflip;
+    }
+
+
 protected:
     Vec2<Fixnum> position_;
 

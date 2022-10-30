@@ -69,7 +69,7 @@ public:
 
 
     void respawn_to_checkpoint();
-    void begin_game(Difficulty d);
+    void begin_game(Difficulty d, bool loadsave);
 
 
     struct Room
@@ -108,6 +108,7 @@ public:
         Difficulty difficulty_ = Difficulty::normal;
         bool autofire_ = false;
         bool hero_jetpack_flames_ = true;
+        bool warpready_ = false;
         int hp_ = 10;
         int invulnerable_ = 0;
         int shot_count_ = 0;
@@ -169,6 +170,9 @@ public:
 
     void savegame();
     void loadgame();
+
+
+    bool has_save();
 
 
     ObjectList<Enemy> enemies_;

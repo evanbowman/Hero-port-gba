@@ -20,6 +20,45 @@ public:
 };
 
 
+
+class CreditsScene : public Scene
+{
+public:
+
+    void enter(Scene& prev_scene) override;
+    void exit(Scene& prev_scene) override;
+
+
+    ScenePtr<Scene> step() override;
+
+
+private:
+    Buffer<Text, 7> text_lines_;
+    int cnt_ = 0;
+    int scroll_ = 0;
+};
+
+
+
+class TitleScreenScene : public Scene
+{
+public:
+
+    void enter(Scene& prev_scene) override;
+    void exit(Scene& prev_scene) override;
+
+
+    ScenePtr<Scene> step() override;
+
+
+private:
+    Buffer<Text, 7> text_lines_;
+    int sel_ = 0;
+    int cnt_ = 0;
+};
+
+
+
 class MapScene : public Scene
 {
 public:
@@ -37,11 +76,17 @@ private:
 
     int sel_ = 0;
 
-    Buffer<Vec2<u8>, 16> warp_points_;
+    Buffer<Vec2<u8>, 20> warp_points_;
 
     Vec2<int> pt_;
     u8 flicker_cyc_ = 0;
+    u8 warpcyc_ = 0;
     bool flicker_on_ = true;
+
+    std::optional<Text> zone_text_;
+
+public:
+    bool warpmode_ = false;
 };
 
 
@@ -53,6 +98,12 @@ class OverworldScene : public Scene
 public:
 
     ScenePtr<Scene> step() override;
+
+
+    void enter(Scene&) override
+    {
+        engine().draw_hud();
+    }
 
 
     void display() override
