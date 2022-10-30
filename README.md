@@ -118,3 +118,7 @@ Note: boss death animations involve tons of code and I haven't finished them yet
 # Building
 
 Devkitpro gba toolchain required. Then, cd into the build folder and run ./set-gameboyadvance-toolchain. Then run make.
+
+# License
+
+See LICENSE for terms of the General Public License. Furthermore, please respect the wishes of the game's original creator, Daniel Remar, who does not want the game to be sold.
