@@ -595,6 +595,28 @@ void Engine::load(int chunk_x, int chunk_y, bool restore)
     }
 
     p_->visited_.set(chunk_x, chunk_y, true);
+
+    if (chunk_x == 4 and chunk_y == 14) {
+        // BUGFIX: I haven't implemented warping, and this trap effectively
+        // softlocks the game until the player has access to fast travel.
+        // FIXME:
+        unlock_doors();
+    }
+
+    if (chunk_x == 8 and chunk_y == 1) {
+        // FIXME: grandmother boss missing!
+        unlock_doors();
+    }
+
+    if (chunk_x == 8 and chunk_y == 1) {
+        // FIXME: grandmother boss missing!
+        unlock_doors();
+    }
+
+    if (chunk_x == 6 and chunk_y == 9) {
+        // FIXME: star splitter boss missing!
+        unlock_doors();
+    }
 }
 
 
