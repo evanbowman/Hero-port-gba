@@ -322,8 +322,8 @@ public:
         platform().speaker().play_sound("snd_hit3", 1);
         health_ = std::max(0, health_ - dmg);
         s.kill();
-        if (engine().g_.screenshake_ < 3) {
-            engine().g_.screenshake_ = 3;
+        if (engine().g_.screenshake_ < 2) {
+            engine().g_.screenshake_ = 2;
         }
         return true;
     }
