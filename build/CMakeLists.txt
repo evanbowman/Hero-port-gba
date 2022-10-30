@@ -120,6 +120,7 @@ if(GAMEBOY_ADVANCE)
     # all of the sounds and images need to be compiled into the ROM.
     ${DATA_DIR}/boss.s
     ${DATA_DIR}/tetron.s
+    ${DATA_DIR}/ending.s
     ${DATA_DIR}/zone10.s
     ${DATA_DIR}/zone9.s
     ${DATA_DIR}/zone8.s

@@ -3,6 +3,7 @@
 #include "engine.hpp"
 #include "objects/enemies/elite/barrier.hpp"
 #include "objects/particles/bigExplo.hpp"
+#include "graphics/overlay.hpp"
 #include "scene.hpp"
 
 
@@ -44,86 +45,14 @@ private:
 };
 
 
+
 class OverworldScene : public Scene
 {
     int respawn_countdown_ = 0;
 
 public:
-    ScenePtr<Scene> step() override
-    {
-        if (engine().g_.hp_ <= 0) {
-            if (respawn_countdown_ == 0) {
-                platform().speaker().play_sound("snd_death", 21);
-                platform().speaker().play_sound("snd_explo3", 21);
-                respawn_countdown_ = 80;
-                engine().add_object<ExploSpewer>(engine().hero()->position());
-            } else if (respawn_countdown_ == 1) {
-                platform().speaker().play_sound("snd_herospawn", 11);
-                engine().respawn_to_checkpoint();
-            }
-            --respawn_countdown_;
-        }
 
-        auto step_list = [&](auto& objects, auto on_destroy) {
-            for (auto it = objects.begin(); it not_eq objects.end();) {
-                if ((*it)->dead()) {
-                    on_destroy(*it);
-                    it = objects.erase(it);
-                } else {
-                    (*it)->step();
-                    ++it;
-                }
-            }
-        };
-
-        auto& e = engine();
-
-        bool enemies_destroyed = false;
-
-        step_list(e.enemies_, [&](auto&) { enemies_destroyed = true; });
-        step_list(e.enemy_projectiles_, [](auto&) {});
-        step_list(e.generic_objects_, [](auto&) {});
-        step_list(e.generic_solids_, [](auto&) {});
-        step_list(e.player_projectiles_, [&](auto&) { --e.g_.shot_count_; });
-
-        int shake = 0;
-        if (engine().g_.screenshake_ > 0) {
-            engine().g_.screenshake_ -= 1;
-
-            if (engine().g_.screenshake_) {
-                shake = (engine().g_.screenshake_ % 2) * 2;
-            }
-        }
-        platform().spr_scroll(shake);
-        platform().scroll(Layer::map_0, 0, -shake);
-
-        if (enemies_destroyed) {
-            if (e.enemies_.empty()) {
-                e.unlock_doors();
-            } else {
-                // NOTE: I treated the barrier as an enemy within the engine,
-                // but the presence of a barrier should not keep doors from
-                // opening.
-                bool all_barriers = true;
-                for (auto& e : e.enemies_) {
-                    if (not dynamic_cast<Barrier*>(e.get())) {
-                        all_barriers = false;
-                        break;
-                    }
-                }
-                if (all_barriers) {
-                    e.unlock_doors();
-                }
-            }
-        }
-
-        if (key_down<Key::start>()) {
-            engine().paused_ = true;
-            return scene_pool::alloc<MapScene>();
-        }
-
-        return null_scene();
-    }
+    ScenePtr<Scene> step() override;
 
 
     void display() override
@@ -148,6 +77,53 @@ public:
         draw_list(e.generic_objects_);
     }
 };
+
+
+
+class EndgameStatsScene : public Scene
+{
+public:
+
+    void enter(Scene& prev_scene) override;
+
+
+private:
+    Buffer<Text, 7> text_lines_;
+};
+
+
+
+class FadeOutScene : public OverworldScene
+{
+public:
+
+    ScenePtr<Scene> step() override
+    {
+        OverworldScene::step();
+
+        ++cyc_;
+        if (cyc_ == 2) {
+            cyc_ = 0;
+            ++counter_;
+        }
+
+        platform().screen().fade(counter_ / 255.f, ColorConstant::silver_white);
+
+        if (counter_ == 255) {
+            platform().fill_overlay(95);
+            platform().speaker().play_music("ending", 0);
+            return scene_pool::alloc<EndgameStatsScene>();
+        }
+
+        return null_scene();
+    }
+
+
+private:
+    int counter_ = 0;
+    int cyc_ = 0;
+};
+
 
 
 } // namespace herocore

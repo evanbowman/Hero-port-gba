@@ -1,5 +1,6 @@
 #include "scenes.hpp"
 #include "maps.hpp"
+#include "graphics/overlay.hpp"
 
 
 namespace herocore
@@ -467,6 +468,146 @@ ScenePtr<Scene> MapScene::step()
 void MapScene::display()
 {
 }
+
+
+
+ScenePtr<Scene> OverworldScene::step()
+{
+    if (engine().g_.hp_ <= 0) {
+        if (respawn_countdown_ == 0) {
+            platform().speaker().play_sound("snd_death", 21);
+            platform().speaker().play_sound("snd_explo3", 21);
+            respawn_countdown_ = 80;
+            engine().add_object<ExploSpewer>(engine().hero()->position());
+        } else if (respawn_countdown_ == 1) {
+            platform().speaker().play_sound("snd_herospawn", 11);
+            engine().respawn_to_checkpoint();
+        }
+        --respawn_countdown_;
+    }
+
+    auto step_list = [&](auto& objects, auto on_destroy) {
+                         for (auto it = objects.begin(); it not_eq objects.end();) {
+                             if ((*it)->dead()) {
+                                 on_destroy(*it);
+                                 it = objects.erase(it);
+                             } else {
+                                 (*it)->step();
+                                 ++it;
+                             }
+                         }
+                     };
+
+    auto& e = engine();
+
+    bool enemies_destroyed = false;
+
+    step_list(e.enemies_, [&](auto&) { enemies_destroyed = true; });
+    step_list(e.enemy_projectiles_, [](auto&) {});
+    step_list(e.generic_objects_, [](auto&) {});
+    step_list(e.generic_solids_, [](auto&) {});
+    step_list(e.player_projectiles_, [&](auto&) { --e.g_.shot_count_; });
+
+    int shake = 0;
+    if (engine().g_.screenshake_ > 0) {
+        engine().g_.screenshake_ -= 1;
+
+        if (engine().g_.screenshake_) {
+            shake = (engine().g_.screenshake_ % 2) * 2;
+        }
+    }
+    platform().spr_scroll(shake);
+    platform().scroll(Layer::map_0, 0, -shake);
+
+    if (enemies_destroyed) {
+        if (e.enemies_.empty()) {
+            e.unlock_doors();
+        } else {
+            // NOTE: I treated the barrier as an enemy within the engine,
+            // but the presence of a barrier should not keep doors from
+            // opening.
+            bool all_barriers = true;
+            for (auto& e : e.enemies_) {
+                if (not dynamic_cast<Barrier*>(e.get())) {
+                    all_barriers = false;
+                    break;
+                }
+            }
+            if (all_barriers) {
+                e.unlock_doors();
+            }
+        }
+    }
+
+    if (key_down<Key::start>() and not engine().g_.tetron_destroyed_) {
+        engine().paused_ = true;
+        return scene_pool::alloc<MapScene>();
+    }
+
+    if (engine().g_.tetron_destroyed_) {
+        return scene_pool::alloc<FadeOutScene>();
+    }
+
+    return null_scene();
+}
+
+
+
+void EndgameStatsScene::enter(Scene& prev_scene)
+{
+    for (int i = 0; i < 64; ++i) {
+        for (int j = 0; j < 64; ++j) {
+            platform().set_tile(Layer::map_1, i, j, 0);
+            platform().set_tile(Layer::map_0, i, j, 0);
+        }
+    }
+
+    platform().sleep(1);
+    platform().screen().fade(0);
+
+    platform().fill_overlay(0);
+
+
+    text_lines_.emplace_back(platform(),
+                             "Thank you for playing!",
+                             OverlayCoord{4, 4});
+
+    text_lines_.emplace_back(platform(),
+                             "Bosses: ",
+                             OverlayCoord{9, 6});
+    text_lines_.back().append(engine().p_->completed_bosses_.size() + 1);
+    text_lines_.back().append("/");
+    text_lines_.back().append(8);
+
+    static const float screen_hz = 59.72f;
+    int seconds = engine().p_->frames_spent_ / screen_hz;
+
+
+    int h = seconds / 3600;
+    int m = (seconds -(3600*h))/60;
+    int s = (seconds -(3600*h)-(m*60));
+
+    text_lines_.emplace_back(platform(),
+                             "Clear Time: ",
+                             OverlayCoord{5, 8});
+    if (h < 10) {
+        text_lines_.back().append("0");
+    }
+    text_lines_.back().append(h);
+    text_lines_.back().append(":");
+
+    if (m < 10) {
+        text_lines_.back().append("0");
+    }
+    text_lines_.back().append(m);
+    text_lines_.back().append(":");
+
+    if (s < 10) {
+        text_lines_.back().append("0");
+    }
+    text_lines_.back().append(s);
+}
+
 
 
 } // namespace herocore

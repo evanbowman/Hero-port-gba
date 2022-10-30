@@ -1922,8 +1922,8 @@ static const u32 null_music[null_music_len] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 #include "data/boss.hpp"
 #include "data/tetron.hpp"
+#include "data/ending.hpp"
 #include "data/zone1.hpp"
-#include "data/zone10.hpp"
 #include "data/zone2.hpp"
 #include "data/zone3.hpp"
 #include "data/zone4.hpp"
@@ -1932,6 +1932,7 @@ static const u32 null_music[null_music_len] = {0, 0, 0, 0, 0, 0, 0, 0};
 #include "data/zone7.hpp"
 #include "data/zone8.hpp"
 #include "data/zone9.hpp"
+#include "data/zone10.hpp"
 #include "gba_platform_soundcontext.hpp"
 
 
@@ -1946,6 +1947,7 @@ static const struct AudioTrack
                  // but for sounds, length_ reprepresents bytes.
 } music_tracks[] = {DEF_MUSIC(boss, boss),
                     DEF_MUSIC(tetron, tetron),
+                    DEF_MUSIC(ending, ending),
                     DEF_MUSIC(zone10, zone10),
                     DEF_MUSIC(zone9, zone9),
                     DEF_MUSIC(zone8, zone8),

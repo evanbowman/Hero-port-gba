@@ -183,6 +183,10 @@ private:
 
 void Hero::step()
 {
+    if (engine().g_.tetron_dead_) {
+        return;
+    }
+
     if (engine().paused_) {
         return;
     }

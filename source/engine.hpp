@@ -117,6 +117,8 @@ public:
         u8 summon_eliminator_tics_ = 0;
         u8 screenshake_ = 0;
         Fixnum fluid_level_ = 160;
+        bool tetron_dead_ = false;
+        bool tetron_destroyed_ = false;
 
         const char* prev_music_ = "";
 

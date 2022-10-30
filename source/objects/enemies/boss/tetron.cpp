@@ -249,8 +249,7 @@ public:
 
 
 Tetron::Tetron(const Vec2<Fixnum>& pos)
-    : Enemy(TaggedObject::Tag::ignored, Health{// 256
-        20})
+    : Enemy(TaggedObject::Tag::ignored, Health{256})
 {
     position_ = {pos.x - 4, pos.y - 4};
     sprite_index_ = 206;
@@ -278,6 +277,11 @@ Tetron::Tetron(const Vec2<Fixnum>& pos)
 
 bool Tetron::damage(Health dmg, Object& s)
 {
+    if (dead_) {
+        s.kill();
+        return false;
+    }
+
     if (sprite_index_ == 226) {
         auto hb2 = hitbox_;
         hb2.dimension_.size_ = {24, 48};
@@ -507,7 +511,80 @@ void Tetron::step()
     }
 
     if (phase_ == 4) {
-        // TODO
+        if (health_ == 0 and not dead_) {
+            dead_ = true;
+            play_sound("snd_explo3", 80);
+            platform().speaker().stop_music();
+            engine().g_.tetron_dead_ = true;
+            return;
+        }
+
+        if (dead_) {
+            deadcyc_ += 1;
+            if (deadcyc_ == 120) {
+                platform().screen().fade(0);
+                for (int i = 0; i < 8; ++i) {
+                    for (int j = 0; j < 4; ++j) {
+                        if (auto exp = engine().add_object<BigExplo>(position_)) {
+                            auto dir = rotate({1, 0}, j * 90 + 45 + i * 3);
+                            dir = dir * ((i + 1 / 2.f) * 1.5f);
+                            Vec2<Fixnum> spd;
+                            spd.x = Fixnum(dir.x);
+                            spd.y = Fixnum(dir.y);
+                            exp->set_speed(spd);
+                        }
+                    }
+                }
+            }
+
+            if (deadcyc_ < 180) {
+                int interval = 24;
+                if (deadcyc_ > 130) {
+                    interval = 6;
+                } else if (deadcyc_ > 90) {
+                    interval = 8;
+                } else if (deadcyc_ > 50) {
+                    interval = 12;
+                } else if (deadcyc_ > 20) {
+                    interval = 16;
+                }
+                if (deadcyc_ % interval == 0) {
+                    engine().g_.screenshake_ = 6;
+                    if (auto exp = engine().add_object<BigExplo>(
+                            rng::sample<16>(position_, rng::critical_state))) {
+                        exp->set_speed({0, -rng::choice<3>(rng::utility_state)});
+                        engine().g_.screenshake_ = 6;
+                        platform().speaker().play_sound("snd_explo2", deadcyc_ / 8);
+                    }
+                }
+            }
+
+            if (deadcyc_ == 1) {
+                platform().screen().fade(1.f, ColorConstant::silver_white);
+                play_sound("snd_explo2", 100);
+            }
+            if (deadcyc_ == 200) {
+                for (int i = 0; i < 360; i += 20) {
+                    for (int j = 0; j < 20; j += 4) {
+                        if (auto exp = engine().add_object<BigExplo>(position_)) {
+                            auto dir = rotate({1, 0}, i + j * 5);
+                            dir = dir * (j / 2.f);
+                            Vec2<Fixnum> spd;
+                            spd.x = Fixnum(dir.x);
+                            spd.y = Fixnum(dir.y);
+                            exp->set_speed(spd);
+                            engine().g_.screenshake_ = 24;
+                        }
+                    }
+                }
+                for (auto& e : engine().enemies_) {
+                    e->kill();
+                }
+                engine().g_.tetron_destroyed_ = true;
+                play_sound("snd_explo4", 100);
+            }
+            return;
+        }
     }
 
     switch (timeline_++) {
