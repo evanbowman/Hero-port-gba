@@ -3,11 +3,65 @@
 #include "objects/projectile/gigashot.hpp"
 #include "objects/projectile/megashot.hpp"
 #include "objects/projectile/supershot.hpp"
+#include "objects/projectile/bomb.hpp"
+#include <math.h>
 
 
 
 namespace herocore
 {
+
+
+
+class FallingBlock : public EnemyProjectile
+{
+public:
+    FallingBlock(const Vec2<Fixnum>& pos) : EnemyProjectile(pos, 2, 0)
+    {
+        sprite_index_ = 248;
+        hitbox_.dimension_.size_ = {8, 8};
+        hitbox_.dimension_.origin_ = {4, 4};
+        origin_ = {4, 4};
+    }
+
+
+    void set_hspeed(Fixnum hsp)
+    {
+        speed_.x = hsp;
+    }
+
+
+    void set_speed(Vec2<Fixnum> spd)
+    {
+        speed_ = spd;
+    }
+
+
+    void on_hero_collision() override
+    {
+        // Passes through fliphero.
+    }
+
+
+    void step() override
+    {
+        EnemyProjectile::step();
+        if (y() > 160) {
+            kill();
+        }
+
+        hitbox_.dimension_.size_ = {2, 2};
+        hitbox_.dimension_.origin_ = {-1, -1};
+
+
+        if (speed_.y > Fixnum(3.f)) {
+            speed_.y = Fixnum(3.f);
+        }
+
+        speed_.y = speed_.y + Fixnum(0.06f);
+    }
+};
+
 
 
 
@@ -21,7 +75,7 @@ private:
 
 public:
     StarSplitterCore(StarSplitter* parent, s8 x_offset, s8 y_offset)
-        : Enemy(TaggedObject::Tag::ignored, Health{1}),
+        : Enemy(TaggedObject::Tag::ignored, Health{32}),
           parent_(parent),
           x_offset_(x_offset),
           y_offset_(y_offset)
@@ -128,7 +182,16 @@ public:
     {
         auto prev_pos = position_;
 
-        speed_ = speed_ + gravity_;
+        auto mx = speed_.x * speed_.x;
+        auto my = speed_.y * speed_.y;
+        auto magnitude = mx + my;
+        auto spd = sqrt(magnitude.as_float());
+        if (spd > 3.6f / 2) {
+
+        } else {
+            speed_ = speed_ + gravity_;
+        }
+
         Enemy::step();
 
         ++move_duration_;
@@ -152,7 +215,16 @@ public:
                 gravity_ = {};
                 parent_->foot_ready_ -= 1;
                 parent_->feet_moving_ -= 1;
-                // TODO: create falling blocks
+
+                for (int i = 0; i < 4; ++i) {
+                    if (auto b = engine().add_object<FallingBlock>(position_)) {
+                        auto d = rotate({1, 0}, i * 45 + 22);
+                        d = d * (1.5f / 2);
+                        d.y *= -1;
+                        b->set_speed({Fixnum(d.x), Fixnum(d.y)});
+                    }
+                }
+
             } else {
                 bounces_ -= 1;
                 speed_ = speed_ * Fixnum(0.8f);
@@ -178,6 +250,38 @@ public:
                 stuck_ = true;
             }
         }
+    }
+
+
+    void draw(Platform::Screen& s) const override
+    {
+        if (bounces_ > 0) {
+            flashcyc_ += 1;
+            if (flashcyc_ == 2) {
+                flashcyc_ = 0;
+                Sprite spr;
+                spr.set_origin({origin_.x, origin_.y});
+                spr.set_texture_index(225);
+
+                auto draw = [&](int xo, int yo) {
+                                auto p = position_;
+                                p.x += xo;
+                                p.y += yo;
+                                spr.set_position(p);
+                                s.draw(spr);
+                            };
+
+                draw(-1, 0);
+                draw(1, 0);
+                draw(0, 1);
+                draw(0, -1);
+                // draw(-1, -1);
+                // draw(1, -1);
+                // draw(-1, 1);
+                // draw(1, 1);
+            }
+        }
+        Enemy::draw(s);
     }
 
 

@@ -183,7 +183,7 @@ void Engine::begin_game(Difficulty d, bool loadsave)
         // load(5, 13, false); // elite
         // load(0, 6, false); // annihilator
         // load(0, 3, false); // processor
-        load(6, 9, false); // star splitter
+        // load(6, 9, false); // star splitter
     }
 
     if (loadsave) {
