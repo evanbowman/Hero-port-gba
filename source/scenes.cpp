@@ -11,7 +11,7 @@ namespace herocore
 
 static const std::array<Vec2<u8>, 10> hint_order_normal = {
     {{11, 4}, {11, 0}, {9, 6}, {0, 3}, {9, 9}, // {8, 1},
-     {1, 6}, // {6, 9},
+     {1, 6}, {6, 9},
      {5, 13}, {7, 7}}};
 
 
@@ -736,7 +736,7 @@ void EndgameStatsScene::enter(Scene& prev_scene)
                              OverlayCoord{9, 8});
     text_lines_.back().append(engine().p_->completed_bosses_.size() + 1);
     text_lines_.back().append("/");
-    text_lines_.back().append(8);
+    text_lines_.back().append(9);
 
     static const float screen_hz = 59.72f;
     int seconds = engine().p_->frames_spent_ / screen_hz;

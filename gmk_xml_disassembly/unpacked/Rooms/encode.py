@@ -279,6 +279,8 @@ def parse_instances(xml_list):
             rooms[rx][ry].append([46, ra_x, ra_y])
         elif objname == "obj_ship":
             rooms[rx][ry].append([47, ra_x, ra_y])
+        elif objname == "obj_dread_s":
+            rooms[rx][ry].append([48, ra_x, ra_y])
 
 
 

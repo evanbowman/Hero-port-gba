@@ -11,6 +11,7 @@
 #include "objects/enemies/boss/reaperDrone.hpp"
 #include "objects/enemies/boss/rockSmasher.hpp"
 #include "objects/enemies/boss/silencer.hpp"
+#include "objects/enemies/boss/starSplitter.hpp"
 #include "objects/enemies/boss/tetron.hpp"
 #include "objects/enemies/elite/annihilator.hpp"
 #include "objects/enemies/elite/barrier.hpp"
@@ -182,6 +183,7 @@ void Engine::begin_game(Difficulty d, bool loadsave)
         // load(5, 13, false); // elite
         // load(0, 6, false); // annihilator
         // load(0, 3, false); // processor
+        load(6, 9, false); // star splitter
     }
 
     if (loadsave) {
@@ -641,11 +643,6 @@ void Engine::load(int chunk_x, int chunk_y, bool restore)
         unlock_doors();
     }
 
-    if (chunk_x == 6 and chunk_y == 9) {
-        // FIXME: star splitter boss missing!
-        // NOTE: when adding, uncomment corresponding hint in scenes.cpp
-        unlock_doors();
-    }
 
     if (chunk_x == 1 and chunk_y == 7) {
         // FIXME: mother enemy missing
@@ -1139,6 +1136,10 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                 engine().add_object<Ship>(Vec2<Fixnum>{40 + obj.x_, obj.y_});
                 break;
 
+            case 48:
+                engine().add_object<StarSplitter>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
+                                                  obj.x_, obj.y_);
+                break;
 
             default:
                 break;

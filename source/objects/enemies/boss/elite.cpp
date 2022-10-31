@@ -73,7 +73,12 @@ void Elite::step()
 
     switch (timeline_++) {
     case 0:
-        engine().swapsong("boss");
+        if (this == engine().enemies_.begin()->get()) {
+            // Only swap the song once, otherwise the song will be swapped to
+            // boss music and then swapped to boss music again, and the game
+            // will play the boss music when leaving the level.
+            engine().swapsong("boss");
+        }
         sprite_index_ = 60;
         break;
 

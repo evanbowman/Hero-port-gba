@@ -84,11 +84,13 @@ public:
                             if (t == 6) {
                                 engine().room_.walls_[cx][cy] = false;
                                 platform().set_tile(Layer::map_0, cx + 5, cy, 0);
+                                engine().g_.screenshake_ = 2;
                                 return true;
                             }
                             if ((t == 7 or t == 8) and engine().p_->blade_ > 1) {
                                 engine().room_.walls_[cx][cy] = false;
                                 platform().set_tile(Layer::map_0, cx + 5, cy, 0);
+                                engine().g_.screenshake_ = 2;
                                 return true;
                             }
                         }
@@ -109,6 +111,7 @@ public:
             for (auto& e : engine().enemies_) {
                 if (e->hitbox().overlapping(hitbox_)) {
                     e->damage(2 + 2 * engine().p_->blade_, *this);
+                    engine().g_.screenshake_ = 2;
                     dead_ = false;
                 }
             }
