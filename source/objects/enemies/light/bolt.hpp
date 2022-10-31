@@ -35,6 +35,10 @@ public:
         // TODO: screenshake
 
         platform().speaker().play_sound("snd_explo1", 6);
+        if (engine().g_.screenshake_ < 2) {
+            engine().g_.screenshake_ = 2;
+        }
+
 
         kill();
         s.kill();

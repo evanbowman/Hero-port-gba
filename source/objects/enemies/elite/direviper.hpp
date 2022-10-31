@@ -35,6 +35,13 @@ public:
     }
 
 
+    bool damage(Health dmg, Object& s) override
+    {
+        s.kill();
+        return false;
+    }
+
+
     inline void step() override;
 
 

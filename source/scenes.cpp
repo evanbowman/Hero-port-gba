@@ -582,6 +582,8 @@ ScenePtr<Scene> MapScene::step()
             engine().respawn_to_checkpoint();
             engine().paused_ = false;
             engine().add_object<ExploSpewer2>(engine().hero()->position());
+            engine().p_->checkpoint_music_ = platform().speaker().current_music();
+            engine().savegame();
             return scene_pool::alloc<OverworldScene>();
         }
     }
