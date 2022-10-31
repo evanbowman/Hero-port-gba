@@ -846,17 +846,24 @@ ScenePtr<Scene> TitleScreenScene::step()
         }
     } else {
         if (key_down<Key::down>()) {
+            if (sel_ not_eq 1) {
+                play_sound("snd_menutick", 1);
+            }
             sel_ = 1;
             platform().set_tile(Layer::overlay, 8, 13, 0);
             platform().set_tile(Layer::overlay, 8, 15, 121);
         }
         if (key_down<Key::up>()) {
+            if (sel_ not_eq 0) {
+                play_sound("snd_menutick", 1);
+            }
             sel_ = 0;
             platform().set_tile(Layer::overlay, 8, 13, 121);
             platform().set_tile(Layer::overlay, 8, 15, 0);
         }
 
         if (key_down<Key::start>() or key_down<Key::action_1>() or key_down<Key::action_2>()) {
+            play_sound("snd_menuselect", 2);
             return scene_pool::alloc<OverworldScene>();
         }
     }

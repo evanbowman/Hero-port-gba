@@ -61,7 +61,8 @@ public:
 
         hitbox_.dimension_.size_ = {8, 8};
 
-        // TODO: screenshake
+        engine().g_.screenshake_ = 2;
+        play_sound("snd_firevortex", 5);
         if (engine().g_.difficulty_ == Difficulty::hard) {
             speed_.x = 8;
         } else {
@@ -82,6 +83,7 @@ public:
     {
         if (not place_free({position_.x + speed_.x, position_.y + speed_.y})) {
             kill();
+            engine().g_.screenshake_ = 2;
             engine().add_object<BigExplo>(
                 Vec2<Fixnum>{position_.x + 8 - 4, position_.y + 4});
             engine().add_object<BigExplo>(

@@ -26,6 +26,8 @@ public:
         hitbox_.dimension_.size_ = {8, 8};
         hitbox_.dimension_.origin_ = {4, 4};
         origin_ = {8, 8};
+
+        play_sound("snd_firemissile", 3);
     }
 
 
@@ -41,6 +43,7 @@ public:
     {
         if (not place_free({position_.x + speed_.x, position_.y + speed_.y})) {
             engine().add_object<Explo>(Vec2<Fixnum>{x() - 4, y() - 4});
+            platform().speaker().play_sound("snd_explo1", 2);
             kill();
             return;
         }

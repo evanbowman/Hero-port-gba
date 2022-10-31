@@ -348,6 +348,9 @@ void Hero::step()
         heatcyc_ += 1;
         if (heatcyc_ == 6) {
             heatcyc_ = 0;
+            if (not chargeblade_) {
+                play_sound("snd_heat", 1);
+            }
         }
     }
 }

@@ -37,8 +37,6 @@ public:
             vflip_ = dir.y > 0;
             hflip_ = false;
         }
-
-        // TODO: play sound...
     }
 
 

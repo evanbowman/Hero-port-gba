@@ -183,6 +183,7 @@ public:
                 sprite_subimage_ = 3;
             }
             flash_ = true;
+            play_sound("snd_charge", 4);
             break;
         }
 

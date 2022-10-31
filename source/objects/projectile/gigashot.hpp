@@ -55,6 +55,7 @@ public:
     {
         sprite_index_ = 110;
         hitbox_.dimension_.size_ = {12, 12};
+        engine().g_.giga_ = true;
     }
 
 
@@ -80,6 +81,7 @@ public:
     {
         if (not place_free({position_.x + speed_.x, position_.y + speed_.y})) {
             engine().add_object<GigaExplo>(Vec2<Fixnum>{x() - 2, y() - 2});
+            play_sound("snd_explo2", 2);
             kill();
             if (engine().g_.screenshake_ < 6) {
                 engine().g_.screenshake_ = 6;

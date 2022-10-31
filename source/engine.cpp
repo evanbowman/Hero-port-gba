@@ -173,14 +173,14 @@ void Engine::begin_game(Difficulty d, bool loadsave)
     } else {
         p_->checkpoint_room_ = {11, 14};
         load(11, 14, false);
-        // load(6, 6, false); // eyespy
+        // load(6, 5, false); // eyespy
         // load(7, 7, false); // tetron
         // load(11, 4, false); // silencer
         // load(9, 6, false); // reaper drone
         // load(11, 0, false); // hydra
         // load(9, 9, false); // rock smasher
         // load(5, 13, false); // elite
-        // load(1, 6, false); // annihilator
+        // load(0, 6, false); // annihilator
         // load(0, 3, false); // processor
     }
 
@@ -436,6 +436,11 @@ void Engine::run()
                         draw_hud_heat();
                     }
                 }
+            }
+
+            if (g_.giga_) {
+                g_.giga_ = false;
+                platform().speaker().play_sound("snd_firegiga", 4);
             }
         }
 

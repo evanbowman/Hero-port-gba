@@ -1997,6 +1997,19 @@ static const AudioTrack* find_music(const char* name)
 #include "data/snd_save.hpp"
 #include "data/snd_spot.hpp"
 #include "data/sound_msg.hpp"
+#include "data/snd_charge.hpp"
+#include "data/snd_heat.hpp"
+#include "data/snd_menuselect.hpp"
+#include "data/snd_menuback.hpp"
+#include "data/snd_menutick.hpp"
+#include "data/snd_firebomb.hpp"
+#include "data/snd_firegiga.hpp"
+#include "data/snd_firemega.hpp"
+#include "data/snd_firemissile.hpp"
+#include "data/snd_fireshot.hpp"
+#include "data/snd_firesuper.hpp"
+#include "data/snd_firevortex.hpp"
+
 
 
 static const AudioTrack sounds[] = {
@@ -2013,6 +2026,18 @@ static const AudioTrack sounds[] = {
     DEF_SOUND(snd_explo4, snd_explo4),
     DEF_SOUND(snd_blade, snd_blade),
     DEF_SOUND(snd_chargeblade, snd_chargeblade),
+    DEF_SOUND(snd_charge, snd_charge),
+    DEF_SOUND(snd_heat, snd_heat),
+    DEF_SOUND(snd_menuselect, snd_menuselect),
+    DEF_SOUND(snd_menuback, snd_menuback),
+    DEF_SOUND(snd_menutick, snd_menutick),
+    DEF_SOUND(snd_firebomb, snd_firebomb),
+    DEF_SOUND(snd_firegiga, snd_firegiga),
+    DEF_SOUND(snd_firemega, snd_firemega),
+    DEF_SOUND(snd_firemissile, snd_firemissile),
+    DEF_SOUND(snd_fireshot, snd_fireshot),
+    DEF_SOUND(snd_firesuper, snd_firesuper),
+    DEF_SOUND(snd_firevortex, snd_firevortex),
     DEF_SOUND(snd_pain, snd_pain),
     DEF_SOUND(snd_bossroar, snd_bossroar),
     DEF_SOUND(snd_save, snd_save),

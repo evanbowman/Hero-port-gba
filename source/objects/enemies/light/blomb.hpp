@@ -145,6 +145,7 @@ public:
         p.x += 2;
         p.y += 4;
         auto b = engine().add_object<Bomb>(p);
+        play_sound("snd_firebomb", 4);
         if (b) {
             if (speed_.x < 0) {
                 b->set_hspeed(Fixnum(-1.f));

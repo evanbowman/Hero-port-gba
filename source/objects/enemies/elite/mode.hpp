@@ -173,6 +173,7 @@ public:
         case 120:
             speed_ = {};
             for (int i = 0; i < 5; ++i) {
+                play_sound("snd_firebomb", 2);
                 if (auto b = engine().add_object<Bomb>(position_)) {
                     auto d = rotate({1, 0}, i * 45);
                     b->set_speed({Fixnum(d.x), Fixnum(d.y)});
@@ -203,6 +204,7 @@ public:
 
         case 150:
             for (int i = 0; i < 5; ++i) {
+                play_sound("snd_firebomb", 2);
                 if (auto b = engine().add_object<Bomb>(position_)) {
                     auto d = rotate({1, 0}, i * 45);
                     d = d * 1.5f;
@@ -251,6 +253,7 @@ public:
 
         case 260:
             flash_ = true;
+            play_sound("snd_charge", 4);
             break;
 
         case 300:

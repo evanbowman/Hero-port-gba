@@ -146,6 +146,19 @@ if(GAMEBOY_ADVANCE)
     ${DATA_DIR}/charset1.s
     ${DATA_DIR}/sound_msg.s
 
+    ${DATA_DIR}/snd_charge.s
+    ${DATA_DIR}/snd_heat.s
+    ${DATA_DIR}/snd_menuselect.s
+    ${DATA_DIR}/snd_menuback.s
+    ${DATA_DIR}/snd_menutick.s
+    ${DATA_DIR}/snd_firebomb.s
+    ${DATA_DIR}/snd_firegiga.s
+    ${DATA_DIR}/snd_firelaser.s
+    ${DATA_DIR}/snd_firemega.s
+    ${DATA_DIR}/snd_firemissile.s
+    ${DATA_DIR}/snd_fireshot.s
+    ${DATA_DIR}/snd_firesuper.s
+    ${DATA_DIR}/snd_firevortex.s
     ${DATA_DIR}/snd_pain.s
     ${DATA_DIR}/snd_chargeblade.s
     ${DATA_DIR}/snd_spot.s

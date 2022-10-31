@@ -121,6 +121,8 @@ public:
         bool tetron_dead_ = false;
         bool tetron_destroyed_ = false;
 
+        bool giga_ = false;
+
         const char* prev_music_ = "";
 
         void damage(int amount, int extra_invulnerable_time)

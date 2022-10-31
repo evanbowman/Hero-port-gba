@@ -324,6 +324,7 @@ inline void EidolonGun::step()
     firecyc_ += 1;
     if (firecyc_ == 80) {
         flash_ = true;
+        play_sound("snd_charge", 4);
     }
 
     if (firecyc_ == 100) {

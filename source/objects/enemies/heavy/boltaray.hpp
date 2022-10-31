@@ -73,6 +73,7 @@ public:
             shotcyc_ += 1;
             if (shotcyc_ == 4) {
                 flash_ = true;
+                play_sound("snd_charge", 4);
                 if (engine().g_.difficulty_ == Difficulty::normal) {
                     freeze_ = true;
                 }
