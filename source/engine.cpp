@@ -148,6 +148,16 @@ void Engine::begin_game(Difficulty d, bool loadsave)
     p_->checkpoint_coords_.x = 50;
     p_->checkpoint_coords_.y = 70;
 
+    if (not loadsave or not has_save()) {
+        // BUGFIX: FIXME! Elite boss unreachable otherwise...
+        p_->tile_modifications_.push_back({3, 19, 3, 13, 25});
+        p_->tile_modifications_.push_back({3, 0, 3, 14, 25});
+        p_->tile_modifications_.push_back({12, 0, 3, 14, 0});
+        p_->tile_modifications_.push_back({12, 1, 3, 14, 0});
+        p_->tile_modifications_.push_back({12, 19, 3, 13, 0});
+        p_->tile_modifications_.push_back({12, 18, 3, 13, 0});
+    }
+
     if (d == Difficulty::hard) {
         p_->checkpoint_room_ = {6, 0};
         load(6, 0, false);
@@ -179,14 +189,6 @@ void Engine::begin_game(Difficulty d, bool loadsave)
 
     } else {
         hero_->set_flip(false, false);
-
-        // BUGFIX: FIXME! Elite boss unreachable otherwise...
-        p_->tile_modifications_.push_back({3, 19, 3, 13, 25});
-        p_->tile_modifications_.push_back({3, 0, 3, 14, 25});
-        p_->tile_modifications_.push_back({12, 0, 3, 14, 0});
-        p_->tile_modifications_.push_back({12, 1, 3, 14, 0});
-        p_->tile_modifications_.push_back({12, 19, 3, 13, 0});
-        p_->tile_modifications_.push_back({12, 18, 3, 13, 0});
     }
 
     g_.hp_ = 10 + p_->level_;
