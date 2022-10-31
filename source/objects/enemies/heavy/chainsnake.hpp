@@ -87,6 +87,8 @@ public:
     {
         if (health_ == 0) {
             kill();
+            platform().speaker().play_sound("snd_explo2", 6);
+            engine().g_.screenshake_ = 2;
             for (auto& e : engine().enemies_) {
                 if (auto eg = dynamic_cast<ChainsnakeNeck*>(e.get())) {
                     if (eg->owner() == this) {

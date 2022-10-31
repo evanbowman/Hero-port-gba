@@ -176,8 +176,17 @@ void Engine::begin_game(Difficulty d, bool loadsave)
 
     if (loadsave) {
         loadgame();
+
     } else {
         hero_->set_flip(false, false);
+
+        // BUGFIX: FIXME! Elite boss unreachable otherwise...
+        p_->tile_modifications_.push_back({3, 19, 3, 13, 25});
+        p_->tile_modifications_.push_back({3, 0, 3, 14, 25});
+        p_->tile_modifications_.push_back({12, 0, 3, 14, 0});
+        p_->tile_modifications_.push_back({12, 1, 3, 14, 0});
+        p_->tile_modifications_.push_back({12, 19, 3, 13, 0});
+        p_->tile_modifications_.push_back({12, 18, 3, 13, 0});
     }
 
     g_.hp_ = 10 + p_->level_;
@@ -628,6 +637,11 @@ void Engine::load(int chunk_x, int chunk_y, bool restore)
     if (chunk_x == 6 and chunk_y == 9) {
         // FIXME: star splitter boss missing!
         // NOTE: when adding, uncomment corresponding hint in scenes.cpp
+        unlock_doors();
+    }
+
+    if (chunk_x == 1 and chunk_y == 7) {
+        // FIXME: mother enemy missing
         unlock_doors();
     }
 }

@@ -41,6 +41,7 @@ public:
         if (engine().p_->blade_ > 2) {
             sprite_index_ = 195;
             hitbox_.dimension_.size_ = {10, 16};
+            hitbox_.dimension_.origin_ = {8, 8};
         }
     }
 

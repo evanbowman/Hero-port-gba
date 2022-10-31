@@ -128,6 +128,17 @@ void MapScene::show_worldmap()
             bool left = false;
             bool right = false;
 
+            if (x == 3 and y == 13) {
+                // BUGFIX for elite boss... FIXME by implementing the item that
+                // reveals all warp points.
+                down = true;
+            }
+            if (x == 3 and y == 14) {
+                // BUGFIX for elite boss... FIXME by implementing the item that
+                // reveals all warp points.
+                up = true;
+            }
+
             if (y > 0 and data) {
                 auto above = loadrm(x, y - 1);
                 if (above) {
