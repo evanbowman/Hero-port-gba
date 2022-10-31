@@ -1126,7 +1126,7 @@ void Engine::Room::load(int chunk_x, int chunk_y, bool restore)
                 break;
 
             case 46:
-                engine().add_object<Pickup>(Vec2<Fixnum>{40 + obj.x_ - 4, obj.y_ - 4},
+                engine().add_object<Pickup>(Vec2<Fixnum>{40 + obj.x_, obj.y_},
                                             Pickup::Type::computer);
                 break;
 
