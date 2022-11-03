@@ -65,14 +65,10 @@ Differences from the Desktop version:
 - [ ] Liquid Metal Processor
 - [ ] Grand Mother
 - [x] Guardian
-- [ ] Star Splitter
+- [x] Star Splitter
 - [x] Elite
 - [x] Eliminator
 - [x] Cruiser Tetron
-
-- [x] Boss death animations
-
-Note: boss death animations involve tons of code and I haven't finished them yet. Sometimes there's as much code in the boss death sequence as in the boss itself.
 
 
 ### Enemy Projectiles
