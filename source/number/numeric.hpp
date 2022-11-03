@@ -24,6 +24,7 @@
 
 #include "int.h"
 #include <ciso646> // For MSVC. What an inept excuse for a compiler.
+#include <array>
 
 #include "fixnum.hpp"
 

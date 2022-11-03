@@ -2871,7 +2871,7 @@ void Platform::fill_overlay(u16 tile)
     u32* const mem = (u32*)overlay_back_buffer;
     overlay_back_buffer_changed = true;
 
-    for (unsigned i = 0; i < sizeof(ScreenBlock) / sizeof(u32); ++i) {
+    for (unsigned i = 0; i < sizeof(ScreenBlock) / (sizeof(u32)); ++i) {
         mem[i] = fill_word;
     }
 

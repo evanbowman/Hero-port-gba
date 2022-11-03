@@ -209,7 +209,7 @@ public:
 
     struct Persistence
     {
-        static const int magic_val = 0xAAAAAAAA;
+        static const int magic_val = 0xAAAAAAAB;
         int magic = magic_val;
 
         struct TileModify
@@ -230,7 +230,7 @@ public:
         };
 
         Buffer<TileModify, 200> tile_modifications_;
-        Buffer<ObjectRemove, 40> objects_removed_;
+        Buffer<ObjectRemove, 80> objects_removed_;
 
         Bitmatrix<16, 16> visited_;
         Buffer<Vec2<u8>, 10> completed_bosses_;

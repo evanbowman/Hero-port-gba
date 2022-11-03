@@ -99,6 +99,7 @@ public:
             }
         }
 
+        hitbox_.position_ = cached_pos;
         return false;
     }
 
