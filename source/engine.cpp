@@ -482,6 +482,11 @@ void Engine::summon_eliminator()
         }
     }
 
+    if (p_->completed_bosses_.empty()) {
+        // The eliminator does not appear until you've beaten at least one boss.
+        can_summon_eliminator = false;
+    }
+
     for (int x = 0; x < 20; ++x) {
         for (int y = 0; y < 20; ++y) {
             auto t = platform().get_tile(Layer::map_0, x + 5, y);
