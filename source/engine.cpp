@@ -47,6 +47,8 @@
 #include "scenes.hpp"
 #include "string.hpp"
 #include "version.hpp"
+#include "dialogScene.hpp"
+
 
 
 namespace herocore::scene_pool
@@ -174,6 +176,7 @@ void Engine::begin_game(Difficulty d, bool loadsave)
     } else {
         p_->checkpoint_room_ = {11, 14};
         load(11, 14, false);
+
         // load(6, 5, false); // eyespy
         // load(7, 7, false); // tetron
         // load(11, 4, false); // silencer
@@ -190,6 +193,10 @@ void Engine::begin_game(Difficulty d, bool loadsave)
         loadgame();
 
     } else {
+        next_scene_ = intro_sequence();
+        platform().speaker().play_music("story", 0);
+        platform().screen().fade(1);
+
         hero_->set_flip(false, false);
     }
 
@@ -274,13 +281,40 @@ void Engine::loadgame()
 
         platform().speaker().play_music(current_music.c_str(), 0);
     }
+
+    if (p_->dialog_played_magic_ not_eq Persistence::dialog_played_magic_val) {
+        p_->dialog_played_magic_ = Persistence::dialog_played_magic_val;
+        p_->dialog_played_ = 0;
+    }
 }
+
+
+
+void Engine::show_dialog(const char* msg)
+{
+    next_scene_ = scene_pool::alloc<DialogScene>(msg);
+}
+
+
+
+void Engine::show_dialog(int dialog_string, const char* msg)
+{
+    if (p_->dialog_played_ & (1 << dialog_string)) {
+        return; // Already played...
+    }
+
+    p_->dialog_played_ |= (1 << dialog_string);
+
+    next_scene_ = scene_pool::alloc<DialogScene>(msg);
+}
+
 
 
 void Engine::savegame()
 {
     platform().write_save_data(&*p_, sizeof *p_);
 }
+
 
 
 void Engine::collision_check()
@@ -410,7 +444,10 @@ void Engine::run()
                 continue;
             }
 
-            next_scene_ = current_scene_->step();
+            auto next = current_scene_->step();
+            if (not next_scene_) {
+                next_scene_ = std::move(next);
+            }
 
             if (next_scene_) {
                 current_scene_->exit(*next_scene_);
@@ -553,6 +590,9 @@ void Engine::unlock_doors()
     }
 
     room_.render_entrances();
+    show_dialog(5,
+                "All machines destroyed - doors opened! "
+                "the doors in this room will always remain open.");
 }
 
 
@@ -652,6 +692,31 @@ void Engine::load(int chunk_x, int chunk_y, bool restore)
     if (chunk_x == 1 and chunk_y == 7) {
         // FIXME: mother enemy missing
         unlock_doors();
+    }
+
+    if (g_.difficulty_ == Difficulty::normal) {
+        if (chunk_x == 10 and chunk_y == 14) {
+            show_dialog(1,
+                        "To the left of my screen is a list of items - "
+                        "only my level 1 blaster is there now.");
+        }
+        if (chunk_x == 10 and chunk_y == 13) {
+            show_dialog(2,
+                        "My suit defenses are fairly weak. If i can find "
+                        "and destroy a boss machine, it will increase my "
+                        "*level*, slightly improving my defense.");
+        }
+        if (chunk_x == 11 and chunk_y == 13) {
+            show_dialog(3,
+                        "I can view a map of the asteriod at any time by "
+                        "pressing START.");
+        }
+        if (chunk_x == 11 and chunk_y == 12) {
+            show_dialog(4,
+                        "This is liquid metal. I can enter it without "
+                        "taking damage, but it will overheat my systems. "
+                        "when overheated, i can't use weapons.");
+        }
     }
 }
 
@@ -776,9 +841,9 @@ void Engine::Room::render_entrances()
         for (int x = 0; x < 20; ++x) {
             if (platform().get_tile(Layer::map_0, x + 5, y)) {
 
-            } else if (x == 19 and has_exit_right()) {
+            } else if (x == 19 and has_exit_right() and coord_.x < 14) {
                 platform().set_tile(Layer::map_0, x + 5, y, 2);
-            } else if (x == 0 and has_exit_left()) {
+            } else if (x == 0 and has_exit_left() and coord_.x > 0) {
                 platform().set_tile(Layer::map_0, x + 5, y, 3);
             } else if (y == 19 and has_exit_down()) {
                 platform().set_tile(Layer::map_0, x + 5, y, 4);
@@ -1176,7 +1241,9 @@ bool Engine::Room::has_exit_up() const
 
 
     if (engine().g_.difficulty_ == Difficulty::normal) {
-        if (coord_ == Vec2<int>{11, 14}) {
+        // FIXME: remove room specific hacks
+        if (coord_ == Vec2<int>{11, 14} or
+            coord_ == Vec2<int>{3, 1}) {
             return false;
         }
     }
@@ -1188,8 +1255,14 @@ bool Engine::Room::has_exit_up() const
 
 bool Engine::Room::has_exit_down() const
 {
-    if (coord_.y == 14) {
+    if (coord_.y == 14 or coord_ == Vec2<int>{3, 0}) {
         return false;
+    }
+
+    if (engine().g_.difficulty_ not_eq Difficulty::hard) {
+        if (coord_ == Vec2<int>{10, 0}) {
+            return false;
+        }
     }
 
     return true;
@@ -1210,6 +1283,12 @@ bool Engine::Room::has_exit_left() const
         // single room, and it's unclear to me yet how the game determines
         // whether a room is "outdoors".
         if (coord_ == Vec2<int>{6, 0}) {
+            return false;
+        }
+    } else {
+        // FIXME...
+        if (coord_ == Vec2<int>{3, 0} or
+            coord_ == Vec2<int>{3, 1}) {
             return false;
         }
     }

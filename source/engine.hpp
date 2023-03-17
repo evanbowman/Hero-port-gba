@@ -186,6 +186,9 @@ public:
 
     ObjectRef<Hero> hero_;
 
+    void show_dialog(const char* msg);
+    void show_dialog(int dialog_id, const char* msg);
+
 
     void boss_completed()
     {
@@ -247,6 +250,14 @@ public:
         Vec2<u8> checkpoint_coords_;
 
         u64 frames_spent_ = 0;
+
+        // NOTE: I needed to add this stuff to the game's save data after
+        // release. TODO: Create a flexible list of appendable stuff at the end
+        // of save data. I just haven't yet because we have tons of space in
+        // sram and it's easier to just do this:
+        static const u16 dialog_played_magic_val = 0xABCD;
+        u16 dialog_played_magic_ = dialog_played_magic_val;
+        u64 dialog_played_ = 0;
     };
 
     DynamicMemory<Persistence> p_;

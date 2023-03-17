@@ -2,6 +2,7 @@
 #include "maps.hpp"
 #include "graphics/overlay.hpp"
 #include "objects/particles/explo.hpp"
+#include "dialogScene.hpp"
 
 
 
@@ -887,6 +888,7 @@ void TitleScreenScene::exit(Scene&)
     platform().screen().clear();
     platform().screen().display();
     if (sel_ == 0 and engine().has_save()) {
+        platform().screen().fade(0);
         platform().speaker().play_sound("snd_herospawn", 11);
     } else {
         platform().speaker().stop_music();
@@ -894,8 +896,165 @@ void TitleScreenScene::exit(Scene&)
     }
     engine().begin_game(engine().g_.difficulty_, sel_ == 0);
     platform().load_overlay_texture("overlay");
-    platform().screen().fade(0);
 }
+
+
+
+
+class IntroSequenceScene : public DialogScene
+{
+public:
+
+    IntroSequenceScene() :
+        DialogScene("On a distant asteroid, I last fought the powerful "
+                    "machine warlord, Cruiser Tetron, who threatened "
+                    "to invade the earth with his mechanical minions.")
+    {
+        disable_hud_ = true;
+    }
+
+
+    void enter(Scene& prev) override
+    {
+        DialogScene::enter(prev);
+
+        platform().screen().clear();
+        platform().screen().display();
+
+        for (int x = 0; x < 30; ++x) {
+            for (int y = 0; y < 15; ++y) {
+                platform().set_tile(Layer::overlay, x, y, 0);
+            }
+        }
+
+        platform().load_tile1_texture("intro_0_flattened");
+        for (int x = 0; x < 64; ++x) {
+            for (int y = 0; y < 64; ++y) {
+                platform().set_tile(Layer::map_1, x, y, 4);
+            }
+        }
+        draw_image(platform(), 2, 3, 0, 25, 15, Layer::map_1);
+
+        for (int y = 0; y < 64; ++y) {
+            platform().set_tile(Layer::map_1, 2, y + 1,
+                                platform().get_tile(Layer::map_1, 27, y));
+
+            platform().set_tile(Layer::map_1, 27, y, 5);
+        }
+
+
+        platform().screen().fade(0);
+    }
+
+
+
+    void exit(Scene& next) override
+    {
+        DialogScene::exit(next);
+    }
+
+
+
+    ScenePtr<Scene> step() override
+    {
+        bool completed = false;
+
+        if (auto scn = DialogScene::step()) {
+            ++dialog_finished_;
+            completed = true;
+        }
+
+        if (completed) {
+            display_mode_ = DisplayMode::animate_in;
+            (*text_state_.text_)->clear();
+
+            if (dialog_finished_ == 4) {
+                platform().sleep(1);
+                platform().screen().fade(1);
+                platform().fill_overlay(0);
+                for (int x = 0; x < 64; ++x) {
+                    for (int y = 0; y < 64; ++y) {
+                        platform().set_tile(Layer::map_1, x, y, 0);
+                    }
+                }
+                platform().screen().clear();
+                platform().screen().display();
+                platform().sleep(40);
+                platform().screen().fade(0);
+                platform().speaker().play_music("zone1", 0);
+                engine().show_dialog(0,
+                                     "Move with the d-pad and fire with A/B. "
+                                     "Press R to toggle autofire...");
+                return scene_pool::alloc<OverworldScene>();
+            }
+
+            switch (dialog_finished_) {
+            case 1: {
+                const char* msg =
+                    "In the heart of his base, built into the asteroid "
+                    "core, I defeated Tetron and left nothing behind "
+                    "but metal dust.";
+
+                (**text_state_.text_) += msg;
+                init_text(platform(), msg);
+                break;
+            }
+
+            case 2: {
+                platform().load_tile1_texture("intro_1_flattened");
+                const char* msg =
+                    "Yet his scattered mechanical minions have once "
+                    "again built a new base and somehow reassembled "
+                    "their master, as every time before.";
+
+                (**text_state_.text_) += msg;
+                init_text(platform(), msg);
+                break;
+            }
+
+            case 3: {
+                const char* msg =
+                    "The complete destruction of Tetron seems "
+                    "Impossible. Can I now defeat him once more - and "
+                    "can I find a way to forever stop his return?";
+
+                (**text_state_.text_) += msg;
+                init_text(platform(), msg);
+                break;
+            }
+
+            }
+
+            for (int x = 0; x < 30; ++x) {
+                for (int y = 0; y < 15; ++y) {
+                    platform().set_tile(Layer::overlay, x, y, 0);
+                }
+            }
+
+        }
+
+        return null_scene();
+    }
+
+
+    void display() override
+    {
+
+    }
+
+
+private:
+    int dialog_finished_ = 0;
+};
+
+
+
+
+ScenePtr<Scene> intro_sequence()
+{
+    return scene_pool::alloc<IntroSequenceScene>();
+}
+
 
 
 

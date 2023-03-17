@@ -201,7 +201,7 @@ public:
     bool read_save_data(void* buffer, u32 data_length);
 
 #ifdef __GBA__
-#define SCRATCH_BUFFER_SIZE 1200
+#define SCRATCH_BUFFER_SIZE 2048
 #else
 #define SCRATCH_BUFFER_SIZE 4000
 #endif // __GBA__
@@ -213,7 +213,7 @@ public:
         char data_[SCRATCH_BUFFER_SIZE];
     };
 
-    static constexpr const int scratch_buffer_count = 4;
+    static constexpr const int scratch_buffer_count = 8;
     using ScratchBufferPtr = Rc<ScratchBuffer, scratch_buffer_count>;
 
     // Scratch buffers are sort of a blunt instrument. Designed for uncommon

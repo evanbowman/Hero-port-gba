@@ -55,6 +55,7 @@ set(SOURCES
   ${SOURCE_DIR}/object.cpp
   ${SOURCE_DIR}/maps.cpp
   ${SOURCE_DIR}/scenes.cpp
+  ${SOURCE_DIR}/dialogScene.cpp
   ${SOURCE_DIR}/taggedObject.cpp
   ${SOURCE_DIR}/objects/hero.cpp
   ${SOURCE_DIR}/localization.cpp
@@ -123,6 +124,7 @@ if(GAMEBOY_ADVANCE)
     ${DATA_DIR}/tetron.s
     ${DATA_DIR}/ending.s
     ${DATA_DIR}/title.s
+    ${DATA_DIR}/story.s
     ${DATA_DIR}/zone10.s
     ${DATA_DIR}/zone9.s
     ${DATA_DIR}/zone8.s
@@ -141,11 +143,14 @@ if(GAMEBOY_ADVANCE)
     ${DATA_DIR}/tile0.s
     ${DATA_DIR}/tile1.s
     ${DATA_DIR}/rock_smasher.s
+    ${DATA_DIR}/intro_0_flattened.s
+    ${DATA_DIR}/intro_1_flattened.s
     ${DATA_DIR}/spritesheet.s
     ${DATA_DIR}/overlay_text_key.s
     ${DATA_DIR}/charset0.s
     ${DATA_DIR}/charset1.s
     ${DATA_DIR}/sound_msg.s
+    ${DATA_DIR}/sound_msg2.s
 
     ${DATA_DIR}/snd_charge.s
     ${DATA_DIR}/snd_heat.s
@@ -392,6 +397,8 @@ if(GAMEBOY_ADVANCE)
     add_tilesheet(tile0 0 0 NO)
     add_tilesheet(tile1 0 0 NO)
     add_tilesheet(rock_smasher 0 0 NO)
+    add_tilesheet(intro_0 0 0 YES)
+    add_tilesheet(intro_1 0 0 YES)
     add_spritesheet(spritesheet 2 2 NO)
 
     configure_file(images.cpp.in ${SOURCE_DIR}/platform/gba/images.cpp)

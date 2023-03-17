@@ -35,6 +35,10 @@
 //;
 #include "data/rock_smasher.h"
 //;
+#include "data/intro_0_flattened.h"
+//;
+#include "data/intro_1_flattened.h"
+//;
 #include "data/spritesheet.h"
 //
 
@@ -68,6 +72,10 @@ static const TextureData tile_textures[] = {
     TEXTURE_INFO(tile1),
 //;
     TEXTURE_INFO(rock_smasher),
+//;
+    TEXTURE_INFO(intro_0_flattened),
+//;
+    TEXTURE_INFO(intro_1_flattened),
 //
 };
 

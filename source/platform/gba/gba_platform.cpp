@@ -1924,6 +1924,7 @@ static const u32 null_music[null_music_len] = {0, 0, 0, 0, 0, 0, 0, 0};
 #include "data/tetron.hpp"
 #include "data/ending.hpp"
 #include "data/title.hpp"
+#include "data/story.hpp"
 #include "data/zone1.hpp"
 #include "data/zone2.hpp"
 #include "data/zone3.hpp"
@@ -1950,6 +1951,7 @@ static const struct AudioTrack
                     DEF_MUSIC(tetron, tetron),
                     DEF_MUSIC(ending, ending),
                     DEF_MUSIC(title, title),
+                    DEF_MUSIC(story, story),
                     DEF_MUSIC(zone10, zone10),
                     DEF_MUSIC(zone9, zone9),
                     DEF_MUSIC(zone8, zone8),
@@ -1997,6 +1999,7 @@ static const AudioTrack* find_music(const char* name)
 #include "data/snd_save.hpp"
 #include "data/snd_spot.hpp"
 #include "data/sound_msg.hpp"
+#include "data/sound_msg2.hpp"
 #include "data/snd_charge.hpp"
 #include "data/snd_heat.hpp"
 #include "data/snd_menuselect.hpp"
@@ -2013,7 +2016,7 @@ static const AudioTrack* find_music(const char* name)
 
 
 static const AudioTrack sounds[] = {
-    DEF_SOUND(msg, sound_msg),
+    DEF_SOUND(msg2, sound_msg2),
     DEF_SOUND(snd_fireshot, snd_fireshot),
     DEF_SOUND(snd_hit1, snd_hit1),
     DEF_SOUND(snd_hit2, snd_hit2),
@@ -2045,6 +2048,7 @@ static const AudioTrack sounds[] = {
     DEF_SOUND(snd_herospawn, snd_herospawn),
     DEF_SOUND(snd_pickup, snd_pickup),
     DEF_SOUND(snd_spot, snd_spot),
+    DEF_SOUND(msg, sound_msg),
 };
 
 
@@ -2275,9 +2279,9 @@ void Platform::Speaker::play_music(const char* name, Microseconds offset)
     // chip, as well as the audio interrupts, when playing new sounds? Does
     // disabling the audio interrupts when queueing a new sound effect cause
     // audio artifacts, because the sound chip is not receiving samples?
-    play_sound("msg", 0);
-    play_sound("msg", 0);
-    play_sound("msg", 0);
+    play_sound("msg2", 0);
+    play_sound("msg2", 0);
+    play_sound("msg2", 0);
 }
 
 
@@ -2694,7 +2698,7 @@ std::optional<Platform::FailureReason> Platform::load_overlay_texture(const char
 }
 
 
-static const TileDesc bad_glyph = 82;
+static const TileDesc bad_glyph = 95;
 
 
 static constexpr int vram_tile_size()

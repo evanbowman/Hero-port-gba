@@ -57,6 +57,11 @@ public:
                                                      (u8)engine().room_.coord_.y,
                                                      spawn_x_,
                                                      spawn_y_});
+
+            engine().show_dialog(7,
+                                 "Generator destroyed - nearby "
+                                 "barriers lowered! These barriers will always"
+                                 " remain lowered.");
         }
 
         anim_ += 1;

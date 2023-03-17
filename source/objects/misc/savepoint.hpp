@@ -49,6 +49,9 @@ public:
             platform().speaker().play_sound("snd_save", 10);
             engine().draw_hud();
             engine().add_object<ExploSpewer2>(position_);
+            engine().show_dialog(6,
+                                 "Game saved! Hold both fire keys together for "
+                                 "a while to warp to other save points.");
         }
 
         cyc_ += 1;

@@ -178,4 +178,8 @@ private:
 
 
 
+ScenePtr<Scene> intro_sequence();
+
+
+
 } // namespace herocore
