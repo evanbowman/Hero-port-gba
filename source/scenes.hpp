@@ -55,6 +55,7 @@ private:
     Buffer<Text, 7> text_lines_;
     int sel_ = 0;
     int cnt_ = 0;
+    bool has_save_ = false;
 };
 
 

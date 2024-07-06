@@ -842,8 +842,15 @@ ScenePtr<Scene> TitleScreenScene::step()
         if (cnt_ == 70) {
             text_lines_.emplace_back(platform(), "continue", OverlayCoord{10, 13});
             text_lines_.emplace_back(platform(), "newgame", OverlayCoord{10, 15});
-            platform().set_tile(Layer::overlay, 8, 13, 121);
-            platform().set_tile(Layer::overlay, 8, 15, 0);
+
+            if (has_save_) {
+                platform().set_tile(Layer::overlay, 8, 13, 121);
+                platform().set_tile(Layer::overlay, 8, 15, 0);
+            } else {
+                platform().set_tile(Layer::overlay, 8, 13, 0);
+                platform().set_tile(Layer::overlay, 8, 15, 121);
+            }
+
         }
     } else {
         if (key_down<Key::down>()) {
@@ -854,7 +861,7 @@ ScenePtr<Scene> TitleScreenScene::step()
             platform().set_tile(Layer::overlay, 8, 13, 0);
             platform().set_tile(Layer::overlay, 8, 15, 121);
         }
-        if (key_down<Key::up>()) {
+        if (key_down<Key::up>() and has_save_) {
             if (sel_ not_eq 0) {
                 play_sound("snd_menutick", 1);
             }
@@ -877,6 +884,11 @@ void TitleScreenScene::enter(Scene&)
 {
     platform().speaker().play_music("title", 0);
     platform().screen().fade(1);
+
+    has_save_ = engine().has_save();
+    if (not has_save_) {
+        sel_ = 1;
+    }
 }
 
 
